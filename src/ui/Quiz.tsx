@@ -25,7 +25,10 @@ export function Quiz({ questions, autoSpeak, onFinish, onQuit }: Props) {
   const correctChoice = useMemo(() => question?.choices.find((c) => c.correct), [question]);
 
   useEffect(() => {
-    if (autoSpeak && question) speak(question.speak ?? question.text);
+    // The pre-answer reading, never the solved one: auto-speak fires as soon
+    // as the question appears, so reading `speak` here would announce the
+    // answer before she has had a chance to think about it.
+    if (autoSpeak && question?.speakPrompt) speak(question.speakPrompt);
     return stopSpeaking;
   }, [question, autoSpeak]);
 
@@ -71,10 +74,12 @@ export function Quiz({ questions, autoSpeak, onFinish, onQuit }: Props) {
         <p className="prompt">{question.prompt}</p>
         <Sentence text={question.text} filled={chosen ? correctChoice?.text : undefined} />
 
-        {speechAvailable() && (
+        {speechAvailable() && (chosen || question.speakPrompt) && (
           <button
             className="speak"
-            onClick={() => speak(chosen ? (question.speak ?? question.text) : question.text.replace('␣', ''))}
+            onClick={() =>
+              speak(chosen ? (question.speak ?? question.text) : (question.speakPrompt ?? question.text))
+            }
           >
             {UI.hearIt}
           </button>

@@ -14,6 +14,7 @@ export interface BuildInput {
   /** Optional per-choice display labels, keyed by choice text. */
   labels?: Record<string, string>;
   speak?: string;
+  speakPrompt?: string;
   /**
    * How many choices to offer. Defaults to 4. Minimal pairs -- borrow/lend,
    * make/do -- are set lower on purpose: padding them with a third unrelated
@@ -72,6 +73,7 @@ export function build(rng: Rng, input: BuildInput): Question | null {
     choices,
     teaching: input.teaching,
     speak: input.speak ?? solve(input.text, input.correct),
+    speakPrompt: input.speakPrompt ?? blanked(input.text),
   };
 }
 
@@ -91,6 +93,21 @@ export function gapStartsSentence(before: string): boolean {
 /** Capitalises the first letter, leaving the rest alone. */
 export function capitalise(word: string): string {
   return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+/**
+ * The sentence as it should be read BEFORE answering: the gap spoken as the
+ * word "blank" rather than removed. Removing it produces "I left my glasses
+ * the kitchen", which sounds like broken English; filling it in gives the
+ * answer away.
+ *
+ * "blank" is English because the sentence is English and one voice reads it.
+ */
+export function blanked(text: string): string {
+  if (!text.includes('␣')) return text;
+  const [before = '', after = ''] = text.split('␣');
+  const word = gapStartsSentence(before) ? 'Blank' : 'blank';
+  return `${before}${word}${after}`.replace(/\s{2,}/g, ' ').trim();
 }
 
 /** Replaces the gap with the correct answer, for text-to-speech playback. */

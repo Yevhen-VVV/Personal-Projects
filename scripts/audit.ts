@@ -2,7 +2,7 @@
  * Generates a large sample from every skill and checks the invariants that
  * a bad question would violate. Run with: npm run audit
  */
-import { ALL_SKILL_IDS, createRng, generateQuestion, solve } from '../src/engine';
+import { ALL_SKILL_IDS, blanked, createRng, generateQuestion, solve } from '../src/engine';
 import type { Level, Question, SkillId } from '../src/engine/types';
 
 const PER_SKILL = 400;
@@ -46,6 +46,22 @@ function check(q: Question) {
   if (!q.text.includes('␣') && !gapOptional.includes(q.skill)) {
     problems.push(`${where} — no gap in the sentence`);
   }
+  // The reading offered BEFORE answering must be the blanked sentence, never
+  // the solved one. This is exactly the bug that shipped: auto-speak read the
+  // solved sentence aloud the moment a question appeared, announcing the
+  // answer. Comparing against blanked() is exact -- a substring search for the
+  // answer instead flags sentences that merely use the same word elsewhere,
+  // like "We waited ␣ the bus for twenty minutes".
+  const answer = correct[0]?.text ?? '';
+  const prompt = q.speakPrompt ?? '';
+  if (q.text.includes('␣') && prompt) {
+    if (prompt === solve(q.text, answer)) {
+      problems.push(`${where} — pre-answer audio is the solved sentence, which gives the answer away`);
+    } else if (prompt !== blanked(q.text)) {
+      problems.push(`${where} — pre-answer audio is not the blanked sentence: "${prompt}"`);
+    }
+  }
+
   const solved = solve(q.text, correct[0]?.text ?? '');
   if (solved.includes('␣')) problems.push(`${where} — gap survived substitution`);
   if (/\s{2,}/.test(solved)) problems.push(`${where} — double space after substitution: "${solved}"`);

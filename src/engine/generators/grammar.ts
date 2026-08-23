@@ -323,5 +323,8 @@ export const questionOrder: Generator = (rng, level) => {
       [auxMisplaced]: `«${aux}» стоит не на месте: вспомогательный глагол идёт перед подлежащим, а не после него.`,
     },
     speak: correct,
+    // The sentence under test *is* each answer option here, so there is
+    // nothing meaningful to read aloud before she has picked one.
+    speakPrompt: '',
   });
 };

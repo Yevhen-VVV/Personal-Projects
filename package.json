@@ -18,7 +18,8 @@
     "ios:sync": "npm run build && cap sync ios",
     "ios:open": "cap open ios",
     "bundle": "node scripts/bundle-single.mjs",
-    "offline": "node scripts/offline-check.mjs"
+    "offline": "node scripts/offline-check.mjs",
+    "speech": "node scripts/speech-check.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

@@ -6,7 +6,7 @@ import * as lexis from './generators/lexis';
 export * from './types';
 export { SKILLS, SKILL_BY_ID } from './skills';
 export { createRng, daySeed } from './rng';
-export { solve, capitalise, gapStartsSentence } from './build';
+export { solve, blanked, capitalise, gapStartsSentence } from './build';
 
 const GENERATORS: Record<SkillId, Generator> = {
   articles: grammar.articles,

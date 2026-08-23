@@ -67,8 +67,18 @@ export interface Question {
   choices: Choice[];
   /** Shown after answering, regardless of which choice was picked. */
   teaching: string;
-  /** Optional sentence read aloud by text-to-speech; defaults to the solved text. */
+  /**
+   * Read aloud AFTER answering: the sentence with the answer in place.
+   * Defaults to the solved text.
+   */
   speak?: string;
+  /**
+   * Read aloud BEFORE answering: the sentence with the gap spoken as the word
+   * "blank", never filled in. These must stay separate -- reading the solved
+   * sentence up front announces the answer and makes the question pointless.
+   * An empty string means there is nothing useful to read yet.
+   */
+  speakPrompt?: string;
 }
 
 export interface Skill {

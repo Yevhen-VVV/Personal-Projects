@@ -94,7 +94,10 @@ treated as a requirement rather than a setting:
 - Colour pairs are chosen for at least 7:1 contrast, past the WCAG AA minimum.
 - Every tap target is at least 64px tall. The smoke test fails the build if any
   button drops under 44px at any text size.
-- Any sentence can be read aloud, at a slower-than-default rate.
+- Any sentence can be read aloud, at a slower-than-default rate. Before
+  answering, the gap is spoken as the word "blank" — never filled in, because
+  reading the solved sentence aloud would announce the answer. The completed
+  sentence is read only after she has chosen. `npm run speech` enforces this.
 - Light and dark backgrounds, no motion beyond a colour change, no timers.
 
 ## AI content packs
@@ -179,6 +182,7 @@ constraint.
 | `npm run pack -- <skill>` | Generate new items with Claude |
 | `npm run bundle` | Inline everything into one self-contained HTML file |
 | `npm run offline` | Load a served build with the network cut and assert it still works |
+| `npm run speech` | Assert the pre-answer audio says "blank" and never the answer |
 | `npm run ios:sync` | Build and sync into the iOS project (macOS only) |
 
 `npm run audit` is the important one. It catches broken structure — a leaked
