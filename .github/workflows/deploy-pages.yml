@@ -1,16 +1,14 @@
-# Builds the app and publishes it to GitHub Pages.
+# Checks every push, and publishes to GitHub Pages from main.
 #
-# The checks run first and the deploy depends on them, so a build that would
-# ship a broken question -- a missing explanation, an explanation in the wrong
-# language, a leaked template token -- never reaches her phone.
-name: Deploy to GitHub Pages
+# The checks gate the deploy, so a build carrying a missing explanation, an
+# explanation in the wrong language, or a leaked template token never reaches
+# a learner.
+name: Check and deploy
 
 on:
   push:
-    # The github-pages environment only accepts deployments from the default
-    # branch unless another is allowed in its settings, so real deploys come
-    # from main; the feature branch is here so the checks still run on it.
     branches: [main, claude/esl-lessons-quizzes-app-lbfl7i]
+  pull_request:
   # Lets you re-run this by hand after changing repository settings.
   workflow_dispatch:
 
@@ -25,46 +23,56 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  # Runs on every branch. This is the job whose red or green actually means
+  # something about the code.
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-
       - run: npm ci
-
       - name: Typecheck app and scripts
         run: npm run check
-
       - name: Lint
         run: npm run lint
-
       - name: Audit generated questions
         run: npm run audit
-
       - name: Test the content-pack validator
         run: npm run test:pack
+
+  # Deploying is separate and main-only, for two reasons: the github-pages
+  # environment only accepts deployments from the default branch unless
+  # another is allowed in its settings, and Pages is unavailable entirely on a
+  # private repository on a free plan -- so on a feature branch this job would
+  # fail for reasons that say nothing about the code.
+  build:
+    needs: check
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
 
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
         with:
-          # Tries to turn Pages on automatically. This does NOT work on a
-          # private repository on a free plan -- Pages is unavailable there at
-          # all, and the step fails with "Resource not accessible by
-          # integration". The repository must be public (or on a paid plan),
-          # with Settings -> Pages -> Source set to "GitHub Actions", before
-          # this can succeed. Once that is done this step is a no-op.
+          # Requires the repository to be public (or on a paid plan) with
+          # Settings -> Pages -> Source set to "GitHub Actions". Until then
+          # this fails with "Resource not accessible by integration".
           enablement: true
 
       - name: Build
         # Pages serves a project repo from /<repo>/, not the domain root.
         env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
@@ -73,6 +81,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
