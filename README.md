@@ -127,12 +127,27 @@ browser chrome, and works with no signal. No account, no payment, no Mac.
 **Windows** — open it in Edge or Chrome, then Install from the address bar. It
 gets a Start menu entry and its own window.
 
+**Hosting it** — `.github/workflows/deploy-pages.yml` builds and publishes to
+GitHub Pages on every push. The checks run first and the deploy depends on
+them, so a build carrying a missing explanation or a leaked template token
+never reaches a learner. Pages serves a project repository from `/<repo>/`
+rather than the domain root, so the workflow passes that path to the build as
+`BASE_PATH`; the manifest and service worker use relative URLs instead, and
+work at either location.
+
 **Single-file build** — `npm run bundle` inlines the CSS, the JavaScript and the
 icons into one HTML file (~330 KB) that can be hosted anywhere serving a single
 page. It makes no network requests at all once loaded. Because there is no
 separate `sw.js` alongside it, that build skips service-worker registration and
-therefore has no guaranteed offline mode — deploy the whole `dist/` directory
-when offline use matters.
+therefore has no offline mode — deploy the whole `dist/` directory when offline
+use matters.
+
+**Offline** is Workbox-generated, not hand-written, and that was not a
+preference. The hand-written worker precached the shell and passed every other
+check, but the hashed JS and CSS are fetched before a worker activates on a
+first visit, so they were never cached and the app opened blank with no
+network. `npm run offline` is what caught it: it loads a served build with the
+network cut and fails if the app does not actually run.
 
 **iPhone, as a real App Store app** — the Capacitor scaffolding is in
 `capacitor.config.ts`, so no rewrite is needed:
@@ -163,6 +178,7 @@ constraint.
 | `npm run test:pack` | Test the content-pack validator |
 | `npm run pack -- <skill>` | Generate new items with Claude |
 | `npm run bundle` | Inline everything into one self-contained HTML file |
+| `npm run offline` | Load a served build with the network cut and assert it still works |
 | `npm run ios:sync` | Build and sync into the iOS project (macOS only) |
 
 `npm run audit` is the important one. It catches broken structure — a leaked

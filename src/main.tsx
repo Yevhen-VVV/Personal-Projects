@@ -19,7 +19,7 @@ declare global {
 
 if ('serviceWorker' in navigator && import.meta.env.PROD && !window.__SINGLE_FILE__) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {
       // Offline use is a bonus, not a requirement -- the app works either way.
     });
   });
