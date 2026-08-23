@@ -127,6 +127,13 @@ browser chrome, and works with no signal. No account, no payment, no Mac.
 **Windows** — open it in Edge or Chrome, then Install from the address bar. It
 gets a Start menu entry and its own window.
 
+**Single-file build** — `npm run bundle` inlines the CSS, the JavaScript and the
+icons into one HTML file (~330 KB) that can be hosted anywhere serving a single
+page. It makes no network requests at all once loaded. Because there is no
+separate `sw.js` alongside it, that build skips service-worker registration and
+therefore has no guaranteed offline mode — deploy the whole `dist/` directory
+when offline use matters.
+
 **iPhone, as a real App Store app** — the Capacitor scaffolding is in
 `capacitor.config.ts`, so no rewrite is needed:
 
@@ -155,6 +162,7 @@ constraint.
 | `npm run smoke -- <dir>` | Drive a built app end to end, check layout and tap targets |
 | `npm run test:pack` | Test the content-pack validator |
 | `npm run pack -- <skill>` | Generate new items with Claude |
+| `npm run bundle` | Inline everything into one self-contained HTML file |
 | `npm run ios:sync` | Build and sync into the iOS project (macOS only) |
 
 `npm run audit` is the important one. It catches broken structure — a leaked

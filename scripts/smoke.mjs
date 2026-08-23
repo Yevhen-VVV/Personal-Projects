@@ -15,7 +15,13 @@ const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromi
 const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
 const errors = [];
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
-page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
+page.on('console', (m) => {
+  // The browser requests /favicon.ico on its own; the host serves that, not us.
+  if (m.type() === 'error' && !/404|favicon/i.test(m.text())) errors.push('console: ' + m.text());
+});
+page.on('response', (r) => {
+  if (!r.ok() && !r.url().endsWith('/favicon.ico')) errors.push(`http ${r.status()}: ${r.url()}`);
+});
 
 await page.goto('http://localhost:4174/', { waitUntil: 'networkidle' });
 await page.screenshot({ path: `${out}/01-home.png`, fullPage: true });

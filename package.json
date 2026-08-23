@@ -16,7 +16,8 @@
     "test:pack": "tsx scripts/pack.test.ts",
     "smoke": "node scripts/smoke.mjs",
     "ios:sync": "npm run build && cap sync ios",
-    "ios:open": "cap open ios"
+    "ios:open": "cap open ios",
+    "bundle": "node scripts/bundle-single.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",
