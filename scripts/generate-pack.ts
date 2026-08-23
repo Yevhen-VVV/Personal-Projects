@@ -24,6 +24,9 @@ import type { SkillId } from '../src/engine/types';
 
 const PACK_FILE = 'src/engine/corpus/packs.ts';
 
+/** Explanations are written in the learner's language; questions are not. */
+const CYRILLIC = /[\u0400-\u04FF]/;
+
 /** The skills this script can extend, with their existing hand-written items. */
 const SUPPORTED: Partial<Record<SkillId, AuthoredItem[]>> = {
   'present-perfect': PERFECT_VS_PAST,
@@ -35,7 +38,15 @@ const ItemSchema = z.object({
   text: z.string().describe('The sentence, with ␣ (U+2423) marking the single gap.'),
   correct: z.string().describe('The word or phrase that belongs in the gap.'),
   wrong: z.array(z.string()).describe('Exactly three plausible wrong answers.'),
-  why: z.string().describe('One or two plain sentences explaining why the answer is right.'),
+  why: z
+    .string()
+    .describe('IN RUSSIAN. One or two plain sentences explaining why the correct answer is correct.'),
+  wrongWhy: z
+    .array(z.string())
+    .describe(
+      'IN RUSSIAN. Exactly three short explanations, one per entry of "wrong" and in the same ' +
+        'order, each saying why that particular option fails here.',
+    ),
   level: z.number().describe('Difficulty: 1 beginner, 2 improving, 3 confident.'),
 });
 
@@ -55,11 +66,17 @@ function prompt(skill: SkillId, existing: AuthoredItem[], count: number): string
     '',
     'Rules, all of which are hard requirements:',
     '- Each sentence contains exactly one gap, written as the character ␣ (U+2423).',
+    '- The sentence and all four answer options are in ENGLISH. This is what she is tested on.',
+    '- "why" and every entry of "wrongWhy" are in RUSSIAN. These are the explanations, and the',
+    '  learner reads them in her own language. Use «ёлочки» for quotation marks in Russian text,',
+    '  and address the learner politely, as «вы».',
     '- Exactly one answer is correct. The context must make the other three genuinely wrong,',
     '  not merely less natural. If a distractor could be defended, replace it.',
     '- Distractors must be errors a Ukrainian or Russian speaker actually makes.',
-    '- "why" explains the rule in plain language, naming the word in the sentence that',
-    '  decides the answer. No grammatical jargon beyond what you explain.',
+    '- "wrongWhy" has exactly three entries, in the same order as "wrong". Each explains why',
+    '  THAT option fails in THIS sentence -- not merely which option was right.',
+    '- Explanations name the word in the sentence that decides the answer, and avoid',
+    '  grammatical jargon beyond what they explain.',
     '',
     'Here are existing items, for style. Do not repeat them or produce near-duplicates:',
     ...existing.slice(0, 8).map((i) => `- ${i.text} → ${i.correct}`),
@@ -81,6 +98,19 @@ export function validate(item: z.infer<typeof ItemSchema>, existing: AuthoredIte
   if (all.some((s) => !s)) return 'empty distractor';
   if (![1, 2, 3].includes(item.level)) return `bad level ${item.level}`;
   if (!item.why.trim()) return 'no explanation';
+  if (item.wrongWhy.length !== item.wrong.length) {
+    return `has ${item.wrongWhy.length} wrong-answer explanations, needs ${item.wrong.length}`;
+  }
+  if (item.wrongWhy.some((w) => !w.trim())) return 'empty wrong-answer explanation';
+
+  // Explanations must be in Russian; the question itself must not be.
+  if (!CYRILLIC.test(item.why)) return 'explanation is not in Russian';
+  const notRussian = item.wrongWhy.findIndex((w) => !CYRILLIC.test(w));
+  if (notRussian >= 0) return `wrong-answer explanation ${notRussian + 1} is not in Russian`;
+  if (CYRILLIC.test(item.text)) return 'the sentence should be in English, not Russian';
+  if ([item.correct, ...item.wrong].some((c) => CYRILLIC.test(c))) {
+    return 'answer options should be in English, not Russian';
+  }
 
   const normalised = item.text.replace(/\s+/g, ' ').trim().toLowerCase();
   if (existing.some((e) => e.text.replace(/\s+/g, ' ').trim().toLowerCase() === normalised)) {
@@ -104,6 +134,7 @@ export function writePack(skill: SkillId, items: AuthoredItem[]): void {
             `      correct: ${JSON.stringify(i.correct)},\n` +
             `      wrong: ${JSON.stringify(i.wrong)},\n` +
             `      why: ${JSON.stringify(i.why)},\n` +
+            `      wrongWhy: ${JSON.stringify(i.wrongWhy)},\n` +
             `      level: ${i.level},\n` +
             `    },`,
         )
@@ -135,9 +166,11 @@ async function main() {
     thinking: { type: 'adaptive' },
     output_config: { format: zodOutputFormat(ResponseSchema) },
     system:
-      'You write English-language teaching material. Accuracy matters more than volume: ' +
+      'You write English-language teaching material for Russian-speaking learners. The questions ' +
+      'are in English and the explanations are in Russian. Accuracy matters more than volume: ' +
       'a question with two defensible answers actively harms the learner, so when in doubt, ' +
-      'write fewer items and make each one unambiguous.',
+      'write fewer items and make each one unambiguous. Your Russian must read naturally to a ' +
+      'native speaker -- not translated-sounding.',
     messages: [{ role: 'user', content: prompt(skill, existing, count) }],
   });
 
@@ -162,6 +195,7 @@ async function main() {
       correct: item.correct,
       wrong: item.wrong,
       why: item.why,
+      wrongWhy: item.wrongWhy,
       level: item.level as 1 | 2 | 3,
     });
   }

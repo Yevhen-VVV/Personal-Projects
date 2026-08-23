@@ -1,7 +1,7 @@
 /*
  * End-to-end smoke test against a built app.
  *
- *   npm run build && npx vite preview --port 4173 &
+ *   npm run build && npx vite preview --port 4174 &
  *   npm run smoke -- ./screenshots
  *
  * Walks a full session at an iPhone viewport, then re-checks the two settings
@@ -17,10 +17,10 @@ const errors = [];
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
 page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
 
-await page.goto('http://localhost:4173/', { waitUntil: 'networkidle' });
+await page.goto('http://localhost:4174/', { waitUntil: 'networkidle' });
 await page.screenshot({ path: `${out}/01-home.png`, fullPage: true });
 
-await page.getByRole('button', { name: /Start today/ }).click();
+await page.getByRole('button', { name: /Начать сегодняшнее/ }).click();
 await page.waitForTimeout(300);
 await page.screenshot({ path: `${out}/02-question.png`, fullPage: true });
 
@@ -33,12 +33,12 @@ await page.screenshot({ path: `${out}/03-feedback.png`, fullPage: true });
 
 // Walk the whole session to make sure nothing breaks partway through.
 for (let i = 0; i < 20; i++) {
-  const next = page.getByRole('button', { name: /Next question|See results/ });
+  const next = page.getByRole('button', { name: /Следующий вопрос|Посмотреть результат/ });
   if (!(await next.count())) break;
   const label = await next.textContent();
   await next.click();
   await page.waitForTimeout(150);
-  if (label?.includes('results')) break;
+  if (label?.includes('результат')) break;
   const c = page.locator('.choice');
   if (await c.count()) await c.nth(0).click();
   await page.waitForTimeout(120);
@@ -46,9 +46,9 @@ for (let i = 0; i < 20; i++) {
 await page.waitForTimeout(300);
 await page.screenshot({ path: `${out}/04-results.png`, fullPage: true });
 
-await page.getByRole('button', { name: 'Finish' }).click();
+await page.getByRole('button', { name: 'Завершить' }).click();
 await page.waitForTimeout(200);
-await page.getByRole('button', { name: 'Choose a topic' }).click();
+await page.getByRole('button', { name: 'Выбрать тему' }).click();
 await page.waitForTimeout(200);
 await page.screenshot({ path: `${out}/05-topics.png`, fullPage: true });
 await page.locator('.stack button').first().click();
@@ -56,11 +56,11 @@ await page.waitForTimeout(200);
 await page.screenshot({ path: `${out}/06-lesson.png`, fullPage: true });
 
 // Accessibility settings, checked on a live question rather than the home page.
-await page.getByRole('button', { name: 'Finish' }).count().catch(() => {});
-await page.goto('http://localhost:4173/', { waitUntil: 'networkidle' });
-await page.getByRole('button', { name: 'Largest' }).click();
-await page.getByRole('button', { name: /Dark background/ }).click();
-await page.getByRole('button', { name: /Start today/ }).click();
+await page.getByRole('button', { name: 'Завершить' }).count().catch(() => {});
+await page.goto('http://localhost:4174/', { waitUntil: 'networkidle' });
+await page.getByRole('button', { name: 'Самый крупный' }).click();
+await page.getByRole('button', { name: /Тёмный фон/ }).click();
+await page.getByRole('button', { name: /Начать сегодняшнее/ }).click();
 await page.waitForTimeout(400);
 await page.locator('.choice').first().click();
 await page.waitForTimeout(300);

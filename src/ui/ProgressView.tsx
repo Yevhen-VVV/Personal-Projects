@@ -1,6 +1,7 @@
 import { ALL_SKILL_IDS, SKILL_BY_ID } from '../engine';
 import type { Progress } from '../srs';
 import { isDue, mastery, streakDays } from '../srs';
+import { UI } from './strings';
 
 export function ProgressView({ progress, onBack, onReset }: { progress: Progress; onBack: () => void; onReset: () => void }) {
   const { fraction, mastered, needsWork } = mastery(progress, ALL_SKILL_IDS);
@@ -13,33 +14,33 @@ export function ProgressView({ progress, onBack, onReset }: { progress: Progress
   return (
     <div>
       <div className="topbar">
-        <button onClick={onBack}>← Back</button>
+        <button onClick={onBack}>{UI.back}</button>
       </div>
-      <h1>My progress</h1>
+      <h1>{UI.progressTitle}</h1>
 
       <div className="card">
-        <div className="skill-row"><span>Questions answered</span><strong>{progress.totalAnswered}</strong></div>
-        <div className="skill-row"><span>Answered correctly</span><strong>{accuracy}%</strong></div>
-        <div className="skill-row"><span>Days in a row</span><strong>{streakDays(progress)}</strong></div>
-        <div className="skill-row"><span>Topics learned well</span><strong>{mastered.length} of {ALL_SKILL_IDS.length}</strong></div>
+        <div className="skill-row"><span>{UI.answered}</span><strong>{progress.totalAnswered}</strong></div>
+        <div className="skill-row"><span>{UI.correctShare}</span><strong>{accuracy}%</strong></div>
+        <div className="skill-row"><span>{UI.daysInRow}</span><strong>{streakDays(progress)}</strong></div>
+        <div className="skill-row"><span>{UI.topicsLearned}</span><strong>{mastered.length} / {ALL_SKILL_IDS.length}</strong></div>
       </div>
 
       <div className="card">
-        <h2>Overall</h2>
+        <h2>{UI.overall}</h2>
         <div className="bar"><span style={{ width: `${fraction * 100}%` }} /></div>
         <p className="muted small" style={{ marginTop: '0.75rem' }}>
-          This grows as you answer each topic correctly several times, on different days.
+          {UI.overallHint}
         </p>
       </div>
 
       {needsWork.length > 0 && (
         <div className="card">
-          <h2>Needs a little more work</h2>
+          <h2>{UI.needsWork}</h2>
           <div className="stack">
             {needsWork.map((id) => (
               <div key={id} className="skill-row">
                 <span>{SKILL_BY_ID.get(id)?.title}</span>
-                <span className="pill">Coming up soon</span>
+                <span className="pill">{UI.comingSoon}</span>
               </div>
             ))}
           </div>
@@ -48,7 +49,7 @@ export function ProgressView({ progress, onBack, onReset }: { progress: Progress
 
       {practised.length > 0 && (
         <div className="card">
-          <h2>Every topic</h2>
+          <h2>{UI.everyTopic}</h2>
           {practised.map((id) => {
             const state = progress.skills[id]!;
             const total = state.correct + state.wrong;
@@ -57,7 +58,7 @@ export function ProgressView({ progress, onBack, onReset }: { progress: Progress
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
                   <span>{SKILL_BY_ID.get(id)?.title}</span>
                   <span className="muted small">
-                    {state.correct}/{total} {isDue(state) ? '· due' : ''}
+                    {state.correct}/{total} {isDue(state) ? UI.dueMark : ''}
                   </span>
                 </div>
                 <div className="bar" style={{ marginTop: '0.4rem' }}><span style={{ width: `${(state.box / 5) * 100}%` }} /></div>
@@ -70,10 +71,10 @@ export function ProgressView({ progress, onBack, onReset }: { progress: Progress
       <button
         className="btn-secondary"
         onClick={() => {
-          if (confirm('This will erase all your progress and start again. Are you sure?')) onReset();
+          if (confirm(UI.resetConfirm)) onReset();
         }}
       >
-        Start again from the beginning
+        {UI.resetButton}
       </button>
     </div>
   );

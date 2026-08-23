@@ -9,7 +9,12 @@ const GOOD = {
   text: 'I ␣ my glasses this morning and cannot find them.',
   correct: 'have lost',
   wrong: ['lost', 'lose', 'am losing'],
-  why: 'The result matters now, so English uses the present perfect.',
+  why: 'Важен результат сейчас, поэтому нужен present perfect.',
+  wrongWhy: [
+    'Простое прошедшее не связывает действие с настоящим моментом.',
+    'Настоящее простое описывает привычку.',
+    'Continuous означал бы «теряю прямо сейчас».',
+  ],
   level: 2,
 };
 
@@ -22,6 +27,31 @@ const CASES: [string, Record<string, unknown>, string | null][] = [
   ['rejects an empty distractor', { ...GOOD, wrong: ['lost', 'lose', '  '] }, 'empty distractor'],
   ['rejects a bad level', { ...GOOD, level: 7 }, 'bad level 7'],
   ['rejects a missing explanation', { ...GOOD, why: '' }, 'no explanation'],
+  [
+    'rejects the wrong number of wrong-answer explanations',
+    { ...GOOD, wrongWhy: ['только одно'] },
+    'has 1 wrong-answer explanations, needs 3',
+  ],
+  [
+    'rejects an English explanation',
+    { ...GOOD, why: 'The result matters now.' },
+    'explanation is not in Russian',
+  ],
+  [
+    'rejects an English wrong-answer explanation',
+    { ...GOOD, wrongWhy: ['Верно по-русски.', 'This one is English.', 'И снова по-русски.'] },
+    'wrong-answer explanation 2 is not in Russian',
+  ],
+  [
+    'rejects a Russian question sentence',
+    { ...GOOD, text: 'Я ␣ очки сегодня утром.' },
+    'the sentence should be in English, not Russian',
+  ],
+  [
+    'rejects Russian answer options',
+    { ...GOOD, correct: 'потерял' },
+    'answer options should be in English, not Russian',
+  ],
 ];
 
 let failures = 0;

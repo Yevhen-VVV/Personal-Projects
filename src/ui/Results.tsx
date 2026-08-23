@@ -1,6 +1,7 @@
 import type { Answered } from './Quiz';
 import { SKILL_BY_ID } from '../engine';
 import { Sentence } from './Sentence';
+import { UI } from './strings';
 
 interface Props {
   answers: Answered[];
@@ -22,32 +23,30 @@ export function Results({ answers, onAgain, onHome }: Props) {
 
   return (
     <div>
-      <h1>Well done</h1>
+      <h1>{UI.resultsTitle}</h1>
 
       <div className="card center">
         <p className="sentence" style={{ marginBottom: '0.5rem' }}>
-          {right} out of {answers.length}
+          {UI.scoreOf(right, answers.length)}
         </p>
         <div className="bar" aria-hidden="true">
           <span style={{ width: `${answers.length ? (right / answers.length) * 100 : 0}%` }} />
         </div>
         <p className="muted small" style={{ marginTop: '0.75rem' }}>
-          {missed.length === 0
-            ? 'Every answer correct. That is a very good session.'
-            : 'The questions you missed will come back again soon, so you get another go at them.'}
+          {missed.length === 0 ? UI.allCorrect : UI.someWrong}
         </p>
       </div>
 
       {byTopic.size > 0 && (
         <div className="card">
-          <h2>Worth another look</h2>
+          <h2>{UI.worthReview}</h2>
           <div className="stack">
             {[...byTopic.entries()]
               .sort((a, b) => b[1] - a[1])
               .map(([title, count]) => (
                 <div key={title} className="skill-row">
                   <span>{title}</span>
-                  <span className="pill">{count} missed</span>
+                  <span className="pill">{UI.missedCount(count)}</span>
                 </div>
               ))}
           </div>
@@ -56,7 +55,7 @@ export function Results({ answers, onAgain, onHome }: Props) {
 
       {missed.length > 0 && (
         <div className="card">
-          <h2>Your mistakes</h2>
+          <h2>{UI.yourMistakes}</h2>
           <div className="stack">
             {missed.map((miss, i) => {
               const correct = miss.question.choices.find((c) => c.correct);
@@ -64,7 +63,8 @@ export function Results({ answers, onAgain, onHome }: Props) {
                 <div key={i} style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--line)' }}>
                   <Sentence text={miss.question.text} filled={correct?.text} />
                   <p className="small muted" style={{ margin: 0 }}>
-                    You chose “{miss.chosen.text}”. {miss.question.teaching}
+                    {UI.youChose(miss.chosen.label ?? miss.chosen.text)}{' '}
+                    {miss.chosen.why ?? miss.question.teaching}
                   </p>
                 </div>
               );
@@ -75,10 +75,10 @@ export function Results({ answers, onAgain, onHome }: Props) {
 
       <div className="btn-row">
         <button className="btn-primary" onClick={onAgain}>
-          Practise again
+          {UI.practiseAgain}
         </button>
         <button className="btn-secondary" onClick={onHome}>
-          Finish
+          {UI.finish}
         </button>
       </div>
     </div>

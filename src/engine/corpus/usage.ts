@@ -16,36 +16,36 @@ export interface Expr {
 }
 
 export const TIME_EXPR: Expr[] = [
-  { expr: 'nine o’clock', prep: 'at', level: 1, when: 'any', why: 'clock times take "at"' },
-  { expr: 'half past six', prep: 'at', level: 2, when: 'any', why: 'clock times take "at"' },
-  { expr: 'midnight', prep: 'at', level: 1, when: 'any', why: '"at midnight" and "at noon" are fixed' },
-  { expr: 'lunchtime', prep: 'at', level: 2, when: 'any', why: 'points in the day take "at"' },
-  { expr: 'night', prep: 'at', level: 1, when: 'habit', why: '"at night" is fixed — but "in the morning"' },
-  { expr: 'the weekend', prep: 'at', level: 2, when: 'any', why: 'British English uses "at the weekend"' },
-  { expr: 'Christmas', prep: 'at', level: 2, when: 'any', why: 'holiday periods take "at"' },
+  { expr: 'nine o’clock', prep: 'at', level: 1, when: 'any', why: 'перед точным временем ставится «at»' },
+  { expr: 'half past six', prep: 'at', level: 2, when: 'any', why: 'перед точным временем ставится «at»' },
+  { expr: 'midnight', prep: 'at', level: 1, when: 'any', why: '«at midnight» и «at noon» — устойчивые сочетания' },
+  { expr: 'lunchtime', prep: 'at', level: 2, when: 'any', why: 'перед моментами дня ставится «at»' },
+  { expr: 'night', prep: 'at', level: 1, when: 'habit', why: '«at night» — устойчивое сочетание, а вот утром — «in the morning»' },
+  { expr: 'the weekend', prep: 'at', level: 2, when: 'any', why: 'в британском варианте говорят «at the weekend»' },
+  { expr: 'Christmas', prep: 'at', level: 2, when: 'any', why: 'перед праздничными периодами ставится «at»' },
 
-  { expr: 'Monday', prep: 'on', level: 1, when: 'any', why: 'days of the week take "on"' },
-  { expr: 'Friday evening', prep: 'on', level: 2, when: 'any', why: 'a named day takes "on", even with a part of the day' },
-  { expr: 'my birthday', prep: 'on', level: 1, when: 'any', why: 'specific days take "on"' },
-  { expr: 'the third of May', prep: 'on', level: 2, when: 'any', why: 'dates take "on"' },
-  { expr: 'New Year’s Day', prep: 'on', level: 2, when: 'any', why: 'a single named day takes "on"' },
-  { expr: 'Tuesdays', prep: 'on', level: 2, when: 'habit', why: 'repeated days take "on"' },
+  { expr: 'Monday', prep: 'on', level: 1, when: 'any', why: 'перед днями недели ставится «on»' },
+  { expr: 'Friday evening', prep: 'on', level: 2, when: 'any', why: 'перед названным днём ставится «on», даже если указана часть дня' },
+  { expr: 'my birthday', prep: 'on', level: 1, when: 'any', why: 'перед конкретными днями ставится «on»' },
+  { expr: 'the third of May', prep: 'on', level: 2, when: 'any', why: 'перед датами ставится «on»' },
+  { expr: 'New Year’s Day', prep: 'on', level: 2, when: 'any', why: 'перед отдельным названным днём ставится «on»' },
+  { expr: 'Tuesdays', prep: 'on', level: 2, when: 'habit', why: 'перед повторяющимися днями ставится «on»' },
 
-  { expr: 'July', prep: 'in', level: 1, when: 'any', why: 'months take "in"' },
-  { expr: 'the morning', prep: 'in', level: 1, when: 'habit', why: '"in the morning/afternoon/evening" — but "at night"' },
-  { expr: 'the evening', prep: 'in', level: 1, when: 'habit', why: '"in the evening" is fixed' },
-  { expr: 'summer', prep: 'in', level: 1, when: 'any', why: 'seasons take "in"' },
-  { expr: 'winter', prep: 'in', level: 1, when: 'any', why: 'seasons take "in"' },
-  { expr: '1998', prep: 'in', level: 2, when: 'past', why: 'years take "in"' },
-  { expr: 'the 1960s', prep: 'in', level: 3, when: 'past', why: 'decades take "in"' },
-  { expr: 'two hours', prep: 'in', level: 2, when: 'future', why: '"in two hours" means after that much time has passed' },
-  { expr: 'the moment', prep: 'at', level: 2, when: 'any', frame: 'She is not at home ␣ the moment.', why: '"at the moment" is fixed' },
+  { expr: 'July', prep: 'in', level: 1, when: 'any', why: 'перед названиями месяцев ставится «in»' },
+  { expr: 'the morning', prep: 'in', level: 1, when: 'habit', why: '«in the morning», «in the afternoon», «in the evening» — но «at night»' },
+  { expr: 'the evening', prep: 'in', level: 1, when: 'habit', why: '«in the evening» — устойчивое сочетание' },
+  { expr: 'summer', prep: 'in', level: 1, when: 'any', why: 'перед временами года ставится «in»' },
+  { expr: 'winter', prep: 'in', level: 1, when: 'any', why: 'перед временами года ставится «in»' },
+  { expr: '1998', prep: 'in', level: 2, when: 'past', why: 'перед годами ставится «in»' },
+  { expr: 'the 1960s', prep: 'in', level: 3, when: 'past', why: 'перед десятилетиями ставится «in»' },
+  { expr: 'two hours', prep: 'in', level: 2, when: 'future', why: '«in two hours» значит «через два часа»' },
+  { expr: 'the moment', prep: 'at', level: 2, when: 'any', frame: 'She is not at home ␣ the moment.', why: '«at the moment» — устойчивое сочетание' },
 
-  { expr: 'yesterday', prep: '—', level: 1, when: 'past', why: '"yesterday", "today" and "tomorrow" take no preposition' },
-  { expr: 'tomorrow', prep: '—', level: 1, when: 'future', why: 'no preposition before "tomorrow"' },
-  { expr: 'last week', prep: '—', level: 2, when: 'past', why: 'no preposition after "last", "next", "this" or "every"' },
-  { expr: 'next month', prep: '—', level: 2, when: 'future', why: 'no preposition after "last", "next", "this" or "every"' },
-  { expr: 'every day', prep: '—', level: 2, when: 'habit', why: 'no preposition after "every"' },
+  { expr: 'yesterday', prep: '—', level: 1, when: 'past', why: 'перед «yesterday», «today» и «tomorrow» предлог не нужен' },
+  { expr: 'tomorrow', prep: '—', level: 1, when: 'future', why: 'перед «tomorrow» предлог не ставится' },
+  { expr: 'last week', prep: '—', level: 2, when: 'past', why: 'после «last», «next», «this» и «every» предлог не ставится' },
+  { expr: 'next month', prep: '—', level: 2, when: 'future', why: 'после «last», «next», «this» и «every» предлог не ставится' },
+  { expr: 'every day', prep: '—', level: 2, when: 'habit', why: 'после «every» предлог не ставится' },
 ];
 
 /** Generic time frames, selected by the expression's `when` tag. */
@@ -68,27 +68,27 @@ export const TIME_FRAMES: Record<'past' | 'future' | 'habit', string[]> = {
 };
 
 export const PLACE_EXPR: Expr[] = [
-  { expr: 'the bus stop', prep: 'at', level: 1, why: '"at" marks a point or a meeting place' },
-  { expr: 'home', prep: 'at', level: 1, why: '"at home" is fixed — never "in home"' },
-  { expr: 'work', prep: 'at', level: 1, why: '"at work" is fixed' },
-  { expr: 'the doctor’s', prep: 'at', level: 2, why: '"at" is used for places you visit for a purpose' },
-  { expr: 'the station', prep: 'at', level: 2, why: '"at the station" — a point on a journey' },
+  { expr: 'the bus stop', prep: 'at', level: 1, why: '«at» обозначает точку или место встречи' },
+  { expr: 'home', prep: 'at', level: 1, why: '«at home» — устойчивое сочетание; «in home» не говорят' },
+  { expr: 'work', prep: 'at', level: 1, why: '«at work» — устойчивое сочетание' },
+  { expr: 'the doctor’s', prep: 'at', level: 2, why: '«at» употребляется с местами, куда приходят с определённой целью' },
+  { expr: 'the station', prep: 'at', level: 2, why: '«at the station» — точка на пути' },
 
-  { expr: 'the table', prep: 'on', level: 1, why: '"on" means touching a surface' },
-  { expr: 'the wall', prep: 'on', level: 1, why: '"on" for things attached to a surface' },
-  { expr: 'the second floor', prep: 'on', level: 2, why: 'floors of a building take "on"' },
-  { expr: 'the bus', prep: 'on', level: 1, why: 'public transport takes "on" — but "in the car"' },
-  { expr: 'the train', prep: 'on', level: 1, why: 'public transport takes "on"' },
+  { expr: 'the table', prep: 'on', level: 1, why: '«on» значит «на поверхности»' },
+  { expr: 'the wall', prep: 'on', level: 1, why: '«on» — о том, что прикреплено к поверхности' },
+  { expr: 'the second floor', prep: 'on', level: 2, why: 'перед этажами ставится «on»' },
+  { expr: 'the bus', prep: 'on', level: 1, why: 'с общественным транспортом употребляется «on», но «in the car»' },
+  { expr: 'the train', prep: 'on', level: 1, why: 'с общественным транспортом употребляется «on»' },
 
-  { expr: 'the kitchen', prep: 'in', level: 1, why: '"in" means inside an enclosed space' },
-  { expr: 'the car', prep: 'in', level: 1, why: 'small private vehicles take "in" — but "on the bus"' },
-  { expr: 'my pocket', prep: 'in', level: 1, why: '"in" means inside' },
-  { expr: 'London', prep: 'in', level: 1, why: 'towns and cities take "in"' },
-  { expr: 'the garden', prep: 'in', level: 1, why: 'enclosed outdoor areas take "in"' },
+  { expr: 'the kitchen', prep: 'in', level: 1, why: '«in» значит «внутри замкнутого пространства»' },
+  { expr: 'the car', prep: 'in', level: 1, why: 'с личным транспортом употребляется «in», но «on the bus»' },
+  { expr: 'my pocket', prep: 'in', level: 1, why: '«in» значит «внутри»' },
+  { expr: 'London', prep: 'in', level: 1, why: 'перед названиями городов ставится «in»' },
+  { expr: 'the garden', prep: 'in', level: 1, why: 'с огороженными участками на улице употребляется «in»' },
 
-  { expr: 'the top of the page', prep: 'at', level: 3, frame: 'Write your name ␣ the top of the page.', why: '"at the top" and "at the bottom" are fixed' },
-  { expr: 'the left', prep: 'on', level: 2, frame: 'The pharmacy is ␣ the left, just past the church.', why: '"on the left" and "on the right" are fixed' },
-  { expr: 'the newspaper', prep: 'in', level: 2, frame: 'I read about it ␣ the newspaper.', why: 'text is inside it, so "in the newspaper"' },
+  { expr: 'the top of the page', prep: 'at', level: 3, frame: 'Write your name ␣ the top of the page.', why: '«at the top» и «at the bottom» — устойчивые сочетания' },
+  { expr: 'the left', prep: 'on', level: 2, frame: 'The pharmacy is ␣ the left, just past the church.', why: '«on the left» и «on the right» — устойчивые сочетания' },
+  { expr: 'the newspaper', prep: 'in', level: 2, frame: 'I read about it ␣ the newspaper.', why: 'текст находится внутри, поэтому «in the newspaper»' },
 ];
 
 /** Generic place frames — these accept any plain location expression. */
@@ -156,3 +156,21 @@ export const DEPENDENT_PREPS: { phrase: string; prep: string; example: string; l
 ];
 
 export const PREP_DISTRACTORS = ['on', 'to', 'for', 'at', 'in', 'of', 'from', 'about', 'with'];
+
+/**
+ * What each preposition does in general. Shown against whichever option the
+ * learner picked, so a wrong answer explains itself rather than only being
+ * marked red.
+ */
+export const PREP_HINTS: Record<string, string> = {
+  in: '«in» — внутри чего-то: месяцы, годы, времена года, части дня.',
+  on: '«on» — на поверхности, а во времени — дни недели и даты.',
+  at: '«at» — точка: точное время или конкретное место.',
+  '—': 'Здесь предлог не нужен совсем.',
+  to: '«to» — направление движения или адресат действия.',
+  for: '«for» — ради чего или в течение какого срока.',
+  of: '«of» — принадлежность или состав.',
+  from: '«from» — источник или отправная точка.',
+  about: '«about» — о чём идёт речь.',
+  with: '«with» — вместе с кем-то или чем-то.',
+};

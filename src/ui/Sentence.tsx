@@ -7,14 +7,14 @@ import { capitalise, gapStartsSentence } from '../engine/build';
  * correct sentence at the end is the part that teaches.
  */
 export function Sentence({ text, filled }: { text: string; filled?: string }) {
-  if (!text.includes(BLANK)) return <p className="sentence">{text}</p>;
+  if (!text.includes(BLANK)) return <p className="sentence" lang="en">{text}</p>;
 
   const [before, after] = text.split(BLANK);
   const isNoWord = filled === '—';
   const shown = filled && !isNoWord && gapStartsSentence(before) ? capitalise(filled) : filled;
 
   return (
-    <p className="sentence">
+    <p className="sentence" lang="en">
       {before}
       {filled === undefined ? (
         <span className="gap" aria-label="blank" />

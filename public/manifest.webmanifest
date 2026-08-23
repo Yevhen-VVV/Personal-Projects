@@ -1,18 +1,33 @@
 {
-  "name": "English Practice",
-  "short_name": "English",
-  "description": "English lessons and practice questions for older learners, with unlimited generated exercises.",
+  "name": "Английский язык",
+  "short_name": "Английский",
+  "description": "Уроки английского языка и упражнения с неограниченным числом заданий.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#faf8f4",
   "theme_color": "#12557f",
-  "lang": "en-GB",
-  "categories": ["education"],
+  "lang": "ru",
+  "categories": [
+    "education"
+  ],
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

@@ -7,6 +7,8 @@ import type { Level, Question, SkillId } from '../src/engine/types';
 
 const PER_SKILL = 400;
 const LEAKED_TOKEN = /\{[A-Z]\}/;
+/** Explanations are shown in the learner's own language; questions are not. */
+const CYRILLIC = /[\u0400-\u04FF]/;
 
 const problems: string[] = [];
 const uniqueBySkill = new Map<SkillId, Set<string>>();
@@ -28,6 +30,15 @@ function check(q: Question) {
   }
 
   if (!q.teaching.trim()) problems.push(`${where} — no explanation`);
+
+  // Every choice must carry its own explanation, because the learner is told
+  // why the option they picked was wrong -- not merely which one was right.
+  for (const c of q.choices) {
+    if (!c.why?.trim()) problems.push(`${where} — choice "${c.text}" has no explanation`);
+    else if (!CYRILLIC.test(c.why)) problems.push(`${where} — choice "${c.text}" explanation is not in Russian`);
+  }
+  if (!CYRILLIC.test(q.teaching)) problems.push(`${where} — teaching text is not in Russian`);
+  if (!CYRILLIC.test(q.prompt)) problems.push(`${where} — prompt is not in Russian`);
   // Three skills legitimately show a complete sentence instead of a gap:
   // "which question is correct", "what does this phrasal verb mean", and the
   // definition-matching shape of the vocabulary generator.
@@ -62,7 +73,24 @@ for (const [skill, ids] of uniqueBySkill) {
   console.log(`  ${skill.padEnd(24)} ${String(ids.size).padStart(4)}`);
 }
 
-console.log('\nProblems: %d', problems.length);
-for (const p of [...new Set(problems)].slice(0, 40)) console.log('  ' + p);
+const unique = [...new Set(problems)];
+console.log('\nProblems: %d (%d distinct)', problems.length, unique.length);
+
+// Group by skill first: a single missing explanation shows up thousands of
+// times, and the per-skill count is what says how much work is left.
+const bySkill = new Map<string, number>();
+for (const p of unique) {
+  const skill = p.match(/^\[([a-z-]+)\]/)?.[1] ?? 'other';
+  bySkill.set(skill, (bySkill.get(skill) ?? 0) + 1);
+}
+for (const [skill, n] of [...bySkill].sort((a, b) => b[1] - a[1])) {
+  console.log(`  ${skill.padEnd(24)} ${String(n).padStart(5)}`);
+}
+
+const show = Number(process.argv[2] ?? 12);
+if (show > 0) {
+  console.log('');
+  for (const p of unique.slice(0, show)) console.log('  ' + p);
+}
 
 if (problems.length) process.exitCode = 1;

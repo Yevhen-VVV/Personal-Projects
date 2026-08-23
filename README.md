@@ -1,9 +1,14 @@
-# English Practice
+# English Practice · Английский язык
 
-An English lessons-and-quizzes app for older learners, built around a question
-generator rather than a fixed question bank. It runs as an installable web app
-on an iPhone and on Windows, works offline, and is targeted specifically at
-Ukrainian and Russian speakers.
+An English lessons-and-quizzes app for older Russian-speaking learners, built
+around a question generator rather than a fixed question bank. It runs as an
+installable web app on an iPhone and on Windows, and works offline.
+
+**The interface and every explanation are in Russian; the questions and answer
+options are in English.** Explaining an English rule in English asks the learner
+to solve a second puzzle before starting on the first one, and the whole value
+of an explanation is that it lands immediately. So the material under test stays
+English and everything around it is in the language she thinks in.
 
 ```bash
 npm install
@@ -14,9 +19,15 @@ npm run dev
 
 Short lessons, then multiple-choice practice, across sixteen topics — articles,
 prepositions, tenses, countability, question order, phrasal verbs, false
-friends, and everyday vocabulary. Every wrong answer gets an explanation naming
-the rule that decides it. A spaced-repetition scheduler brings weak topics back
-sooner and mastered ones back rarely.
+friends, and everyday vocabulary. A spaced-repetition scheduler brings weak
+topics back sooner and mastered ones back rarely.
+
+**Every answer option carries its own explanation.** After answering she is told
+why the option *she picked* fails — not merely which one was right — and then
+why the correct one is correct, and then the underlying rule. A correct answer
+gets the same treatment: the reason is restated rather than just marked green.
+`npm run audit` fails the build if any option anywhere is missing its
+explanation, or if any explanation is not in Russian.
 
 Nothing is timed, nothing is penalised, and no streak is ever lost.
 
@@ -57,7 +68,8 @@ are for.
 mistakes a Slavic-language speaker actually makes: the over-regularised past
 (`goed`, `buyed`), the participle used as a past tense, the missing `do` in a
 question, `much` where English wants `many`. A learner who picks one has told
-the app something real about what they do not yet know.
+the app something real about what they do not yet know — and gets back an
+explanation written for that specific mistake.
 
 ## Why it targets Ukrainian and Russian speakers
 
@@ -99,26 +111,36 @@ npm run audit                       # then read the diff
 
 Rejected items never reach the corpus: the validator drops anything without
 exactly one gap, without exactly three distinct distractors, with a duplicate
-of the correct answer, or that repeats an existing item. Generated content is
+of the correct answer, that repeats an existing item, that is missing a
+per-distractor explanation, that explains itself in English instead of Russian,
+or that writes the question itself in Russian. Generated content is
 checked into the repository so it can be reviewed in a diff before anyone
 practises with it — and so the learner still needs no key, no account, and no
 connection.
 
 ## Installing it
 
-**iPhone** — open the deployed URL in Safari, then Share → Add to Home Screen.
-It gets its own icon, opens full screen with no browser chrome, and works with
-no signal.
+**iPhone, without the App Store** — open the deployed URL in Safari, then
+Share → Add to Home Screen. It gets its own icon, opens full screen with no
+browser chrome, and works with no signal. No account, no payment, no Mac.
 
 **Windows** — open it in Edge or Chrome, then Install from the address bar. It
 gets a Start menu entry and its own window.
 
-Neither route needs an app store, an account, or a payment.
+**iPhone, as a real App Store app** — the Capacitor scaffolding is in
+`capacitor.config.ts`, so no rewrite is needed:
 
-**A real App Store build** is the same codebase wrapped with Capacitor, and a
-real Windows `.exe` is the same codebase wrapped with Tauri. Neither needs a
-rewrite. The iOS route additionally requires a Mac, Xcode, and an Apple
-Developer account — that step is not automatable from this repository.
+```bash
+npm run ios:sync     # build the web app and sync it into the iOS project
+npm run ios:open     # open it in Xcode
+```
+
+Both of those steps require **macOS with Xcode**, plus an Apple Developer
+account (£79/$99 a year) to sign and submit. That part cannot be done from this
+repository — it is the one step that genuinely needs your own Mac.
+
+A real Windows `.exe` is the same codebase wrapped with Tauri, and has no such
+constraint.
 
 ## Commands
 
@@ -133,23 +155,27 @@ Developer account — that step is not automatable from this repository.
 | `npm run smoke -- <dir>` | Drive a built app end to end, check layout and tap targets |
 | `npm run test:pack` | Test the content-pack validator |
 | `npm run pack -- <skill>` | Generate new items with Claude |
+| `npm run ios:sync` | Build and sync into the iOS project (macOS only) |
 
 `npm run audit` is the important one. It catches broken structure — a leaked
-template token, two correct answers, a gap that survived substitution. It
-cannot catch a sentence that is well-formed and meaningless, which is what
-`npm run sample` is for; reading the output is how "Travelling by train is
-bigger than driving" was found and fixed.
+template token, two correct answers, a gap that survived substitution, an
+answer option with no explanation, an explanation written in the wrong
+language. It cannot catch a sentence that is well-formed and meaningless, which
+is what `npm run sample` is for; reading the output is how "Travelling by train
+is bigger than driving" was found and fixed.
 
 ## Layout
 
 ```
 src/engine/
   corpus/       Nouns, verbs, frames, phrasal verbs, false friends, vocabulary
+                (English material + Russian glosses used only in explanations)
   generators/   One function per skill, corpus in, question out
   skills.ts     Topic metadata and the lesson text
   build.ts      Assembles a question and enforces its invariants
 src/srs/        Leitner scheduler, per skill rather than per question
 src/ui/         Screens, settings, text-to-speech
+  strings.ts    Every Russian interface string, in one file
 scripts/        Audit, sampling, smoke test, content packs
 ```
 

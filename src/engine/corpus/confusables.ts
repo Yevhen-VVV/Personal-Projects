@@ -17,10 +17,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'actually-currently',
     words: [
-      { w: 'actually', gloss: 'in fact; contrary to what you might think' },
-      { w: 'currently', gloss: 'at the present time; now' },
+      { w: 'actually', gloss: 'на самом деле; вопреки тому, что можно подумать' },
+      { w: 'currently', gloss: 'в настоящее время, сейчас' },
     ],
-    trap: '«актуальний / актуальный» means current, not "actual". English "actually" corrects a wrong impression.',
+    trap: '«Актуальный» по-английски — current, а не actual. Английское «actually» поправляет неверное впечатление: «на самом деле».',
     items: [
       { text: 'She ␣ works at the pharmacy on the high street.', answer: 'currently', level: 2 },
       { text: 'I thought the film would be long, but it was ␣ quite short.', answer: 'actually', level: 2 },
@@ -29,10 +29,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'actual-current',
     words: [
-      { w: 'actual', gloss: 'real; exact, as opposed to estimated' },
-      { w: 'current', gloss: 'of the present time' },
+      { w: 'actual', gloss: 'настоящий, точный, в противоположность приблизительному' },
+      { w: 'current', gloss: 'нынешний, текущий' },
     ],
-    trap: 'For "up to date", English uses current. "Actual" means real or exact.',
+    trap: 'В значении «нынешний, действующий» англичане говорят current. «Actual» значит «настоящий, точный».',
     items: [
       { text: 'What is the ␣ price, including delivery?', answer: 'actual', level: 2 },
       { text: 'Please write your ␣ address on the form.', answer: 'current', level: 2 },
@@ -41,10 +41,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'shop-magazine',
     words: [
-      { w: 'shop', gloss: 'a place where you buy things' },
-      { w: 'magazine', gloss: 'a thin publication you read, printed weekly or monthly' },
+      { w: 'shop', gloss: 'магазин, место, где покупают' },
+      { w: 'magazine', gloss: 'журнал, который читают' },
     ],
-    trap: '«магазин» is a shop. An English "magazine" is something you read.',
+    trap: 'Английское «magazine» — это журнал, а не магазин.',
     items: [
       { text: 'I bought the bread at the ␣ on the corner.', answer: 'shop', level: 1 },
       { text: 'She reads a gardening ␣ every month.', answer: 'magazine', level: 1 },
@@ -53,10 +53,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'neat-accurate',
     words: [
-      { w: 'neat', gloss: 'tidy; carefully arranged' },
-      { w: 'accurate', gloss: 'correct in every detail; free from error' },
+      { w: 'neat', gloss: 'аккуратный, опрятный' },
+      { w: 'accurate', gloss: 'точный, без ошибок' },
     ],
-    trap: '«акуратний / аккуратный» usually means neat or careful, not "accurate".',
+    trap: 'Русское «аккуратный» — это neat или careful. «Accurate» значит «точный, без ошибок».',
     items: [
       { text: 'His handwriting is very ␣ and easy to read.', answer: 'neat', level: 2 },
       { text: 'The kitchen clock is not ␣ — it runs five minutes fast.', answer: 'accurate', level: 2 },
@@ -65,10 +65,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'attractive-sympathetic',
     words: [
-      { w: 'attractive', gloss: 'pleasant to look at; good-looking' },
-      { w: 'sympathetic', gloss: 'kind and understanding about someone’s trouble' },
+      { w: 'attractive', gloss: 'приятный внешне, симпатичный' },
+      { w: 'sympathetic', gloss: 'сочувствующий, с пониманием к чужой беде' },
     ],
-    trap: '«симпатичний / симпатичный» means attractive. English "sympathetic" is about kindness, not looks.',
+    trap: '«Симпатичный» по-английски — attractive. Английское «sympathetic» — про сочувствие, а не про внешность.',
     items: [
       { text: 'She was very ␣ when I told her about my illness.', answer: 'sympathetic', level: 2 },
       { text: 'He is a tall, ␣ man of about sixty.', answer: 'attractive', level: 2 },
@@ -77,10 +77,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'factory-fabric',
     words: [
-      { w: 'factory', gloss: 'a building where goods are manufactured' },
-      { w: 'fabric', gloss: 'cloth; material for clothes or curtains' },
+      { w: 'factory', gloss: 'фабрика, завод' },
+      { w: 'fabric', gloss: 'ткань, материя' },
     ],
-    trap: '«фабрика» is a factory. English "fabric" is cloth.',
+    trap: 'Английское «fabric» — это ткань, а не фабрика.',
     items: [
       { text: 'He worked in a shoe ␣ for thirty years.', answer: 'factory', level: 2 },
       { text: 'This ␣ is too thin for winter curtains.', answer: 'fabric', level: 2 },
@@ -89,8 +89,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'receipt-recipe',
     words: [
-      { w: 'receipt', gloss: 'the paper proving you paid for something' },
-      { w: 'recipe', gloss: 'instructions for cooking a dish' },
+      { w: 'receipt', gloss: 'чек, подтверждающий оплату' },
+      { w: 'recipe', gloss: 'рецепт блюда' },
     ],
     items: [
       { text: 'Keep the ␣ in case you need to return the kettle.', answer: 'receipt', level: 2 },
@@ -100,10 +100,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'borrow-lend',
     words: [
-      { w: 'borrow', gloss: 'take something temporarily — it comes to you' },
-      { w: 'lend', gloss: 'give something temporarily — it goes away from you' },
+      { w: 'borrow', gloss: 'взять на время, вещь идёт к вам' },
+      { w: 'lend', gloss: 'дать на время, вещь уходит от вас' },
     ],
-    trap: 'One verb covers both directions in Ukrainian and Russian. In English the direction decides the word.',
+    trap: 'По-русски одно слово «одолжить» работает в обе стороны. В английском направление определяет глагол.',
     items: [
       { text: 'Could I ␣ your pen for a moment?', answer: 'borrow', level: 1 },
       { text: 'Could you ␣ me your pen for a moment?', answer: 'lend', level: 1 },
@@ -113,8 +113,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'bring-take',
     words: [
-      { w: 'bring', gloss: 'carry something towards the speaker' },
-      { w: 'take', gloss: 'carry something away from the speaker' },
+      { w: 'bring', gloss: 'принести сюда, к говорящему' },
+      { w: 'take', gloss: 'отнести отсюда, от говорящего' },
     ],
     items: [
       { text: 'When you come on Sunday, please ␣ the photographs.', answer: 'bring', level: 2 },
@@ -124,10 +124,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'learn-teach',
     words: [
-      { w: 'learn', gloss: 'gain knowledge yourself' },
-      { w: 'teach', gloss: 'give knowledge to someone else' },
+      { w: 'learn', gloss: 'учиться самому, усваивать знания' },
+      { w: 'teach', gloss: 'учить кого-то другого, преподавать' },
     ],
-    trap: '«вчити / учить» covers both. In English you learn something yourself; you teach it to another person.',
+    trap: 'Русское «учить» покрывает оба значения. В английском learn — учиться самому, teach — учить другого.',
     items: [
       { text: 'I want to ␣ how to use a computer.', answer: 'learn', level: 1 },
       { text: 'My daughter is going to ␣ me how to use the tablet.', answer: 'teach', level: 1 },
@@ -136,10 +136,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'comfortable-convenient',
     words: [
-      { w: 'comfortable', gloss: 'physically pleasant; not causing discomfort' },
-      { w: 'convenient', gloss: 'easy to reach or well-timed; not causing trouble' },
+      { w: 'comfortable', gloss: 'удобный для тела: мягкий, не доставляющий неудобства' },
+      { w: 'convenient', gloss: 'удобный по времени или расположению, необременительный' },
     ],
-    trap: '«зручний / удобный» covers both. Comfortable is about the body; convenient is about time and effort.',
+    trap: 'Русское «удобный» покрывает оба значения. Comfortable — про телесное удобство, convenient — про время и усилия.',
     items: [
       { text: 'This armchair is much more ␣ than the old one.', answer: 'comfortable', level: 2 },
       { text: 'Would Thursday morning be ␣ for you?', answer: 'convenient', level: 2 },
@@ -149,9 +149,9 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'watch-see-look',
     words: [
-      { w: 'watch', gloss: 'look at something that moves or changes, for a while' },
-      { w: 'see', gloss: 'notice with your eyes, or meet by arrangement' },
-      { w: 'look at', gloss: 'turn your eyes towards something on purpose' },
+      { w: 'watch', gloss: 'смотреть какое-то время на то, что движется или меняется' },
+      { w: 'see', gloss: 'увидеть; а также встретиться по договорённости' },
+      { w: 'look at', gloss: 'намеренно перевести взгляд на что-то' },
     ],
     items: [
       { text: 'I ␣ television every evening after supper.', answer: 'watch', level: 1 },
@@ -162,8 +162,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'listen-hear',
     words: [
-      { w: 'listen to', gloss: 'pay attention to a sound on purpose' },
-      { w: 'hear', gloss: 'receive a sound, whether you meant to or not' },
+      { w: 'listen to', gloss: 'слушать намеренно, вслушиваться' },
+      { w: 'hear', gloss: 'слышать вне зависимости от вашего намерения' },
     ],
     items: [
       { text: 'I ␣ the radio while I cook.', answer: 'listen to', level: 1 },
@@ -173,8 +173,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'sensible-sensitive',
     words: [
-      { w: 'sensible', gloss: 'showing good judgement; practical' },
-      { w: 'sensitive', gloss: 'easily affected or easily hurt' },
+      { w: 'sensible', gloss: 'благоразумный, практичный' },
+      { w: 'sensitive', gloss: 'чувствительный, легко ранимый' },
     ],
     items: [
       { text: 'Wear ␣ shoes — the path is uneven.', answer: 'sensible', level: 3 },
@@ -184,8 +184,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'prescription-subscription',
     words: [
-      { w: 'prescription', gloss: 'a doctor’s written order for medicine' },
-      { w: 'subscription', gloss: 'a regular payment to receive something' },
+      { w: 'prescription', gloss: 'рецепт от врача на лекарство' },
+      { w: 'subscription', gloss: 'подписка, регулярная оплата' },
     ],
     items: [
       { text: 'The doctor gave me a ␣ for antibiotics.', answer: 'prescription', level: 2 },
@@ -195,8 +195,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'remember-remind',
     words: [
-      { w: 'remember', gloss: 'keep something in your own mind' },
-      { w: 'remind', gloss: 'make someone else think of something' },
+      { w: 'remember', gloss: 'помнить самому' },
+      { w: 'remind', gloss: 'напомнить кому-то другому' },
     ],
     items: [
       { text: 'Please ␣ me to take my tablets at six.', answer: 'remind', level: 2 },
@@ -206,8 +206,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'history-story',
     words: [
-      { w: 'history', gloss: 'the record of real past events' },
-      { w: 'story', gloss: 'an account of events, often told for pleasure' },
+      { w: 'history', gloss: 'история как наука о прошлом' },
+      { w: 'story', gloss: 'рассказ, история для интереса' },
     ],
     items: [
       { text: 'Grandad told us a wonderful ␣ about his childhood.', answer: 'story', level: 1 },
@@ -217,8 +217,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'job-work',
     words: [
-      { w: 'job', gloss: 'a particular position of employment (countable)' },
-      { w: 'work', gloss: 'activity or effort in general (uncountable)' },
+      { w: 'job', gloss: 'должность, место работы (исчисляемое)' },
+      { w: 'work', gloss: 'работа как занятие вообще (неисчисляемое)' },
     ],
     items: [
       { text: 'He found a new ␣ at the hospital.', answer: 'job', level: 1 },
@@ -228,9 +228,9 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'travel-trip-journey',
     words: [
-      { w: 'travel', gloss: 'the verb: to move from place to place' },
-      { w: 'trip', gloss: 'a visit somewhere and back, usually short' },
-      { w: 'journey', gloss: 'the act of travelling from one place to another' },
+      { w: 'travel', gloss: 'глагол: путешествовать, ездить' },
+      { w: 'trip', gloss: 'поездка туда и обратно, обычно недолгая' },
+      { w: 'journey', gloss: 'дорога, путь из одного места в другое' },
     ],
     items: [
       { text: 'We are planning a ␣ to Poland in the spring.', answer: 'trip', level: 2 },
@@ -241,8 +241,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'lose-loose',
     words: [
-      { w: 'lose', gloss: 'the verb: to no longer have something' },
-      { w: 'loose', gloss: 'the adjective: not tight, not firmly fixed' },
+      { w: 'lose', gloss: 'глагол: потерять' },
+      { w: 'loose', gloss: 'прилагательное: свободный, плохо закреплённый' },
     ],
     items: [
       { text: 'Be careful not to ␣ your gloves on the bus.', answer: 'lose', level: 2 },
@@ -252,10 +252,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'office-cabinet',
     words: [
-      { w: 'office', gloss: 'a room where someone works or sees people' },
-      { w: 'cabinet', gloss: 'a cupboard with shelves or drawers' },
+      { w: 'office', gloss: 'кабинет, рабочая комната или приёмная' },
+      { w: 'cabinet', gloss: 'шкафчик с полками или ящиками' },
     ],
-    trap: '«кабінет / кабинет» is an office or a consulting room. An English "cabinet" is a cupboard.',
+    trap: 'Русский «кабинет» по-английски — office. Английское «cabinet» — это шкафчик.',
     items: [
       { text: 'The doctor will see you in her ␣ in a moment.', answer: 'office', level: 2 },
       { text: 'The cups are in the ␣ above the sink.', answer: 'cabinet', level: 2 },
@@ -264,10 +264,10 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'suit-costume',
     words: [
-      { w: 'suit', gloss: 'matching jacket and trousers for ordinary wear' },
-      { w: 'costume', gloss: 'clothes worn to look like someone else, in a play or at a party' },
+      { w: 'suit', gloss: 'костюм: пиджак и брюки для обычной жизни' },
+      { w: 'costume', gloss: 'наряд для роли или маскарада' },
     ],
-    trap: '«костюм» is usually a suit. An English "costume" is for dressing up.',
+    trap: 'Костюм по-английски — suit. Английское «costume» — это наряд для роли или маскарада.',
     items: [
       { text: 'He wore a dark blue ␣ to the wedding.', answer: 'suit', level: 2 },
       { text: 'She made a pirate ␣ for her grandson.', answer: 'costume', level: 2 },
@@ -276,8 +276,8 @@ export const CONFUSABLES: ConfusableGroup[] = [
   {
     id: 'accident-incident',
     words: [
-      { w: 'accident', gloss: 'something harmful that happens by chance' },
-      { w: 'incident', gloss: 'an event, often unpleasant, that is treated as notable' },
+      { w: 'accident', gloss: 'несчастный случай, авария' },
+      { w: 'incident', gloss: 'происшествие, инцидент' },
     ],
     items: [
       { text: 'There was a serious ␣ on the motorway this morning.', answer: 'accident', level: 3 },

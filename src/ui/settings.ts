@@ -42,8 +42,8 @@ export function useSettings() {
   return [settings, setSettings] as const;
 }
 
-export const TEXT_SIZES: { value: TextSize; label: string }[] = [
-  { value: 'normal', label: 'Normal' },
-  { value: 'large', label: 'Large' },
-  { value: 'largest', label: 'Largest' },
+export const TEXT_SIZES: { value: TextSize }[] = [
+  { value: 'normal' },
+  { value: 'large' },
+  { value: 'largest' },
 ];

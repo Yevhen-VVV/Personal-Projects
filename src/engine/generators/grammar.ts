@@ -1,17 +1,29 @@
 import type { Generator, Level } from '../types';
+import { UI } from '../../ui/strings';
 import { atLevel, build } from '../build';
 import { COUNTABLE, IRREGULAR_PLURALS, REGULAR_PLURALS, UNCOUNTABLE, regularPlural } from '../corpus/nouns';
 import { ALL_VERBS, IRREGULAR_VERBS } from '../corpus/verbs';
 import { ADJECTIVES, ARTICLE_FRAMES, SUBJECTS, VERB_CONTEXTS } from '../corpus/frames';
-import { PLACE_EXPR, PLACE_FRAMES, TIME_EXPR, TIME_FRAMES } from '../corpus/usage';
+import { PLACE_EXPR, PLACE_FRAMES, PREP_HINTS, TIME_EXPR, TIME_FRAMES } from '../corpus/usage';
 import { MODALS, PERFECT_VS_PAST, QUESTION_ITEMS, withPack } from '../corpus/authored';
 import { PACKS } from '../corpus/packs';
+import { authoredWhys } from './lexis';
+
+/** What each quantity word is for. Every option gets one, right or wrong. */
+const QUANTITY_WHY: Record<string, string> = {
+  much: '«much» — только с неисчисляемыми: much water, much money.',
+  many: '«many» — только с исчисляемыми во множественном числе: many books.',
+  'a little': '«a little» — немного чего-то неисчисляемого: a little bread.',
+  'a few': '«a few» — несколько исчисляемых предметов: a few chairs.',
+  fewer: '«fewer» — «меньше» для исчисляемых, и это сравнение, а не количество.',
+  less: '«less» — «меньше» для неисчисляемых, и это сравнение, а не количество.',
+};
 
 const ARTICLE_WHY: Record<string, string> = {
-  a: '"a" goes before a consonant sound.',
-  an: '"an" goes before a vowel sound.',
-  the: '"the" is for when both speakers know which one is meant.',
-  '—': 'No article at all — correct for plurals and uncountable nouns in general statements.',
+  a: '«a» ставится перед согласным звуком.',
+  an: '«an» ставится перед гласным звуком.',
+  the: '«the» — когда обоим собеседникам понятно, о каком именно предмете идёт речь.',
+  '—': 'Без артикля — так бывает с множественным числом и с неисчисляемыми существительными в общем значении.',
 };
 
 export const articles: Generator = (rng, level) => {
@@ -43,13 +55,13 @@ export const articles: Generator = (rng, level) => {
   return build(rng, {
     skill: 'articles',
     level,
-    prompt: 'Choose the correct article.',
+    prompt: UI.prompts.article,
     text,
     correct,
     wrong: rng.shuffle(['a', 'an', 'the', '—'].filter((c) => c !== correct)),
-    teaching: `Here it is ${correct === '—' ? 'no article at all' : `"${correct}"`}, because this is the ${frame.why}.`,
+    teaching: `Здесь ${correct === '—' ? 'артикль не нужен' : `нужен «${correct}»`}: ${frame.why}.`,
     whys: ARTICLE_WHY,
-    labels: { '—': '— no article needed' },
+    labels: { '—': UI.noArticle },
   });
 };
 
@@ -74,13 +86,18 @@ function prepositionQuestion(
   return build(rng, {
     skill,
     level,
-    prompt: 'Choose the correct preposition.',
+    prompt: UI.prompts.preposition,
     text,
     correct: expr.prep,
     wrong: rng.shuffle(['in', 'on', 'at', '—'].filter((p) => p !== expr.prep)),
     teaching: `${expr.why.charAt(0).toUpperCase()}${expr.why.slice(1)}.`,
-    whys: { '—': 'No preposition at all.' },
-    labels: { '—': '— no preposition needed' },
+    whys: {
+      ...PREP_HINTS,
+      // The correct option gets the specific reason; the rest get the general
+      // sense of that preposition, which is what the learner confused it with.
+      [expr.prep]: `${expr.why.charAt(0).toUpperCase()}${expr.why.slice(1)}.`,
+    },
+    labels: { '—': UI.noPreposition },
   });
 }
 
@@ -101,7 +118,7 @@ export const pastSimple: Generator = (rng, level) => {
   return build(rng, {
     skill: 'past-simple',
     level,
-    prompt: `Put "${verb.base}" into the past simple.`,
+    prompt: UI.prompts.pastSimple(verb.base),
     text: `${subject.text} ␣ ${context} ${when}.`,
     correct: verb.past,
     // The over-regularised form and the past participle are the two errors
@@ -112,12 +129,16 @@ export const pastSimple: Generator = (rng, level) => {
       verb.base,
     ]),
     teaching: irregular
-      ? `"${verb.base}" is irregular: ${verb.base} — ${verb.past} — ${verb.participle}. It never takes "-ed".`
-      : `"${verb.base}" is regular, so the past simple is "${verb.past}".`,
+      ? `Глагол «${verb.base}» неправильный: ${verb.base} — ${verb.past} — ${verb.participle}. Окончание «-ed» к нему не добавляется.`
+      : `Глагол «${verb.base}» правильный, поэтому past simple — «${verb.past}».`,
     whys: {
-      [verb.wrongEd]: `"${verb.wrongEd}" is not a word. ${verb.base} is irregular, so the "-ed" rule does not apply.`,
-      [verb.participle]: `"${verb.participle}" is the past participle. It needs "have" or "has" in front of it.`,
-      [verb.base]: `"${verb.base}" is the present form, but this sentence is about ${when}.`,
+      [verb.past]: irregular
+        ? `«${verb.past}» — вторая форма неправильного глагола «${verb.base}». Её нужно запомнить.`
+        : `«${verb.past}» — правильная форма: к «${verb.base}» добавляется «-ed».`,
+      [verb.wrongEd]: `Такого слова нет. «${verb.base}» — неправильный глагол, и правило «-ed» на него не распространяется.`,
+      [verb.participle]: `«${verb.participle}» — третья форма (причастие). Она требует перед собой «have» или «has».`,
+      [`has ${verb.participle}`]: `Это present perfect. Но в предложении есть «${when}» — законченное время, поэтому нужен past simple.`,
+      [verb.base]: `«${verb.base}» — форма настоящего времени, а предложение о прошлом («${when}»).`,
     },
   });
 };
@@ -127,11 +148,12 @@ export const presentPerfect: Generator = (rng, level) => {
   return build(rng, {
     skill: 'present-perfect',
     level,
-    prompt: 'Choose the correct form of the verb.',
+    prompt: UI.prompts.verbForm,
     text: item.text,
     correct: item.correct,
     wrong: rng.shuffle(item.wrong),
     teaching: item.why,
+    whys: authoredWhys(item),
   });
 };
 
@@ -140,11 +162,12 @@ export const modals: Generator = (rng, level) => {
   return build(rng, {
     skill: 'modals',
     level,
-    prompt: 'Choose the correct modal verb.',
+    prompt: UI.prompts.modal,
     text: item.text,
     correct: item.correct,
     wrong: rng.shuffle(item.wrong),
     teaching: item.why,
+    whys: authoredWhys(item),
   });
 };
 
@@ -156,17 +179,18 @@ export const countability: Generator = (rng, level) => {
     const item = rng.pick(noun.quantity);
     const why =
       item.answer === 'much'
-        ? `"${noun.s}" is uncountable in English, so it takes "much", never "many".`
-        : `"a little" is the uncountable partner of "a few".`;
+        ? `Слово «${noun.s}» в английском неисчисляемое, поэтому с ним употребляется «much», а не «many».`
+        : `«a little» — это пара к «a few», но для неисчисляемых существительных.`;
 
     return build(rng, {
       skill: 'countability',
       level,
-      prompt: 'Choose the correct quantity word.',
+      prompt: UI.prompts.quantity,
       text: item.text,
       correct: item.answer,
       wrong: rng.shuffle(['many', 'a few', 'much', 'a little', 'fewer'].filter((w) => w !== item.answer)),
-      teaching: `${why} There is also no plural — "${regularPlural(noun.s)}" is not a word in English.`,
+      teaching: `${why} Множественного числа у него тоже нет — слова «${regularPlural(noun.s)}» в английском не существует.`,
+      whys: QUANTITY_WHY,
     });
   }
 
@@ -174,19 +198,20 @@ export const countability: Generator = (rng, level) => {
   // and absurd, and the learner cannot tell which half is being tested.
   const noun = rng.pick(atLevel(COUNTABLE, level).filter((n) => n.p && n.kind === 'thing'));
   const [text, correct, why] = rng.pick([
-    [`How ␣ ${noun.p} are there?`, 'many', `"${noun.p}" is countable, so it takes "many".`],
-    [`There are only ␣ ${noun.p} left.`, 'a few', `"a few" is used with countable plural nouns.`],
-    [`There are too ␣ ${noun.p} in this room.`, 'many', `"many" goes with countable plurals; "much" would be wrong.`],
+    [`How ␣ ${noun.p} are there?`, 'many', `Слово «${noun.p}» исчисляемое, поэтому с ним употребляется «many».`],
+    [`There are only ␣ ${noun.p} left.`, 'a few', `«a few» употребляется с исчисляемыми существительными во множественном числе.`],
+    [`There are too ␣ ${noun.p} in this room.`, 'many', `«many» идёт с исчисляемыми во множественном числе; «much» здесь было бы ошибкой.`],
   ] as const);
 
   return build(rng, {
     skill: 'countability',
     level,
-    prompt: 'Choose the correct quantity word.',
+    prompt: UI.prompts.quantity,
     text,
     correct,
     wrong: rng.shuffle(['much', 'a little', 'many', 'a few', 'less'].filter((w) => w !== correct)),
     teaching: why,
+    whys: QUANTITY_WHY,
   });
 };
 
@@ -206,16 +231,28 @@ export const plurals: Generator = (rng, level) => {
   return build(rng, {
     skill: 'plurals',
     level,
-    prompt: `What is the plural of "${entry.s}"?`,
+    prompt: UI.prompts.plural(entry.s),
     text: `One ${entry.s}, two ␣.`,
     correct: entry.p,
     wrong: rng.shuffle([naive, bare, doubled, entry.s]),
     teaching:
       entry.p === entry.s
-        ? `"${entry.s}" does not change in the plural — one ${entry.s}, two ${entry.p}.`
+        ? `Слово «${entry.s}» во множественном числе не меняется: one ${entry.s}, two ${entry.p}.`
         : irregular
-          ? `"${entry.s}" is irregular: the plural is "${entry.p}", not "${naive}".`
-          : `"${entry.s}" takes the regular plural "${entry.p}".`,
+          ? `«${entry.s}» — исключение: множественное число «${entry.p}», а не «${naive}».`
+          : `«${entry.s}» образует множественное число по общему правилу: «${entry.p}».`,
+    whys: {
+      [entry.p]:
+        entry.p === entry.s
+          ? `Верно: это слово во множественном числе не меняется.`
+          : irregular
+            ? `Верно. Это форма-исключение, её нужно запомнить.`
+            : `Верно, по общему правилу.`,
+      [naive]: `Так получится, если применить общее правило. Но «${entry.s}» ему не подчиняется.`,
+      [bare]: `Простое «-s» здесь не подходит.`,
+      [doubled]: `Окончание добавлено дважды: «${entry.p}» — это уже множественное число.`,
+      [entry.s]: `Это форма единственного числа.`,
+    },
   });
 };
 
@@ -231,21 +268,30 @@ export const comparatives: Generator = (rng, level) => {
 
   const rule =
     adj.kind === 'irregular'
-      ? `"${adj.adj}" is irregular: ${adj.adj} — ${adj.comp} — ${adj.sup}.`
+      ? `«${adj.adj}» — исключение: ${adj.adj} — ${adj.comp} — ${adj.sup}.`
       : adj.kind === 'short'
-        ? `Short adjectives add "-er" and "-est": ${adj.adj} — ${adj.comp} — ${adj.sup}.`
-        : `Long adjectives use "more" and "the most": ${adj.adj} — ${adj.comp} — ${adj.sup}.`;
+        ? `Короткие прилагательные получают «-er» и «-est»: ${adj.adj} — ${adj.comp} — ${adj.sup}.`
+        : `Длинные прилагательные образуют степени через «more» и «the most»: ${adj.adj} — ${adj.comp} — ${adj.sup}.`;
 
   return build(rng, {
     skill: 'comparatives',
     level,
-    prompt: superlative
-      ? `Use the superlative of "${adj.adj}".`
-      : `Use the comparative of "${adj.adj}".`,
+    prompt: superlative ? UI.prompts.superlative(adj.adj) : UI.prompts.comparative(adj.adj),
     text,
     correct,
     wrong: rng.shuffle(wrong.filter((w) => w !== correct)),
-    teaching: `${rule} Never use both methods at once — "more ${adj.comp}" is wrong.`,
+    teaching: `${rule} Два способа сразу не используются: «more ${adj.comp}» — ошибка.`,
+    whys: {
+      [correct]: `Верно. ${rule}`,
+      [`more ${adj.adj}`]: `«more» с коротким прилагательным не употребляется — нужно окончание «-er».`,
+      [`${adj.adj}er`]: `К длинным прилагательным «-er» не добавляется — нужно «more».`,
+      [adj.adj]: `Это обычная форма, без сравнения.`,
+      [adj.sup]: `Это превосходная степень («самый»), а здесь сравниваются два предмета.`,
+      [adj.comp]: `Это сравнительная степень, а нужна превосходная.`,
+      [`the ${adj.adj}est`]: `У длинных прилагательных превосходная степень образуется через «the most».`,
+      [`most ${adj.adj}`]: `Не хватает артикля: превосходная степень — «the most ...».`,
+      [`the more ${adj.adj}`]: `«more» — это сравнение двух предметов, а не превосходная степень.`,
+    },
   });
 };
 
@@ -255,22 +301,27 @@ export const questionOrder: Generator = (rng, level) => {
   const tail = item.rest ? ` ${item.rest}` : '';
 
   const correct = `${item.wh} ${aux} ${item.subject} ${item.base}${tail}?`;
+  // No auxiliary at all -- a direct transfer from Ukrainian and Russian.
+  const noAux = `${item.wh} ${item.subject} ${item.third ? item.s : item.base}${tail}?`;
+  // Tense marked twice, on the auxiliary and on the main verb.
+  const doubleMarked = `${item.wh} ${aux} ${item.subject} ${item.s}${tail}?`;
+  // Auxiliary after the subject instead of before it.
+  const auxMisplaced = `${item.wh} ${item.subject} ${aux} ${item.base}${tail}?`;
 
   return build(rng, {
     skill: 'question-order',
     level,
-    prompt: 'Which question is correct English?',
+    prompt: UI.prompts.question,
     text: '␣',
     correct,
-    wrong: rng.shuffle([
-      // No auxiliary at all -- direct transfer from Ukrainian and Russian.
-      `${item.wh} ${item.subject} ${item.third ? item.s : item.base}${tail}?`,
-      // Tense marked twice.
-      `${item.wh} ${aux} ${item.subject} ${item.s}${tail}?`,
-      // Auxiliary after the subject instead of before it.
-      `${item.wh} ${item.subject} ${aux} ${item.base}${tail}?`,
-    ]),
-    teaching: `English questions need "do" or "does" before the subject, and the main verb stays in its plain form: ${item.wh} + ${aux} + ${item.subject} + ${item.base}. The "-s" moves onto "does", so it never appears on the main verb as well.`,
+    wrong: rng.shuffle([noAux, doubleMarked, auxMisplaced]),
+    teaching: `В английском вопросе перед подлежащим обязательно стоит «do» или «does», а основной глагол остаётся в начальной форме: ${item.wh} + ${aux} + ${item.subject} + ${item.base}. Окончание «-s» уходит на «does» и на основном глаголе больше не появляется.`,
+    whys: {
+      [correct]: `Верно: ${item.wh} + ${aux} + подлежащее + начальная форма глагола.`,
+      [noAux]: `Здесь нет вспомогательного «${aux}». В русском вопрос можно задать одной интонацией, в английском — нельзя.`,
+      [doubleMarked]: `Окончание «-s» стоит дважды: оно уже есть в «${aux}», поэтому основной глагол остаётся «${item.base}».`,
+      [auxMisplaced]: `«${aux}» стоит не на месте: вспомогательный глагол идёт перед подлежащим, а не после него.`,
+    },
     speak: correct,
   });
 };

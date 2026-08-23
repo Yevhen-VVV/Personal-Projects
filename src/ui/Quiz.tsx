@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Choice, Question } from '../engine/types';
 import { Sentence } from './Sentence';
 import { speak, speechAvailable, stopSpeaking } from './speech';
+import { UI } from './strings';
 
 export interface Answered {
   question: Question;
@@ -54,10 +55,8 @@ export function Quiz({ questions, autoSpeak, onFinish, onQuit }: Props) {
   return (
     <div>
       <div className="topbar">
-        <button onClick={() => { stopSpeaking(); onQuit(); }}>← Stop</button>
-        <span className="muted small">
-          Question {index + 1} of {questions.length}
-        </span>
+        <button onClick={() => { stopSpeaking(); onQuit(); }}>{UI.stop}</button>
+        <span className="muted small">{UI.questionOf(index + 1, questions.length)}</span>
       </div>
 
       <div className="dots" aria-hidden="true">
@@ -77,12 +76,12 @@ export function Quiz({ questions, autoSpeak, onFinish, onQuit }: Props) {
             className="speak"
             onClick={() => speak(chosen ? (question.speak ?? question.text) : question.text.replace('␣', ''))}
           >
-            🔊 Hear it
+            {UI.hearIt}
           </button>
         )}
       </div>
 
-      <div className="choices" role="group" aria-label="Answers">
+      <div className="choices" role="group" aria-label={UI.answersLabel}>
         {question.choices.map((choice, i) => {
           const letter = String.fromCharCode(65 + i);
           let className = 'choice';
@@ -102,7 +101,7 @@ export function Quiz({ questions, autoSpeak, onFinish, onQuit }: Props) {
               <span className="marker" aria-hidden="true">
                 {chosen ? (choice.correct ? '✓' : choice === chosen ? '✗' : letter) : letter}
               </span>
-              <span>{choice.label ?? choice.text}</span>
+              <span lang="en">{choice.label ?? choice.text}</span>
             </button>
           );
         })}
@@ -111,12 +110,28 @@ export function Quiz({ questions, autoSpeak, onFinish, onQuit }: Props) {
       {chosen && (
         <>
           <div className={`verdict ${wasRight ? 'right' : 'wrong'}`}>
-            <h3>{wasRight ? 'That’s right.' : `The answer is “${correctChoice?.label ?? correctChoice?.text}”.`}</h3>
-            {!wasRight && chosen.why && <p>{chosen.why}</p>}
-            <p>{question.teaching}</p>
+            <h3>{wasRight ? UI.correctHeading : UI.wrongHeading(correctChoice?.label ?? correctChoice?.text ?? '')}</h3>
+
+            {/* A wrong answer is explained on its own terms first: not "here is
+                the right one", but why the option she actually picked fails. */}
+            {!wasRight && chosen.why && (
+              <p>
+                <strong>{UI.whyYoursWrong(chosen.label ?? chosen.text)}</strong> {chosen.why}
+              </p>
+            )}
+
+            {/* Shown either way -- a correct answer is worth confirming out
+                loud, not just marking green. */}
+            {correctChoice?.why && (
+              <p>
+                <strong>{UI.whyThisRight}</strong> {correctChoice.why}
+              </p>
+            )}
+
+            <p className="muted">{question.teaching}</p>
           </div>
           <button className="btn-primary" onClick={next} autoFocus>
-            {index + 1 >= questions.length ? 'See results' : 'Next question'}
+            {index + 1 >= questions.length ? UI.seeResults : UI.nextQuestion}
           </button>
         </>
       )}
