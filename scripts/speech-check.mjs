@@ -33,7 +33,6 @@ const beforeAnswer = await page.evaluate(() => window.__spoken.slice());
 console.log('sentence on screen :', onScreen);
 console.log('spoken on appear   :', beforeAnswer);
 
-const correctText = await page.locator('.choice').first().textContent();
 await page.locator('.choice').first().click();
 await page.waitForTimeout(700);
 const afterAnswer = await page.evaluate(() => window.__spoken.slice());
