@@ -1,0 +1,93 @@
+# Checks every push, and publishes to GitHub Pages from main.
+#
+# The checks gate the deploy, so a build carrying a missing explanation, an
+# explanation in the wrong language, or a leaked template token never reaches
+# a learner.
+name: Check and deploy
+
+on:
+  push:
+    branches: [main, claude/esl-lessons-quizzes-app-lbfl7i]
+  pull_request:
+  # Lets you re-run this by hand after changing repository settings.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; finish the one in flight, then run the newest.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # Runs on every branch. This is the job whose red or green actually means
+  # something about the code.
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck app and scripts
+        run: npm run check
+      - name: Lint
+        run: npm run lint
+      - name: Audit generated questions
+        run: npm run audit
+      - name: Test the content-pack validator
+        run: npm run test:pack
+      - name: Test voice selection
+        run: npm run test:voice
+
+  # Deploying is separate and main-only, for two reasons: the github-pages
+  # environment only accepts deployments from the default branch unless
+  # another is allowed in its settings, and Pages is unavailable entirely on a
+  # private repository on a free plan -- so on a feature branch this job would
+  # fail for reasons that say nothing about the code.
+  build:
+    needs: check
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          # Requires the repository to be public (or on a paid plan) with
+          # Settings -> Pages -> Source set to "GitHub Actions". Until then
+          # this fails with "Resource not accessible by integration".
+          enablement: true
+
+      - name: Build
+        # Pages serves a project repo from /<repo>/, not the domain root.
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
