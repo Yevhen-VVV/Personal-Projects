@@ -98,6 +98,17 @@ treated as a requirement rather than a setting:
   answering, the gap is spoken as the word "blank" — never filled in, because
   reading the solved sentence aloud would announce the answer. The completed
   sentence is read only after she has chosen. `npm run speech` enforces this.
+- The voice is chosen rather than left to the browser: English, female where
+  the device offers a recognisable choice, and a higher-quality variant over a
+  compact one. The API exposes no gender field, so this is name matching
+  against what real devices ship — and it matters, because the default en-GB
+  voice on an iPhone is Daniel, who is male. `npm run test:voice` covers the
+  iPhone, Android, and Windows voice lists.
+
+  On iOS the biggest single improvement is outside the app: **Settings →
+  Accessibility → Spoken Content → Voices → English** and download an Enhanced
+  or Premium voice. The compact default is the robotic one, and the app will
+  pick the better voice automatically once it exists.
 - Light and dark backgrounds, no motion beyond a colour change, no timers.
 
 ## AI content packs
@@ -179,6 +190,7 @@ constraint.
 | `npm run space` | Measure the size of the question space |
 | `npm run smoke -- <dir>` | Drive a built app end to end, check layout and tap targets |
 | `npm run test:pack` | Test the content-pack validator |
+| `npm run test:voice` | Test voice selection against real device voice lists |
 | `npm run pack -- <skill>` | Generate new items with Claude |
 | `npm run bundle` | Inline everything into one self-contained HTML file |
 | `npm run offline` | Load a served build with the network cut and assert it still works |

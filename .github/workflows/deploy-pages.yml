@@ -42,6 +42,8 @@ jobs:
         run: npm run audit
       - name: Test the content-pack validator
         run: npm run test:pack
+      - name: Test voice selection
+        run: npm run test:voice
 
   # Deploying is separate and main-only, for two reasons: the github-pages
   # environment only accepts deployments from the default branch unless
