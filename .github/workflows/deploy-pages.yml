@@ -44,6 +44,12 @@ jobs:
         run: npm run test:pack
       - name: Test voice selection
         run: npm run test:voice
+      - name: Test the answer matcher
+        run: npm run test:match
+      - name: Test the daily drill
+        run: npm run test:drill
+      - name: Check speaking and listening content
+        run: npm run test:content
 
   # Deploying is separate and main-only, for two reasons: the github-pages
   # environment only accepts deployments from the default branch unless

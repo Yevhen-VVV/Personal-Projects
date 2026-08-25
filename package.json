@@ -20,7 +20,11 @@
     "bundle": "node scripts/bundle-single.mjs",
     "offline": "node scripts/offline-check.mjs",
     "speech": "node scripts/speech-check.mjs",
-    "test:voice": "tsx scripts/voice.test.ts"
+    "test:voice": "tsx scripts/voice.test.ts",
+    "test:match": "tsx scripts/match.test.ts",
+    "test:drill": "tsx scripts/drill.test.ts",
+    "features": "node scripts/features-check.mjs",
+    "test:content": "tsx scripts/content.test.ts"
   },
   "dependencies": {
     "react": "^19.2.8",

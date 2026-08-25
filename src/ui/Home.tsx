@@ -13,11 +13,25 @@ interface Props {
   onPractise: () => void;
   onTopics: () => void;
   onProgress: () => void;
+  onTalk: () => void;
+  onListen: () => void;
+  onPhrases: () => void;
 }
 
 const LEVELS: Level[] = [1, 2, 3];
 
-export function Home({ progress, settings, onSettings, onLevel, onPractise, onTopics, onProgress }: Props) {
+export function Home({
+  progress,
+  settings,
+  onSettings,
+  onLevel,
+  onPractise,
+  onTopics,
+  onProgress,
+  onTalk,
+  onListen,
+  onPhrases,
+}: Props) {
   const streak = streakDays(progress);
   const { fraction } = mastery(progress, ALL_SKILL_IDS);
   const returning = progress.totalAnswered > 0;
@@ -29,13 +43,28 @@ export function Home({ progress, settings, onSettings, onLevel, onPractise, onTo
         {returning ? UI.introBack : UI.introNew}
       </p>
 
+      {/* Speaking comes first. Reading and tapping are comfortable; saying it
+          out loud is the thing she avoids, so it is the thing the app opens on. */}
       <div className="card">
-        <button className="btn-primary" onClick={onPractise} style={{ fontSize: 'calc(1.4rem * var(--scale))' }}>
-          {UI.startPractice}
+        <button className="btn-primary" onClick={onTalk} style={{ fontSize: 'calc(1.4rem * var(--scale))' }}>
+          🗣 {UI.talk.tile}
         </button>
-        <p className="muted small center" style={{ margin: '0.75rem 0 0' }}>
-          {UI.practiceHint}
-        </p>
+        <p className="muted small center" style={{ margin: '0.75rem 0 0' }}>{UI.talk.tileHint}</p>
+      </div>
+
+      <div className="stack" style={{ marginBottom: '1rem' }}>
+        <button onClick={onPractise}>
+          <strong>{UI.startPractice}</strong>
+          <div className="muted small">{UI.practiceHint}</div>
+        </button>
+        <button onClick={onListen}>
+          <strong>👂 {UI.listen.tile}</strong>
+          <div className="muted small">{UI.listen.tileHint}</div>
+        </button>
+        <button onClick={onPhrases}>
+          <strong>💬 {UI.phrases.tile}</strong>
+          <div className="muted small">{UI.phrases.tileHint}</div>
+        </button>
       </div>
 
       <div className="btn-row">

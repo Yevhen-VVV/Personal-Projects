@@ -81,8 +81,23 @@ if (speechAvailable()) {
   });
 }
 
-export function speak(text: string): void {
-  if (!speechAvailable() || !text.trim()) return;
+export interface SpeakOptions {
+  /**
+   * 0.85 by default -- slower than a native speaker, which is what a learner
+   * decoding a sentence needs. The listening ladder deliberately overrides
+   * this to 1.0: its whole purpose is getting used to ordinary speed, so
+   * slowing it down there would defeat the exercise.
+   */
+  rate?: number;
+  /** Called when the utterance finishes, so a screen can advance. */
+  onEnd?: () => void;
+}
+
+export function speak(text: string, options: SpeakOptions = {}): void {
+  if (!speechAvailable() || !text.trim()) {
+    options.onEnd?.();
+    return;
+  }
 
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
@@ -95,11 +110,19 @@ export function speak(text: string): void {
   }
   // Slower than default. Learners consistently ask for this, and the default
   // rate is tuned for native speakers skimming, not for someone decoding.
-  utterance.rate = 0.85;
+  utterance.rate = options.rate ?? 0.85;
   // Very slightly raised: it reads as warmer without sounding artificial.
   utterance.pitch = 1.05;
+  if (options.onEnd) {
+    utterance.onend = () => options.onEnd?.();
+    // Safari occasionally drops onend; onerror must release the screen too.
+    utterance.onerror = () => options.onEnd?.();
+  }
   window.speechSynthesis.speak(utterance);
 }
+
+/** Natural speed, for the listening ladder. */
+export const NATURAL_RATE = 1;
 
 export function stopSpeaking(): void {
   if (speechAvailable()) window.speechSynthesis.cancel();

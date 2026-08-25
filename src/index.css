@@ -281,3 +281,107 @@ button:disabled { cursor: default; opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* ---------- speaking and listening ---------- */
+
+/*
+ * The phone is the primary device, so the controls that matter sit within
+ * thumb reach at the bottom, clear of the home indicator.
+ */
+.app {
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  padding-left: calc(1rem + env(safe-area-inset-left, 0px));
+  padding-right: calc(1rem + env(safe-area-inset-right, 0px));
+}
+
+.mic {
+  width: 100%;
+  min-height: 5.5rem;
+  font-size: calc(1.35rem * var(--scale));
+  font-weight: 700;
+  text-align: center;
+  border-radius: 999px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.mic:hover:not(:disabled) { background: var(--accent); filter: brightness(1.08); }
+
+.mic.on {
+  background: var(--bad);
+  border-color: var(--bad);
+  color: #fff;
+}
+:root[data-theme='dark'] .mic.on { color: var(--bad-soft); }
+
+/* A calm, slow pulse while listening: enough to show it is live, not enough
+   to feel like a countdown. Nothing here is timed. */
+.mic.on::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 3px solid var(--bad);
+  opacity: 0.5;
+  animation: listening 2.4s ease-in-out infinite;
+}
+.mic { position: relative; }
+
+@keyframes listening {
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50% { transform: scale(1.04); opacity: 0.15; }
+}
+
+.speech-bubble {
+  background: var(--accent-soft);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.speech-bubble .who {
+  font-size: calc(0.9rem * var(--scale));
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+.speech-bubble .line {
+  font-size: calc(1.45rem * var(--scale));
+  line-height: 1.45;
+}
+
+.heard {
+  min-height: 3.5rem;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  color: var(--muted);
+  font-size: calc(1.15rem * var(--scale));
+}
+.heard.has-text { color: var(--ink); border-style: solid; }
+
+.pass-rail { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.pass-rail > i {
+  flex: 1;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.pass-rail > i.done { background: var(--good); border-color: var(--good); }
+.pass-rail > i.now { background: var(--accent); border-color: var(--accent); }
+
+.review-row {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.review-row:last-child { border-bottom: 0; }
+.review-row .label {
+  font-size: calc(0.9rem * var(--scale));
+  color: var(--muted);
+}
+.review-row .said { color: var(--muted); }
+.review-row .better { font-weight: 700; color: var(--good); }
+
+.phrase-en { font-size: calc(1.5rem * var(--scale)); line-height: 1.4; margin-bottom: 0.35rem; }
+.phrase-ru { color: var(--muted); margin-bottom: 0.75rem; }

@@ -17,7 +17,40 @@ npm run dev
 
 ## What it does
 
-Short lessons, then multiple-choice practice, across sixteen topics — articles,
+Four modes. Speaking comes first, because reading and tapping are the
+comfortable part — saying it out loud is what she avoids, so it is what the
+app opens on.
+
+**Разговор — spoken role-play.** Six situations she will actually be in: a
+receptionist, a chemist, a neighbour, a voice on the telephone. She taps to
+speak and taps when she is done. Three rules shape it, each a deliberate
+reversal of how a quiz app behaves:
+
+- *She is never cut off.* The browser's recogniser gives up after a pause and
+  decides the speaker has finished; for someone assembling an English sentence
+  in her head, that ends the turn mid-thought. So it is restarted every time it
+  quits, and only her tap ends the turn. There is no time limit.
+- *She is never corrected mid-conversation.* A wrong turn still moves forward.
+  Stopping to correct someone mid-sentence is how you teach them to stop
+  talking. Everything is reviewed once, at the end.
+- *There is always a way out.* "Не знаю, что сказать" shows the phrase in both
+  languages and lets her borrow it, with no penalty.
+
+**Аудирование — the four-pass listening ladder.** Thirty seconds of natural
+speech, four times: gist, then detail, then following the written text, then
+once more with nothing to read. Always at ordinary speed — a learner who only
+ever hears slowed-down English understands nothing when a real receptionist
+speaks. The fourth pass is the point: the audio that was a blur on the first
+pass is comfortable by the fourth, and she can hear that happen.
+
+**Нужные фразы — survival kit and shadowing.** Forty-six phrases, drilled by
+hearing and immediately repeating aloud. The largest group is not greetings but
+the phrases for when she has *not* understood — "could you say that more
+slowly", "what does that mean". Those keep a real conversation alive; a learner
+without them goes quiet. Eight a day, about three minutes, stable within a day
+and different tomorrow.
+
+**Занятие — the written practice**, across sixteen topics — articles,
 prepositions, tenses, countability, question order, phrasal verbs, false
 friends, and everyday vocabulary. A spaced-repetition scheduler brings weak
 topics back sooner and mastered ones back rarely.
@@ -191,6 +224,10 @@ constraint.
 | `npm run smoke -- <dir>` | Drive a built app end to end, check layout and tap targets |
 | `npm run test:pack` | Test the content-pack validator |
 | `npm run test:voice` | Test voice selection against real device voice lists |
+| `npm run test:match` | Test how spoken answers are judged |
+| `npm run test:drill` | Test daily phrase selection |
+| `npm run test:content` | Structural checks on scenarios, passages and phrases |
+| `npm run features` | Drive the speaking and listening screens in a real browser |
 | `npm run pack -- <skill>` | Generate new items with Claude |
 | `npm run bundle` | Inline everything into one self-contained HTML file |
 | `npm run offline` | Load a served build with the network cut and assert it still works |
@@ -210,6 +247,13 @@ is bigger than driving" was found and fixed.
 src/engine/
   corpus/       Nouns, verbs, frames, phrasal verbs, false friends, vocabulary
                 (English material + Russian glosses used only in explanations)
+                scenarios.ts   Role-play conversations
+                listening.ts   30-second passages with four passes of questions
+                survival.ts    Phrases for shadowing
+  match.ts      How a spoken answer is judged — deliberately generous
+  drill.ts      Which phrases today's drill contains
+src/speech/
+  recognition.ts  Speech input that never decides she has finished talking
   generators/   One function per skill, corpus in, question out
   skills.ts     Topic metadata and the lesson text
   build.ts      Assembles a question and enforces its invariants
