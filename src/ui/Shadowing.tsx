@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Phrase } from '../engine/corpus/survival';
 import { similarity } from '../engine/match';
-import { createListener, recognitionAvailable, type Listener } from '../speech/recognition';
+import { createListener, isEmbedded, recognitionAvailable, type Listener } from '../speech/recognition';
 import { speak, speechAvailable, stopSpeaking } from './speech';
 import { UI } from './strings';
+import { MicNotice } from './MicNotice';
 
 /** Above this, the repeat counts as said well. Generous, because recognition mishears. */
 const GOOD_ENOUGH = 0.6;
@@ -118,7 +119,7 @@ export function Shadowing({
         )}
       </div>
 
-      {recognitionAvailable() ? (
+      {recognitionAvailable() && !isEmbedded() ? (
         <>
           <p className="muted center">{heardOnce ? UI.phrases.yourTurn : ''}</p>
           <div className={`heard ${heard ? 'has-text' : ''}`} aria-live="polite">
@@ -136,7 +137,7 @@ export function Shadowing({
           </button>
         </>
       ) : (
-        <div className="verdict wrong"><p>{UI.talk.noMic}</p></div>
+        <MicNotice />
       )}
 
       {verdict && (

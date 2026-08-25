@@ -50,6 +50,8 @@ jobs:
         run: npm run test:drill
       - name: Check speaking and listening content
         run: npm run test:content
+      - name: Test the microphone notices
+        run: npm run test:mic
 
   # Deploying is separate and main-only, for two reasons: the github-pages
   # environment only accepts deployments from the default branch unless

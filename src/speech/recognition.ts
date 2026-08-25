@@ -32,7 +32,29 @@ export interface ListenerHandlers {
   onError?: (reason: RecognitionError) => void;
 }
 
-export type RecognitionError = 'not-supported' | 'no-permission' | 'no-speech' | 'failed';
+export type RecognitionError =
+  | 'not-supported'
+  | 'no-permission'
+  | 'no-speech'
+  | 'failed'
+  /**
+   * The page is running inside someone else's frame, where the microphone is
+   * blocked by permissions policy. Worth its own case because the API is
+   * present and start() fails with the same "not-allowed" as a genuine denial
+   * -- so without this the app tells her to change a browser setting that
+   * cannot fix it, and she has no way to discover that.
+   */
+  | 'embedded';
+
+/** True when the app is running inside an iframe rather than as its own page. */
+export function isEmbedded(): boolean {
+  try {
+    return typeof window !== 'undefined' && window.self !== window.top;
+  } catch {
+    // A cross-origin parent throws on access, which itself means embedded.
+    return true;
+  }
+}
 
 interface SpeechRecognitionLike extends EventTarget {
   lang: string;
@@ -110,7 +132,7 @@ export function createListener(handlers: ListenerHandlers): Listener {
     r.onerror = (event: { error: string }) => {
       if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
         wanted = false;
-        handlers.onError?.('no-permission');
+        handlers.onError?.(isEmbedded() ? 'embedded' : 'no-permission');
         return;
       }
       // "no-speech" and "aborted" are ordinary during a long pause. Restarting

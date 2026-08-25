@@ -4,6 +4,7 @@ import { match, type MatchResult } from '../engine/match';
 import { createListener, recognitionAvailable, type Listener, type RecognitionError } from '../speech/recognition';
 import { speak, speechAvailable, stopSpeaking } from './speech';
 import { UI } from './strings';
+import { MicNotice } from './MicNotice';
 
 export interface TurnResult {
   turn: Turn;
@@ -122,7 +123,7 @@ export function RolePlay({
           <p>{scenario.setting}</p>
           <p className="muted small">{UI.talk.youTalkTo(scenario.partnerRole)}</p>
         </div>
-        {unavailable && <div className="verdict wrong"><p>{UI.talk.noMic}</p></div>}
+        <MicNotice />
         <button className="btn-primary" onClick={() => setStarted(true)} disabled={unavailable}>
           {UI.talk.begin}
         </button>
@@ -159,11 +160,7 @@ export function RolePlay({
         {partial ? <span lang="en">{partial}</span> : listening ? UI.talk.listening : UI.talk.youSaid}
       </div>
 
-      {problem && (
-        <div className="verdict wrong">
-          <p>{problem === 'no-permission' ? UI.talk.noPermission : UI.talk.noMic}</p>
-        </div>
-      )}
+      <MicNotice problem={problem} />
 
       {helpOpen ? (
         <div className="card">
