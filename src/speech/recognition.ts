@@ -19,6 +19,14 @@ export interface Listener {
   start(): void;
   /** Stop listening and settle on the final transcript. */
   stop(): void;
+  /**
+   * Stop listening and discard whatever was heard, emitting nothing.
+   *
+   * Needed because stop() now settles asynchronously: leaving a turn, or
+   * moving to the next phrase, must not have a transcript land a second later
+   * on the screen that replaced it.
+   */
+  cancel(): void;
   /** True between start() and stop(). */
   readonly active: boolean;
 }
@@ -30,7 +38,17 @@ export interface ListenerHandlers {
   onFinal: (text: string) => void;
   /** Recognition could not run at all -- no permission, no support. */
   onError?: (reason: RecognitionError) => void;
+  /** Raw engine events, for the microphone self-check screen. */
+  onEvent?: (name: string, detail?: string) => void;
 }
+
+/**
+ * How long to wait after stop() for the engine to settle, before giving up
+ * and using what we already have. Safari usually finalises within a few
+ * hundred milliseconds; this is generous so nothing is lost, and it only ever
+ * delays the moment the answer appears.
+ */
+const SETTLE_MS = 1500;
 
 export type RecognitionError =
   | 'not-supported'
@@ -91,6 +109,7 @@ export function createListener(handlers: ListenerHandlers): Listener {
     return {
       start: () => handlers.onError?.('not-supported'),
       stop: () => {},
+      cancel: () => {},
       get active() {
         return false;
       },
@@ -100,10 +119,57 @@ export function createListener(handlers: ListenerHandlers): Listener {
   let recogniser: SpeechRecognitionLike | null = null;
   let wanted = false;
   let settled: string[] = [];
+  /**
+   * The most recent not-yet-final text. Kept, and used as the answer when the
+   * engine never marks anything final -- which is the ordinary case on Safari.
+   * Discarding it was why every turn came back empty on an iPhone.
+   */
+  let interim = '';
   let sawAnySpeech = false;
+  /** True between stop() and the moment the transcript is handed over. */
+  let settling = false;
+  let settleTimer: ReturnType<typeof setTimeout> | undefined;
+  /**
+   * Bumped every time a session begins or is abandoned. An aborted engine
+   * still delivers a last event or two, and without this it would see the
+   * next session as its own -- restarting itself and spilling the previous
+   * turn's words into the new one.
+   */
+  let generation = 0;
+
+  const note = (name: string, detail?: string) => handlers.onEvent?.(name, detail);
+
+  const transcript = () =>
+    [...settled, interim].join(' ').replace(/\s+/g, ' ').trim();
+
+  /**
+   * Hands over the transcript exactly once. Called from onend after stop(),
+   * or from the timer if the engine never says anything more.
+   */
+  const finish = () => {
+    if (!settling) return;
+    settling = false;
+    clearTimeout(settleTimer);
+    // On the timeout path the engine may still be alive. Abort it, or its
+    // later onend sees a fresh session as "wanted" and restarts a second
+    // engine feeding the same transcript.
+    try {
+      recogniser?.abort();
+    } catch {
+      /* already gone */
+    }
+    recogniser = null;
+
+    const text = transcript();
+    note('final', text || '(nothing)');
+    if (!text && !sawAnySpeech) handlers.onError?.('no-speech');
+    handlers.onFinal(text);
+  };
 
   const build = (): SpeechRecognitionLike => {
     const r = new Ctor();
+    const mine = generation;
+    const stale = () => mine !== generation;
     // She is speaking English, whatever the interface language is.
     r.lang = 'en-GB';
     r.continuous = true;
@@ -111,25 +177,28 @@ export function createListener(handlers: ListenerHandlers): Listener {
     r.maxAlternatives = 1;
 
     r.onresult = (event: never) => {
+      if (stale()) return;
       const e = event as unknown as {
         resultIndex: number;
         results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }>;
       };
-      let partial = '';
+      let pending = '';
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const result = e.results[i];
         const text = result[0]?.transcript ?? '';
         if (!text.trim()) continue;
         sawAnySpeech = true;
         if (result.isFinal) settled.push(text.trim());
-        else partial += text;
+        else pending += text;
       }
-      if (partial.trim() || settled.length) {
-        handlers.onPartial?.([...settled, partial].join(' ').replace(/\s+/g, ' ').trim());
-      }
+      interim = pending.trim();
+      note('result', transcript());
+      if (transcript()) handlers.onPartial?.(transcript());
     };
 
     r.onerror = (event: { error: string }) => {
+      if (stale()) return;
+      note('error', event.error);
       if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
         wanted = false;
         handlers.onError?.(isEmbedded() ? 'embedded' : 'no-permission');
@@ -143,11 +212,31 @@ export function createListener(handlers: ListenerHandlers): Listener {
     };
 
     r.onend = () => {
+      if (stale()) return;
+      note('end');
+      // Stopping is asynchronous: the engine may deliver its last result
+      // between stop() and here. This is the earliest moment it is safe to
+      // read the transcript, which is why finishing waits for it.
+      if (settling) {
+        finish();
+        return;
+      }
       // The engine decided she had finished. She had not necessarily -- only
       // a tap on Stop means that -- so start it again and keep listening.
       if (!wanted) return;
+
+      // Bank whatever is still interim before restarting. A new session
+      // resets the engine's own result list, so text left here would simply
+      // vanish -- and on an engine that never marks anything final, that is
+      // everything she said before the pause.
+      if (interim) {
+        settled.push(interim);
+        interim = '';
+      }
+
       try {
         r.start();
+        note('restart');
       } catch {
         // Occasionally the engine refuses an immediate restart; a fresh
         // instance on the next tick always works.
@@ -157,6 +246,7 @@ export function createListener(handlers: ListenerHandlers): Listener {
           recogniser = build();
           try {
             recogniser.start();
+            note('restart');
           } catch {
             handlers.onError?.('failed');
           }
@@ -170,12 +260,17 @@ export function createListener(handlers: ListenerHandlers): Listener {
   return {
     start() {
       if (wanted) return;
+      generation++;
       wanted = true;
       settled = [];
+      interim = '';
       sawAnySpeech = false;
+      settling = false;
+      clearTimeout(settleTimer);
       recogniser = build();
       try {
         recogniser.start();
+        note('start');
       } catch {
         wanted = false;
         handlers.onError?.('failed');
@@ -185,15 +280,38 @@ export function createListener(handlers: ListenerHandlers): Listener {
     stop() {
       if (!wanted) return;
       wanted = false;
+      settling = true;
+      note('stop');
       try {
         recogniser?.stop();
       } catch {
-        /* already stopped */
+        // Already closed; nothing more is coming. Still deferred, because
+        // every caller assumes onFinal arrives after the tap that caused it
+        // -- finishing inline lands before their own state updates and
+        // strands the button mid-tap.
+        settleTimer = setTimeout(finish, 0);
+        return;
+      }
+      // Wait for onend, which is when the last result has arrived. If the
+      // engine never gets there, finish with what we have rather than
+      // reporting silence she did not commit.
+      settleTimer = setTimeout(finish, SETTLE_MS);
+    },
+
+    cancel() {
+      generation++;
+      wanted = false;
+      settling = false;
+      clearTimeout(settleTimer);
+      note('cancel');
+      try {
+        recogniser?.abort();
+      } catch {
+        /* already gone */
       }
       recogniser = null;
-      const text = settled.join(' ').replace(/\s+/g, ' ').trim();
-      if (!text && !sawAnySpeech) handlers.onError?.('no-speech');
-      handlers.onFinal(text);
+      settled = [];
+      interim = '';
     },
 
     get active() {

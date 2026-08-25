@@ -44,8 +44,15 @@ export function RolePlay({
   const [partial, setPartial] = useState('');
   const [showRu, setShowRu] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [usedHelp, setUsedHelp] = useState(false);
+  const [settling, setSettling] = useState(false);
   const [problem, setProblem] = useState<RecognitionError | null>(null);
+
+  /**
+   * Read inside the listener callback, which is created once per turn and
+   * would otherwise capture whatever `usedHelp` was at that moment -- so
+   * asking for help and then speaking recorded the help as unused.
+   */
+  const usedHelpRef = useRef(false);
 
   const turn = scenario.turns[index];
   const listenerRef = useRef<Listener | null>(null);
@@ -63,7 +70,7 @@ export function RolePlay({
       setPartial('');
       setShowRu(false);
       setHelpOpen(false);
-      setUsedHelp(false);
+      usedHelpRef.current = false;
 
       if (index + 1 >= scenario.turns.length) onDone(next);
       else setIndex(index + 1);
@@ -77,15 +84,19 @@ export function RolePlay({
       onPartial: setPartial,
       onFinal: (text) => {
         setListening(false);
+        setSettling(false);
         // Advance whatever she said, including nothing. Judging happens later.
-        advance(text, usedHelp);
+        advance(text, usedHelpRef.current);
       },
       onError: (reason) => {
         setListening(false);
-        if (reason !== 'no-speech') setProblem(reason);
+        if (reason !== 'no-speech') {
+          setSettling(false);
+          setProblem(reason);
+        }
       },
     });
-    return () => listenerRef.current?.stop();
+    return () => listenerRef.current?.cancel();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, advance]);
 
@@ -99,7 +110,12 @@ export function RolePlay({
     const listener = listenerRef.current;
     if (!listener) return;
     if (listener.active) {
+      // The engine settles asynchronously, so the transcript arrives a moment
+      // after this tap. Show that rather than leaving the button lit as if it
+      // were still listening.
       listener.stop();
+      setListening(false);
+      setSettling(true);
       return;
     }
     // Never listen while the partner is still speaking, or it hears itself.
@@ -134,7 +150,7 @@ export function RolePlay({
   return (
     <div>
       <div className="topbar">
-        <button onClick={() => { stopSpeaking(); listenerRef.current?.stop(); onQuit(); }}>
+        <button onClick={() => { stopSpeaking(); listenerRef.current?.cancel(); onQuit(); }}>
           {UI.talk.quit}
         </button>
         <span className="muted small">{UI.talk.turnOf(index + 1, scenario.turns.length)}</span>
@@ -157,7 +173,15 @@ export function RolePlay({
       {showRu && <p className="muted">{turn.partnerRu}</p>}
 
       <div className={`heard ${partial ? 'has-text' : ''}`} aria-live="polite">
-        {partial ? <span lang="en">{partial}</span> : listening ? UI.talk.listening : UI.talk.youSaid}
+        {partial ? (
+          <span lang="en">{partial}</span>
+        ) : settling ? (
+          UI.talk.thinking
+        ) : listening ? (
+          UI.talk.listening
+        ) : (
+          UI.talk.youSaid
+        )}
       </div>
 
       <MicNotice problem={problem} />
@@ -171,7 +195,7 @@ export function RolePlay({
             {speechAvailable() && (
               <button onClick={() => speak(turn.model)}>{UI.talk.helpRepeat}</button>
             )}
-            <button onClick={() => { setHelpOpen(false); setUsedHelp(true); }}>
+            <button onClick={() => { setHelpOpen(false); usedHelpRef.current = true; }}>
               {UI.talk.helpContinue}
             </button>
           </div>
@@ -182,13 +206,14 @@ export function RolePlay({
             className={`mic ${listening ? 'on' : ''}`}
             onClick={toggleMic}
             aria-pressed={listening}
+            disabled={settling}
           >
-            {listening ? UI.talk.tapToStop : UI.talk.tapToSpeak}
+            {settling ? UI.talk.thinking : listening ? UI.talk.tapToStop : UI.talk.tapToSpeak}
           </button>
           <button
             className="btn-secondary"
             style={{ marginTop: '0.75rem' }}
-            onClick={() => { stopSpeaking(); setHelpOpen(true); setUsedHelp(true); }}
+            onClick={() => { stopSpeaking(); setHelpOpen(true); usedHelpRef.current = true; }}
           >
             {UI.talk.help}
           </button>

@@ -228,6 +228,7 @@ constraint.
 | `npm run test:drill` | Test daily phrase selection |
 | `npm run test:content` | Structural checks on scenarios, passages and phrases |
 | `npm run test:mic` | Test which microphone message is shown, and when |
+| `npm run test:recognition` | Test speech input against how real engines behave |
 | `npm run features` | Drive the speaking and listening screens in a real browser |
 | `npm run pack -- <skill>` | Generate new items with Claude |
 | `npm run bundle` | Inline everything into one self-contained HTML file |

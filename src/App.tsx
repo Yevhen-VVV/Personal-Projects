@@ -14,6 +14,7 @@ import { Picker } from './ui/Picker';
 import { RolePlay, RolePlayReview, type TurnResult } from './ui/RolePlay';
 import { Listening, ListeningDone } from './ui/Listening';
 import { Shadowing } from './ui/Shadowing';
+import { MicCheck } from './ui/MicCheck';
 import { SCENARIOS } from './engine/corpus/scenarios';
 import { PASSAGES, spokenSeconds } from './engine/corpus/listening';
 import { GROUP_TITLES, PHRASES, type PhraseGroup } from './engine/corpus/survival';
@@ -34,7 +35,8 @@ type View =
   | 'listen'
   | 'listen-done'
   | 'phrases-pick'
-  | 'shadow';
+  | 'shadow'
+  | 'mic-check';
 
 /** Questions in a mixed daily session, and in a single-topic session. */
 const DAILY_COUNT = 12;
@@ -119,6 +121,7 @@ export default function App() {
           onTalk={() => setView('talk-pick')}
           onListen={() => setView('listen-pick')}
           onPhrases={() => setView('phrases-pick')}
+          onMicCheck={() => setView('mic-check')}
         />
       )}
 
@@ -158,6 +161,8 @@ export default function App() {
           onReset={() => { update({ ...srs.emptyProgress(), level: progress.level }); setView('home'); }}
         />
       )}
+
+      {view === 'mic-check' && <MicCheck onBack={() => setView('home')} />}
 
       {/* ---- speaking ---- */}
 

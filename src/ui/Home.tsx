@@ -16,6 +16,7 @@ interface Props {
   onTalk: () => void;
   onListen: () => void;
   onPhrases: () => void;
+  onMicCheck: () => void;
 }
 
 const LEVELS: Level[] = [1, 2, 3];
@@ -31,6 +32,7 @@ export function Home({
   onTalk,
   onListen,
   onPhrases,
+  onMicCheck,
 }: Props) {
   const streak = streakDays(progress);
   const { fraction } = mastery(progress, ALL_SKILL_IDS);
@@ -133,6 +135,7 @@ export function Home({
           >
             {settings.theme === 'dark' ? UI.darkOff : UI.darkOn}
           </button>
+          <button onClick={onMicCheck}>{UI.mic.tile}</button>
           <button
             onClick={() => onSettings({ ...settings, autoSpeak: !settings.autoSpeak })}
             aria-pressed={settings.autoSpeak}

@@ -25,7 +25,8 @@
     "test:drill": "tsx scripts/drill.test.ts",
     "features": "node scripts/features-check.mjs",
     "test:content": "tsx scripts/content.test.ts",
-    "test:mic": "tsx scripts/micnotice.test.ts"
+    "test:mic": "tsx scripts/micnotice.test.ts",
+    "test:recognition": "tsx scripts/recognition.test.ts"
   },
   "dependencies": {
     "react": "^19.2.8",

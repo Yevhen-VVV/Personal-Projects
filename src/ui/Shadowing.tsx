@@ -36,6 +36,7 @@ export function Shadowing({
   const [heard, setHeard] = useState('');
   const [score, setScore] = useState<number | null>(null);
   const [heardOnce, setHeardOnce] = useState(false);
+  const [settling, setSettling] = useState(false);
 
   const phrase = phrases[index];
   const listenerRef = useRef<Listener | null>(null);
@@ -45,15 +46,17 @@ export function Shadowing({
       onPartial: setHeard,
       onFinal: (text) => {
         setListening(false);
+        setSettling(false);
         setHeard(text);
         setScore(similarity(text, phrases[index].en));
       },
       onError: () => {
         setListening(false);
+        setSettling(false);
         setScore(0);
       },
     });
-    return () => listenerRef.current?.stop();
+    return () => listenerRef.current?.cancel();
   }, [index, phrases]);
 
   // Moving to a new phrase resets the per-phrase state. Derived during render
@@ -64,6 +67,7 @@ export function Shadowing({
     setHeard('');
     setScore(null);
     setHeardOnce(false);
+    setSettling(false);
   }
 
   // Say it to her first: shadowing needs a model to shadow. This one is a real
@@ -77,7 +81,10 @@ export function Shadowing({
     const listener = listenerRef.current;
     if (!listener) return;
     if (listener.active) {
+      // The transcript settles a moment after the tap; say so.
       listener.stop();
+      setListening(false);
+      setSettling(true);
       return;
     }
     stopSpeaking();
@@ -89,7 +96,9 @@ export function Shadowing({
 
   const next = () => {
     stopSpeaking();
-    listenerRef.current?.stop();
+    // cancel, not stop: a transcript settling a second from now belongs to the
+    // phrase we are leaving, and would paint itself over the next one.
+    listenerRef.current?.cancel();
     if (index + 1 >= phrases.length) onDone();
     else setIndex(index + 1);
   };
@@ -102,7 +111,7 @@ export function Shadowing({
   return (
     <div>
       <div className="topbar">
-        <button onClick={() => { stopSpeaking(); listenerRef.current?.stop(); onQuit(); }}>
+        <button onClick={() => { stopSpeaking(); listenerRef.current?.cancel(); onQuit(); }}>
           {UI.talk.quit}
         </button>
         <span className="muted small">{UI.talk.turnOf(index + 1, phrases.length)}</span>
@@ -125,6 +134,8 @@ export function Shadowing({
           <div className={`heard ${heard ? 'has-text' : ''}`} aria-live="polite">
             {heard ? (
               <><span className="muted small">{UI.phrases.heard} </span><span lang="en">{heard}</span></>
+            ) : settling ? (
+              UI.talk.thinking
             ) : listening ? (
               UI.talk.listening
             ) : (
@@ -132,8 +143,13 @@ export function Shadowing({
             )}
           </div>
 
-          <button className={`mic ${listening ? 'on' : ''}`} onClick={toggleMic} aria-pressed={listening}>
-            {listening ? UI.phrases.stopRepeat : UI.phrases.repeat}
+          <button
+            className={`mic ${listening ? 'on' : ''}`}
+            onClick={toggleMic}
+            aria-pressed={listening}
+            disabled={settling}
+          >
+            {settling ? UI.talk.thinking : listening ? UI.phrases.stopRepeat : UI.phrases.repeat}
           </button>
         </>
       ) : (

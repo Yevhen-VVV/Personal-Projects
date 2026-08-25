@@ -52,6 +52,8 @@ jobs:
         run: npm run test:content
       - name: Test the microphone notices
         run: npm run test:mic
+      - name: Test speech recognition against real engine behaviour
+        run: npm run test:recognition
 
   # Deploying is separate and main-only, for two reasons: the github-pages
   # environment only accepts deployments from the default branch unless
