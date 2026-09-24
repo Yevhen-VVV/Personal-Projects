@@ -8,6 +8,9 @@ The 2025 test applies to anyone who files Form N-400 on or after **October 20, 2
 interview the officer reads up to 20 of the 128 questions aloud, and you pass with 12 correct. The
 test ends early once you have 12 right or 9 wrong.
 
+There is also a **web version** in [`../civics-web`](../civics-web) that needs no install: open
+the page in any browser. It uses the same question bank and answer checker.
+
 ## What it does
 
 **Questions**: all 128 questions, grouped the way USCIS groups them and searchable. Each question

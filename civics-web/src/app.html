@@ -1,0 +1,1317 @@
+<title>Civics Test Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
+<style>
+  :root {
+    --paper: #f2f4f8;
+    --surface: #ffffff;
+    --surface-2: #e9edf4;
+    --ink: #151d2e;
+    --muted: #556073;
+    --line: #d5dbe6;
+    --accent: #2350a8;
+    --accent-ink: #ffffff;
+    --accent-soft: #e2e9f8;
+    --brass: #85601a;
+    --good: #1c7644;
+    --good-soft: #e0f1e7;
+    --bad: #ad3a2e;
+    --bad-soft: #f8e4e1;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --radius: 14px;
+    --tabbar: 64px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #0e1421;
+      --surface: #172033;
+      --surface-2: #1f2a40;
+      --ink: #e6ebf4;
+      --muted: #9ca7bb;
+      --line: #2a3550;
+      --accent: #8aaaf0;
+      --accent-ink: #0e1421;
+      --accent-soft: #1e2c4a;
+      --brass: #d5ad5f;
+      --good: #63cb8f;
+      --good-soft: #15301f;
+      --bad: #f0897c;
+      --bad-soft: #3a1e1b;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0e1421;
+    --surface: #172033;
+    --surface-2: #1f2a40;
+    --ink: #e6ebf4;
+    --muted: #9ca7bb;
+    --line: #2a3550;
+    --accent: #8aaaf0;
+    --accent-ink: #0e1421;
+    --accent-soft: #1e2c4a;
+    --brass: #d5ad5f;
+    --good: #63cb8f;
+    --good-soft: #15301f;
+    --bad: #f0897c;
+    --bad-soft: #3a1e1b;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 17px/1.5 var(--sans);
+    padding-inline: 16px;
+    padding-block: 0 calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 32px);
+    -webkit-text-size-adjust: 100%;
+  }
+  .app { max-width: 680px; margin-inline: auto; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Masthead */
+  .masthead { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 18px 10px; }
+  .brand { display: flex; align-items: center; gap: 10px; font: 700 21px/1 var(--serif); letter-spacing: -0.01em; }
+  .brand svg { color: var(--brass); flex: none; }
+  .eyebrow { font: 600 12px/1.3 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* Layout blocks */
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .stack-sm { display: flex; flex-direction: column; gap: 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+  .section-title { font: 600 13px/1.3 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-block: 12px -4px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 14px; line-height: 1.45; }
+  .num { font-variant-numeric: tabular-nums; }
+  .measure { max-width: 62ch; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 48px; padding: 0 18px; border-radius: 12px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    font: 600 16px/1.2 var(--sans); cursor: pointer; text-decoration: none;
+    transition: background-color 120ms ease, border-color 120ms ease;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn svg { flex: none; }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn-primary:hover { filter: brightness(1.06); }
+  .btn-quiet { background: transparent; border-color: transparent; color: var(--accent); padding-inline: 8px; min-height: 40px; }
+  .btn-quiet:hover { border-color: transparent; text-decoration: underline; }
+  .btn-wide { flex: 1 1 0; }
+  .btn:disabled { opacity: 0.45; cursor: default; border-color: var(--line); }
+  .btn.speaking { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+  /* Question text, set like a printed test */
+  .q-num { font: 600 13px/1.2 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; color: var(--brass); font-variant-numeric: tabular-nums; }
+  .q-text { font: 600 clamp(1.35rem, 1.1rem + 1.2vw, 1.7rem)/1.3 var(--serif); text-wrap: pretty; }
+  .q-hidden { display: flex; align-items: center; gap: 12px; font: 600 1.25rem/1.3 var(--serif); }
+  .q-hidden svg { color: var(--accent); flex: none; }
+
+  /* Answers */
+  .answers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .answers li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: baseline; padding: 6px 10px; border-radius: 10px; }
+  .answers li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); justify-self: center; transform: translateY(-2px); }
+  .answers li.given { background: var(--good-soft); font-weight: 600; }
+  .answers li.given::before { width: 14px; height: 14px; background: var(--good); transform: translateY(1px);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; }
+  .answers-head { font-weight: 600; }
+  .note { font-size: 14px; color: var(--muted); }
+
+  /* Verdict */
+  .verdict { display: flex; align-items: center; gap: 10px; font: 700 1.4rem/1.2 var(--serif); }
+  .verdict.good { color: var(--good); }
+  .verdict.bad { color: var(--bad); }
+  .verdict.info { color: var(--accent); }
+  .you-said { border-left: 3px solid var(--line); padding-left: 12px; font-style: italic; }
+
+  /* Reply */
+  textarea.reply {
+    width: 100%; min-height: 96px; resize: vertical; padding: 14px 16px; border-radius: 12px;
+    border: 1.5px solid var(--line); background: var(--surface); font-size: 19px; line-height: 1.4;
+  }
+  textarea.reply:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .hint { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: var(--muted); }
+  .hint svg { flex: none; margin-top: 2px; }
+
+  /* Scorecard: the interview's 20 questions */
+  .scorecard { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 4px; }
+  .slot { aspect-ratio: 1; border-radius: 4px; border: 1.5px solid var(--line); background: var(--surface); max-width: 100%; }
+  .slot.good { background: var(--good); border-color: var(--good); }
+  .slot.bad { background: var(--bad); border-color: var(--bad); }
+  @media (max-width: 480px) { .scorecard { grid-template-columns: repeat(10, minmax(0, 1fr)); } }
+  .tally { display: flex; gap: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .tally .good { color: var(--good); }
+  .tally .bad { color: var(--bad); }
+
+  /* Progress bar */
+  .meter { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+  .meter > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
+  .big-figure { font: 700 2.4rem/1 var(--serif); font-variant-numeric: tabular-nums; }
+
+  /* Lists of choices */
+  .menu { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .menu > button, .menu > .menu-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; text-align: left;
+    padding: 14px 18px; border: 0; border-top: 1px solid var(--line); background: transparent; cursor: pointer; width: 100%;
+  }
+  .menu > :first-child { border-top: 0; }
+  .menu > button:hover { background: var(--surface-2); }
+  .menu > button:disabled { opacity: 0.5; cursor: default; background: transparent; }
+  .menu .title { font-weight: 600; }
+  .menu .detail { grid-column: 1; font-size: 14px; color: var(--muted); }
+  .menu .count { grid-row: 1 / span 2; grid-column: 2; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .chev { grid-row: 1 / span 2; grid-column: 2; color: var(--muted); }
+
+  /* Question list */
+  .search { width: 100%; min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); font-size: 17px; }
+  .search:focus { border-color: var(--accent); outline: none; }
+  .qrow { display: grid; grid-template-columns: 2.4em 1fr 18px; gap: 10px; align-items: baseline; }
+  .qrow .n { color: var(--brass); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+  .status { width: 10px; height: 10px; border-radius: 50%; align-self: center; }
+  .status.learned { background: var(--good); }
+  .status.missed { background: var(--bad); }
+  .group-head { padding: 14px 18px 10px; background: var(--surface-2); border-top: 1px solid var(--line); }
+  .group-head:first-child { border-top: 0; }
+  .group-head .eyebrow { font-size: 11px; }
+  .group-head h3 { font: 600 16px/1.3 var(--sans); }
+
+  /* Switches and form rows */
+  .field { display: grid; gap: 6px; }
+  .field label, .field .label { font-weight: 600; font-size: 15px; }
+  .field input[type="text"], .field select {
+    min-height: 46px; padding: 0 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-size: 17px; width: 100%;
+  }
+  .field input:focus, .field select:focus { border-color: var(--accent); outline: none; }
+  .switch-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 6px; cursor: pointer; }
+  .switch { appearance: none; -webkit-appearance: none; width: 50px; height: 30px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); position: relative; flex: none; cursor: pointer; margin: 0; transition: background-color 150ms ease; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 3px rgb(0 0 0 / 0.3); transition: transform 150ms ease; }
+  .switch:checked { background: var(--accent); border-color: var(--accent); }
+  .switch:checked::after { transform: translateX(20px); }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .segmented { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface-2); border-radius: 12px; padding: 4px; gap: 4px; }
+  .segmented button { min-height: 40px; border: 0; border-radius: 9px; background: transparent; font-weight: 600; cursor: pointer; }
+  .segmented button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 3px rgb(0 0 0 / 0.12); }
+
+  /* Listen player */
+  .player { display: flex; align-items: center; justify-content: center; gap: 28px; padding-block: 4px; }
+  .round { width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; cursor: pointer; color: var(--ink); }
+  .round.main { width: 80px; height: 80px; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .round:disabled { opacity: 0.4; cursor: default; }
+  .now { min-height: 240px; }
+  .phase-answer .q-text { opacity: 0.55; }
+  .rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+  /* Tab bar */
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--surface); border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .tabbar-inner { max-width: 680px; margin-inline: auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .tabbar button {
+    min-height: var(--tabbar); border: 0; background: transparent; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    font: 600 12px/1 var(--sans); color: var(--muted);
+  }
+  .tabbar button[aria-current="page"] { color: var(--accent); }
+  .tabbar button[aria-current="page"] svg { stroke-width: 2.3; }
+
+  .banner { background: var(--bad-soft); color: var(--ink); border-radius: 12px; padding: 12px 14px; font-size: 15px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="app">
+  <header class="masthead">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5l2.7 6.2 6.8.6-5.1 4.5 1.5 6.6L12 16.9l-5.9 3.5 1.5-6.6-5.1-4.5 6.8-.6z"/></svg>
+      <span>Civics Test</span>
+    </div>
+    <span class="eyebrow">2025 USCIS test · 128 questions</span>
+  </header>
+  <main id="view"></main>
+</div>
+
+<nav class="tabbar" aria-label="Sections">
+  <div class="tabbar-inner">
+    <button type="button" data-act="tab" data-tab="practice">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8.5 10.5l2.3 2.3 4.7-4.8"/></svg>
+      Practice
+    </button>
+    <button type="button" data-act="tab" data-tab="questions">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke-width="3"/></svg>
+      Questions
+    </button>
+    <button type="button" data-act="tab" data-tab="listen">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4.5" height="6.5" rx="1.5"/><rect x="16.5" y="14" width="4.5" height="6.5" rx="1.5"/></svg>
+      Listen
+    </button>
+    <button type="button" data-act="tab" data-tab="settings">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+      Settings
+    </button>
+  </div>
+</nav>
+<div id="live" class="visually-hidden" aria-live="polite"></div>
+
+<script id="question-bank" type="application/json">__QUESTIONS__</script>
+<script>
+/*__MATCHER__*/
+</script>
+<script>
+(() => {
+  "use strict";
+
+  // ---------------------------------------------------------------- Data
+
+  const bank = JSON.parse(document.getElementById("question-bank").textContent);
+  const toAnswer = (a) => (typeof a === "string" ? { text: a, also: [], say: null } : { text: a.text, also: a.also || [], say: a.say || null });
+  const QUESTIONS = bank.questions
+    .map((q) => ({
+      id: q.id, section: q.section, subsection: q.subsection, text: q.question,
+      answers: (q.answers || []).map(toAnswer), required: q.required || 1, note: q.note || null, dynamic: q.dynamic || null,
+    }))
+    .sort((a, b) => a.id - b.id);
+  const BY_ID = new Map(QUESTIONS.map((q) => [q.id, q]));
+  const ALL_IDS = QUESTIONS.map((q) => q.id);
+  const GROUPS = [];
+  for (const q of QUESTIONS) {
+    const last = GROUPS[GROUPS.length - 1];
+    if (last && last.section === q.section && last.subsection === q.subsection) last.questions.push(q);
+    else GROUPS.push({ section: q.section, subsection: q.subsection, questions: [q] });
+  }
+
+  const INTERVIEW = { length: 20, pass: 12, fail: 9 };
+  const OFFICIALS_AS_OF = "September 2026";
+  const DEFAULT_OFFICIALS = {
+    president: "Donald J. Trump", vicePresident: "JD Vance", speaker: "Mike Johnson", chiefJustice: "John G. Roberts, Jr.",
+  };
+
+  const PLACES = [
+    ["AL", "Alabama", "Montgomery"], ["AK", "Alaska", "Juneau"], ["AZ", "Arizona", "Phoenix"], ["AR", "Arkansas", "Little Rock"],
+    ["CA", "California", "Sacramento"], ["CO", "Colorado", "Denver"], ["CT", "Connecticut", "Hartford"], ["DE", "Delaware", "Dover"],
+    ["FL", "Florida", "Tallahassee"], ["GA", "Georgia", "Atlanta"], ["HI", "Hawaii", "Honolulu"], ["ID", "Idaho", "Boise"],
+    ["IL", "Illinois", "Springfield"], ["IN", "Indiana", "Indianapolis"], ["IA", "Iowa", "Des Moines"], ["KS", "Kansas", "Topeka"],
+    ["KY", "Kentucky", "Frankfort"], ["LA", "Louisiana", "Baton Rouge"], ["ME", "Maine", "Augusta"], ["MD", "Maryland", "Annapolis"],
+    ["MA", "Massachusetts", "Boston"], ["MI", "Michigan", "Lansing"], ["MN", "Minnesota", "Saint Paul", "state", ["St. Paul"]],
+    ["MS", "Mississippi", "Jackson"], ["MO", "Missouri", "Jefferson City"], ["MT", "Montana", "Helena"], ["NE", "Nebraska", "Lincoln"],
+    ["NV", "Nevada", "Carson City"], ["NH", "New Hampshire", "Concord"], ["NJ", "New Jersey", "Trenton"], ["NM", "New Mexico", "Santa Fe"],
+    ["NY", "New York", "Albany"], ["NC", "North Carolina", "Raleigh"], ["ND", "North Dakota", "Bismarck"], ["OH", "Ohio", "Columbus"],
+    ["OK", "Oklahoma", "Oklahoma City"], ["OR", "Oregon", "Salem"], ["PA", "Pennsylvania", "Harrisburg"], ["RI", "Rhode Island", "Providence"],
+    ["SC", "South Carolina", "Columbia"], ["SD", "South Dakota", "Pierre"], ["TN", "Tennessee", "Nashville"], ["TX", "Texas", "Austin"],
+    ["UT", "Utah", "Salt Lake City"], ["VT", "Vermont", "Montpelier"], ["VA", "Virginia", "Richmond"], ["WA", "Washington", "Olympia"],
+    ["WV", "West Virginia", "Charleston"], ["WI", "Wisconsin", "Madison"], ["WY", "Wyoming", "Cheyenne"],
+    ["DC", "District of Columbia", "", "district"],
+    ["AS", "American Samoa", "Pago Pago", "territory"], ["GU", "Guam", "Hagåtña", "territory", ["Hagatna", "Agana"]],
+    ["MP", "Northern Mariana Islands", "Saipan", "territory"], ["PR", "Puerto Rico", "San Juan", "territory"],
+    ["VI", "U.S. Virgin Islands", "Charlotte Amalie", "territory"],
+  ].map(([code, name, capital, kind = "state", capitalAliases = []]) => ({ code, name, capital, kind, capitalAliases }));
+
+  // ---------------------------------------------------------------- Saved on this device
+
+  const storage = {
+    read(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? { ...fallback, ...JSON.parse(raw) } : { ...fallback };
+      } catch {
+        return { ...fallback };
+      }
+    },
+    write(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* private window: keep going without saving */ }
+    },
+  };
+
+  const DEFAULT_SETTINGS = {
+    voiceURI: "", rate: 0.9, autoRead: true, readAnswer: true, hideText: false,
+    listenPause: 4, listenAll: false, listenShuffled: false,
+    place: "", governor: "", senator1: "", senator2: "", representative: "",
+    ...DEFAULT_OFFICIALS,
+  };
+  const settings = storage.read("civics.settings.v1", DEFAULT_SETTINGS);
+  const saveSettings = () => storage.write("civics.settings.v1", settings);
+
+  const progress = storage.read("civics.progress.v1", {});
+  const saveProgress = () => storage.write("civics.progress.v1", progress);
+  const statsFor = (id) => progress[id] || { correct: 0, wrong: 0, streak: 0 };
+  const isLearned = (s) => s.streak >= 2; // two right in a row; one lucky answer is not enough
+  const isMissed = (s) => s.wrong > 0 && s.streak === 0;
+  const learnedCount = () => ALL_IDS.filter((id) => isLearned(statsFor(id))).length;
+  function record(id, correct) {
+    const s = { ...statsFor(id) };
+    if (correct) { s.correct += 1; s.streak += 1; } else { s.wrong += 1; s.streak = 0; }
+    progress[id] = s;
+    saveProgress();
+  }
+  function notLearned() {
+    const open = ALL_IDS.filter((id) => !isLearned(statsFor(id)));
+    return [...open.filter((id) => isMissed(statsFor(id))), ...open.filter((id) => !isMissed(statsFor(id)))];
+  }
+
+  // ---------------------------------------------------------------- Answers that depend on the learner
+
+  function surname(name) {
+    const parts = name.replace(/,/g, " ").split(/\s+/).filter(Boolean);
+    while (parts.length && ["jr", "jr.", "sr", "sr.", "ii", "iii", "iv"].includes(parts[parts.length - 1].toLowerCase())) parts.pop();
+    return parts.length > 1 ? parts[parts.length - 1] : null;
+  }
+  function person(name) {
+    const clean = (name || "").trim();
+    if (!clean) return null;
+    const last = surname(clean);
+    return { text: clean, also: last ? [last] : [], say: null };
+  }
+  const placeFor = (code) => PLACES.find((p) => p.code === code) || null;
+  const official = (key) => person(settings[key] || DEFAULT_OFFICIALS[key]);
+
+  function answersFor(q) {
+    if (!q.dynamic) return q.answers;
+    const place = placeFor(settings.place);
+    const short = place ? (place.kind === "district" ? "D.C." : place.name) : "";
+    const some = (list) => list.filter(Boolean);
+    switch (q.dynamic) {
+      case "president": case "vicePresident": case "speaker": case "chiefJustice":
+        return some([official(q.dynamic)]);
+      case "senators":
+        if (!place) return [];
+        if (place.kind !== "state") return [{ text: `${short} has no U.S. senators`, also: ["no senators", "none"], say: null }];
+        return some([person(settings.senator1), person(settings.senator2)]);
+      case "representative": {
+        const rep = person(settings.representative);
+        if (rep) return [rep];
+        if (place && place.kind !== "state") {
+          return [{ text: `${short} has no voting representative in Congress`, also: ["no representative", "no voting representative", "none"], say: null }];
+        }
+        return [];
+      }
+      case "governor":
+        if (!place) return [];
+        if (place.kind === "district") return [{ text: "D.C. does not have a governor", also: ["no governor", "none"], say: null }];
+        return some([person(settings.governor)]);
+      case "stateCapital":
+        if (!place) return [];
+        if (place.kind === "district") return [{ text: "D.C. is not a state and does not have a capital", also: ["not a state", "no capital"], say: null }];
+        return [{ text: place.capital, also: place.capitalAliases, say: null }];
+      default:
+        return [];
+    }
+  }
+
+  // ---------------------------------------------------------------- What to say aloud
+
+  // "(U.S.) Constitution" → "U.S. Constitution", "Twenty-seven (27)" → "Twenty-seven".
+  const plain = (text) => text.replace(/\s*\(\d+\)/g, "").replace(/[()]/g, "").replace(/\//g, " or ");
+  const sayAnswer = (a) => a.say || plain(a.text);
+  function sayAnswers(answers, required, readAll) {
+    if (!answers.length) return "This answer depends on where you live. Add your details in Settings.";
+    const count = readAll ? answers.length : Math.min(answers.length, Math.max(required, 3));
+    const spoken = answers.slice(0, count).map((a) => sayAnswer(a).replace(/\.$/, ""));
+    if (required > 1) return `Give ${required} answers. For example: ${spoken.join(". ")}.`;
+    return `Answer: ${spoken.join(". Or: ")}.`;
+  }
+
+  // ---------------------------------------------------------------- Speech
+
+  const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
+  const NOVELTY = /^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Pipe Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Deranged|Hysterical)\b/i;
+
+  function voiceRank(v) {
+    const id = `${v.name} ${v.voiceURI}`;
+    if (/premium/i.test(id)) return 5;
+    if (/enhanced/i.test(id)) return 4;
+    if (/natural|neural/i.test(id)) return 3;
+    if (/google/i.test(id)) return 2;
+    return v.localService ? 1 : 0;
+  }
+  function americanVoices() {
+    if (!synth) return [];
+    return synth.getVoices()
+      .filter((v) => /^en[-_]US$/i.test(v.lang) && !NOVELTY.test(v.name))
+      .sort((a, b) => voiceRank(b) - voiceRank(a) || a.name.localeCompare(b.name));
+  }
+  function voiceLabel(v) {
+    const rank = voiceRank(v);
+    if (rank === 5 && !/premium/i.test(v.name)) return `${v.name} (Premium)`;
+    if (rank === 4 && !/enhanced/i.test(v.name)) return `${v.name} (Enhanced)`;
+    return v.name;
+  }
+  function chosenVoice() {
+    const voices = americanVoices();
+    return voices.find((v) => v.voiceURI === settings.voiceURI) || voices[0] || null;
+  }
+
+  // Plays a list of pieces, each {text, pauseAfter (s), rateScale, onStart}. Starting new speech anywhere stops
+  // whatever was playing; its owner hears about it through onStop.
+  const Speech = (() => {
+    let current = null;
+    let generation = 0;
+
+    function setButton(button, speaking) {
+      if (!button) return;
+      const label = button.querySelector(".label");
+      button.classList.toggle("speaking", speaking);
+      if (label) label.textContent = speaking ? "Stop" : button.dataset.label;
+    }
+
+    function stop() {
+      const was = current;
+      current = null;
+      generation += 1;
+      if (was && was.timer) clearTimeout(was.timer);
+      if (synth && (synth.speaking || synth.pending)) synth.cancel();
+      if (was) {
+        setButton(was.button, false);
+        if (was.onStop) was.onStop();
+      }
+    }
+
+    function speak(pieces, { onFinish, onStop, button } = {}) {
+      const interrupting = Boolean(synth && (synth.speaking || synth.pending));
+      stop();
+      if (!synth || !pieces.length) { if (onFinish) onFinish(); return; }
+      const mine = generation;
+      const keep = []; // Safari drops callbacks for utterances that get garbage-collected
+      let index = 0;
+      current = { onStop, button, timer: null, keep };
+      setButton(button, true);
+
+      const next = () => {
+        if (generation !== mine) return;
+        if (index >= pieces.length) {
+          const done = current;
+          current = null;
+          setButton(done && done.button, false);
+          if (onFinish) onFinish();
+          return;
+        }
+        const piece = pieces[index++];
+        const utterance = new SpeechSynthesisUtterance(piece.text);
+        const voice = chosenVoice();
+        if (voice) utterance.voice = voice;
+        utterance.lang = "en-US";
+        utterance.rate = settings.rate * (piece.rateScale || 1);
+        utterance.onstart = () => { if (generation === mine && piece.onStart) piece.onStart(); };
+        const advance = () => {
+          if (generation !== mine) return;
+          if (piece.pauseAfter) current.timer = setTimeout(next, piece.pauseAfter * 1000);
+          else next();
+        };
+        utterance.onend = advance;
+        utterance.onerror = advance;
+        keep.push(utterance);
+        synth.speak(utterance);
+      };
+      // Chrome can drop an utterance queued in the same tick as cancel().
+      if (interrupting) current.timer = setTimeout(next, 80);
+      else next();
+    }
+
+    function isPlayingFrom(button) {
+      return Boolean(current && current.button === button);
+    }
+
+    return { speak, stop, isPlayingFrom };
+  })();
+
+  // iOS only lets a page speak after a tap. A silent utterance on the first touch unlocks later speech.
+  let unlocked = false;
+  function unlockSpeech() {
+    if (unlocked || !synth) return;
+    unlocked = true;
+    const u = new SpeechSynthesisUtterance(" ");
+    u.volume = 0;
+    synth.speak(u);
+  }
+  document.addEventListener("pointerdown", unlockSpeech, { once: true, capture: true });
+  document.addEventListener("keydown", unlockSpeech, { once: true, capture: true });
+
+  const say = (text, options = {}) => Speech.speak([{ text, rateScale: options.rateScale }], options);
+  // Stops speech started on this screen, but leaves the Listen tab playing in the background.
+  const quiet = () => { if (!listen.playing) Speech.stop(); };
+
+  // ---------------------------------------------------------------- Helpers
+
+  const view = document.getElementById("view");
+  const live = document.getElementById("live");
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const shuffled = (list) => {
+    const out = list.slice();
+    for (let i = out.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
+  };
+  const announce = (text) => { live.textContent = ""; setTimeout(() => { live.textContent = text; }, 30); };
+
+  const ICON = {
+    speaker: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+    slow: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l-2.5 2"/><path d="M10 2h4"/></svg>',
+    eye: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    ear: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8.5a6 6 0 1 1 12 0c0 3.5-3 4.5-3 7.5a3.5 3.5 0 0 1-6.5 1.8"/><path d="M9.5 8.5a2.5 2.5 0 0 1 5 0"/></svg>',
+    mic: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+    check: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>',
+    cross: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>',
+    info: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7.5h.01"/></svg>',
+    back: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+    chevron: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+    play: '<svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l10.5-6.5z"/></svg>',
+    pause: '<svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z"/></svg>',
+    prev: '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 5h2.5v14H6zM19 5.5v13L9.5 12z"/></svg>',
+    next: '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 5H18v14h-2.5zM5 5.5v13l9.5-6.5z"/></svg>',
+  };
+
+  const speakButton = (act, label, icon, extra = "", attrs = "") =>
+    `<button type="button" class="btn ${extra}" data-act="${act}" data-label="${esc(label)}" ${attrs}>${icon}<span class="label">${esc(label)}</span></button>`;
+
+  function answerList(q, answers, matched = []) {
+    let head = "Answer";
+    if (q.required > 1) head = `Give any ${q.required} of these answers`;
+    else if (answers.length > 1) head = "Give any one of these answers";
+    const items = answers.length
+      ? `<ul class="answers">${answers.map((a, i) => `<li class="${matched.includes(i) ? "given" : ""}">${matched.includes(i) ? '<span class="visually-hidden">Your answer: </span>' : ""}${esc(a.text)}</li>`).join("")}</ul>`
+      : `<p class="muted">This answer depends on where you live. Choose your state and add your officials in <button type="button" class="btn-quiet btn" data-act="tab" data-tab="settings">Settings</button>.</p>`;
+    const notes = [];
+    if (answers.some((a) => a.text.includes("("))) notes.push("Words in (parentheses) are optional.");
+    if (q.note) notes.push(q.note);
+    if (["president", "vicePresident", "speaker", "chiefJustice"].includes(q.dynamic)) {
+      notes.push(`Correct as of ${OFFICIALS_AS_OF}. Officials change after elections and appointments, so check <a href="https://www.uscis.gov/citizenship/testupdates" target="_blank" rel="noopener">uscis.gov/citizenship/testupdates</a> before your interview and update the name in Settings if needed.`);
+    }
+    return `<div class="stack-sm"><p class="answers-head">${head}</p>${items}${notes.map((n) => `<p class="note">${n.startsWith("Correct as of") ? n : esc(n)}</p>`).join("")}</div>`;
+  }
+
+  // ---------------------------------------------------------------- App state
+
+  const state = {
+    tab: "practice",
+    questions: { search: "", openId: null },
+    practice: null, // the sitting in progress, or null for the practice menu
+    confirmingReset: false,
+  };
+
+  const listen = {
+    order: settings.listenShuffled ? shuffled(ALL_IDS) : ALL_IDS.slice(),
+    position: 0,
+    phase: "question",
+    playing: false,
+    wakeLock: null,
+  };
+
+  // ---------------------------------------------------------------- Rendering
+
+  function render() {
+    document.querySelectorAll(".tabbar button").forEach((b) => {
+      if (b.dataset.tab === state.tab) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
+    });
+    if (state.tab === "practice") view.innerHTML = state.practice ? renderSession() : renderPracticeHome();
+    else if (state.tab === "questions") view.innerHTML = state.questions.openId ? renderDetail() : renderQuestionList();
+    else if (state.tab === "listen") view.innerHTML = renderListen();
+    else view.innerHTML = renderSettings();
+  }
+
+  // ----- Practice menu
+
+  function scorecard(outcomes = []) {
+    const slots = Array.from({ length: INTERVIEW.length }, (_, i) => {
+      const o = outcomes[i];
+      return `<span class="slot ${o === undefined ? "" : o.correct ? "good" : "bad"}"></span>`;
+    }).join("");
+    return `<div class="scorecard" role="img" aria-label="${outcomes.filter((o) => o.correct).length} right, ${outcomes.filter((o) => !o.correct).length} wrong, of up to 20 questions">${slots}</div>`;
+  }
+
+  function renderPracticeHome() {
+    const learned = learnedCount();
+    const open = notLearned();
+    return `
+      <div class="stack">
+        <section class="card stack" aria-labelledby="mock-title">
+          <div class="stack-sm">
+            <span class="eyebrow">Like the real interview</span>
+            <h1 id="mock-title" class="q-text">Mock interview</h1>
+            <p class="measure">The officer reads up to 20 questions aloud. You pass with 12 right, and the test stops early at 12 right or 9 wrong. Here the text stays hidden, so you practise by ear.</p>
+          </div>
+          ${scorecard()}
+          <div class="row"><button type="button" class="btn btn-primary btn-wide" data-act="start" data-kind="interview">Start the mock interview</button></div>
+        </section>
+
+        <section class="card stack-sm" aria-label="Your progress">
+          <div class="row" style="align-items:baseline"><span class="big-figure">${learned}</span><span class="muted">of 128 questions learned</span></div>
+          <div class="meter"><span style="width:${(learned / 128) * 100}%"></span></div>
+          <p class="small muted">A question counts as learned after you answer it right twice in a row. Progress is saved in this browser.</p>
+        </section>
+
+        <h2 class="section-title">Practice</h2>
+        <div class="menu">
+          <button type="button" data-act="start" data-kind="shuffled"><span class="title">All questions, shuffled</span><span class="detail">All 128 in random order</span><span class="chev">${ICON.chevron}</span></button>
+          <button type="button" data-act="start" data-kind="ordered"><span class="title">All questions, in order</span><span class="detail">From question 1 to 128</span><span class="chev">${ICON.chevron}</span></button>
+          <button type="button" data-act="start" data-kind="open" ${open.length ? "" : "disabled"}><span class="title">Not learned yet</span><span class="detail">${open.length} questions, the ones you missed first</span><span class="chev">${ICON.chevron}</span></button>
+        </div>
+
+        <h2 class="section-title">By topic</h2>
+        <div class="menu">
+          ${GROUPS.map((g, i) => `<button type="button" data-act="start" data-kind="topic" data-group="${i}"><span class="title">${esc(g.subsection)}</span><span class="detail">${esc(g.section)}</span><span class="count">${g.questions.length}</span></button>`).join("")}
+        </div>
+
+        <div class="card stack-sm">
+          <label class="switch-row" for="opt-hide"><span>Hide the question text</span><input class="switch" type="checkbox" id="opt-hide" data-setting="hideText" ${settings.hideText ? "checked" : ""}></label>
+          <label class="switch-row" for="opt-read"><span>Read questions aloud</span><input class="switch" type="checkbox" id="opt-read" data-setting="autoRead" ${settings.autoRead ? "checked" : ""}></label>
+          <p class="small muted">At the interview you only hear the questions. Hiding the text trains your ear for that; you can always show it.</p>
+        </div>
+      </div>`;
+  }
+
+  // ----- A sitting
+
+  function sessionInfo(p) {
+    const index = p.outcomes.length;
+    const right = p.outcomes.filter((o) => o.correct).length;
+    const wrong = index - right;
+    let finished = index >= p.ids.length;
+    if (p.kind === "interview") finished = finished || right >= INTERVIEW.pass || wrong >= INTERVIEW.fail;
+    return { index, right, wrong, finished, currentId: finished ? null : p.ids[index] };
+  }
+
+  function startSession(kind, groupIndex) {
+    let ids;
+    let title;
+    let hidesText = settings.hideText;
+    if (kind === "interview") { ids = shuffled(ALL_IDS).slice(0, INTERVIEW.length); title = "Mock interview"; hidesText = true; }
+    else if (kind === "shuffled") { ids = shuffled(ALL_IDS); title = "All questions, shuffled"; }
+    else if (kind === "ordered") { ids = ALL_IDS.slice(); title = "All questions, in order"; }
+    else if (kind === "open") { ids = notLearned(); title = "Not learned yet"; }
+    else { const g = GROUPS[groupIndex]; ids = g.questions.map((q) => q.id); title = g.subsection; }
+    if (!ids.length) return;
+    state.practice = {
+      kind: kind === "interview" ? "interview" : "practice", title, ids, outcomes: [],
+      showText: !hidesText, reply: "", result: null, ownVerdict: null, revealed: false,
+    };
+    beginQuestion();
+  }
+
+  function beginQuestion() {
+    const p = state.practice;
+    Object.assign(p, { reply: "", result: null, ownVerdict: null, revealed: false });
+    render();
+    window.scrollTo(0, 0);
+    const { currentId } = sessionInfo(p);
+    if (currentId && settings.autoRead) say(plain(BY_ID.get(currentId).text), { button: view.querySelector('[data-act="p-play"]') });
+  }
+
+  function renderSession() {
+    const p = state.practice;
+    const info = sessionInfo(p);
+    if (info.finished) return renderSummary(p, info);
+    const q = BY_ID.get(info.currentId);
+    const answers = answersFor(q);
+    const showsText = p.showText || p.revealed || p.result;
+    const total = p.kind === "interview" ? INTERVIEW.length : p.ids.length;
+
+    const top = `
+      <div class="row" style="justify-content:space-between">
+        <button type="button" class="btn btn-quiet" data-act="end-session">${ICON.back}<span>End</span></button>
+        <button type="button" class="btn btn-quiet" data-act="p-toggle-text">${ICON.eye}<span>${p.showText ? "Hide text" : "Always show text"}</span></button>
+      </div>
+      <div class="stack-sm">
+        <div class="row" style="justify-content:space-between">
+          <span class="eyebrow num">${esc(p.title)} · Question ${info.index + 1} of ${total}</span>
+          ${info.index ? `<span class="tally small"><span class="good">${info.right} right</span><span class="bad">${info.wrong} wrong</span></span>` : ""}
+        </div>
+        ${p.kind === "interview" ? scorecard(p.outcomes) : `<div class="meter"><span style="width:${(info.index / total) * 100}%"></span></div>`}
+      </div>`;
+
+    const card = `
+      <section class="card stack" aria-label="Question">
+        ${showsText
+          ? `<div class="stack-sm"><span class="q-num">Question ${q.id}</span><h1 class="q-text">${esc(q.text)}</h1></div>`
+          : `<div class="stack-sm"><div class="q-hidden">${ICON.ear}<span>Listen to the question</span></div><p class="muted">The text is hidden, as it is at the interview. Play it again as often as you like.</p></div>`}
+        <div class="row">
+          ${speakButton("p-play", "Play again", ICON.speaker, "btn-primary")}
+          ${speakButton("p-slow", "Slower", ICON.slow)}
+          ${showsText ? "" : `<button type="button" class="btn" data-act="p-reveal">${ICON.eye}<span>Show text</span></button>`}
+        </div>
+      </section>`;
+
+    return `<div class="stack">${top}${card}${p.result ? renderFeedback(p, q, answers) : renderReply(p)}</div>`;
+  }
+
+  function renderReply(p) {
+    return `
+      <section class="stack-sm" aria-label="Your answer">
+        <label for="reply" class="answers-head">Your answer</label>
+        <textarea id="reply" class="reply" rows="3" enterkeyhint="done" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="Type your answer">${esc(p.reply)}</textarea>
+        <p class="hint">${ICON.mic}<span>To answer out loud, tap the microphone on your phone’s keyboard and speak. Press Enter or Check when you’re done.</span></p>
+        <div class="row">
+          <button type="button" class="btn btn-wide" data-act="p-dunno">I don’t know</button>
+          <button type="button" class="btn btn-primary btn-wide" data-act="p-check" ${p.reply.trim() ? "" : "disabled"}>Check</button>
+        </div>
+      </section>`;
+  }
+
+  function isLastQuestion(p) {
+    const correct = p.ownVerdict != null ? p.ownVerdict : p.result && p.result.verdict === "correct";
+    return sessionInfo({ ...p, outcomes: [...p.outcomes, { id: 0, correct }] }).finished;
+  }
+
+  function renderFeedback(p, q, answers) {
+    const r = p.result;
+    const unchecked = r.verdict === "unchecked" && p.ownVerdict == null;
+    const correct = p.ownVerdict != null ? p.ownVerdict : r.verdict === "correct";
+    let verdict;
+    if (unchecked) verdict = `<p class="verdict info">${ICON.info}Check your answer</p>`;
+    else if (correct) verdict = `<p class="verdict good">${ICON.check}Correct!</p>`;
+    else verdict = `<p class="verdict bad">${ICON.cross}Not quite</p>`;
+
+    const extra = [];
+    if (!correct && !unchecked && q.required > 1 && r.matched.length) {
+      extra.push(`<p class="muted">You named ${r.matched.length} of the ${q.required} answers needed.</p>`);
+    }
+    if (unchecked) {
+      extra.push('<p class="muted">This answer depends on where you live. Add your state and officials in Settings to have it checked, or compare with the answers below.</p>');
+    }
+
+    const actions = unchecked
+      ? `<button type="button" class="btn btn-wide" data-act="p-self" data-value="0">I got it wrong</button><button type="button" class="btn btn-primary btn-wide" data-act="p-self" data-value="1">I got it right</button>`
+      : `<button type="button" class="btn btn-primary btn-wide" data-act="p-next">${isLastQuestion(p) ? "See results" : "Next question"}</button>`;
+
+    return `
+      <section class="card stack" aria-label="Result">
+        ${verdict}
+        ${p.reply ? `<div class="stack-sm"><span class="eyebrow">You said</span><p class="you-said">“${esc(p.reply)}”</p></div>` : ""}
+        ${extra.join("")}
+        ${answerList(q, answers, r.matched)}
+        <div class="row">
+          ${speakButton("p-hear", "Hear the answer", ICON.speaker)}
+          <button type="button" class="btn" data-act="p-retry">Try again</button>
+        </div>
+        ${unchecked ? "" : `<div><button type="button" class="btn btn-quiet" data-act="p-override">${correct ? "Count this as wrong" : "My answer was right, count it"}</button></div>`}
+      </section>
+      <div class="row">${actions}</div>`;
+  }
+
+  function renderSummary(p, info) {
+    const interview = p.kind === "interview";
+    const passed = info.right >= INTERVIEW.pass;
+    const title = interview ? (passed ? "You passed" : "Not yet. Keep practising") : "Session complete";
+    const missed = p.outcomes.filter((o) => !o.correct).map((o) => BY_ID.get(o.id));
+    return `
+      <div class="stack">
+        <section class="card stack">
+          <span class="eyebrow">${esc(p.title)}</span>
+          <h1 class="q-text">${title}</h1>
+          ${interview ? scorecard(p.outcomes) : ""}
+          <p class="tally"><span class="good">${info.right} right</span><span class="bad">${info.wrong} missed</span></p>
+          ${interview ? `<p class="small muted">The officer asks up to ${INTERVIEW.length} questions and stops once you have ${INTERVIEW.pass} right or ${INTERVIEW.fail} wrong.</p>` : ""}
+          <div class="row"><button type="button" class="btn btn-primary btn-wide" data-act="end-session">Back to practice</button></div>
+        </section>
+        ${missed.length ? `<h2 class="section-title">Go over these again</h2>${missed.map((q) => `
+          <section class="card stack-sm">
+            <span class="q-num">Question ${q.id}</span>
+            <h3 class="q-text" style="font-size:1.2rem">${esc(q.text)}</h3>
+            ${answerList(q, answersFor(q))}
+          </section>`).join("")}` : ""}
+      </div>`;
+  }
+
+  function checkReply() {
+    const p = state.practice;
+    const { currentId } = sessionInfo(p);
+    const q = BY_ID.get(currentId);
+    const answers = answersFor(q);
+    p.result = AnswerMatcher.check(p.reply, answers, q.required);
+    p.ownVerdict = null;
+    render();
+    const v = p.result.verdict;
+    announce(v === "correct" ? "Correct" : v === "incorrect" ? "Not quite" : "Check your answer");
+    if (settings.readAnswer) {
+      const button = view.querySelector('[data-act="p-hear"]');
+      if (v === "correct") say("Correct.", { button });
+      else say(`${v === "incorrect" ? "Not quite. " : ""}${sayAnswers(answers, q.required, false)}`, { button });
+    }
+  }
+
+  function nextQuestion() {
+    const p = state.practice;
+    const correct = p.ownVerdict != null ? p.ownVerdict : p.result.verdict === "correct";
+    const { currentId } = sessionInfo(p);
+    quiet();
+    record(currentId, correct);
+    p.outcomes.push({ id: currentId, correct });
+    if (sessionInfo(p).finished) {
+      render();
+      window.scrollTo(0, 0);
+      return;
+    }
+    beginQuestion();
+  }
+
+  // ----- Questions
+
+  function matchesSearch(q, query) {
+    if (!query) return true;
+    const lower = query.toLowerCase();
+    return String(q.id) === query || q.text.toLowerCase().includes(lower) || q.answers.some((a) => a.text.toLowerCase().includes(lower));
+  }
+
+  function renderQuestionRows() {
+    const query = state.questions.search.trim();
+    const groups = GROUPS.map((g) => ({ ...g, hits: g.questions.filter((q) => matchesSearch(q, query)) })).filter((g) => g.hits.length);
+    if (!groups.length) return `<p class="muted">No question matches “${esc(query)}”.</p>`;
+    return `<div class="menu">${groups.map((g) => `
+      <div class="group-head"><span class="eyebrow">${esc(g.section)}</span><h3>${esc(g.subsection)}</h3></div>
+      ${g.hits.map((q) => {
+        const s = statsFor(q.id);
+        const status = isLearned(s) ? '<span class="status learned" title="Learned"></span><span class="visually-hidden">Learned</span>'
+          : isMissed(s) ? '<span class="status missed" title="Missed last time"></span><span class="visually-hidden">Missed last time</span>' : "<span></span>";
+        return `<button type="button" data-act="open-q" data-id="${q.id}"><span class="qrow"><span class="n">${q.id}</span><span>${esc(q.text)}</span>${status}</span></button>`;
+      }).join("")}`).join("")}</div>`;
+  }
+
+  function renderQuestionList() {
+    return `
+      <div class="stack">
+        <div class="stack-sm">
+          <h1 class="q-text">All 128 questions</h1>
+          <p class="muted">Tap a question to hear it and see its answers.</p>
+        </div>
+        <label for="search" class="visually-hidden">Search questions and answers</label>
+        <input id="search" class="search" type="search" placeholder="Search questions and answers" value="${esc(state.questions.search)}" autocomplete="off">
+        <div id="question-rows">${renderQuestionRows()}</div>
+      </div>`;
+  }
+
+  function renderDetail() {
+    const q = BY_ID.get(state.questions.openId);
+    const answers = answersFor(q);
+    const s = statsFor(q.id);
+    return `
+      <div class="stack">
+        <div class="row" style="justify-content:space-between">
+          <button type="button" class="btn btn-quiet" data-act="close-q">${ICON.back}<span>All questions</span></button>
+          <span class="eyebrow num">${q.id} of 128</span>
+        </div>
+        <section class="card stack">
+          <div class="stack-sm">
+            <span class="q-num">${esc(q.subsection)}</span>
+            <h1 class="q-text">${esc(q.text)}</h1>
+          </div>
+          <div class="row">${speakButton("d-question", "Hear the question", ICON.speaker, "btn-primary")}</div>
+        </section>
+        <section class="card stack">
+          ${answerList(q, answers)}
+          <div class="row">${speakButton("d-answers", "Hear the answers", ICON.speaker)}</div>
+          ${s.correct + s.wrong ? `<p class="small muted">In practice: right ${s.correct} ${s.correct === 1 ? "time" : "times"}, missed ${s.wrong}.</p>` : ""}
+        </section>
+        <div class="row">
+          <button type="button" class="btn btn-wide" data-act="step-q" data-delta="-1" ${q.id <= 1 ? "disabled" : ""}>Previous</button>
+          <button type="button" class="btn btn-wide" data-act="step-q" data-delta="1" ${q.id >= 128 ? "disabled" : ""}>Next</button>
+        </div>
+      </div>`;
+  }
+
+  // ----- Listen
+
+  function renderNowPlaying() {
+    const id = listen.order[listen.position];
+    const q = BY_ID.get(id);
+    const answers = answersFor(q);
+    const showAnswer = !listen.playing || listen.phase === "answer";
+    return `
+      <div class="stack ${listen.playing && listen.phase === "answer" ? "phase-answer" : ""}">
+        <span class="eyebrow num">Question ${q.id} · ${listen.position + 1} of ${listen.order.length}</span>
+        <h1 class="q-text">${esc(q.text)}</h1>
+        <hr class="rule">
+        ${showAnswer
+          ? `<p style="font-size:1.1rem">${answers.length ? answers.map((a) => esc(a.text)).join(" &nbsp;·&nbsp; ") : "Depends on where you live. Add your details in Settings."}</p>`
+          : '<p class="muted" style="font-size:1.1rem">Say your answer out loud…</p>'}
+      </div>`;
+  }
+
+  function renderListen() {
+    return `
+      <div class="stack">
+        <div class="stack-sm">
+          <h1 class="q-text">Listen</h1>
+          <p class="muted measure">Hands-free practice: each question is read, then a pause for you to answer out loud, then the answer.</p>
+        </div>
+        ${synth ? "" : '<p class="banner">This browser can’t read text aloud. Try Safari on iPhone, or Chrome or Edge on a computer.</p>'}
+        <section class="card now" id="now-playing" aria-live="polite">${renderNowPlaying()}</section>
+        <div class="player">
+          <button type="button" class="round" data-act="l-prev" aria-label="Previous question">${ICON.prev}</button>
+          <button type="button" class="round main" data-act="l-play" id="l-play" aria-label="${listen.playing ? "Pause" : "Play"}">${listen.playing ? ICON.pause : ICON.play}</button>
+          <button type="button" class="round" data-act="l-next" aria-label="Next question">${ICON.next}</button>
+        </div>
+        <section class="card stack">
+          <div class="segmented" role="group" aria-label="Order">
+            <button type="button" data-act="l-order" data-value="0" aria-pressed="${!settings.listenShuffled}">In order</button>
+            <button type="button" data-act="l-order" data-value="1" aria-pressed="${settings.listenShuffled}">Shuffled</button>
+          </div>
+          <div class="field">
+            <label for="l-pause">Time to answer before you hear it: <span id="l-pause-value" class="num">${settings.listenPause} seconds</span></label>
+            <input id="l-pause" type="range" min="1" max="10" step="1" value="${settings.listenPause}" data-setting="listenPause">
+          </div>
+          <label class="switch-row" for="l-all"><span>Read every accepted answer</span><input class="switch" type="checkbox" id="l-all" data-setting="listenAll" ${settings.listenAll ? "checked" : ""}></label>
+          <div class="field">
+            <label for="l-jump">Start from a topic</label>
+            <select id="l-jump">
+              <option value="">Choose a topic…</option>
+              ${GROUPS.map((g) => `<option value="${g.questions[0].id}">${esc(g.subsection)} (from question ${g.questions[0].id})</option>`).join("")}
+            </select>
+          </div>
+        </section>
+        <p class="small muted">Keep this page open while you listen; the screen stays on while it plays. No sound? Check the volume, and on iPhone make sure silent mode is off.</p>
+      </div>`;
+  }
+
+  function refreshListen() {
+    if (state.tab !== "listen") return;
+    const card = document.getElementById("now-playing");
+    const play = document.getElementById("l-play");
+    if (card) card.innerHTML = renderNowPlaying();
+    if (play) {
+      play.innerHTML = listen.playing ? ICON.pause : ICON.play;
+      play.setAttribute("aria-label", listen.playing ? "Pause" : "Play");
+    }
+  }
+
+  async function keepScreenOn(on) {
+    try {
+      if (on && !listen.wakeLock && navigator.wakeLock) listen.wakeLock = await navigator.wakeLock.request("screen");
+      if (!on && listen.wakeLock) { await listen.wakeLock.release(); listen.wakeLock = null; }
+    } catch { listen.wakeLock = null; }
+  }
+
+  function listenPlay() {
+    if (!synth) return;
+    const pieces = [];
+    for (let index = listen.position; index < listen.order.length; index += 1) {
+      const q = BY_ID.get(listen.order[index]);
+      pieces.push({
+        text: `Question ${q.id}. ${plain(q.text)}`,
+        pauseAfter: settings.listenPause,
+        onStart: () => { listen.position = index; listen.phase = "question"; refreshListen(); },
+      });
+      pieces.push({
+        text: sayAnswers(answersFor(q), q.required, settings.listenAll),
+        pauseAfter: 1.5,
+        onStart: () => { listen.phase = "answer"; refreshListen(); },
+      });
+    }
+    Speech.speak(pieces, {
+      onFinish: () => { listen.playing = false; listen.position = 0; listen.phase = "question"; keepScreenOn(false); refreshListen(); },
+      onStop: () => { listen.playing = false; keepScreenOn(false); refreshListen(); },
+    });
+    // Set after speaking: replacing our own earlier queue calls its onStop, which clears the flag.
+    listen.playing = true;
+    keepScreenOn(true);
+    refreshListen();
+  }
+
+  function listenMove(index) {
+    listen.position = Math.min(Math.max(index, 0), listen.order.length - 1);
+    listen.phase = "question";
+    if (listen.playing) listenPlay();
+    else refreshListen();
+  }
+
+  // ----- Settings
+
+  function renderVoiceOptions() {
+    const voices = americanVoices();
+    if (!voices.length) return '<option value="">Default voice</option>';
+    return `<option value="">Best available (${esc(voiceLabel(voices[0]))})</option>` +
+      voices.map((v) => `<option value="${esc(v.voiceURI)}" ${v.voiceURI === settings.voiceURI ? "selected" : ""}>${esc(voiceLabel(v))}</option>`).join("");
+  }
+
+  const speedName = (rate) => (rate < 0.8 ? "Slow" : rate < 0.95 ? "Relaxed" : rate < 1.08 ? "Normal" : "Fast");
+
+  function textField(id, key, label, placeholder) {
+    return `<div class="field"><label for="${id}">${label}</label><input id="${id}" type="text" data-setting="${key}" value="${esc(settings[key])}" placeholder="${esc(placeholder)}" autocomplete="off" autocapitalize="words"></div>`;
+  }
+
+  function renderSettings() {
+    const place = placeFor(settings.place);
+    return `
+      <div class="stack">
+        <h1 class="q-text">Settings</h1>
+
+        <h2 class="section-title">Voice</h2>
+        <section class="card stack">
+          ${synth ? "" : '<p class="banner">This browser can’t read text aloud. Try Safari on iPhone, or Chrome or Edge on a computer.</p>'}
+          <div class="field"><label for="s-voice">Voice</label><select id="s-voice" data-setting="voiceURI">${renderVoiceOptions()}</select></div>
+          <div class="field">
+            <label for="s-rate">Speaking speed: <span id="s-rate-value">${speedName(settings.rate)}</span></label>
+            <input id="s-rate" type="range" min="0.6" max="1.2" step="0.05" value="${settings.rate}" data-setting="rate">
+          </div>
+          <div class="row">${speakButton("s-sample", "Play a sample", ICON.speaker)}</div>
+          <p class="small muted">For a more natural voice on iPhone, download an Enhanced or Premium English (US) voice in the Settings app under Accessibility › Spoken Content › Voices › English (on newer iOS, Accessibility › Read & Speak). The interview is at a normal pace, so work up to Normal.</p>
+        </section>
+
+        <h2 class="section-title">Practice</h2>
+        <section class="card stack-sm">
+          <label class="switch-row" for="s-autoread"><span>Read questions aloud</span><input class="switch" type="checkbox" id="s-autoread" data-setting="autoRead" ${settings.autoRead ? "checked" : ""}></label>
+          <label class="switch-row" for="s-readanswer"><span>Read the answer after checking</span><input class="switch" type="checkbox" id="s-readanswer" data-setting="readAnswer" ${settings.readAnswer ? "checked" : ""}></label>
+          <label class="switch-row" for="s-hide"><span>Hide the question text</span><input class="switch" type="checkbox" id="s-hide" data-setting="hideText" ${settings.hideText ? "checked" : ""}></label>
+        </section>
+
+        <h2 class="section-title">Where you live</h2>
+        <section class="card stack">
+          <p class="small muted">Questions 23, 29, 61 and 62 depend on where you live.</p>
+          <div class="field">
+            <label for="s-place">State or territory</label>
+            <select id="s-place" data-setting="place">
+              <option value="">Not set</option>
+              ${PLACES.map((p) => `<option value="${p.code}" ${p.code === settings.place ? "selected" : ""}>${esc(p.name)}</option>`).join("")}
+            </select>
+          </div>
+          ${place ? `<p><span class="muted">Capital:</span> ${place.kind === "district" ? "none. D.C. is not a state" : esc(place.capital)}</p>` : ""}
+          ${!place || place.kind !== "district" ? textField("s-governor", "governor", "Governor", "Name") : ""}
+          ${!place || place.kind === "state" ? textField("s-senator1", "senator1", "U.S. senator", "Name") + textField("s-senator2", "senator2", "U.S. senator", "Name") : ""}
+          ${textField("s-rep", "representative", "U.S. representative", "Name")}
+          <p class="small muted">Look them up: <a href="https://www.senate.gov/senators/senators-contact.htm" target="_blank" rel="noopener">your senators</a>, <a href="https://www.house.gov/representatives/find-your-representative" target="_blank" rel="noopener">your representative</a>, <a href="https://www.usa.gov/state-governor" target="_blank" rel="noopener">your governor</a>.</p>
+        </section>
+
+        <h2 class="section-title">Current officials</h2>
+        <section class="card stack">
+          ${textField("s-president", "president", "President", DEFAULT_OFFICIALS.president)}
+          ${textField("s-vp", "vicePresident", "Vice President", DEFAULT_OFFICIALS.vicePresident)}
+          ${textField("s-speaker", "speaker", "Speaker of the House", DEFAULT_OFFICIALS.speaker)}
+          ${textField("s-cj", "chiefJustice", "Chief Justice", DEFAULT_OFFICIALS.chiefJustice)}
+          <p class="small muted">Correct as of ${OFFICIALS_AS_OF}. These change after elections and appointments; USCIS lists the answers it currently accepts at <a href="https://www.uscis.gov/citizenship/testupdates" target="_blank" rel="noopener">uscis.gov/citizenship/testupdates</a>.</p>
+          <div><button type="button" class="btn" data-act="s-restore">Restore these names</button></div>
+        </section>
+
+        <h2 class="section-title">Progress</h2>
+        <section class="card stack-sm">
+          <p><span class="num">${learnedCount()}</span> of 128 questions learned. Progress is kept in this browser only.</p>
+          ${state.confirmingReset
+            ? `<p>Clear which questions you have learned? Your settings are kept.</p><div class="row"><button type="button" class="btn" data-act="s-reset-cancel">Keep my progress</button><button type="button" class="btn btn-primary" data-act="s-reset-confirm">Clear progress</button></div>`
+            : '<div><button type="button" class="btn" data-act="s-reset">Reset progress</button></div>'}
+        </section>
+
+        <h2 class="section-title">About</h2>
+        <section class="card stack-sm">
+          <p class="measure">These are the 128 questions of the 2025 civics test, which applies to applications (Form N-400) filed on or after October 20, 2025. At the interview the officer asks up to 20 of them out loud, and you pass with 12 correct.</p>
+          <p class="small"><a href="https://www.uscis.gov/citizenship-resource-center/naturalization-test-and-study-resources/2025-civics-test" target="_blank" rel="noopener">USCIS: the 2025 civics test</a></p>
+        </section>
+      </div>`;
+  }
+
+  // ---------------------------------------------------------------- Events
+
+  const actions = {
+    tab(el) {
+      if (state.tab === el.dataset.tab && state.tab === "questions") state.questions.openId = null;
+      if (state.tab !== el.dataset.tab) quiet();
+      state.tab = el.dataset.tab;
+      state.confirmingReset = false;
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    start(el) {
+      startSession(el.dataset.kind, Number(el.dataset.group));
+    },
+    "end-session"() {
+      quiet();
+      state.practice = null;
+      render();
+      window.scrollTo(0, 0);
+    },
+    "p-play"(el) {
+      if (Speech.isPlayingFrom(el)) { Speech.stop(); return; }
+      say(plain(BY_ID.get(sessionInfo(state.practice).currentId).text), { button: el });
+    },
+    "p-slow"(el) {
+      if (Speech.isPlayingFrom(el)) { Speech.stop(); return; }
+      say(plain(BY_ID.get(sessionInfo(state.practice).currentId).text), { button: el, rateScale: 0.75 });
+    },
+    "p-reveal"() { state.practice.revealed = true; render(); },
+    "p-toggle-text"() { state.practice.showText = !state.practice.showText; render(); },
+    "p-check"() { if (state.practice.reply.trim()) checkReply(); },
+    "p-dunno"() {
+      const p = state.practice;
+      const q = BY_ID.get(sessionInfo(p).currentId);
+      p.reply = "";
+      p.result = { verdict: "incorrect", matched: [], required: q.required };
+      p.ownVerdict = false;
+      render();
+      if (settings.readAnswer) say(sayAnswers(answersFor(q), q.required, false), { button: view.querySelector('[data-act="p-hear"]') });
+    },
+    "p-hear"(el) {
+      if (Speech.isPlayingFrom(el)) { Speech.stop(); return; }
+      const q = BY_ID.get(sessionInfo(state.practice).currentId);
+      say(sayAnswers(answersFor(q), q.required, true), { button: el });
+    },
+    "p-retry"() {
+      quiet();
+      Object.assign(state.practice, { reply: "", result: null, ownVerdict: null });
+      render();
+      const box = document.getElementById("reply");
+      if (box) box.focus();
+    },
+    "p-override"() {
+      const p = state.practice;
+      const correct = p.ownVerdict != null ? p.ownVerdict : p.result.verdict === "correct";
+      p.ownVerdict = !correct;
+      render();
+    },
+    "p-self"(el) { state.practice.ownVerdict = el.dataset.value === "1"; nextQuestion(); },
+    "p-next"() { nextQuestion(); },
+
+    "open-q"(el) {
+      state.questions.openId = Number(el.dataset.id);
+      render();
+      window.scrollTo(0, 0);
+    },
+    "close-q"() {
+      quiet();
+      state.questions.openId = null;
+      render();
+    },
+    "step-q"(el) {
+      quiet();
+      state.questions.openId = Math.min(Math.max(state.questions.openId + Number(el.dataset.delta), 1), 128);
+      render();
+    },
+    "d-question"(el) {
+      if (Speech.isPlayingFrom(el)) { Speech.stop(); return; }
+      say(plain(BY_ID.get(state.questions.openId).text), { button: el });
+    },
+    "d-answers"(el) {
+      if (Speech.isPlayingFrom(el)) { Speech.stop(); return; }
+      const q = BY_ID.get(state.questions.openId);
+      say(sayAnswers(answersFor(q), q.required, true), { button: el });
+    },
+
+    "l-play"() {
+      if (listen.playing) Speech.stop();
+      else listenPlay();
+    },
+    "l-prev"() { listenMove(listen.phase === "answer" ? listen.position : listen.position - 1); },
+    "l-next"() { listenMove(listen.position + 1); },
+    "l-order"(el) {
+      const shuffle = el.dataset.value === "1";
+      if (shuffle === settings.listenShuffled) return;
+      settings.listenShuffled = shuffle;
+      saveSettings();
+      const wasPlaying = listen.playing;
+      Speech.stop();
+      listen.order = shuffle ? shuffled(ALL_IDS) : ALL_IDS.slice();
+      listen.position = 0;
+      listen.phase = "question";
+      render();
+      if (wasPlaying) listenPlay();
+    },
+
+    "s-sample"(el) {
+      if (Speech.isPlayingFrom(el)) { Speech.stop(); return; }
+      say("What is the supreme law of the land?", { button: el });
+    },
+    "s-restore"() {
+      Object.assign(settings, DEFAULT_OFFICIALS);
+      saveSettings();
+      render();
+    },
+    "s-reset"() { state.confirmingReset = true; render(); },
+    "s-reset-cancel"() { state.confirmingReset = false; render(); },
+    "s-reset-confirm"() {
+      for (const key of Object.keys(progress)) delete progress[key];
+      saveProgress();
+      state.confirmingReset = false;
+      render();
+      announce("Progress cleared");
+    },
+  };
+
+  document.addEventListener("click", (event) => {
+    const el = event.target.closest("[data-act]");
+    if (!el || el.disabled) return;
+    const handler = actions[el.dataset.act];
+    if (handler) handler(el, event);
+  });
+
+  // Settings controls: every input marked data-setting saves itself.
+  function applySetting(el) {
+    const key = el.dataset.setting;
+    let value;
+    if (el.type === "checkbox") value = el.checked;
+    else if (el.type === "range") value = Number(el.value);
+    else value = el.value;
+    settings[key] = value;
+    saveSettings();
+    return key;
+  }
+
+  document.addEventListener("input", (event) => {
+    const el = event.target;
+    if (el.id === "reply" && state.practice) {
+      state.practice.reply = el.value;
+      const check = view.querySelector('[data-act="p-check"]');
+      if (check) check.disabled = !el.value.trim();
+      return;
+    }
+    if (el.id === "search") {
+      state.questions.search = el.value;
+      document.getElementById("question-rows").innerHTML = renderQuestionRows();
+      return;
+    }
+    if (el.dataset.setting && (el.type === "range" || el.type === "text")) {
+      const key = applySetting(el);
+      if (key === "rate") document.getElementById("s-rate-value").textContent = speedName(settings.rate);
+      if (key === "listenPause") document.getElementById("l-pause-value").textContent = `${settings.listenPause} seconds`;
+    }
+  });
+
+  document.addEventListener("change", (event) => {
+    const el = event.target;
+    if (el.id === "l-jump" && el.value) {
+      const index = listen.order.indexOf(Number(el.value));
+      el.value = "";
+      if (index >= 0) listenMove(index);
+      return;
+    }
+    if (!el.dataset.setting) return;
+    const key = el.type === "range" || el.type === "text" ? el.dataset.setting : applySetting(el);
+    if (key === "place") render();
+    if ((key === "listenPause" || key === "listenAll") && listen.playing) listenPlay();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.target.id === "reply" && event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+      event.preventDefault();
+      if (state.practice && state.practice.reply.trim()) checkReply();
+    }
+  });
+
+  if (synth && typeof synth.addEventListener === "function") {
+    synth.addEventListener("voiceschanged", () => {
+      const select = document.getElementById("s-voice");
+      if (select) select.innerHTML = renderVoiceOptions();
+    });
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && listen.playing) keepScreenOn(true);
+  });
+
+  const start = location.hash.replace("#", "");
+  if (["practice", "questions", "listen", "settings"].includes(start)) state.tab = start;
+  render();
+})();
+</script>

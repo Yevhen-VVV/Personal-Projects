@@ -1,0 +1,32 @@
+# Checks the web version of the civics app: the answer checker's tests pass, and the built page is up
+# to date with its sources and with the question bank it shares with the iPhone app.
+name: Civics web app
+
+on:
+  push:
+    paths:
+      - 'civics-web/**'
+      - 'CitizenshipPractice/CitizenshipPractice/Resources/questions.json'
+      - '.github/workflows/civics-web.yml'
+  pull_request:
+    paths:
+      - 'civics-web/**'
+      - 'CitizenshipPractice/CitizenshipPractice/Resources/questions.json'
+      - '.github/workflows/civics-web.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test the answer checker
+        run: node civics-web/matcher.test.mjs
+      - name: Built page is up to date
+        run: node civics-web/build.mjs --check
