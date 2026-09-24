@@ -1,0 +1,82 @@
+# Builds the Civics Test iPhone app, runs its unit tests on a simulator, and
+# keeps an unsigned .ipa as a download.
+#
+# This is the only place the app is compiled other than a Mac with Xcode, so a
+# green run here is what says the Swift in CitizenshipPractice/ builds at all.
+name: Civics iPhone app
+
+on:
+  push:
+    paths:
+      - 'CitizenshipPractice/**'
+      - '.github/workflows/civics-ios.yml'
+  pull_request:
+    paths:
+      - 'CitizenshipPractice/**'
+      - '.github/workflows/civics-ios.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: civics-ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: CitizenshipPractice
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Xcode version
+        run: xcodebuild -version
+
+      - name: Pick an iPhone simulator
+        id: simulator
+        run: |
+          udid=$(xcrun simctl list devices available --json | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          for runtime in sorted(devices, reverse=True):
+              if ".iOS-" not in runtime:
+                  continue
+              for device in devices[runtime]:
+                  if device["name"].startswith("iPhone"):
+                      print(device["udid"])
+                      sys.exit(0)
+          sys.exit("no iPhone simulator available")
+          ')
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+
+      - name: Build and run unit tests
+        run: >
+          xcodebuild test
+          -project CitizenshipPractice.xcodeproj
+          -scheme CitizenshipPractice
+          -destination "id=${{ steps.simulator.outputs.udid }}"
+          CODE_SIGNING_ALLOWED=NO
+
+      # Unsigned, so it installs only after re-signing with your own Apple ID,
+      # for example with Sideloadly or AltStore. See CitizenshipPractice/README.md.
+      - name: Build an unsigned .ipa
+        run: |
+          xcodebuild archive \
+            -project CitizenshipPractice.xcodeproj \
+            -scheme CitizenshipPractice \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/CivicsTest.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO -quiet
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          cp -R "$RUNNER_TEMP/CivicsTest.xcarchive/Products/Applications/CitizenshipPractice.app" "$RUNNER_TEMP/ipa/Payload/"
+          (cd "$RUNNER_TEMP/ipa" && zip -qry CivicsTest-unsigned.ipa Payload)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CivicsTest-unsigned-ipa
+          path: ${{ runner.temp }}/ipa/CivicsTest-unsigned.ipa
+          retention-days: 30
