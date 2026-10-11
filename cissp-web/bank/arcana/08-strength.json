@@ -1,0 +1,30 @@
+{
+  "n": 8,
+  "id": "strength",
+  "name": "Strength",
+  "numeral": "VIII",
+  "archetype": "The Tamer",
+  "concept": "Secure coding",
+  "objectives": [
+    "8.5",
+    "8.3"
+  ],
+  "hue": 24,
+  "upright": "Untrusted input tamed: validated on the server, encoded on output, bound into queries, with errors that reveal nothing.",
+  "reversed": "Raw input let loose: string-built SQL, unchecked buffers, stack traces shown to strangers and code changes nobody logged.",
+  "vision": "A calm figure in a white robe closes a lion's jaws with bare hands. The lion may roar only the words inked on the figure's own palm; the list on the lion's paw counts for nothing. A command the lion roars disguised as a name is pressed into a stone mold with fixed blanks, where it can only ever be a name. Thorns spat into the garland of flowers come out as harmless paintings of thorns. When a roar fails, the figure tells the crowd only that it failed, never why. Above their head the infinity sign has one loop marked check, one marked use, and a mouse slips through the crossing between them.",
+  "decode": [
+    "Jaws held shut; only the words on the figure's palm count → allow-list input validation enforced on the server; client-side checks are trivially bypassed.",
+    "The stone mold with fixed blanks → parameterized queries (prepared statements): input stays data and is never executed as SQL.",
+    "Thorns turned into paintings of thorns → output encoding: special characters are escaped, so the browser shows a script instead of running it (XSS).",
+    "Only that it failed, never why → secure error handling: a generic message for users, the details kept in protected server logs.",
+    "A mouse slipping between check and use → race condition (TOCTOU): an attacker changes the resource after it is checked but before it is used."
+  ],
+  "facts": [
+    "Buffer overflows come from missing bounds checks: input longer than the buffer overwrites adjacent memory, such as a return address. Check every input's length.",
+    "XSS abuses a user's trust in a website; CSRF abuses a website's trust in the user's browser. Output encoding stops XSS; anti-CSRF tokens stop CSRF.",
+    "Maintenance hooks are developer backdoors that bypass access controls; they must be removed before code reaches production."
+  ],
+  "trap": "The collective once trusted the validation running in the browser. Attackers bypass the browser entirely, so validate on the server with an allow-list and bind input with parameterized queries.",
+  "glyph": "<path d=\"M50 24 A7 7 0 0 1 63 27 A7 7 0 0 1 73.5 35.3 A7 7 0 0 1 79.2 47.3 A7 7 0 0 1 79.2 60.7 A7 7 0 0 1 73.5 72.7 A7 7 0 0 1 63 81 A7 7 0 0 1 50 84 A7 7 0 0 1 37 81 A7 7 0 0 1 26.5 72.7 A7 7 0 0 1 20.8 60.7 A7 7 0 0 1 20.8 47.3 A7 7 0 0 1 26.5 35.3 A7 7 0 0 1 37 27 A7 7 0 0 1 50 24\"/><path d=\"M36 40 C36 34 42 32 50 32 C58 32 64 34 64 40 L66 56 C66 67 58 75 50 75 C42 75 34 67 34 56 Z\"/><path d=\"M37 39 C33 33 35 28 41 30 M63 39 C67 33 65 28 59 30\"/><circle cx=\"43\" cy=\"45\" r=\"1.9\" fill=\"currentColor\"/><circle cx=\"57\" cy=\"45\" r=\"1.9\" fill=\"currentColor\"/><polygon points=\"46.5,51 53.5,51 50,55\" fill=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M45 59.5 L39.5 64.5 L45 69.5 M55 59.5 L60.5 64.5 L55 69.5 M53 58.5 L47 70.5\" stroke-width=\"1.9\"/>"
+}

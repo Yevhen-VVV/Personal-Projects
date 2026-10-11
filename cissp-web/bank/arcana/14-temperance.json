@@ -1,0 +1,20 @@
+{
+  "n": 14,
+  "id": "temperance",
+  "name": "Temperance",
+  "numeral": "XIV",
+  "archetype": "The Alchemist",
+  "concept": "Least privilege and separation of duties",
+  "objectives": [
+    "5.4",
+    "7.4"
+  ],
+  "hue": 140,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

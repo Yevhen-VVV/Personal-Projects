@@ -1,17 +1,26 @@
 // Builds the single-file app, cissp-web/cissp-prep.html, from the page
-// template, the engine, the question bank and the Arcade drills.
+// template, the engine, the question bank, the Arcade drills and the Oracle's deck.
 //
 //   node cissp-web/build.mjs           write cissp-prep.html and print bank statistics
 //   node cissp-web/build.mjs --check   fail if cissp-prep.html is out of date
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { DOMAINS, loadBank, loadDrills, report } from "./bank.mjs";
+import { DOMAINS, loadArcana, loadBank, loadDrills, report } from "./bank.mjs";
 
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 
 const { questions, errors: bankErrors } = loadBank();
 const { drills, errors: drillErrors } = loadDrills();
-const errors = bankErrors.concat(drillErrors);
+const { cards, errors: arcanaErrors } = loadArcana();
+for (const c of cards) {
+  const n = questions.filter((q) => (c.objectives || []).includes(q.obj)).length;
+  if (n < 8) arcanaErrors.push(`${c.file} has only ${n} bank questions on its objectives; needs 8`);
+}
+// --draft builds a preview while the deck is being written: deck problems
+// become warnings, and unfinished cards appear with whatever they have.
+const draft = process.argv.includes("--draft");
+if (draft && arcanaErrors.length) console.warn(`Draft build: ${arcanaErrors.length} deck problem(s) ignored.`);
+const errors = bankErrors.concat(drillErrors, draft ? [] : arcanaErrors);
 if (errors.length) {
   console.error(errors.join("\n"));
   console.error(`\n${errors.length} problem(s) in the question bank.`);
@@ -30,6 +39,11 @@ const bank = {
     a: q.a, k: q.takeaway,
   })),
   drills,
+  arcana: cards.map((c) => {
+    const card = { ...c };
+    delete card.file;
+    return card;
+  }),
 };
 
 // Inside a <script> element, "</" could end the element early, so it is escaped in the JSON.
@@ -67,4 +81,5 @@ if (process.argv.includes("--check")) {
   console.log(`  keyed answer is the single longest option: ${(r.longestShare * 100).toFixed(0)}%`);
   console.log(`  difficulty easy/medium/hard: ${r.byDiff.join(" / ")}`);
   console.log(`  drills: ${drills.sequences.length} sequences, ${drills.matches.length} match sets`);
+  console.log(`  oracle: ${bank.arcana.filter((c) => c.vision).length} of 22 cards written`);
 }

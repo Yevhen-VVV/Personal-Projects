@@ -407,8 +407,134 @@ const Engine = (() => {
     return b;
   }
 
+  // ---------------------------------------------------------------------
+  // The Oracle: a deck of 22 Major Arcana, each an archetype carrying one
+  // cluster of exam objectives. A card's state comes from your latest answers
+  // on its objectives; the daily spread and the Shadow are drawn from it.
+
+  // seen: questions answered on the card's objectives; latest: share right on
+  // the latest try; state: veiled (under 3 seen), upright, wavering, reversed.
+  function cardMastery(card, bank, progress) {
+    const objs = new Set(card.objectives);
+    let total = 0, seen = 0, latest = 0, first = 0;
+    for (const q of bank) {
+      if (!objs.has(q.obj)) continue;
+      total++;
+      const r = progress[q.id];
+      if (!r) continue;
+      seen++;
+      latest += r[3];
+      first += r[2];
+    }
+    const rate = seen ? latest / seen : null;
+    const smoothed = (first + PRIOR_RATE * PRIOR_WEIGHT) / (seen + PRIOR_WEIGHT);
+    const state = seen < 3 ? "veiled" : rate >= 0.75 ? "upright" : rate < 0.5 ? "reversed" : "wavering";
+    return { n: card.n, total, seen, rate, smoothed, state };
+  }
+
+  // The Shadow is the card you are weakest on, once there is enough evidence:
+  // at least 20 answers in all and 3 on the card. Ties break by seeded draw.
+  function shadowCard(masteries, dateKey = "") {
+    const answered = masteries.reduce((n, m) => n + m.seen, 0);
+    const known = masteries.filter((m) => m.seen >= 3);
+    if (answered < 20 || !known.length) return null;
+    const rnd = seeded("shadow:" + dateKey);
+    const ranked = known.map((m) => ({ m, k: m.smoothed + rnd() * 1e-6 })).sort((a, b) => a.k - b.k);
+    return ranked[0].m.n;
+  }
+
+  // Three cards a day, the same on every device: the Past is drawn from what
+  // you have integrated (strongest), the Present from the middle, the Future
+  // from what you are weakest on, skipping the Shadow. Without data, the
+  // draw is simply seeded by the date.
+  function dailySpread(masteries, dateKey, shadow = null) {
+    const rnd = seeded("spread:" + dateKey);
+    const pool = masteries.filter((m) => m.n !== shadow).map((m) => ({ n: m.n, k: (m.seen >= 3 ? m.smoothed : 0.6) + rnd() * 0.08 }));
+    pool.sort((a, b) => a.k - b.k);
+    const third = Math.max(1, Math.floor(pool.length / 3));
+    const pick = (list) => list[Math.floor(rnd() * list.length)].n;
+    const future = pick(pool.slice(0, third));
+    const past = pick(pool.slice(-third).filter((x) => x.n !== future));
+    const mid = pool.slice(third, -third).filter((x) => x.n !== future && x.n !== past);
+    const present = pick(mid.length ? mid : pool.filter((x) => x.n !== future && x.n !== past));
+    return [past, present, future];
+  }
+
+  // A question for a card: never seen first, then latest-wrong, then the
+  // longest unseen; a seeded draw among the best candidates.
+  function cardQuestion(card, bank, progress, seedKey, exclude = []) {
+    const objs = new Set(card.objectives);
+    const skip = new Set(exclude);
+    const pool = bank.filter((q) => objs.has(q.obj) && !skip.has(q.id));
+    if (!pool.length) return null;
+    const rank = (q) => {
+      const r = progress[q.id];
+      return !r ? 0 : r[3] === 0 ? 1 : 2 + 1 / (1 + (r[4] || 0) / DAY);
+    };
+    const best = Math.min(...pool.map(rank));
+    const top = pool.filter((q) => rank(q) === best);
+    const rnd = seeded("q:" + seedKey);
+    return top[Math.floor(rnd() * top.length)];
+  }
+
+  // Two copies of the Oracle record merge day by day, keeping the further
+  // along of each day's reading; integrated Shadows are a union.
+  function mergeOracle(a, b) {
+    if (!a) return b;
+    if (!b) return a;
+    const progress = (r) => (r.results || []).filter((x) => x != null).length * 2 + (r.flipped || []).filter(Boolean).length + (r.oracle ? 10 : 0);
+    const readings = { ...(a.readings || {}) };
+    for (const [day, r] of Object.entries(b.readings || {})) if (!readings[day] || progress(r) > progress(readings[day])) readings[day] = r;
+    const sa = a.shadows || {}, sb = b.shadows || {};
+    return {
+      ...a,
+      readings,
+      shadows: { attempts: Math.max(sa.attempts || 0, sb.attempts || 0), wins: { ...(sb.wins || {}), ...(sa.wins || {}) } },
+      updatedAt: Math.max(a.updatedAt || 0, b.updatedAt || 0),
+    };
+  }
+
+  // The card face as an SVG string. The art is always a night sky, whatever
+  // the page theme. A reversed card is drawn upside down, as in a real reading.
+  const GOLD = "#dcb86c", PALE = "#f5ead0";
+  function cardSvg(card, { reversed = false, back = false, gilded = false, uid = "" } = {}) {
+    const id = `c${card ? card.n : "b"}${uid}`;
+    const hue = back || !card ? 248 : card.hue;
+    const rnd = seeded("stars:" + (back || !card ? "back" : card.id));
+    let stars = "";
+    for (let i = 0; i < 16; i++) {
+      // Stars stay clear of the numeral and the name.
+      const x = 16 + rnd() * 108, y = 38 + rnd() * 130, r = 0.35 + rnd() * 0.8;
+      stars += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${PALE}" opacity="${(0.35 + rnd() * 0.5).toFixed(2)}"/>`;
+    }
+    const frame = `<defs><linearGradient id="${id}g" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="hsl(${hue} 46% 17%)"/><stop offset="1" stop-color="hsl(${(hue + 28) % 360} 52% 7%)"/></linearGradient>
+      <radialGradient id="${id}h" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="hsl(${hue} 70% 70%)" stop-opacity="0.32"/><stop offset="1" stop-color="hsl(${hue} 70% 70%)" stop-opacity="0"/></radialGradient></defs>
+      <rect x="0" y="0" width="140" height="230" rx="10" fill="url(#${id}g)"/>${stars}
+      <rect x="5" y="5" width="130" height="220" rx="7" fill="none" stroke="${GOLD}" stroke-width="${gilded ? 2.6 : 1.1}"/>
+      <rect x="10" y="10" width="120" height="210" rx="5" fill="none" stroke="${GOLD}" stroke-width="0.5" opacity="0.6"/>`;
+    let body;
+    if (back || !card) {
+      body = `<circle cx="70" cy="115" r="54" fill="url(#${id}h)"/>
+        <g fill="none" stroke="${GOLD}" stroke-width="1.4" stroke-linecap="round">
+          <circle cx="70" cy="115" r="40" opacity="0.7"/><circle cx="70" cy="115" r="30" opacity="0.45"/>
+          <path d="M38 115 Q70 88 102 115 Q70 142 38 115 Z"/><circle cx="70" cy="115" r="9"/><circle cx="70" cy="115" r="3" fill="${GOLD}"/>
+          <path d="M70 61 V71 M70 159 V169 M16 115 H26 M114 115 H124"/></g>
+        <text x="70" y="208" text-anchor="middle" font-family="Literata, Georgia, serif" font-size="8" letter-spacing="3" fill="${GOLD}" opacity="0.8">ARCANA</text>`;
+    } else {
+      body = `<text x="70" y="29" text-anchor="middle" font-family="Literata, Georgia, serif" font-size="13" letter-spacing="2" fill="${GOLD}">${card.numeral}</text>
+        <circle cx="70" cy="100" r="50" fill="url(#${id}h)"/>
+        <g transform="translate(20 50)" fill="none" stroke="${GOLD}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" color="${GOLD}">${card.glyph}</g>
+        <text x="70" y="186" text-anchor="middle" font-family="Literata, Georgia, serif" font-size="${card.name.length > 15 ? 8.6 : card.name.length > 12 ? 10 : 11}" letter-spacing="1.1" fill="${PALE}">${card.name.toUpperCase()}</text>
+        <line x1="44" y1="194" x2="96" y2="194" stroke="${GOLD}" stroke-width="0.5" opacity="0.6"/>
+        <text x="70" y="207" text-anchor="middle" font-family="Archivo, system-ui, sans-serif" font-size="6.6" letter-spacing="0.6" fill="${GOLD}" opacity="0.85">${card.archetype.toUpperCase()}</text>`;
+    }
+    const inner = reversed ? `<g transform="rotate(180 70 115)">${body}</g>` : body;
+    return `<svg class="tarot" viewBox="0 0 140 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${back || !card ? "A face-down card" : `${card.name}${reversed ? ", reversed" : ""}`}">${frame}${inner}</svg>`;
+  }
+
   return {
     DAY, BOX_DAYS, DIFFICULTY, PASS_THETA, FORMS, BETS,
+    cardMastery, shadowCard, dailySpread, cardQuestion, cardSvg, mergeOracle,
     record, domainStats, readiness, shuffle, domainPriority, smartSet,
     prob, estimate, catDecision, nextCatItem, scaledScore, domainProficiency, studyPlan,
     seeded, dailyPick, survivalTiers, survivalPick, betPoints, calibration,

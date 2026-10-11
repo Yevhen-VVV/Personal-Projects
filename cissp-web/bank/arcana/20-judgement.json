@@ -1,0 +1,22 @@
+{
+  "n": 20,
+  "id": "judgement",
+  "name": "Judgement",
+  "numeral": "XX",
+  "archetype": "The Reckoning",
+  "concept": "Audits, assessment and testing",
+  "objectives": [
+    "6.1",
+    "6.2",
+    "6.4",
+    "6.5"
+  ],
+  "hue": 300,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

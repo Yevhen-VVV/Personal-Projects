@@ -301,7 +301,7 @@
     background: var(--surface); border-top: 1px solid var(--line);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  .tabbar-inner { max-width: 720px; margin-inline: auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+  .tabbar-inner { max-width: 720px; margin-inline: auto; display: grid; grid-template-columns: repeat(6, 1fr); }
   .tabbar button {
     min-height: var(--tabbar); border: 0; background: transparent; cursor: pointer;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
@@ -359,6 +359,78 @@
   .badge span.small { font-size: 12.5px; }
   .big-figure { font: 800 2.6rem/1 var(--font-ui); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 
+  /* Oracle: the reading table is always a night sky, whatever the page theme */
+  .altar { position: relative; border-radius: 18px; padding: 18px 14px; color: #efe6cf;
+    background:
+      radial-gradient(1px 1px at 12% 22%, rgb(255 255 255 / 0.55), transparent 70%),
+      radial-gradient(1px 1px at 68% 14%, rgb(255 255 255 / 0.45), transparent 70%),
+      radial-gradient(1.5px 1.5px at 88% 64%, rgb(255 255 255 / 0.4), transparent 70%),
+      radial-gradient(1px 1px at 34% 86%, rgb(255 255 255 / 0.45), transparent 70%),
+      radial-gradient(1px 1px at 52% 48%, rgb(255 255 255 / 0.3), transparent 70%),
+      radial-gradient(120% 90% at 50% 0%, #2c2554 0%, #151232 55%, #0b0a1c 100%); }
+  .altar .eyebrow, .collective .eyebrow { color: #cdbd92; }
+  .altar h2, .altar h3, .altar b { color: #f5ead0; }
+  .altar .small, .oracle-quiet { color: #c3b799; }
+  .altar a { color: #dcb86c; }
+  .tarot-wrap { display: block; line-height: 0; width: 100%; }
+  .tarot { width: 100%; height: auto; display: block; border-radius: 8px; }
+  .spread { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+  .slot { display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; min-width: 0; }
+  .slot-label { font: 700 11px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: #dcb86c; }
+  .slot-name { font: 600 13.5px/1.25 var(--font-read); color: #f5ead0; }
+  .slot-note { font-size: 11.5px; line-height: 1.3; color: #b9ad8f; }
+  .card-btn { border: 0; padding: 0; background: none; cursor: pointer; width: 100%; max-width: 160px; border-radius: 10px; }
+  .card-btn:focus-visible, .deck-card:focus-visible, .oracle-link:focus-visible { outline-color: #dcb86c; }
+  .glow .tarot { filter: drop-shadow(0 0 10px rgb(220 184 108 / 0.55)); }
+  .breathe { animation: breathe 3.4s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform: translateY(-3px); filter: drop-shadow(0 8px 14px rgb(150 120 255 / 0.45)); } }
+  .flip-in { animation: flipin 760ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  @keyframes flipin { 0% { transform: perspective(700px) rotateY(90deg) scale(0.94); opacity: 0.25; } 100% { transform: none; opacity: 1; } }
+  .turn { animation: turn 800ms cubic-bezier(0.3, 0.6, 0.2, 1) both; }
+  @keyframes turn { 0% { transform: rotate(180deg); } 100% { transform: none; } }
+  .is-shadow .tarot { filter: grayscale(0.55) brightness(0.62) drop-shadow(0 0 14px rgb(140 90 255 / 0.65)); }
+  .st-veiled .tarot { opacity: 0.4; filter: grayscale(0.75); }
+  .st-wavering .tarot { opacity: 0.86; }
+  .deck { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 12px 10px; }
+  .deck-card { border: 0; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; gap: 5px; align-items: center; color: var(--muted); font: 600 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+  .shadow-row { display: grid; grid-template-columns: 112px 1fr; gap: 16px; align-items: center; }
+  .card-hero { display: grid; grid-template-columns: minmax(130px, 210px) 1fr; gap: 20px; align-items: center; }
+  .card-hero .big { width: 100%; }
+  @media (max-width: 480px) {
+    .card-hero { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .card-hero .big { max-width: 210px; }
+    .shadow-row { grid-template-columns: 92px 1fr; gap: 12px; }
+  }
+  .vision { font: italic 400 16.5px/1.65 var(--font-read); }
+  .decode { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .decode li { display: grid; gap: 3px; padding: 10px 12px; border-left: 3px solid var(--ochre); background: var(--surface); border-radius: 0 10px 10px 0; }
+  .decode b { font: italic 600 14.5px/1.35 var(--font-read); color: var(--ochre); }
+  .decode span { font-size: 14.5px; line-height: 1.45; }
+  .meanings { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 480px) { .meanings { grid-template-columns: 1fr; } }
+  .collective { border-radius: 14px; padding: 14px 16px; display: grid; gap: 6px; color: #efe6cf; background: linear-gradient(135deg, #251e47, #120f26); border: 1px solid #3a3266; }
+  .collective p:last-child { font: 500 15.5px/1.55 var(--font-read); }
+  .oracle-says { margin-top: 18px; padding-top: 14px; border-top: 1px solid rgb(220 184 108 / 0.3); }
+  .prophecy { font: italic 400 16.5px/1.6 var(--font-read); color: #f5ead0; }
+  .mantra { font: 600 15.5px/1.4 var(--font-read); color: #dcb86c; text-align: center; padding-top: 4px; }
+  .altar .list-plain { color: #efe6cf; font-size: 14.5px; }
+  .btn-gold { background: #dcb86c; color: #1a1430; border-color: #dcb86c; }
+  .btn-gold:hover { border-color: #f5ead0; }
+  .darkness { display: flex; gap: 5px; }
+  .darkness i { width: 18px; height: 9px; border-radius: 3px; background: #2b2648; border: 1px solid #4a4270; }
+  .darkness i.lit { background: #dcb86c; border-color: #dcb86c; box-shadow: 0 0 8px rgb(220 184 108 / 0.7); }
+  .darkness i.out { background: #5a1f2a; border-color: #8a3040; }
+  .oracle-note { margin-top: 16px; text-align: center; }
+  .prophecy-head .chip, .prophecy-head .darkness { align-self: flex-start; }
+  .prophecy-head { display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; padding: 14px; }
+  .altar details summary { cursor: pointer; color: #dcb86c; }
+  .today-oracle { padding: 0; }
+  .oracle-link { width: 100%; display: flex; gap: 14px; align-items: center; background: none; border: 0; color: inherit; text-align: left; padding: 14px 16px; cursor: pointer; border-radius: 18px; font: inherit; }
+  .minis { display: flex; gap: 5px; flex: none; }
+  .mini { width: 34px; display: block; }
+  .oracle-link b { font-size: 15px; line-height: 1.3; }
+  .go { font-size: 28px; color: #dcb86c; flex: none; }
+
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -383,9 +455,13 @@
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 9h8M8 13h5"/><path d="M8.5 17l1.5 1.5 3-3"/></svg>
       Practice
     </button>
+    <button type="button" data-act="tab" data-tab="oracle">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12.5s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12.5" r="2.7"/><path d="M12 2.2v1.6M5.6 4.4l1 1.2M18.4 4.4l-1 1.2"/></svg>
+      Oracle
+    </button>
     <button type="button" data-act="tab" data-tab="mock">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
-      Mock exam
+      Mock
     </button>
     <button type="button" data-act="tab" data-tab="tracker">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19l5-6 4 3 7-9"/><path d="M15 7h5v5"/></svg>
@@ -625,16 +701,17 @@
   }
 
   async function loadAll() {
-    const [profile, progress, mock, game, sessions, flags, generated] = await Promise.all([
+    const [profile, progress, mock, game, oracle, sessions, flags, generated] = await Promise.all([
       Store.getDoc("me/profile"),
       Store.getDoc("me/progress"),
       Store.getDoc("me/mock"),
       Store.getDoc("me/game"),
+      Store.getDoc("me/oracle"),
       Store.list("sessions"),
       Store.list("flags"),
       Store.list("gen"),
     ]);
-    return { profile, progress, mock, game, sessions, flags, generated };
+    return { profile, progress, mock, game, oracle, sessions, flags, generated };
   }
 
   function applyLoaded(data, { fromDb = false } = {}) {
@@ -648,6 +725,11 @@
       const cur = S.game, g = data.game;
       if ((g.resetAt || 0) > (cur.updatedAt || 0)) S.game = { ...defaultGame(), ...g };
       else if (!((cur.resetAt || 0) > (g.updatedAt || 0))) S.game = { ...defaultGame(), ...Engine.mergeGame(cur, g) };
+    }
+    if (data.oracle) {
+      const cur = S.oracle, o = data.oracle;
+      if ((o.resetAt || 0) > (cur.updatedAt || 0)) S.oracle = { ...defaultOracle(), ...o };
+      else if (!((cur.resetAt || 0) > (o.updatedAt || 0))) S.oracle = { ...defaultOracle(), ...Engine.mergeOracle(cur, o) };
     }
     // The newest mock record wins, including "no mock in progress" from another device.
     if (data.mock && (data.mock.updatedAt || 0) > (S.mockStamp || 0)) {
@@ -667,6 +749,7 @@
       saveProgress();
       saveProfile();
       saveGame();
+      saveOracle();
     }
   }
 
@@ -719,7 +802,9 @@
   // ---------------------------------------------------------------- render shell
   function render() {
     const view = $("#view");
-    const focus = (S.tab === "practice" && ((S.arc && !S.arc.done) || (!S.arc && S.run && !S.run.done))) || (S.tab === "mock" && S.mock && !S.mock.finished && !S.mock.paused);
+    const focus = (S.tab === "practice" && ((S.arc && !S.arc.done) || (!S.arc && S.run && !S.run.done)))
+      || (S.tab === "mock" && S.mock && !S.mock.finished && !S.mock.paused)
+      || (S.tab === "oracle" && (S.orc.view === "prophecy" || (S.orc.view === "shadow" && !(S.orc.shadow && S.orc.shadow.done))));
     document.body.classList.toggle("focus-mode", !!focus);
     $("#tabbar").hidden = !!focus;
     document.querySelectorAll(".tabbar button").forEach((b) => {
@@ -737,6 +822,7 @@
     if (S.tab === "today") html = viewToday();
     else if (S.tab === "practice") html = S.arc ? viewArc() : S.run ? (S.run.done ? viewResults() : viewQuestion()) : practiceMode() === "arcade" ? viewArcadeMenu() : viewPracticeMenu();
     else if (S.tab === "mock") html = S.mockResult ? viewMockResult() : S.mock ? (S.mock.paused ? viewMockPaused() : viewMockItem()) : viewMockMenu();
+    else if (S.tab === "oracle") html = viewOracle();
     else if (S.tab === "tracker") html = viewTracker();
     else if (S.tab === "library") html = viewLibrary();
     view.innerHTML = html;
@@ -808,6 +894,8 @@
         <h2>${left == null ? "Set your exam date to get a plan." : left > 0 ? `${left} days until ${S.profile.examBooked ? "your exam" : "your end-of-year target"}` : left === 0 ? "Exam day. Read the questions twice, answer once." : "Your exam date has passed. Set the next one in Tracker."}</h2>
         ${week ? `<p class="muted">This week: ${week.focus.map((n) => `<b>D${n}</b> ${esc(domainOf(n).short)}`).join(" and ")}. ${esc(week.note)}</p>` : ""}
       </section>
+
+      ${todayOracle()}
 
       <section class="card raised stack">
         <div class="goal">
@@ -1907,6 +1995,9 @@ ${text.slice(0, 60000)}`;
     { id: "matchmaker", name: "Matchmaker", desc: "Clear every match set without a mistake.", test: () => DRILLS.matches.every((x) => (G().match[x.id] || [0, 0])[1] > 0) },
     { id: "rounded", name: "Well rounded", desc: "Reach 75% first-try accuracy in all eight domains, 15 answers each.", test: () => curatedStats().every((x) => x.seen >= 15 && x.firstRate >= READY_TARGET) },
     { id: "mockpass", name: "Pass estimate", desc: "Pass a full-length mock exam.", test: () => S.sessions.some((x) => x.kind === "mock" && x.form === "full" && x.pass) },
+    { id: "seer", name: "Seer", desc: "Complete seven daily readings.", test: () => readingsCompleted() >= 7 },
+    { id: "shadowwork", name: "Shadow work", desc: "Confront your Shadow and integrate it.", test: () => Object.keys(S.oracle.shadows.wins || {}).length >= 1 },
+    { id: "upright", name: "The World upright", desc: "Hold all 22 cards upright at once.", test: () => ARCANA.length === 22 && masteries().every((m) => m.state === "upright") },
   ];
 
   // Adds experience, awards any newly earned badges and saves the record.
@@ -1954,7 +2045,7 @@ ${text.slice(0, 60000)}`;
     return `<section class="card stack">
       ${levelCard()}
       <div class="spread">
-        <p class="small">${done ? `<b>Daily 5</b> ${squares(done[2])} <span class="muted num">${done[0]} of ${done[1]} · new set tomorrow</span>` : "<b>Daily 5</b> <span class=\"muted\">· five questions, one go, new every day</span>"}</p>
+        <p class="small" style="flex:1 1 200px">${done ? `<b>Daily 5</b> ${squares(done[2])} <span class="muted num">${done[0]} of ${done[1]} · new set tomorrow</span>` : "<b>Daily 5</b> <span class=\"muted\">· five questions, one go, new every day</span>"}</p>
         ${done
           ? `<button type="button" class="btn btn-sm" data-act="open-arcade">Arcade</button>`
           : `<button type="button" class="btn btn-sm btn-primary" data-act="arc-start" data-mode="daily">Play</button>`}
@@ -2530,6 +2621,466 @@ ${text.slice(0, 60000)}`;
     },
   };
 
+  // ---------------------------------------------------------------- Oracle
+  // A tarot of the collective unconscious. Each of the 22 Major Arcana is an
+  // archetype carrying a cluster of exam objectives, with a strange dream
+  // vision whose images encode the facts (bizarre images are remembered far
+  // better than plain ones). A card's state comes from your latest answers
+  // on its objectives; a card you are failing is drawn upside down. Each day
+  // brings a three-card reading, and your weakest card becomes your Shadow.
+  const ARCANA = BANK.arcana || [];
+  const SLOTS = ["Past", "Present", "Future"];
+  const SLOT_NOTES = ["what you have integrated", "what is in motion", "what is coming for you"];
+  const defaultOracle = () => ({ v: 1, readings: {}, shadows: { attempts: 0, wins: {} }, updatedAt: 0 });
+  S.oracle = defaultOracle();
+  S.orc = { view: "altar" };
+
+  function saveOracle() {
+    S.oracle.updatedAt = Date.now();
+    Store.setDoc("me/oracle", S.oracle);
+  }
+  const saveOrc = () => lsSet(LS + "orc", S.orc);
+  const cardByN = (n) => ARCANA.find((c) => c.n === n);
+  const masteries = () => ARCANA.map((c) => Engine.cardMastery(c, CURATED, S.progress.p));
+  const currentShadow = (ms = masteries()) => Engine.shadowCard(ms, todayKey());
+  const STATE_LABEL = { veiled: "Veiled", upright: "Upright", wavering: "Wavering", reversed: "Reversed" };
+  const STATE_NOTE = { veiled: "fewer than 3 answers on its objectives", upright: "75% or more right on your latest tries", wavering: "between 50% and 75% right", reversed: "under half right on your latest tries" };
+
+  // Today's reading, drawn once and then fixed for the day.
+  function todayReading(create = true) {
+    const key = todayKey();
+    let r = S.oracle.readings[key];
+    if (!r && create && ARCANA.length === 22) {
+      const ms = masteries();
+      r = { cards: Engine.dailySpread(ms, key, currentShadow(ms)), flipped: [false, false, false], qids: [null, null, null], results: [null, null, null], oracle: null };
+      S.oracle.readings[key] = r;
+      saveOracle();
+    }
+    return r;
+  }
+  const readingDone = (r) => !!r && r.results.every((x) => x != null);
+  const readingsCompleted = () => Object.values(S.oracle.readings).filter(readingDone).length;
+
+  function cardArt(card, { state = "upright", uid = "", cls = "", gilded = false } = {}) {
+    return `<span class="tarot-wrap ${cls} st-${state}">${Engine.cardSvg(card, { reversed: state === "reversed", gilded, uid })}</span>`;
+  }
+
+  // The Today screen's invitation.
+  function todayOracle() {
+    if (ARCANA.length !== 22) return "";
+    const r = todayReading(false);
+    const ms = masteries();
+    const sh = currentShadow(ms);
+    const shadow = sh != null ? cardByN(sh) : null;
+    const right = r ? r.results.filter((x) => x === true).length : 0;
+    const status = !r || !r.flipped.some(Boolean)
+      ? "Three cards are waiting, drawn from your own answers."
+      : readingDone(r) ? `Reading complete: ${right} of 3 prophecies held.` : `${r.results.filter((x) => x != null).length} of 3 prophecies answered.`;
+    const minis = [0, 1, 2].map((i) => {
+      const flipped = r && r.flipped[i];
+      const card = flipped ? cardByN(r.cards[i]) : null;
+      const st = flipped && r.results[i] === false ? "reversed" : "upright";
+      return `<span class="mini">${flipped ? cardArt(card, { state: st, uid: "t" + i }) : cardArt(null, { uid: "tb" + i })}</span>`;
+    }).join("");
+    return `<section class="altar today-oracle stack-sm">
+      <button type="button" class="oracle-link" data-act="tab" data-tab="oracle" aria-label="Open the Oracle">
+        <span class="minis">${minis}</span>
+        <span class="stack-sm grow">
+          <span class="eyebrow">The Oracle · daily reading</span>
+          <b>${esc(status)}</b>
+          <span class="small">${shadow ? `Your Shadow: <b>${esc(shadow.name)}</b>, ${esc(shadow.concept.toLowerCase())}.` : "Your Shadow hides until you have answered 20 questions."}</span>
+        </span>
+        <span class="go" aria-hidden="true">›</span>
+      </button>
+    </section>`;
+  }
+
+  function viewOracle() {
+    if (ARCANA.length !== 22) return `<div class="stack"><h2>The Oracle</h2><p class="muted">The deck is not complete in this build.</p></div>`;
+    const v = S.orc.view;
+    if (v === "card") return viewOracleCard();
+    if (v === "prophecy" || v === "shadow") return viewOracleQuestion();
+    return viewAltar();
+  }
+
+  function viewAltar() {
+    const r = todayReading();
+    const ms = masteries();
+    const sh = currentShadow(ms);
+    const shadow = sh != null ? cardByN(sh) : null;
+    const shM = sh != null ? ms[sh] : null;
+    const wins = S.oracle.shadows.wins || {};
+    const right = r.results.filter((x) => x === true).length;
+    // The card turned since the last render plays its turning animation once.
+    const justFlipped = S.orc.justFlipped;
+    S.orc.justFlipped = null;
+    const slot = (i) => {
+      const card = cardByN(r.cards[i]);
+      const res = r.results[i];
+      if (!r.flipped[i]) {
+        return `<div class="slot"><p class="slot-label">${SLOTS[i]}</p>
+          <button type="button" class="card-btn" data-act="orc-flip" data-i="${i}" aria-label="Turn over the ${SLOTS[i]} card">${cardArt(null, { uid: "b" + i, cls: "breathe" })}</button>
+          <p class="slot-note">${SLOT_NOTES[i]}</p></div>`;
+      }
+      const st = res === false ? "reversed" : "upright";
+      return `<div class="slot"><p class="slot-label">${SLOTS[i]}</p>
+        <button type="button" class="card-btn" data-act="orc-read" data-i="${i}" aria-label="${esc(card.name)}: ${res == null ? "answer its prophecy" : res ? "prophecy held" : "reversed"}">${cardArt(card, { state: st, uid: "s" + i, cls: justFlipped === i ? "flip-in" : res == null ? "glow" : "" })}</button>
+        <p class="slot-name">${esc(card.name)}</p>
+        <p class="slot-note">${res == null ? `<span class="chip ochre">Answer its prophecy</span>` : res ? `<span class="chip good">Prophecy held</span>` : `<span class="chip bad">Reversed</span>`}</p></div>`;
+    };
+    const done = readingDone(r);
+    const deck = ARCANA.map((c) => {
+      const m = ms[c.n];
+      const gilded = !!wins[c.n];
+      return `<button type="button" class="deck-card" data-act="orc-card" data-n="${c.n}" aria-label="${esc(c.name)}, ${STATE_LABEL[m.state]}${gilded ? ", integrated Shadow" : ""}${c.n === sh ? ", your Shadow" : ""}">
+        ${cardArt(c, { state: m.state, uid: "d", gilded, cls: c.n === sh ? "is-shadow" : "" })}
+        <span class="deck-label">${esc(STATE_LABEL[m.state])}</span>
+      </button>`;
+    }).join("");
+    const counts = ms.reduce((o, m) => ((o[m.state] = (o[m.state] || 0) + 1), o), {});
+    return `<div class="stack-lg">
+      <section class="stack-sm">
+        <p class="eyebrow">The Oracle</p>
+        <h2>${done ? `Today's reading: ${right} of 3 prophecies held` : "Today's reading"}</h2>
+        <p class="muted measure">Twenty-two archetypes hold the whole exam. Today's three were drawn from your own answers: the Past from what you have mastered, the Present from what is in motion, the Future from what you are weakest on. Turn each card, read its dream, then answer its prophecy.</p>
+      </section>
+      <section class="altar">
+        <div class="spread">${[0, 1, 2].map(slot).join("")}</div>
+        ${done ? oraclePanel(r) : ""}
+        ${done ? `<p class="small oracle-note">Tonight, sleep on it: read <a href="#" data-act="orc-card" data-n="${r.cards[2]}">${esc(cardByN(r.cards[2]).name)}</a>'s vision once more before bed. Memories settle while you sleep, and strange ones settle best.</p>` : ""}
+      </section>
+      <section class="stack">
+        <h3>Your Shadow</h3>
+        ${shadow ? `<div class="altar shadow-row">
+            <button type="button" class="card-btn shadow-card" data-act="orc-card" data-n="${shadow.n}" aria-label="${esc(shadow.name)}, your Shadow">${cardArt(shadow, { state: shM.state, uid: "sh", cls: "is-shadow" })}</button>
+            <div class="stack-sm">
+              <p class="eyebrow">${esc(shadow.archetype)}</p>
+              <p><b>${esc(shadow.name)}</b>: ${esc(shadow.concept)}</p>
+              <p class="small">Your weakest card: <span class="num">${shM.seen ? `${Math.round(shM.rate * 100)}% right on your latest ${shM.seen} answers` : ""}</span>. In Jung's terms, the Shadow is what you avoid looking at. Face it: seven questions, and five right integrates it.</p>
+              <div class="row"><button type="button" class="btn btn-primary" data-act="orc-shadow">Confront your Shadow</button></div>
+              ${Object.keys(wins).length ? `<p class="small">Integrated so far: ${Object.keys(wins).map((n) => esc(cardByN(Number(n)).name)).join(", ")}.</p>` : ""}
+            </div>
+          </div>`
+          : `<p class="note small">Your Shadow hides until you have answered 20 questions. It will be the card whose objectives you get wrong most often.</p>`}
+      </section>
+      <section class="stack">
+        <div class="stack-sm"><h3>The deck</h3><p class="small muted num">${counts.upright || 0} upright · ${counts.wavering || 0} wavering · ${counts.reversed || 0} reversed · ${counts.veiled || 0} veiled</p></div>
+        <div class="deck">${deck}</div>
+        <p class="small muted">Upright: 75% or more right on your latest tries. Reversed, drawn upside down: under half. Veiled: fewer than three answers yet. A gold border marks a Shadow you have integrated. Tap any card to read it.</p>
+      </section>
+    </div>`;
+  }
+
+  function oraclePanel(r) {
+    const o = r.oracle;
+    const busy = S.orc.consulting;
+    if (o) {
+      return `<div class="oracle-says stack-sm">
+        <p class="eyebrow">The Oracle speaks</p>
+        <p class="prophecy">${esc(o.prophecy)}</p>
+        ${o.ritual && o.ritual.length ? `<p class="eyebrow">Your ritual for the next day</p><ol class="list-plain">${o.ritual.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>` : ""}
+        ${o.mantra ? `<p class="mantra">“${esc(o.mantra)}”</p>` : ""}
+      </div>`;
+    }
+    if (!S.sample) return `<p class="small oracle-quiet oracle-note">The Oracle speaks when this page is opened in Claude and allowed to use it.</p>`;
+    return `<div class="row oracle-note" style="justify-content:center"><button type="button" class="btn btn-gold" data-act="orc-consult" ${busy ? "disabled" : ""}>${busy ? "The Oracle is reading…" : "Ask the Oracle to read your spread"}</button></div>
+      ${S.orc.consultErr ? `<p class="small oracle-quiet">${esc(S.orc.consultErr)}</p>` : ""}`;
+  }
+
+  async function consultOracle() {
+    const r = todayReading(false);
+    if (!S.sample || !r || S.orc.consulting) return;
+    S.orc.consulting = true;
+    S.orc.consultErr = "";
+    render();
+    const ms = masteries();
+    const sh = currentShadow(ms);
+    const stats = curatedStats();
+    const left = daysLeft();
+    const lines = r.cards.map((n, i) => {
+      const c = cardByN(n);
+      return `${SLOTS[i]}: ${c.name} (${c.concept}; objectives ${c.objectives.join(", ")}) - prophecy question answered ${r.results[i] ? "correctly" : "wrongly"}`;
+    }).join("\n");
+    const weak = weakObjectives(4).map((w) => `${w.obj} ${objName(w.obj)} (${w.right}/${w.seen})`).join("; ") || "not enough data yet";
+    const prompt = `You are the Oracle in a CISSP study app's tarot mode: a deck of the 22 Major Arcana where each card is a Jungian archetype carrying a cluster of exam objectives (ISC2 CISSP outline, April 2024). Speak in a brief, archetypal, slightly uncanny voice, as the collective memory of every candidate who sat this exam before, but every sentence must carry concrete, correct CISSP advice. No fortune-telling beyond the study plan; no flattery.
+
+The candidate's exam is ${left != null && left > 0 ? `in ${left} days` : "soon"}.
+Today's spread:
+${lines}
+Their Shadow (weakest card): ${sh != null ? `${cardByN(sh).name} (${cardByN(sh).concept})` : "not yet revealed"}.
+Weakest objectives (latest answers right/answered): ${weak}.
+First-try accuracy by domain: ${stats.map((s) => `D${s.n} ${s.seen ? Math.round(s.firstRate * 100) + "%" : "unseen"}`).join(", ")}.
+
+Return JSON only, in this shape:
+{"prophecy": "three sentences reading the spread as the story of their preparation, naming the cards and what each means for them", "ritual": ["exactly three specific study actions for the next 24 hours, each under 22 words, naming objectives or topics"], "mantra": "one line of CISSP mindset, under 14 words"}`;
+    try {
+      const out = await S.sample.json(prompt, { cache: false });
+      if (!out || typeof out.prophecy !== "string") throw { code: "invalid_json" };
+      r.oracle = {
+        prophecy: String(out.prophecy).slice(0, 700),
+        ritual: (Array.isArray(out.ritual) ? out.ritual : []).slice(0, 3).map((x) => String(x).slice(0, 200)),
+        mantra: String(out.mantra || "").slice(0, 140),
+      };
+      saveOracle();
+      reward(10);
+    } catch (e) {
+      S.orc.consultErr = sampleError(e);
+      if (e && ["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e.code)) S.sample = null;
+    }
+    S.orc.consulting = false;
+    render();
+  }
+
+  function viewOracleCard() {
+    const card = cardByN(S.orc.card);
+    const m = Engine.cardMastery(card, CURATED, S.progress.p);
+    const gilded = !!(S.oracle.shadows.wins || {})[card.n];
+    const objStats = card.objectives.map((o) => {
+      let seen = 0, right = 0, total = 0;
+      for (const q of CURATED) if (q.obj === o) { total++; const r = S.progress.p[q.id]; if (r) { seen++; right += r[3]; } }
+      return `<li><span class="mono">${o}</span> ${esc(objName(o))} <span class="muted num">· ${seen ? `${right}/${seen} right` : `${total} questions, none answered`}</span></li>`;
+    }).join("");
+    return `<div class="stack-lg">
+      <button type="button" class="btn btn-quiet" style="align-self:flex-start" data-act="orc-home">‹ The Oracle</button>
+      <section class="altar card-hero">
+        ${cardArt(card, { state: m.state, uid: "big", gilded, cls: "big" })}
+        <div class="stack-sm hero-text">
+          <p class="eyebrow">${esc(card.numeral)} · ${esc(card.archetype)}</p>
+          <h2>${esc(card.name)}</h2>
+          <p>${esc(card.concept)}</p>
+          <p class="small"><span class="chip ${m.state === "upright" ? "good" : m.state === "reversed" ? "bad" : m.state === "wavering" ? "ochre" : ""}">${STATE_LABEL[m.state]}</span> <span class="oracle-quiet">${esc(STATE_NOTE[m.state])}</span></p>
+        </div>
+      </section>
+      <section class="stack-sm">
+        <p class="eyebrow">The vision</p>
+        <p class="vision">${esc(card.vision)}</p>
+      </section>
+      <section class="stack-sm">
+        <p class="eyebrow">Decoding the dream</p>
+        <ul class="decode">${card.decode.map((d) => { const [img, fact] = d.split("→"); return `<li><b>${esc(img.trim())}</b><span>${esc((fact || "").trim())}</span></li>`; }).join("")}</ul>
+      </section>
+      <div class="meanings">
+        <div class="card stack-sm"><p class="eyebrow">Upright</p><p>${esc(card.upright)}</p></div>
+        <div class="card stack-sm"><p class="eyebrow">Reversed</p><p>${esc(card.reversed)}</p></div>
+      </div>
+      <section class="stack-sm">
+        <p class="eyebrow">Three truths</p>
+        <ol class="list-plain">${card.facts.map((f) => `<li>${esc(f)}</li>`).join("")}</ol>
+      </section>
+      <section class="collective">
+        <p class="eyebrow">The collective remembers</p>
+        <p>${esc(card.trap)}</p>
+      </section>
+      <section class="stack-sm">
+        <p class="eyebrow">The objectives it carries</p>
+        <ul class="list-plain small">${objStats}</ul>
+      </section>
+      <div class="row">
+        <button type="button" class="btn btn-primary" data-act="orc-draw" data-n="${card.n}">Draw a prophecy</button>
+        <button type="button" class="btn" data-act="orc-drill" data-n="${card.n}">Drill its objectives</button>
+      </div>
+    </div>`;
+  }
+
+  // ---- prophecies: one question tied to a card, from a reading, a single draw or the Shadow
+  function startProphecy(ctx, cardN, slot = null) {
+    const card = cardByN(cardN);
+    const r = todayReading(false);
+    let qid = null;
+    if (ctx === "reading" && r) {
+      qid = r.qids[slot];
+      if (!qid || !byId(qid)) {
+        const q = Engine.cardQuestion(card, CURATED, S.progress.p, `${todayKey()}:${slot}`, r.qids.filter(Boolean));
+        qid = q && q.id;
+        r.qids[slot] = qid;
+        saveOracle();
+      }
+    } else {
+      const used = ctx === "shadow" ? S.orc.shadow.used : [];
+      const q = Engine.cardQuestion(card, CURATED, S.progress.p, `${uid()}`, used);
+      qid = q && q.id;
+    }
+    if (!qid) { toast("No questions left for this card."); return; }
+    Object.assign(S.orc, { view: ctx === "shadow" ? "shadow" : "prophecy", ctx, card: cardN, slot, qid, order: Engine.shuffle([0, 1, 2, 3]), selected: null, submitted: false, chosen: null, shownAt: Date.now() });
+    if (ctx === "shadow") S.orc.shadow.used.push(qid);
+    saveOrc();
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function orcSubmit() {
+    const o = S.orc;
+    if (o.submitted || o.selected == null) return;
+    const q = byId(o.qid);
+    const chosen = o.order[o.selected];
+    const correct = chosen === q.a;
+    o.submitted = true;
+    o.chosen = chosen;
+    o.correct = correct;
+    S.progress.p[q.id] = Engine.record(S.progress.p[q.id], correct, Date.now());
+    countAnswer(correct);
+    saveProgress();
+    let xp = Engine.xpFor(correct, q.diff);
+    if (o.ctx === "reading") {
+      const r = todayReading(false);
+      r.results[o.slot] = correct;
+      if (readingDone(r)) xp += 30;
+      saveOracle();
+    } else if (o.ctx === "shadow") {
+      o.shadow.results.push(correct);
+    }
+    saveOrc();
+    reward(xp);
+    render();
+  }
+
+  function shadowFinished(sh) {
+    return sh.results.length >= 7 || sh.results.filter((x) => !x).length > 2;
+  }
+
+  function orcNext() {
+    const o = S.orc;
+    if (o.ctx === "shadow") {
+      const sh = o.shadow;
+      if (!shadowFinished(sh)) { startProphecy("shadow", sh.card); return; }
+      const right = sh.results.filter(Boolean).length;
+      sh.done = true;
+      sh.won = right >= 5;
+      S.oracle.shadows.attempts = (S.oracle.shadows.attempts || 0) + 1;
+      if (sh.won) S.oracle.shadows.wins[sh.card] = Date.now();
+      saveOracle();
+      o.view = "shadow";
+      saveOrc();
+      reward(sh.won ? 60 : 10);
+      render();
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (o.ctx === "reading") {
+      const r = todayReading(false);
+      const next = [0, 1, 2].find((i) => r.results[i] == null);
+      o.view = "altar";
+      if (next != null && !r.flipped[next]) { r.flipped[next] = true; o.justFlipped = next; saveOracle(); }
+    } else o.view = o.ctx === "single" ? "card" : "altar";
+    saveOrc();
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function viewOracleQuestion() {
+    const o = S.orc;
+    const card = cardByN(o.card);
+    if (o.ctx === "shadow" && o.shadow && o.shadow.done) return viewShadowEnd();
+    const q = byId(o.qid);
+    if (!q) { o.view = "altar"; return viewAltar(); }
+    const turned = o.submitted && !o.correct;
+    const head = o.ctx === "shadow"
+      ? `<div class="darkness" aria-label="${o.shadow.results.filter(Boolean).length} lights of 7">${Array.from({ length: 7 }, (_, i) => `<i class="${o.shadow.results[i] === true ? "lit" : o.shadow.results[i] === false ? "out" : ""}"></i>`).join("")}</div>`
+      : `<span class="chip">${o.ctx === "reading" ? `${SLOTS[o.slot]} card` : "A single draw"}</span>`;
+    return `<div class="stack">
+      <section class="altar prophecy-head">
+        ${cardArt(card, { state: turned ? "reversed" : "upright", uid: "q", cls: (o.ctx === "shadow" ? "is-shadow " : "") + (o.submitted ? (o.correct ? "glow" : "turn") : "") })}
+        <div class="stack-sm">
+          <p class="eyebrow">${o.ctx === "shadow" ? "Confronting your Shadow" : "The prophecy of"}</p>
+          <h3>${esc(card.name)}</h3>
+          ${head}
+          ${o.ctx !== "shadow" && !o.submitted ? `<details class="small"><summary>Read the vision first</summary><p class="vision">${esc(card.vision)}</p></details>` : ""}
+        </div>
+      </section>
+      <div class="row"><span class="chip accent">D${q.d} · ${esc(q.obj)}</span>${diffDots(q.diff)}</div>
+      <p class="stem">${esc(q.q)}</p>
+      ${o.submitted ? `<div class="verdict ${o.correct ? "good" : "bad"}">${o.ctx === "shadow" ? (o.correct ? "A light in the dark" : "The dark gains ground") : o.correct ? "The prophecy holds" : "The card turns"}</div>` : ""}
+      ${optionList(q, o.order, { selected: o.selected, submitted: o.submitted, chosenOrig: o.chosen, act: "orc-select" })}
+      ${o.submitted ? `
+        <div class="keypoint"><p class="eyebrow">Key point</p><p>${esc(q.k)}</p></div>
+        ${o.correct ? "" : `<section class="collective"><p class="eyebrow">The collective remembers</p><p>${esc(card.trap)}</p></section>`}
+        ${flagNote(q.id)}` : ""}
+    </div>
+    <div class="actionbar"><div class="actionbar-inner">
+      <button type="button" class="btn btn-quiet" data-act="orc-leave">${o.ctx === "shadow" ? "Flee" : "Back"}</button><span class="grow"></span>
+      ${o.submitted
+        ? `<button type="button" class="btn btn-primary" data-act="orc-next" style="min-width:150px">${o.ctx === "shadow" ? (shadowFinished(o.shadow) ? "See the outcome" : "Next question") : o.ctx === "reading" ? "Back to the spread" : "Back to the card"}</button>`
+        : `<button type="button" class="btn btn-primary" data-act="orc-submit" style="min-width:150px" ${o.selected == null ? "disabled" : ""}>Answer</button>`}
+    </div></div>`;
+  }
+
+  function viewShadowEnd() {
+    const sh = S.orc.shadow;
+    const card = cardByN(sh.card);
+    const right = sh.results.filter(Boolean).length;
+    return `<div class="stack-lg">
+      <section class="altar card-hero">
+        ${cardArt(card, { state: sh.won ? "upright" : "reversed", uid: "end", gilded: sh.won, cls: "big " + (sh.won ? "glow" : "is-shadow") })}
+        <div class="stack-sm hero-text">
+          <p class="eyebrow">${sh.won ? "Shadow integrated" : "The Shadow endures"}</p>
+          <h2>${esc(card.name)}</h2>
+          <p class="num">${right} of ${sh.results.length} right</p>
+          <p class="small">${sh.won ? "What you avoided is now part of you. Its gold border stays in your deck. If it becomes your weakest card again, it will return." : "Three misses and the dark wins this round. Read the card's vision and its traps, drill its objectives, and face it again."}</p>
+        </div>
+      </section>
+      <section class="collective"><p class="eyebrow">The collective remembers</p><p>${esc(card.trap)}</p></section>
+      <div class="row">
+        <button type="button" class="btn btn-primary" data-act="orc-home">Back to the Oracle</button>
+        <button type="button" class="btn" data-act="orc-card" data-n="${card.n}">Read the card</button>
+        ${sh.won ? "" : `<button type="button" class="btn" data-act="orc-drill" data-n="${card.n}">Drill its objectives</button>`}
+      </div>
+    </div>`;
+  }
+
+  const oracleActions = {
+    "orc-flip": (el) => {
+      const r = todayReading();
+      const i = Number(el.dataset.i);
+      // Cards turn in order: the Past first, then the Present, then the Future.
+      const first = r.flipped.indexOf(false);
+      if (i !== first) { toast(`Turn the ${SLOTS[first]} card first.`); return; }
+      r.flipped[i] = true;
+      S.orc.justFlipped = i;
+      saveOracle();
+      render();
+    },
+    "orc-read": (el) => {
+      const r = todayReading();
+      const i = Number(el.dataset.i);
+      if (r.results[i] != null) { S.orc = { view: "card", card: r.cards[i], from: "altar" }; saveOrc(); render(); window.scrollTo(0, 0); return; }
+      startProphecy("reading", r.cards[i], i);
+    },
+    "orc-card": (el) => { S.orc = { view: "card", card: Number(el.dataset.n) }; saveOrc(); render(); window.scrollTo(0, 0); },
+    "orc-home": () => { S.orc = { view: "altar" }; saveOrc(); render(); window.scrollTo(0, 0); },
+    "orc-draw": (el) => startProphecy("single", Number(el.dataset.n)),
+    "orc-drill": (el) => {
+      const card = cardByN(Number(el.dataset.n));
+      const objs = new Set(card.objectives);
+      const rank = (q) => { const r = S.progress.p[q.id]; return !r ? 1 : r[3] === 0 ? 0 : 2; };
+      const items = CURATED.filter((q) => objs.has(q.obj)).sort((a, b) => rank(a) - rank(b) || Math.random() - 0.5).slice(0, 15);
+      S.orc = { view: "card", card: card.n };
+      saveOrc();
+      startRun(Engine.shuffle(items), card.name);
+    },
+    "orc-shadow": () => {
+      const sh = currentShadow();
+      if (sh == null) return;
+      S.orc = { view: "shadow", shadow: { card: sh, used: [], results: [], done: false } };
+      startProphecy("shadow", sh);
+    },
+    "orc-select": (el) => {
+      if (S.orc.submitted) return;
+      S.orc.selected = Number(el.dataset.pos);
+      if (!S.profile.confirm) { orcSubmit(); return; }
+      render();
+    },
+    "orc-submit": () => orcSubmit(),
+    "orc-next": () => orcNext(),
+    "orc-leave": () => {
+      const o = S.orc;
+      S.orc = o.ctx === "single" ? { view: "card", card: o.card } : { view: "altar" };
+      saveOrc();
+      render();
+      window.scrollTo(0, 0);
+    },
+    "orc-consult": () => consultOracle(),
+  };
+
   // ---------------------------------------------------------------- flags
   function toggleFlag(id) {
     if (S.flags[id]) {
@@ -2548,6 +3099,7 @@ ${text.slice(0, 60000)}`;
   // ---------------------------------------------------------------- events
   const actions = {
     ...arcActions,
+    ...oracleActions,
     tab: (el) => go(el.dataset.tab),
     "start-smart": (el) => startSmart(Number(el.dataset.count) || 20),
     "start-review": () => startSmart(40, { reviewOnly: true }),
@@ -2681,7 +3233,7 @@ ${text.slice(0, 60000)}`;
     "import-apply": () => importApply(),
     "import-cancel": () => { S.tool.importPreview = null; render(); },
     "copy-data": async () => {
-      const data = JSON.stringify({ profile: S.profile, progress: S.progress, game: S.game, sessions: S.sessions, flags: S.flags, generated: S.generated }, null, 1);
+      const data = JSON.stringify({ profile: S.profile, progress: S.progress, game: S.game, oracle: S.oracle, sessions: S.sessions, flags: S.flags, generated: S.generated }, null, 1);
       try {
         await navigator.clipboard.writeText(data);
         toast("Copied your data to the clipboard");
@@ -2702,6 +3254,10 @@ ${text.slice(0, 60000)}`;
       saveGame();
       S.arc = null;
       saveArc();
+      S.oracle = { ...defaultOracle(), resetAt: Date.now() };
+      saveOracle();
+      S.orc = { view: "altar" };
+      saveOrc();
       toast("Progress erased");
       render();
     },
@@ -2757,7 +3313,11 @@ ${text.slice(0, 60000)}`;
     const k = ev.key.toLowerCase();
     const pos = ["a", "b", "c", "d"].indexOf(k) >= 0 ? ["a", "b", "c", "d"].indexOf(k) : ["1", "2", "3", "4"].indexOf(k);
     const a = S.arc;
-    if (S.tab === "practice" && a && !a.done && a.items.length) {
+    const o = S.orc;
+    if (S.tab === "oracle" && (o.view === "prophecy" || o.view === "shadow") && o.qid && !(o.shadow && o.shadow.done)) {
+      if (pos >= 0 && !o.submitted) actions["orc-select"]({ dataset: { pos } });
+      else if (k === "enter") { if (o.submitted) orcNext(); else orcSubmit(); }
+    } else if (S.tab === "practice" && a && !a.done && a.items.length) {
       const q = arcQ();
       if (a.phase === "recall") { if (k === "enter") actions["arc-reveal"](); }
       else if (a.phase === "strike") {
@@ -2784,6 +3344,7 @@ ${text.slice(0, 60000)}`;
       progress: lsGet(LS + "me/progress", null),
       mock: lsGet(LS + "me/mock", null),
       game: lsGet(LS + "me/game", null),
+      oracle: lsGet(LS + "me/oracle", null),
       sessions: Object.values(lsGet(LS + "sessions", {})),
       flags: Object.values(lsGet(LS + "flags", {})),
       generated: Object.values(lsGet(LS + "gen", {})),
@@ -2792,6 +3353,8 @@ ${text.slice(0, 60000)}`;
     if (run && !run.done && Array.isArray(run.items) && run.items.every((id) => byId(id))) S.run = run;
     const arc = lsGet(LS + "arc", null);
     if (arc && arc.mode && !arc.done && (arc.items || []).every((id) => byId(id))) S.arc = arc;
+    const orc = lsGet(LS + "orc", null);
+    if (orc && orc.view && (orc.card == null || cardByN(orc.card)) && (!orc.qid || byId(orc.qid))) S.orc = orc;
     S.tool.mode = lsGet(LS + "mode", "classic");
     if (hotData && hotData.tab) S.tab = hotData.tab;
     else S.tab = lsGet(LS + "tab", "today");

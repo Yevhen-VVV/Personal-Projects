@@ -1,0 +1,20 @@
+{
+  "n": 18,
+  "id": "moon",
+  "name": "The Moon",
+  "numeral": "XVIII",
+  "archetype": "The Trickster",
+  "concept": "Deception: network attacks and detection",
+  "objectives": [
+    "4.3",
+    "7.7"
+  ],
+  "hue": 250,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

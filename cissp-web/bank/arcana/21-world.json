@@ -1,0 +1,24 @@
+{
+  "n": 21,
+  "id": "world",
+  "name": "The World",
+  "numeral": "XXI",
+  "archetype": "The Self",
+  "concept": "Secure architecture and design principles",
+  "objectives": [
+    "1.2",
+    "3.1",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.10"
+  ],
+  "hue": 170,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

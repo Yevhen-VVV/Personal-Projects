@@ -1,0 +1,22 @@
+{
+  "n": 13,
+  "id": "death",
+  "name": "Death",
+  "numeral": "XIII",
+  "archetype": "The Transformer",
+  "concept": "Endings: retention, sanitization and deprovisioning",
+  "objectives": [
+    "2.4",
+    "2.5",
+    "5.5",
+    "7.5"
+  ],
+  "hue": 0,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

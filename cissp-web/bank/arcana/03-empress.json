@@ -1,0 +1,30 @@
+{
+  "n": 3,
+  "id": "empress",
+  "name": "The Empress",
+  "numeral": "III",
+  "archetype": "The Creator",
+  "concept": "The software development life cycle",
+  "objectives": [
+    "8.1",
+    "8.2"
+  ],
+  "hue": 120,
+  "upright": "Security sown at requirements and grown through every phase, with the pipeline testing each build automatically.",
+  "reversed": "Security sprayed on at harvest: untested builds, unknown libraries and a password hard-coded in the pipeline.",
+  "vision": "In a ripening wheat field, a crowned figure sows seeds that each carry a tiny padlock, so the wheat grows locked from the root. A stream tumbles past in a waterfall that can climb back only one step, then curls into a spiral that leaves a scarecrow at every turn. Four herons wade in it: one reads seeds before they sprout, one pecks the grown stalks, one swims inside a stalk, one asks which farm each seed came from. The figure's crown of stars kindles in five rows, from a lone flicker to a self-tuning constellation. Every key lies under the heart-shaped shield; none is dropped in the stream.",
+  "decode": [
+    "Seeds sown with padlocks → security starts at requirements, before design; the later a flaw is found, the costlier the fix.",
+    "A waterfall that climbs back one step; a spiral of scarecrows → modified waterfall returns only to the prior phase; each spiral loop yields a new prototype.",
+    "Four herons → SAST reads source before it runs; DAST probes the running app; IAST instruments it from inside; SCA traces third-party components.",
+    "The crown kindling in five rows → CMM levels: initial, repeatable, defined, managed, optimizing; SAMM rates software security practices by maturity too.",
+    "Keys under the shield, none in the stream → secrets live in a vault, never hard-coded in code repositories or CI/CD pipelines."
+  ],
+  "facts": [
+    "DevOps unites development, quality assurance and operations; DevSecOps builds security into the same automated pipeline, shifting it left instead of gating at the end.",
+    "The Agile Manifesto values individuals and interactions, working software, customer collaboration and responding to change over processes, documentation, contracts and plans.",
+    "Change management runs request control, change control and release control; software configuration management identifies, controls, accounts for and audits every version."
+  ],
+  "trap": "The collective remembers bolting security on at testing. The right and cheapest moment is the start: set security requirements at initiation, then design, build and test against them.",
+  "glyph": "<path d=\"M50 88 C30 74 18 62 18 44 C18 32 28 24 38 24 C44 24 48 28 50 32 C52 28 56 24 62 24 C72 24 82 32 82 44 C82 62 70 74 50 88 Z\"/><path d=\"M55 37.3 A10 10 0 1 1 45 37.3\"/><polyline points=\"39.6,36.9 45,37.3 42.6,42.2\"/><path d=\"M50 56 V76 M43 66 H57\"/><circle cx=\"30\" cy=\"14\" r=\"1.6\" fill=\"currentColor\"/><circle cx=\"40\" cy=\"10\" r=\"1.6\" fill=\"currentColor\"/><circle cx=\"50\" cy=\"8.5\" r=\"1.6\" fill=\"currentColor\"/><circle cx=\"60\" cy=\"10\" r=\"1.6\" fill=\"currentColor\"/><circle cx=\"70\" cy=\"14\" r=\"1.6\" fill=\"currentColor\"/>"
+}

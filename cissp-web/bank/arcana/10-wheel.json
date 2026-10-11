@@ -1,0 +1,30 @@
+{
+  "n": 10,
+  "id": "wheel",
+  "name": "Wheel of Fortune",
+  "numeral": "X",
+  "archetype": "Fate",
+  "concept": "Risk and threat modeling",
+  "objectives": [
+    "1.9",
+    "1.10"
+  ],
+  "hue": 290,
+  "upright": "Risk weighed in numbers and judgment, then deliberately mitigated, transferred, avoided or accepted within the appetite.",
+  "reversed": "Spinning blind: risks ignored, controls that cost more than the losses they prevent, and no one owning what remains.",
+  "vision": "A great wheel turns in the clouds, and on each turn it shaves a slice from a golden statue; a clerk multiplies the slice by the turns in a year. The serpent sliding down the left side can bite only where the rim is cracked. On the right a jackal-headed figure rises, fanning four cards: a shield, an insurance slip, an exit door and a signed shrug. A fifth card, a blindfold, bursts into flame in their hand. The sphinx on top holds a cup with a painted line, catching whatever drips past the shield. In the corners four winged creatures read books of six and seven chapters.",
+  "decode": [
+    "A slice of the golden statue, times the turns in a year → SLE = asset value × exposure factor; ALE = SLE × annualized rate of occurrence.",
+    "The serpent bites only where the rim is cracked → risk needs a threat that can exploit a vulnerability; risk = likelihood × impact.",
+    "Shield, insurance slip, exit door, signed shrug; the blindfold burns → mitigate, transfer, avoid, accept. Ignoring or rejecting risk is never acceptable.",
+    "The sphinx's cup with a painted line → residual risk, what is left after controls, must stay within the risk appetite senior management sets.",
+    "Books of six and seven chapters → STRIDE: spoofing, tampering, repudiation, information disclosure, DoS, elevation of privilege; PASTA's seven stages."
+  ],
+  "facts": [
+    "Safeguard value = ALE before − ALE after − the safeguard's annual cost. If the result is negative, the control costs more than the risk it removes.",
+    "Quantitative analysis assigns money values (SLE, ALE); qualitative analysis ranks risks with scenarios and scales such as high, medium and low, often via the Delphi technique.",
+    "Total risk = threats × vulnerabilities × asset value; residual risk = total risk − controls gap. Senior management decides whether to accept it."
+  ],
+  "trap": "The collective's costliest arithmetic: an event expected once every 20 years has an ARO of 0.05, not 20. Multiply SLE by that fraction, and never pay more for a control than the loss it removes.",
+  "glyph": "<circle cx=\"50\" cy=\"52\" r=\"28\"/><circle cx=\"50\" cy=\"52\" r=\"21\" stroke-width=\"1.4\"/><circle cx=\"50\" cy=\"52\" r=\"4\"/><path d=\"M50 48 V31 M50 56 V73 M46 52 H29 M54 52 H71 M47.2 49.2 L35.2 37.2 M52.8 54.8 L64.8 66.8 M52.8 49.2 L64.8 37.2 M47.2 54.8 L35.2 66.8\" stroke-width=\"1.6\"/><path d=\"M50 52 L50 31 A21 21 0 0 1 64.85 37.15 Z\" fill=\"currentColor\" fill-opacity=\"0.45\" stroke-width=\"1.4\"/><path d=\"M17 28 C9 36 23 42 15 50 C7 58 21 64 13 72\" stroke-width=\"2\"/><path d=\"M10 68 L13 73 L18 70\" stroke-width=\"1.8\"/><path d=\"M86 78 V32 M81 38 L86 32 L91 38\"/><path d=\"M8 10 L16 8 L24 10 V19 L16 17 L8 19 Z M16 8 V17\" stroke-width=\"1.3\"/><path d=\"M76 10 L84 8 L92 10 V19 L84 17 L76 19 Z M84 8 V17\" stroke-width=\"1.3\"/><path d=\"M8 86 L16 84 L24 86 V95 L16 93 L8 95 Z M16 84 V93\" stroke-width=\"1.3\"/><path d=\"M76 86 L84 84 L92 86 V95 L84 93 L76 95 Z M84 84 V93\" stroke-width=\"1.3\"/>"
+}

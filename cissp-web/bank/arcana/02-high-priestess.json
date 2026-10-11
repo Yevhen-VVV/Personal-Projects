@@ -1,0 +1,33 @@
+{
+  "n": 2,
+  "id": "high-priestess",
+  "name": "The High Priestess",
+  "numeral": "II",
+  "archetype": "The Keeper of Secrets",
+  "concept": "Classification and data protection",
+  "objectives": [
+    "2.1",
+    "2.2",
+    "2.3",
+    "2.6",
+    "3.2"
+  ],
+  "hue": 222,
+  "upright": "Every asset known, owned and labeled by its value, and protected at rest, in transit and in use.",
+  "reversed": "No inventory, no labels and IT guessing at sensitivity: secrets leak because no one knew they were secrets.",
+  "vision": "Between a black pillar and a white one, a keeper sits before a veil sewn with pomegranates. The keeper counts every fruit, then ties a colored ribbon to each by its worth, and a temple servant only hangs them where told. From the black pillar, smoke rises and never sinks; from the white pillar, water falls and never climbs. A scroll lies half hidden in the keeper's lap: one end sleeps in a locked chest, the middle flies between the pillars as a paper bird, and the end being read glows bare. At the keeper's feet a crescent moon rocks like a cradle, catching every ribboned pomegranate that rolls toward the door.",
+  "decode": [
+    "Counting, then ribboning each fruit; the servant who only hangs them → inventory first; the owner classifies by value and sensitivity; the custodian protects.",
+    "The black pillar's rising smoke → Bell-LaPadula, confidentiality: no read up (simple), no write down (star); secrets only flow upward.",
+    "The white pillar's falling water → Biba, integrity: no read down (simple), no write up (star); purity flows downward and mud never climbs.",
+    "The scroll in chest, flight and hand → data at rest, in transit and in use; in use it sits decrypted in memory, the hardest state to protect.",
+    "The crescent moon catching ribboned fruit → DLP: it inspects labels and content to stop sensitive data leaving, so it depends on classification."
+  ],
+  "facts": [
+    "In both models 'simple' is the read rule and 'star' (*) the write rule. Bell-LaPadula protects only confidentiality; Biba protects only integrity.",
+    "Clark-Wilson enforces integrity with the access triple: subjects reach constrained data only through approved programs, giving well-formed transactions and separation of duties.",
+    "Scoping selects the baseline controls that apply to a system; tailoring modifies them to fit the organization's mission. Scoping is part of tailoring."
+  ],
+  "trap": "The collective's oldest wound: letting IT or the custodian classify data. The owner, a senior manager, decides the classification and is accountable; the custodian only carries out the protection.",
+  "glyph": "<rect x=\"14\" y=\"20\" width=\"12\" height=\"62\"/><rect x=\"74\" y=\"20\" width=\"12\" height=\"62\" fill=\"currentColor\" fill-opacity=\"0.85\"/><rect x=\"11\" y=\"14\" width=\"18\" height=\"6\"/><rect x=\"71\" y=\"14\" width=\"18\" height=\"6\"/><rect x=\"11\" y=\"82\" width=\"18\" height=\"6\"/><rect x=\"71\" y=\"82\" width=\"18\" height=\"6\"/><path d=\"M26 22 Q50 36 74 22\"/><polyline points=\"33,64 38,59 43,64\"/><polyline points=\"33,53 38,48 43,53\" opacity=\"0.7\"/><polyline points=\"33,42 38,37 43,42\" opacity=\"0.4\"/><polyline points=\"57,38 62,43 67,38\" opacity=\"0.4\"/><polyline points=\"57,49 62,54 67,49\" opacity=\"0.7\"/><polyline points=\"57,60 62,65 67,60\"/><path d=\"M39 75 A11 11 0 0 0 61 75 A14 14 0 0 1 39 75 Z\" fill=\"currentColor\"/>"
+}

@@ -1,0 +1,21 @@
+{
+  "n": 12,
+  "id": "hanged-man",
+  "name": "The Hanged Man",
+  "numeral": "XII",
+  "archetype": "The One Who Waits",
+  "concept": "Change, configuration and patching",
+  "objectives": [
+    "7.3",
+    "7.8",
+    "7.9"
+  ],
+  "hue": 160,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

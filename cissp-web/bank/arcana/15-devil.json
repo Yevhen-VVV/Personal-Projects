@@ -1,0 +1,21 @@
+{
+  "n": 15,
+  "id": "devil",
+  "name": "The Devil",
+  "numeral": "XV",
+  "archetype": "The Shadow",
+  "concept": "Identity and authentication attacks",
+  "objectives": [
+    "5.1",
+    "5.2",
+    "5.6"
+  ],
+  "hue": 350,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

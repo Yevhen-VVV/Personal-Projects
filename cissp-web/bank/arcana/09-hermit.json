@@ -1,0 +1,30 @@
+{
+  "n": 9,
+  "id": "hermit",
+  "name": "The Hermit",
+  "numeral": "IX",
+  "archetype": "The Wise Recluse",
+  "concept": "Network segmentation and isolation",
+  "objectives": [
+    "4.1",
+    "4.2"
+  ],
+  "hue": 206,
+  "upright": "Networks divided by need: segments, screened subnets and air gaps that keep a breach in one room and verify every visitor.",
+  "reversed": "One flat network where the printer, the plant controller and the payroll server all trust anyone already inside.",
+  "vision": "The hermit stands alone on a peak with no road, no rope and no bridge to any other mountain. Inside the lantern burns a six-pointed star, and each point lights only its own sealed chamber, never its neighbors. At the cave mouth a guard inspects every traveler's boots for mud before letting them in, then demands their name again at every inner door, even from old friends. The staff bears seven notches, and every message is carved at the top notch and slides down to the bottom before it leaves. Far below, a lonely courtyard sits between two walls, the only place strangers may trade.",
+  "decode": [
+    "A peak with no road, rope or bridge → air gap: no network connection at all, the strongest isolation for critical OT and ICS systems.",
+    "Each star point lighting only its own chamber → segmentation and micro-segmentation: VLANs and per-workload rules keep a breach from spreading.",
+    "Boots inspected, names asked at every door → NAC checks device posture before admission; zero trust verifies every request, whatever its location.",
+    "Seven notches, message sliding top to bottom → OSI encapsulation: data passes down from application (7) to physical (1) before it is sent.",
+    "The courtyard between two walls → screened subnet (DMZ): public-facing servers sit between the external and internal firewalls."
+  ],
+  "facts": [
+    "IPsec AH gives integrity and authentication but no encryption; ESP adds confidentiality. Tunnel mode protects the whole packet, transport mode only the payload.",
+    "Packet filters read headers at layer 3; stateful firewalls track sessions; circuit-level gateways work at layer 5; application-level gateways inspect layer 7.",
+    "SDN separates the control plane, which decides, from the data plane, which forwards, so a central controller can program segmentation in software."
+  ],
+  "trap": "The collective once trusted everything inside the firewall. Zero trust assumes the breach: no user or device is trusted for its network location, and every request is authenticated and authorized.",
+  "glyph": "<path d=\"M24 10 V87\"/><circle cx=\"24\" cy=\"10\" r=\"2\" fill=\"currentColor\"/><circle cx=\"58\" cy=\"8\" r=\"3\"/><polygon points=\"46,18 70,18 64,11 52,11\"/><rect x=\"40\" y=\"18\" width=\"36\" height=\"42\" rx=\"2\"/><polygon points=\"37,60 79,60 74,66 42,66\"/><polygon points=\"61.2,33.9 64.4,39.5 61.2,45.1 54.8,45.1 51.6,39.5 54.8,33.9\" stroke-width=\"1.4\"/><polygon points=\"58,25.1 54.8,30.7 61.2,30.7\" stroke-width=\"1.4\"/><polygon points=\"70.5,32.3 64,32.3 67.2,37.9\" stroke-width=\"1.4\"/><polygon points=\"70.5,46.7 67.2,41.1 64,46.7\" stroke-width=\"1.4\"/><polygon points=\"58,53.9 61.2,48.3 54.8,48.3\" stroke-width=\"1.4\"/><polygon points=\"45.5,46.7 52,46.7 48.8,41.1\" stroke-width=\"1.4\"/><polygon points=\"45.5,32.3 48.8,37.9 52,32.3\" stroke-width=\"1.4\"/><path d=\"M12 92 L30 83 L40 86 L58 74 L70 82 L78 80 L90 92\" stroke-width=\"1.8\"/><path d=\"M53 77.5 L56 79.5 L58.5 77.5 L61 79.5 L63.5 77.5\" stroke-width=\"1.3\"/><path d=\"M82 30 L88 27 M82 39.5 H89 M82 49 L88 52\" stroke-width=\"1.6\"/>"
+}

@@ -1,0 +1,22 @@
+{
+  "n": 16,
+  "id": "tower",
+  "name": "The Tower",
+  "numeral": "XVI",
+  "archetype": "The Upheaval",
+  "concept": "Physical security and safety",
+  "objectives": [
+    "3.8",
+    "3.9",
+    "7.14",
+    "7.15"
+  ],
+  "hue": 16,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

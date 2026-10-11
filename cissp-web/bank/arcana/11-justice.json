@@ -1,0 +1,20 @@
+{
+  "n": 11,
+  "id": "justice",
+  "name": "Justice",
+  "numeral": "XI",
+  "archetype": "The Judge",
+  "concept": "Investigations and evidence",
+  "objectives": [
+    "1.5",
+    "7.1"
+  ],
+  "hue": 180,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

@@ -275,6 +275,68 @@ test("merging game records keeps the larger figures", () => {
   assert.equal(Engine.orderScore(["a", "c", "b"], ["a", "b", "c"]), 1);
 });
 
+// ---------------------------------------------------------------- Oracle
+const deck = Array.from({ length: 22 }, (_, n) => ({ n, id: "c" + n, name: "Card " + n, numeral: String(n), archetype: "A", concept: "C", hue: n * 15, glyph: "<circle cx=\"50\" cy=\"50\" r=\"9\"/>", objectives: [DOMAINS[n % 8].n + "." + (1 + (n % 3))] }));
+
+test("a card is veiled under three answers, then upright, wavering or reversed", () => {
+  const card = { n: 0, objectives: ["1.9"] };
+  const qs = fullBank.filter((q) => q.obj === "1.9").slice(0, 4);
+  const p = {};
+  assert.equal(Engine.cardMastery(card, fullBank, p).state, "veiled");
+  qs.forEach((q) => { p[q.id] = [1, 1, 1, 1, 0, 1, 0]; });
+  assert.equal(Engine.cardMastery(card, fullBank, p).state, "upright");
+  qs.slice(0, 2).forEach((q) => { p[q.id] = [1, 0, 0, 0, 0, 1, 0]; });
+  assert.equal(Engine.cardMastery(card, fullBank, p).state, "wavering");
+  qs.slice(0, 3).forEach((q) => { p[q.id] = [1, 0, 0, 0, 0, 1, 0]; });
+  assert.equal(Engine.cardMastery(card, fullBank, p).state, "reversed");
+});
+
+test("the Shadow waits for evidence, then is the weakest card", () => {
+  const ms = deck.map((c) => ({ n: c.n, seen: 0, smoothed: 0.6 }));
+  assert.equal(Engine.shadowCard(ms, "d"), null);
+  ms.forEach((m) => { m.seen = 3; m.smoothed = 0.7; });
+  ms[9].smoothed = 0.2;
+  assert.equal(Engine.shadowCard(ms, "d"), 9);
+});
+
+test("the daily spread is fixed per day, draws three different cards and reads strength to weakness", () => {
+  const ms = deck.map((c) => ({ n: c.n, seen: 5, smoothed: c.n / 22 }));
+  const a = Engine.dailySpread(ms, "2026-11-02"), b = Engine.dailySpread(ms, "2026-11-02");
+  assert.deepEqual(Array.from(a), Array.from(b));
+  assert.equal(new Set(a).size, 3);
+  for (let d = 1; d <= 28; d++) {
+    const [past, present, future] = Engine.dailySpread(ms, `2026-11-${String(d).padStart(2, "0")}`, 0);
+    assert.ok(past > present && present > future, `day ${d}: ${past}, ${present}, ${future}`);
+    assert.ok(![past, present, future].includes(0), "the Shadow never appears in the spread");
+  }
+});
+
+test("a card's prophecy prefers unseen questions, then missed ones", () => {
+  const card = { objectives: ["1.9"] };
+  const qs = fullBank.filter((q) => q.obj === "1.9");
+  const p = {};
+  qs.forEach((q, i) => { p[q.id] = [1, 1, 1, i === 3 ? 0 : 1, 0, 1, 0]; });
+  delete p[qs[5].id];
+  assert.equal(Engine.cardQuestion(card, fullBank, p, "s").id, qs[5].id);
+  p[qs[5].id] = [1, 1, 1, 1, 0, 1, 0];
+  assert.equal(Engine.cardQuestion(card, fullBank, p, "s").id, qs[3].id);
+  assert.equal(Engine.cardQuestion(card, fullBank, p, "s", qs.map((q) => q.id)), null);
+});
+
+test("a reversed card is drawn upside down and the Oracle record merges by progress", () => {
+  assert.match(Engine.cardSvg(deck[3], { reversed: true }), /rotate\(180 70 115\)/);
+  assert.doesNotMatch(Engine.cardSvg(deck[3]), /rotate\(180/);
+  assert.match(Engine.cardSvg(null, { back: true }), /ARCANA/);
+  const a = { readings: { d1: { flipped: [true, false, false], results: [null, null, null] } }, shadows: { attempts: 1, wins: { 3: 1 } }, updatedAt: 5 };
+  const b = { readings: { d1: { flipped: [true, true, true], results: [true, false, null] }, d2: { flipped: [], results: [] } }, shadows: { attempts: 2, wins: { 9: 2 } }, updatedAt: 3 };
+  const m = Engine.mergeOracle(a, b);
+  assert.equal(m.readings.d1.results[0], true);
+  assert.ok(m.readings.d2);
+  assert.deepEqual(Object.keys(m.shadows.wins).sort(), ["3", "9"]);
+  assert.equal(m.shadows.attempts, 2);
+  assert.equal(m.updatedAt, 5);
+});
+
 let failed = 0;
 for (const [name, fn] of tests) {
   try {

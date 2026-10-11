@@ -1,0 +1,20 @@
+{
+  "n": 19,
+  "id": "sun",
+  "name": "The Sun",
+  "numeral": "XIX",
+  "archetype": "The Illuminator",
+  "concept": "Logging, monitoring and metrics",
+  "objectives": [
+    "7.2",
+    "6.3"
+  ],
+  "hue": 42,
+  "upright": "",
+  "reversed": "",
+  "vision": "",
+  "decode": [],
+  "facts": [],
+  "trap": "",
+  "glyph": ""
+}

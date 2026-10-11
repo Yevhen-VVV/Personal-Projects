@@ -3,8 +3,8 @@
 A private study app for the ISC2 CISSP exam, built as a single web page that runs inside Claude as an
 artifact, on a phone or in any browser. It has 484 original practice questions mapped to the exam
 outline that took effect on April 15, 2024. Every answer option comes with its own explanation, and
-the app adds an adaptive mock exam, a study tracker, a plan running to the exam date, and an Arcade
-of game-like practice modes.
+the app adds an adaptive mock exam, a study tracker, a plan running to the exam date, an Arcade of
+game-like practice modes, and the Oracle: a tarot deck of the exam, read daily.
 
 ## What it does
 
@@ -34,6 +34,23 @@ of game-like practice modes.
   item half version), no going back, and it stops as soon as it is 95% sure you are above or below
   the passing line. The result comes as an estimated score on the 0–1000 scale with 700 as the pass
   mark, plus a domain-by-domain proficiency report like the one ISC2 gives candidates who fail.
+- **The Oracle**, a CISSP tarot. The 22 Major Arcana are archetypes, and each one carries a cluster of
+  exam objectives: The Magician is cryptography, Death is endings (retention, sanitization,
+  deprovisioning), The Tower is physical security and safety, and so on, so that all 50 objectives sit
+  somewhere in the deck. Every card has a surreal dream vision whose strange images each encode a
+  real fact, a decoding of the dream, three key facts, upright and reversed meanings, and "the
+  collective remembers": the mistake candidates most often make on that topic.
+  - *The daily reading*: three cards a day, the same on every device. The Past is drawn from what you
+    have mastered, the Present from the middle, the Future from what you are weakest on. Turn each card
+    in order and answer its prophecy, a bank question on the card's objectives.
+  - *Card states*: a card is upright when your latest answers on its objectives are 75% or more right,
+    reversed and drawn upside down under 50%, wavering in between, and veiled under three answers.
+  - *The Shadow*: after 20 answers, your weakest card becomes your Shadow. Confronting it is seven
+    questions on its objectives; five right integrates it and gilds its border, three misses and it
+    wins the round.
+  - *The Oracle speaks*: when the page runs in Claude, Claude reads the finished spread against your
+    real statistics and returns a short prophecy, a three-step study ritual for the next day and a
+    mantra.
 - **Tracker**: the exam date and a countdown, per-domain statistics, 1–5 self-ratings, notes,
   scores from other practice tests, a 30-day activity chart, the weakest objectives, and a
   week-by-week plan that reorders itself as accuracy changes.
@@ -52,7 +69,8 @@ copy is always kept locally for a fast start.
 
 Documents: `me/profile` (exam date, ratings, notes, external scores), `me/progress` (one compact
 record per question plus daily counts), `me/mock` (an exam in progress), `me/game` (experience,
-badges, Arcade bests, calibration and drill records), and the `sessions`,
+badges, Arcade bests, calibration and drill records), `me/oracle` (daily readings and integrated
+Shadows), and the `sessions`,
 `flags` and `gen` collections. Flags carry an optional note, so disputed questions can be found and
 fixed later.
 
@@ -91,6 +109,12 @@ The drills live in `bank/drills.json`. Each sequence lists its steps in the corr
 match set lists `[term, definition]` pairs; the page shuffles both. The build checks ids, objectives,
 step and pair counts and duplicates.
 
+The Oracle's deck lives in `bank/arcana`, one JSON file per card. `node cissp-web/arcana-check.mjs`
+validates it (lengths, decode lines, objectives with enough bank questions, and the card glyph, which
+may only use plain SVG shapes because it is inlined into the page); `--render out.png` also draws all
+22 cards for a visual check. The build rejects an incomplete or invalid deck; `--draft` builds a
+preview anyway.
+
 The questions are original. They follow the reasoning of the ISC2 CISSP Official Study Guide but do
 not copy any published question bank.
 
@@ -108,12 +132,15 @@ pass, weak ones fail, and borderline ones take longer.
 
 ```
 src/app.html        The page: markup, styles and app code
-src/engine.js       Scheduling, statistics, the adaptive mock, the study plan and the Arcade's rules
+src/engine.js       Scheduling, statistics, the adaptive mock, the study plan, the Arcade's rules
+                    and the Oracle (card states, the daily spread, the Shadow, the card art)
 bank.mjs            Parses and validates the questions and drills; holds the exam outline
 bank/d1–d8.txt      The questions
 bank/drills.json    Sequences and match sets for the Arcade drills
+bank/arcana/        The Oracle's 22 cards, one JSON file each
+arcana-check.mjs    Validates the deck and can render it to an image
 build.mjs           Inlines the engine, the bank and the drills into cissp-prep.html
-engine.test.mjs     Tests for the engine, including the mock simulation and the Arcade
+engine.test.mjs     Tests for the engine, including the mock simulation, the Arcade and the Oracle
 cissp-prep.html     The built page. Generated, so edit src/ and bank/ instead
 ```
 

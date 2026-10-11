@@ -285,3 +285,70 @@ export function validateDrills(drills) {
   if (!(drills.sequences || []).length || !(drills.matches || []).length) errors.push("drills.json needs sequences and matches");
   return errors;
 }
+
+// The Oracle's deck: one JSON file per Major Arcana card in bank/arcana.
+export function loadArcana() {
+  const dir = here("./bank/arcana/");
+  const files = readdirSync(dir).filter((f) => f.endsWith(".json")).sort();
+  const cards = [];
+  const errors = [];
+  for (const f of files) {
+    try { cards.push({ ...JSON.parse(readFileSync(dir + f, "utf8")), file: `bank/arcana/${f}` }); }
+    catch (e) { errors.push(`bank/arcana/${f}: not valid JSON (${e.message})`); }
+  }
+  cards.sort((a, b) => a.n - b.n);
+  return { cards, errors: errors.concat(validateArcana(cards)) };
+}
+
+const words = (s) => String(s || "").trim().split(/\s+/).filter(Boolean).length;
+const GLYPH_TAGS = new Set(["path", "circle", "ellipse", "rect", "line", "polyline", "polygon", "g"]);
+const GLYPH_ATTRS = new Set(["d", "cx", "cy", "r", "rx", "ry", "x", "y", "width", "height", "x1", "y1", "x2", "y2", "points", "transform", "stroke-width", "fill", "opacity", "stroke-opacity", "fill-opacity", "stroke-linecap", "stroke-linejoin", "stroke-dasharray"]);
+
+// The card glyph is inlined into the page as SVG, so only plain shapes with
+// plain geometry attributes are allowed: no text, links, styles, scripts or events.
+export function checkGlyph(glyph) {
+  const errors = [];
+  const src = String(glyph || "").trim();
+  if (!src) return ["glyph is empty"];
+  if (src.length > 3000) errors.push(`glyph is ${src.length} characters; keep it under 3000`);
+  const stripped = src.replace(/<(\/?)([a-zA-Z]+)((?:\s+[a-zA-Z-]+="[^"<>]*")*)\s*(\/?)>/g, (m, close, tag, attrs) => {
+    if (!GLYPH_TAGS.has(tag)) errors.push(`glyph uses <${tag}>`);
+    for (const [, name, value] of attrs.matchAll(/([a-zA-Z-]+)="([^"]*)"/g)) {
+      if (!GLYPH_ATTRS.has(name)) errors.push(`glyph attribute ${name} is not allowed`);
+      if (name === "fill" && !["none", "currentColor"].includes(value)) errors.push(`glyph fill must be none or currentColor, not ${value}`);
+      if (/[a-z]\s*\(/i.test(value) && !(name === "transform" && /^(\s*(translate|rotate|scale)\([-\d.,\s]+\)\s*)+$/.test(value))) errors.push(`glyph attribute ${name} has a function value`);
+    }
+    return "";
+  });
+  if (stripped.trim()) errors.push(`glyph has text or markup outside plain tags: ${stripped.trim().slice(0, 60)}`);
+  const shapes = (src.match(/<(path|circle|ellipse|rect|line|polyline|polygon)\b/g) || []).length;
+  if (shapes < 2 || shapes > 30) errors.push(`glyph has ${shapes} shapes; use 2 to 30`);
+  return errors;
+}
+
+export function validateArcana(cards) {
+  const errors = [];
+  if (cards.length !== 22) errors.push(`the deck has ${cards.length} cards, expected 22`);
+  const ids = new Set();
+  cards.forEach((c, i) => {
+    const tag = `${c.file || "card"} (${c.name || c.id})`;
+    const need = (cond, msg) => { if (!cond) errors.push(`${tag} ${msg}`); };
+    need(c.n === i, `has n=${c.n}, expected ${i}`);
+    need(c.id && !ids.has(c.id), "missing or duplicate id");
+    ids.add(c.id);
+    for (const k of ["name", "numeral", "archetype", "concept"]) need(c[k] && !/[<>&"]/.test(c[k]), `${k} is missing or has markup characters`);
+    need(Array.isArray(c.objectives) && c.objectives.length >= 1 && c.objectives.every((o) => { const d = DOMAINS[Number(String(o).split(".")[0]) - 1]; return d && d.objectives[o]; }), "objectives must be outline objectives");
+    need(Number.isInteger(c.hue) && c.hue >= 0 && c.hue < 360, "hue must be an integer 0-359");
+    need(c.upright && c.upright.length <= 130, "upright must be 1-130 characters");
+    need(c.reversed && c.reversed.length <= 130, "reversed must be 1-130 characters");
+    const vw = words(c.vision);
+    need(vw >= 50 && vw <= 120, `vision has ${vw} words; use 50-120`);
+    need(Array.isArray(c.decode) && c.decode.length >= 3 && c.decode.length <= 5, "decode needs 3-5 lines");
+    for (const d of c.decode || []) need(typeof d === "string" && d.includes("→") && d.length <= 170, `decode line must contain "→" and be at most 170 characters: ${String(d).slice(0, 50)}`);
+    need(Array.isArray(c.facts) && c.facts.length === 3, "facts needs exactly 3 lines");
+    for (const f of c.facts || []) need(typeof f === "string" && f.length >= 20 && f.length <= 180, `fact must be 20-180 characters: ${String(f).slice(0, 50)}`);
+    need(c.trap && c.trap.length <= 220, "trap must be 1-220 characters");
+    for (const e of checkGlyph(c.glyph)) errors.push(`${tag} ${e}`);
+  });
+  return errors;
+}

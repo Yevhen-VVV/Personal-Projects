@@ -1,0 +1,2 @@
+# Left behind only if arcana-check.mjs --render is interrupted
+.arcana-preview-*.html
