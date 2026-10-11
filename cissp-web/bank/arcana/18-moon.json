@@ -10,11 +10,21 @@
     "7.7"
   ],
   "hue": 250,
-  "upright": "",
-  "reversed": "",
-  "vision": "",
-  "decode": [],
-  "facts": [],
-  "trap": "",
-  "glyph": ""
+  "upright": "Seeing through disguises: decoys that study intruders, sensors tuned to the known and the strange, tunnels no eavesdropper can read.",
+  "reversed": "Believing every reply: forged ARP and DNS answers, a sensor nobody watches, and plaintext crossing hostile ground.",
+  "vision": "A painted moon hangs low, a lamp the guards lit on purpose; it glows for prowlers already on the road but never calls to anyone asleep. A dog howls at faces it knows from wanted posters; a wolf howls at anything that walks strangely, and sometimes at the wind. From the pool a hundred crayfish crawl to the tower door, each knocking once and scuttling off before it opens, until real travelers cannot get in. Between the two towers the path runs inside a sealed glass pipe, each traveler wrapped whole in a dark cloak. A shadow on the path whispers to each tower that it is the other.",
+  "decode": [
+    "The moon lamp lit on purpose → honeypot: a decoy with no real users, so any visitor is suspect. It may entice the willing but must never entrap.",
+    "Dog of wanted posters, wolf howling at odd gaits and wind → signature detection catches known attacks; anomaly detection finds new ones, with more false positives.",
+    "Crayfish that knock once and never return → SYN flood: half-open handshakes fill the server's connection queue; SYN cookies blunt it.",
+    "The path sealed in glass, travelers cloaked whole → IPsec tunnel mode wraps the entire original packet, as gateway VPNs do; transport mode guards only the payload.",
+    "The shadow telling each tower it is the other → man-in-the-middle, often by ARP poisoning: forged replies map the attacker's MAC to another host's IP."
+  ],
+  "facts": [
+    "An IDS is passive: it detects and alerts. An IPS sits inline and blocks, so an IPS false positive stops legitimate traffic instead of just raising an alarm.",
+    "A honeynet links several honeypots; a padded cell quietly moves a detected intruder into a simulated environment; pseudo flaws are fake vulnerabilities planted as bait.",
+    "ARP poisoning works only on the local segment; DNS poisoning plants false name-to-address records to send users to fake sites, and DNSSEC counters it by signing records."
+  ],
+  "trap": "The collective still blurs enticement and entrapment. A honeypot that waits for an intruder already intent on attack is legal enticement; inducing someone who would not have attacked is entrapment.",
+  "glyph": "<circle cx=\"50\" cy=\"28\" r=\"16\"/><path d=\"M52 15 A13 13 0 1 0 52 41 A10.5 10.5 0 0 1 52 15 Z\" fill=\"currentColor\" fill-opacity=\"0.35\"/><path d=\"M50 6 V9 M50 47 V50 M28 28 H31 M69 28 H72 M34.4 12.4 L36.6 14.6 M63.4 41.4 L65.6 43.6 M65.6 12.4 L63.4 14.6 M36.6 41.4 L34.4 43.6\" stroke-width=\"1.6\"/><path d=\"M41 52 C39 55 38 57 38 58.5 A3 3 0 0 0 44 58.5 C44 57 43 55 41 52 Z\" fill=\"currentColor\" fill-opacity=\"0.5\" stroke-width=\"1.4\"/><path d=\"M59 52 C57 55 56 57 56 58.5 A3 3 0 0 0 62 58.5 C62 57 61 55 59 52 Z\" fill=\"currentColor\" fill-opacity=\"0.5\" stroke-width=\"1.4\"/><path d=\"M50 58 C48 61 47 63 47 64.5 A3 3 0 0 0 53 64.5 C53 63 52 61 50 58 Z\" fill=\"currentColor\" fill-opacity=\"0.5\" stroke-width=\"1.4\"/><path d=\"M14 90 V58 H16.5 V54 H20 V58 H22.5 V54 H26 V58 H28 V90\"/><path d=\"M72 90 V58 H74.5 V54 H78 V58 H80.5 V54 H84 V58 H86 V90\"/><path d=\"M38 92 C40 84 58 82 56 76 C55 72 46 72 48 68 M62 92 C62 86 70 82 66 76\" stroke-width=\"1.6\"/>"
 }

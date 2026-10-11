@@ -11,11 +11,21 @@
     "5.6"
   ],
   "hue": 350,
-  "upright": "",
-  "reversed": "",
-  "vision": "",
-  "decode": [],
-  "facts": [],
-  "trap": "",
-  "glyph": ""
+  "upright": "Identity proven with the right factors: phishing-resistant MFA, tickets bound to synced clocks, sessions that expire on time.",
+  "reversed": "Reused passwords, prompts approved just to stop the buzzing, stolen hashes replayed and sessions that never end.",
+  "vision": "A horned figure squats on a pedestal, collecting three gifts at the door: a whispered word, a carried coin and a fingerprint; three whispered words buy nothing. Below, two chained figures tap yes on a box that buzzes all night, never noticing that their chains are loose enough to lift. The horned one tries one stolen key on a thousand doors and opens others with only a wax print of a key. At the back gate a three-headed dog stamps tickets with the hour and burns any five minutes off; a thief who stole its seal prints golden tickets. The inverted torch drips two flames: one shuts out friends, one admits strangers.",
+  "decode": [
+    "Word, coin, fingerprint; three words buy nothing → MFA mixes factor types: something you know, have, are. A password plus a security question is still one factor.",
+    "Tapping yes on a box that buzzes all night; chains loose enough to lift → MFA fatigue: push prompts spammed until one is approved. Number matching breaks the spell.",
+    "One stolen key on a thousand doors; a wax print of a key → credential stuffing replays breached passwords on other sites; pass-the-hash replays the hash itself.",
+    "The dog stamping tickets with the hour; golden tickets → Kerberos tickets need clocks within 5 minutes; a stolen KRBTGT hash lets an attacker forge any TGT.",
+    "Two flames of the inverted torch → type I errors (FRR) shut out valid users; type II (FAR) admit impostors. Where the rates cross is the CER: lower is better."
+  ],
+  "facts": [
+    "Kerberos uses symmetric keys, not PKI: the KDC holds every principal's secret key, so it is a single point of failure. The password itself never crosses the network.",
+    "Kerberoasting: any domain user requests service tickets for accounts with SPNs and cracks them offline; long random or managed service-account passwords defeat it.",
+    "Sessions need random IDs sent only over TLS, renewed at login, with idle and absolute timeouts; a stolen session cookie walks straight past MFA."
+  ],
+  "trap": "The collective believed any MFA stops phishing. A fake page can relay passwords and one-time codes in real time; only origin-bound FIDO2/WebAuthn keys refuse to answer the wrong site.",
+  "glyph": "<path d=\"M37 44 C30 34 22 26 24 11 C30 23 40 30 45 44\"/><path d=\"M63 44 C70 34 78 26 76 11 C70 23 60 30 55 44\"/><rect x=\"30\" y=\"44\" width=\"40\" height=\"30\" rx=\"4\"/><circle cx=\"50\" cy=\"55\" r=\"3.6\" fill=\"currentColor\" stroke-width=\"0.6\"/><polygon points=\"48.2,57 51.8,57 53,66 47,66\" fill=\"currentColor\" stroke-width=\"0.6\"/><rect x=\"40\" y=\"74\" width=\"20\" height=\"5\" rx=\"1\"/><ellipse cx=\"33\" cy=\"80\" rx=\"4\" ry=\"2.4\" transform=\"rotate(30 33 80)\" stroke-width=\"1.6\"/><ellipse cx=\"25\" cy=\"84.5\" rx=\"4\" ry=\"2.4\" transform=\"rotate(30 25 84.5)\" stroke-width=\"1.6\"/><path d=\"M18.5 86 A4 2.4 30 1 1 15 90\" stroke-width=\"1.6\"/><ellipse cx=\"67\" cy=\"80\" rx=\"4\" ry=\"2.4\" transform=\"rotate(-30 67 80)\" stroke-width=\"1.6\"/><ellipse cx=\"75\" cy=\"84.5\" rx=\"4\" ry=\"2.4\" transform=\"rotate(-30 75 84.5)\" stroke-width=\"1.6\"/><path d=\"M81.5 86 A4 2.4 -30 1 0 85 90\" stroke-width=\"1.6\"/>"
 }

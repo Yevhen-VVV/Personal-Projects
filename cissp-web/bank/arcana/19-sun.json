@@ -10,11 +10,21 @@
     "6.3"
   ],
   "hue": 42,
-  "upright": "",
-  "reversed": "",
-  "vision": "",
-  "decode": [],
-  "facts": [],
-  "trap": "",
-  "glyph": ""
+  "upright": "Every event recorded, gathered in one place, stamped by one clock and actually read; progress measured and rising risk foreseen.",
+  "reversed": "Logs no one reads, clocks that disagree, and an intruder free to rewrite the record of their own visit.",
+  "vision": "A radiant sun with a face looks down on a walled garden where every stone keeps a diary. The sun reads all the diaries at once and notices three stones writing about the same stranger. Each page is sealed in wax the moment it is written, and one bell sets every sundial to the same hour. A child on a white horse rides along the wall, ignoring single stumbles but turning back at the fifth. Sunflowers lean over the wall to watch what leaves the garden, not what enters. The red banner carries two tallies: last season's harvest and the storm clouds gathering.",
+  "decode": [
+    "The sun reading every stone's diary at once → SIEM: gathers logs from many sources and correlates related events into one meaningful alert.",
+    "Pages sealed in wax; one bell for every sundial → log integrity (central, write-once, hashed) and NTP time sync, so events line up across systems.",
+    "Ignoring single stumbles, turning at the fifth → clipping level: a threshold that filters routine errors and flags only repeats, such as failed logons.",
+    "Sunflowers watching what leaves → egress monitoring and DLP: inspect outbound traffic to catch exfiltration of sensitive data.",
+    "The banner's two tallies → KPIs measure how well things have performed; KRIs are leading indicators that warn a risk is rising."
+  ],
+  "facts": [
+    "UEBA baselines normal behavior for users and devices, then flags deviations, such as an account downloading far more than usual or signing in at odd hours.",
+    "Threat hunting assumes the attacker is already inside and searches proactively for indicators of compromise, rather than waiting for an alert to fire.",
+    "Backup verification data comes from actual test restores; a 'job completed' message proves nothing about whether the data can be recovered."
+  ],
+  "trap": "The collective once kept logs on the very server the intruder had seized. An attacker with admin rights rewrites local logs; send them at once to a separate, access-controlled store and hash them.",
+  "glyph": "<circle cx=\"50\" cy=\"30\" r=\"12\"/><circle cx=\"45.5\" cy=\"28\" r=\"1.4\" fill=\"currentColor\"/><circle cx=\"54.5\" cy=\"28\" r=\"1.4\" fill=\"currentColor\"/><path d=\"M45 34 Q50 38 55 34\" stroke-width=\"1.6\"/><path d=\"M0 -16 V-23\" transform=\"translate(50 30) rotate(0)\"/><path d=\"M0 -16 C2.5 -18 -2.5 -20 0 -23\" transform=\"translate(50 30) rotate(30)\" stroke-width=\"1.6\"/><path d=\"M0 -16 V-23\" transform=\"translate(50 30) rotate(60)\"/><path d=\"M0 -16 C2.5 -18 -2.5 -20 0 -23\" transform=\"translate(50 30) rotate(90)\" stroke-width=\"1.6\"/><path d=\"M0 -16 V-23\" transform=\"translate(50 30) rotate(120)\"/><path d=\"M0 -16 C2.5 -18 -2.5 -20 0 -23\" transform=\"translate(50 30) rotate(150)\" stroke-width=\"1.6\"/><path d=\"M0 -16 V-23\" transform=\"translate(50 30) rotate(180)\"/><path d=\"M0 -16 C2.5 -18 -2.5 -20 0 -23\" transform=\"translate(50 30) rotate(210)\" stroke-width=\"1.6\"/><path d=\"M0 -16 V-23\" transform=\"translate(50 30) rotate(240)\"/><path d=\"M0 -16 C2.5 -18 -2.5 -20 0 -23\" transform=\"translate(50 30) rotate(270)\" stroke-width=\"1.6\"/><path d=\"M0 -16 V-23\" transform=\"translate(50 30) rotate(300)\"/><path d=\"M0 -16 C2.5 -18 -2.5 -20 0 -23\" transform=\"translate(50 30) rotate(330)\" stroke-width=\"1.6\"/><rect x=\"19.5\" y=\"68\" width=\"5\" height=\"6\" rx=\"1\"/><circle cx=\"22\" cy=\"64\" r=\"2.4\" fill=\"currentColor\"/><circle cx=\"22\" cy=\"64\" r=\"5\" stroke-width=\"1.4\" stroke-dasharray=\"1.6 1.6\"/><rect x=\"33.5\" y=\"64\" width=\"5\" height=\"10\" rx=\"1\"/><circle cx=\"36\" cy=\"60\" r=\"2.4\" fill=\"currentColor\"/><circle cx=\"36\" cy=\"60\" r=\"5\" stroke-width=\"1.4\" stroke-dasharray=\"1.6 1.6\"/><rect x=\"61.5\" y=\"68\" width=\"5\" height=\"6\" rx=\"1\"/><circle cx=\"64\" cy=\"64\" r=\"2.4\" fill=\"currentColor\"/><circle cx=\"64\" cy=\"64\" r=\"5\" stroke-width=\"1.4\" stroke-dasharray=\"1.6 1.6\"/><rect x=\"75.5\" y=\"62\" width=\"5\" height=\"12\" rx=\"1\"/><circle cx=\"78\" cy=\"58\" r=\"2.4\" fill=\"currentColor\"/><circle cx=\"78\" cy=\"58\" r=\"5\" stroke-width=\"1.4\" stroke-dasharray=\"1.6 1.6\"/><rect x=\"12\" y=\"74\" width=\"76\" height=\"16\" rx=\"1\"/><path d=\"M12 82 H88 M24 74 V82 M44 74 V82 M64 74 V82 M34 82 V90 M54 82 V90 M74 82 V90\" stroke-width=\"1.4\"/>"
 }

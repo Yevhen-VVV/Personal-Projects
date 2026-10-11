@@ -12,11 +12,21 @@
     "7.5"
   ],
   "hue": 0,
-  "upright": "",
-  "reversed": "",
-  "vision": "",
-  "decode": [],
-  "facts": [],
-  "trap": "",
-  "glyph": ""
+  "upright": "Every ending planned: data kept as long as law and business require, then destroyed beyond recovery; access revoked on the last day.",
+  "reversed": "Records hoarded forever, wiped drives that still whisper, end-of-support servers left running, ex-staff who can still log in.",
+  "vision": "An armored skeleton rides a white horse through the archive, ending everything on schedule. Its black banner bears a white rose with a date inked on every stem; the rider cuts no stem a day early or a day late. A bishop waves a magnet over a glass chip, and the chip only laughs. Disks the rider has already wiped still whisper names when held to the ear. At the gate the rider takes a departing knight's badge before the knight finishes saying goodbye. The sun rises between two towers: one has stopped selling bread, the other has barred its doors for good. On the river, a locked chest becomes driftwood the moment its only key sinks.",
+  "decode": [
+    "The rider cuts each rose stem on its inked date → retention: keep data as long as law, regulation and business need require, then destroy it on schedule.",
+    "The chip that laughs at the magnet; wiped disks still whispering → degaussing cannot erase SSDs, and data remanence survives deletion: purge or destroy instead.",
+    "The badge taken before goodbye → deprovisioning: disable every account the moment employment ends; ex-staff accounts left active are a classic audit finding.",
+    "Two towers, one stops selling, one bars its doors → EOL: the vendor stops selling the product; EOS: patches and support end, so isolate or replace it.",
+    "The chest lost when its only key sinks → cryptographic erasure: destroy the encryption keys and the data is unreadable; ideal for SEDs and cloud storage."
+  ],
+  "facts": [
+    "NIST SP 800-88: clear (overwrite; stops simple recovery), purge (degauss, block or crypto erase; stops lab recovery), destroy. Media leaving your control needs purge.",
+    "Privilege creep is access piling up as people change roles. On every transfer, remove old rights as new ones are added; access reviews catch what slips through.",
+    "Owners classify data and set its protection; custodians carry it out day to day (backups, restores); administrators grant access by the owner's rules."
+  ],
+  "trap": "The collective once kept everything forever, just in case. Data held past its retention period is pure liability, discoverable in lawsuits and exposed in breaches; destroy it on schedule unless a legal hold applies.",
+  "glyph": "<circle cx=\"22\" cy=\"10\" r=\"2.2\" fill=\"currentColor\"/><path d=\"M22 13 V90\"/><path d=\"M22 16 H62 M22 56 H62\"/><path d=\"M62 16 Q71 14 80 17 M62 22.7 Q68 21 74 23.5 M62 29.3 Q73 27.5 84 30 M62 36 Q69 34.5 77 37 M62 42.7 Q72 41 82 43.5 M62 49.3 Q67 48 72 50 M62 56 Q70 54.5 79 57\" stroke-width=\"1.8\"/><path d=\"M42 27.5 A5.4 5.4 0 1 1 50.1 33.4 A5.4 5.4 0 1 1 47 42.9 A5.4 5.4 0 1 1 37 42.9 A5.4 5.4 0 1 1 33.9 33.4 A5.4 5.4 0 1 1 42 27.5 Z\"/><circle cx=\"42\" cy=\"36\" r=\"3\"/><path d=\"M38 88 V70 L42 66 L46 70 V88 M70 88 V70 L74 66 L78 70 V88\"/><path d=\"M52 82 A6 6 0 0 1 64 82 M58 72 V69 M51 75 L49 73 M65 75 L67 73\" stroke-width=\"1.6\"/><path d=\"M32 88 H86\" stroke-width=\"1.6\"/>"
 }

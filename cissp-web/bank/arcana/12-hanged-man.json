@@ -11,11 +11,21 @@
     "7.9"
   ],
   "hue": 160,
-  "upright": "",
-  "reversed": "",
-  "vision": "",
-  "decode": [],
-  "facts": [],
-  "trap": "",
-  "glyph": ""
+  "upright": "Change made deliberately: systems built from a hardened baseline, every change requested, reviewed, approved, tested and documented.",
+  "reversed": "Untested patches rushed into production, settings drifting unseen, and emergency fixes no one ever writes down.",
+  "vision": "A calm figure hangs upside down by one foot from a living T-shaped tree. Every branch is grown from cuttings of one blessed mother branch. At dawn a gardener traces the tree in chalk and snips any twig that strays past the line, though no one asked it to grow. A council of crows on the crossbar must hear, debate and vote on the smallest twitch of the figure's toe, rehearse it on a straw dummy, choose an hour and write it in a ledger. When lightning splits a branch, the figure splints it alone; at sunrise the crows still inspect and record the splint. The halo sweeps the bark, lighting every crack fresh sap has not sealed.",
+  "decode": [
+    "Every branch grown from cuttings of one mother branch → imaging: systems built from one hardened, approved golden image start from the same secure baseline.",
+    "The chalk outline; stray twigs nobody asked for, snipped → drift detection: a setting changed with no change request is unauthorized; flag it and restore the baseline.",
+    "The council of crows that hears, votes, rehearses, picks an hour and writes it down → the CAB: request, review, approve or reject, test, schedule and implement, document.",
+    "The splint made alone, inspected and recorded at sunrise → an emergency change may skip prior approval, but it is still reviewed and documented afterward.",
+    "The halo lighting every unsealed crack → vulnerability scans find missing patches and misconfigurations; credentialed scans see far more than uncredentialed ones."
+  ],
+  "facts": [
+    "Patch management order: evaluate, test, approve, deploy, verify. Test on systems that mirror production; verification proves each patch actually landed.",
+    "When an actively exploited zero-day has no patch, apply compensating controls: disable or isolate the service, block the attack vector and watch it closely.",
+    "Configuration management sets and records baselines; change management controls every later modification, and each approved change updates the documented baseline."
+  ],
+  "trap": "The collective's oldest scar: an urgent patch pushed straight into production that caused the very outage it was meant to prevent. Urgency shortens the queue; it never skips the test.",
+  "glyph": "<path d=\"M14 14 H86\"/><path d=\"M20 14 V88 M80 14 V88\"/><path d=\"M20 34 L13 28 M80 52 L87 46\" stroke-width=\"1.6\"/><ellipse cx=\"33\" cy=\"10\" rx=\"4\" ry=\"1.8\" transform=\"rotate(-25 33 10)\" fill=\"currentColor\"/><ellipse cx=\"67\" cy=\"10\" rx=\"4\" ry=\"1.8\" transform=\"rotate(25 67 10)\" fill=\"currentColor\"/><path d=\"M50 14 V22\"/><path d=\"M50 22 V42\"/><polyline points=\"50,41 60,33 47,28\"/><path d=\"M50 42 V62\"/><polyline points=\"45.5,61 40,53 50,48.5 60,53 54.5,61\"/><circle cx=\"50\" cy=\"69\" r=\"5.5\"/><path d=\"M55.9 59 A12.5 12.5 0 0 1 55.9 81 M58.1 77.4 L55.9 81 L60.1 81.1\" stroke-width=\"1.8\"/><path d=\"M44.1 81 A12.5 12.5 0 0 1 44.1 59 M41.9 62.6 L44.1 59 L39.9 58.9\" stroke-width=\"1.8\"/>"
 }
