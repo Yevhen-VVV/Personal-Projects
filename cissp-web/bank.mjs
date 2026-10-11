@@ -316,6 +316,10 @@ export function checkGlyph(glyph) {
     for (const [, name, value] of attrs.matchAll(/([a-zA-Z-]+)="([^"]*)"/g)) {
       if (!GLYPH_ATTRS.has(name)) errors.push(`glyph attribute ${name} is not allowed`);
       if (name === "fill" && !["none", "currentColor"].includes(value)) errors.push(`glyph fill must be none or currentColor, not ${value}`);
+      // Browsers reject the whole attribute if a coordinate list holds anything else.
+      if (name === "points" && !/^\s*-?[\d.]+[\s,]+-?[\d.]+(?:[\s,]+-?[\d.]+[\s,]+-?[\d.]+)*\s*$/.test(value)) errors.push(`glyph points must be number pairs only: ${value.slice(0, 40)}`);
+      if (/^(cx|cy|r|rx|ry|x|y|width|height|x1|y1|x2|y2|stroke-width|opacity|stroke-opacity|fill-opacity)$/.test(name) && !/^-?[\d.]+$/.test(value)) errors.push(`glyph ${name} must be a number, not ${value}`);
+      if (name === "d" && /[^MmLlHhVvCcSsQqTtAaZz\d\s,.\-eE]/.test(value)) errors.push(`glyph path data has unexpected characters: ${value.slice(0, 40)}`);
       if (/[a-z]\s*\(/i.test(value) && !(name === "transform" && /^(\s*(translate|rotate|scale)\([-\d.,\s]+\)\s*)+$/.test(value))) errors.push(`glyph attribute ${name} has a function value`);
     }
     return "";

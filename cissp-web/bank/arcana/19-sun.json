@@ -12,10 +12,10 @@
   "hue": 42,
   "upright": "Every event recorded, gathered in one place, stamped by one clock and actually read; progress measured and rising risk foreseen.",
   "reversed": "Logs no one reads, clocks that disagree, and an intruder free to rewrite the record of their own visit.",
-  "vision": "A radiant sun with a face looks down on a walled garden where every stone keeps a diary. The sun reads all the diaries at once and notices three stones writing about the same stranger. Each page is sealed in wax the moment it is written, and one bell sets every sundial to the same hour. A child on a white horse rides along the wall, ignoring single stumbles but turning back at the fifth. Sunflowers lean over the wall to watch what leaves the garden, not what enters. The red banner carries two tallies: last season's harvest and the storm clouds gathering.",
+  "vision": "A radiant sun with a face looks down on a walled garden where every stone keeps a diary. The sun reads all the diaries at once and notices three stones writing about the same stranger. Each page turns to slate the moment it is written, and one bell sets every sundial to the same hour. A child on a white horse rides along the wall, ignoring single stumbles but turning back at the fifth. Sunflowers lean over the wall to watch what leaves the garden, not what enters. The red banner carries two tallies: last season's harvest and the storm clouds gathering.",
   "decode": [
     "The sun reading every stone's diary at once → SIEM: gathers logs from many sources and correlates related events into one meaningful alert.",
-    "Pages sealed in wax; one bell for every sundial → log integrity (central, write-once, hashed) and NTP time sync, so events line up across systems.",
+    "Pages that turn to slate; one bell for every sundial → log integrity (central, write-once, hashed) and NTP time sync, so events line up across systems.",
     "The rider ignoring single stumbles, turning at the fifth → clipping level: a threshold that filters routine errors and flags only repeats, such as failed logons.",
     "Sunflowers watching what leaves → egress monitoring and DLP: inspect outbound traffic to catch exfiltration of sensitive data.",
     "The banner's two tallies → KPIs measure how well things have performed; KRIs are leading indicators that warn a risk is rising."

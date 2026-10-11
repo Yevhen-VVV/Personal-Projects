@@ -3,7 +3,7 @@
   "id": "magician",
   "name": "The Magician",
   "numeral": "I",
-  "archetype": "The Magician",
+  "archetype": "The Conjurer",
   "concept": "Cryptography",
   "objectives": [
     "3.6",
