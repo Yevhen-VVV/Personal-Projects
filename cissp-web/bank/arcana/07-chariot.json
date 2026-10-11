@@ -21,7 +21,7 @@
   ],
   "facts": [
     "NIST SP 800-61 Rev. 2 has four phases: preparation; detection and analysis; containment, eradication and recovery; and post-incident activity.",
-    "In the ISC2 steps, mitigation contains the incident; remediation comes after recovery and finds the root cause so the incident cannot recur.",
+    "In the ISC2 steps, mitigation contains the incident; remediation follows recovery, finding the root cause and fixing it to prevent recurrence.",
     "An event is any observable occurrence; an incident is an event that harms confidentiality, integrity or availability. Every incident is an event, not the reverse."
   ],
   "trap": "The collective still flinches toward the power button. Pulling the plug wipes memory and destroys evidence; isolate the system from the network, capture volatile data, then follow the plan.",

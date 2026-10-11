@@ -22,7 +22,7 @@
   ],
   "facts": [
     "IPsec AH gives integrity and authentication but no encryption; ESP adds confidentiality. Tunnel mode protects the whole packet, transport mode only the payload.",
-    "Packet filters read headers at layer 3; stateful firewalls track sessions; circuit-level gateways work at layer 5; application-level gateways inspect layer 7.",
+    "Packet filters read headers at layer 3; stateful firewalls track connection state at layers 3 and 4; circuit-level gateways work at layer 5; application gateways at layer 7.",
     "SDN separates the control plane, which decides, from the data plane, which forwards, so a central controller can program segmentation in software."
   ],
   "trap": "The collective once trusted everything inside the firewall. Zero trust assumes the breach: no user or device is trusted for its network location, and every request is authenticated and authorized.",

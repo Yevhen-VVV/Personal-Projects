@@ -22,7 +22,7 @@
   ],
   "facts": [
     "Safeguard value = ALE before − ALE after − the safeguard's annual cost. If the result is negative, the control costs more than the risk it removes.",
-    "Quantitative analysis assigns money values (SLE, ALE); qualitative analysis ranks risks with scenarios and scales such as high, medium and low, often via the Delphi technique.",
+    "Quantitative analysis assigns money values (SLE, ALE); qualitative analysis ranks risks with scenarios and scales such as high, medium and low, using techniques such as Delphi.",
     "Total risk = threats × vulnerabilities × asset value; residual risk = total risk − controls gap. Senior management decides whether to accept it."
   ],
   "trap": "The collective's costliest arithmetic: an event expected once every 20 years has an ARO of 0.05, not 20. Multiply SLE by that fraction, and never pay more for a control than the loss it removes.",

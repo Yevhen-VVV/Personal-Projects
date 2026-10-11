@@ -13,7 +13,7 @@
   "hue": 332,
   "upright": "Trust extended with care: one identity vouched for across many services, and every supplier vetted, contracted and audited.",
   "reversed": "Blind trust: OAuth used as a login, vendors never vetted, no right to audit, and a poisoned library nobody listed.",
-  "vision": "Two strangers meet in a garden beneath an angel who works as a notary. The angel checks the first figure's face and stamps a glowing seal onto a scroll; at the sight of it the second figure opens the gate, never asking for a password. The first figure then lends a passing gardener a valet key that opens only the pantry, never the house; tie a tiny name tag to it and the key also says whose it is. Every fruit on the tree of knowledge wears an ingredient label, so the serpent curled inside one is found at once. An auditor with an hourglass watches the tree of flames burn for a whole year.",
+  "vision": "Two strangers meet in a garden beneath an angel who works as a notary. The angel checks the first figure's face and stamps a glowing seal onto a scroll; at the sight of it the second figure opens the gate, never asking for a password. The first figure then lends a passing gardener a valet key that opens only the pantry, never the house; a tiny name tag dangling from it tells the gardener whose key it is. Every fruit on the tree of knowledge wears an ingredient label, so the serpent curled inside one is found at once. An auditor with an hourglass watches the tree of flames burn for months on end, never just a moment.",
   "decode": [
     "The angel's sealed scroll opens the gate → SAML: the identity provider signs an XML assertion; the service provider trusts it and never sees the password.",
     "A valet key for the pantry only → OAuth 2.0: a scoped access token delegates authorization to a third party without handing over the password.",
@@ -22,7 +22,7 @@
     "The auditor's hourglass by the tree of flames → SOC 2 Type II: controls tested as operating effectively over a period, not on a single day."
   ],
   "facts": [
-    "SOC 2 Type II tests how controls operated over a period, usually 6 to 12 months; Type I covers their design at one point in time. SOC 1 concerns financial reporting.",
+    "SOC 2 Type II tests whether controls operated effectively over a period (the study guide says at least six months); Type I covers design at one point in time. SOC 1 is financial.",
     "Outsourcing to a vendor or SaaS provider transfers the work, never the accountability: the customer still answers for its data, its users and their access.",
     "Minimum security requirements, breach notification and a right to audit go into the contract before signing; an SLA sets measurable service levels and penalties."
   ],
