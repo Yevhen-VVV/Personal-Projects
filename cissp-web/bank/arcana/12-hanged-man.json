@@ -18,7 +18,7 @@
     "Every branch grown from cuttings of one mother branch → imaging: systems built from one hardened, approved golden image start from the same secure baseline.",
     "The chalk outline; stray twigs nobody asked for, snipped → drift detection: a setting changed with no change request is unauthorized; flag it and restore the baseline.",
     "The council of crows that hears, votes, rehearses, picks an hour and writes it down → the CAB: request, review, approve or reject, test, schedule and implement, document.",
-    "The splint made alone, inspected and recorded at sunrise → an emergency change may skip prior approval, but it is still reviewed and documented afterward.",
+    "The splint made alone, inspected and recorded at sunrise → an emergency change may bypass the normal CAB queue, but it is still reviewed and documented afterward.",
     "The halo lighting every unsealed crack → vulnerability scans find missing patches and misconfigurations; credentialed scans see far more than uncredentialed ones."
   ],
   "facts": [

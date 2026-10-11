@@ -15,8 +15,8 @@
   "reversed": "Reused passwords, prompts approved just to stop the buzzing, stolen hashes replayed and sessions that never end.",
   "vision": "A horned figure squats on a pedestal, collecting three gifts at the door: a whispered word, a carried coin and a fingerprint; three whispered words buy nothing. Below, two chained figures tap yes on a box that buzzes all night, never noticing that their chains are loose enough to lift. The horned one tries one stolen key on a thousand doors and opens others with only a wax print of a key. At the back gate a three-headed dog stamps tickets with the hour and burns any five minutes off; a thief who stole its seal prints golden tickets. The inverted torch drips two flames: one shuts out friends, one admits strangers.",
   "decode": [
-    "Word, coin, fingerprint; three words buy nothing → MFA mixes factor types: something you know, have, are. A password plus a security question is still one factor.",
-    "Tapping yes on a box that buzzes all night; chains loose enough to lift → MFA fatigue: push prompts spammed until one is approved. Number matching breaks the spell.",
+    "Word, coin, fingerprint; three words buy nothing → MFA mixes types: know, have, are (location and behavior add context). Password plus PIN is still one factor.",
+    "Tapping yes on a box that buzzes all night; chains loose enough to lift → MFA fatigue: prompts spammed until one is approved. Deny, report, use number matching.",
     "One stolen key on a thousand doors; a wax print of a key → credential stuffing replays breached passwords on other sites; pass-the-hash replays the hash itself.",
     "The dog stamping tickets with the hour; golden tickets → Kerberos tickets need clocks within 5 minutes; a stolen KRBTGT hash lets an attacker forge any TGT.",
     "Two flames of the inverted torch → type I errors (FRR) shut out valid users; type II (FAR) admit impostors. Where the rates cross is the CER: lower is better."

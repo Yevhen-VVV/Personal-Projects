@@ -21,10 +21,10 @@
     "Soap bubbles, then snowflakes, then stone → order of volatility: registers, cache and RAM first, then temporary files, then disk, with archives last."
   ],
   "facts": [
-    "Real evidence is an object (a seized drive); documentary is writing, including logs; testimonial is a witness. The best evidence rule requires the original document, not a copy.",
-    "Investigation types: administrative (internal), criminal, civil, regulatory (an agency enforcing its own rules), industry standards. When internal turns criminal, call counsel.",
+    "Real evidence is an object (a seized drive); documentary is writing, including logs; testimonial is a witness. Best evidence rule: offer the original, not a copy.",
+    "Administrative (internal) investigations have the loosest standard; regulatory standards vary by agency; industry ones test against a standard like PCI DSS.",
     "The EDRM: information governance, identification, preservation, collection, processing, review, analysis, production, presentation. A legal hold stops routine deletion."
   ],
   "trap": "The collective's oldest sin: examining the original drive. Capture RAM before any shutdown, image the disk bit for bit through a write blocker, hash both, and work only on the copy.",
-  "glyph": "<polygon points=\"50,7 54.5,15 54.5,62 45.5,62 45.5,15\"/><path d=\"M50 18 V57\" stroke-width=\"1.2\"/><path d=\"M37 64 H63\"/><rect x=\"47\" y=\"66\" width=\"6\" height=\"13\" rx=\"2\"/><circle cx=\"50\" cy=\"83\" r=\"3.5\"/><path d=\"M22 24 H45.5 M54.5 24 H78\"/><path d=\"M22 24 L12 54 M22 24 L32 54 M78 24 L68 54 M78 24 L88 54\" stroke-width=\"1.4\"/><path d=\"M10 54 A12 9 0 0 0 34 54 Z\"/><path d=\"M66 54 A12 9 0 0 0 90 54 Z\"/><ellipse cx=\"22\" cy=\"38.5\" rx=\"2.4\" ry=\"3.6\" stroke-width=\"1.6\"/><path d=\"M22 41 V47.5\" stroke-width=\"1.6\"/><ellipse cx=\"22\" cy=\"50\" rx=\"2.4\" ry=\"3.6\" stroke-width=\"1.6\"/><path d=\"M76 38 V51 M80.5 38 V51 M73 42.5 H83.5 M72.5 47 H83\" stroke-width=\"1.6\"/>"
+  "glyph": "<polygon points=\"50,9 54.5,16.5 54.5,62 45.5,62 45.5,16.5\"/><path d=\"M50 18 V57\" stroke-width=\"1.2\"/><path d=\"M37 64 H63\"/><rect x=\"47\" y=\"66\" width=\"6\" height=\"13\" rx=\"2\"/><circle cx=\"50\" cy=\"83\" r=\"3.5\"/><path d=\"M22 24 H45.5 M54.5 24 H78\"/><path d=\"M22 24 L12 54 M22 24 L32 54 M78 24 L68 54 M78 24 L88 54\" stroke-width=\"1.4\"/><path d=\"M10 54 A12 9 0 0 0 34 54 Z\"/><path d=\"M66 54 A12 9 0 0 0 90 54 Z\"/><ellipse cx=\"22\" cy=\"38.5\" rx=\"2.4\" ry=\"3.6\" stroke-width=\"1.6\"/><path d=\"M22 41 V47.5\" stroke-width=\"1.6\"/><ellipse cx=\"22\" cy=\"50\" rx=\"2.4\" ry=\"3.6\" stroke-width=\"1.6\"/><path d=\"M76 38 V51 M80.5 38 V51 M73 42.5 H83.5 M72.5 47 H83\" stroke-width=\"1.6\"/>"
 }
