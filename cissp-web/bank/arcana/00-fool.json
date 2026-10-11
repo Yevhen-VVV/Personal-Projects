@@ -12,16 +12,16 @@
   "hue": 48,
   "upright": "A vetted, trained user who spots the lure, reports it and becomes the organization's first line of defense.",
   "reversed": "Unvetted hires, unchecked insiders and one careless click: the human who opens the gate for every attacker.",
-  "vision": "A traveler in a patchwork coat strides toward a cliff edge, eyes on the sun. At the trailhead behind them, a gatekeeper who has read their whole past in the lines of their palm waves goodbye, and over their shoulder swings a bindle stuffed with signed promises. A cloud lowers a white rose on a fishhook. A small dog barks, and the traveler stops, one heel on the rim. Three signposts line the path: an eye that says look, a hand that says how, a book that says why. Every spring the traveler leaves their boots with a stranger for two weeks, and the stranger walks the same path, turning over every stone.",
+  "vision": "A traveler strides toward a cliff edge, eyes on the sun. At the trailhead behind them, a gatekeeper who has read their whole past in the lines of their palm waves goodbye, and over their shoulder swings a bindle stuffed with signed promises. A cloud lowers a white rose on a fishhook. A small dog barks, and the traveler stops, one heel on the rim. Three signposts line the path: an eye that says look, a hand that says how, a book that says why. Every spring the traveler leaves their boots with a stranger for two weeks, and the stranger walks the same path, turning over every stone.",
   "decode": [
     "One heel on the cliff edge, eyes on the sun → the user: the weakest link and, once trained, the first line of defense.",
-    "A white rose on a fishhook, the barking dog → phishing: lures look harmless; simulated phishing trains the reflex to stop and report.",
+    "A white rose on a fishhook; the dog whose bark halts the step → phishing lures look harmless; simulated phishing trains users to pause and report.",
     "The gatekeeper reading the palm, the bindle of signed promises → background checks before hire; an NDA signed at onboarding that binds even after leaving.",
     "Signposts of eye, hand and book → awareness changes what people notice; training teaches how to do the job; education builds the deeper why.",
     "A stranger walks the path in the traveler's boots for two weeks → mandatory vacation: someone else does the work and can uncover fraud."
   ],
   "facts": [
-    "Mandatory vacations (often one to two weeks) and job rotation are detective controls: a substitute doing the work can expose fraud and collusion.",
+    "Mandatory vacation (often one to two weeks) is a detective control: a substitute doing the job can uncover fraud. Job rotation both deters and detects it.",
     "At termination, disable access at the same time as, or just before, the person is told; then collect badges and keys and use the exit interview to restate the NDA.",
     "Hiring starts with a job description that defines the role's access; screening and background checks follow, and the NDA is signed before access is granted."
   ],

@@ -20,7 +20,7 @@
     "Counting, then ribboning each fruit; the servant who only hangs them → inventory first; the owner classifies by value and sensitivity; the custodian protects.",
     "The black pillar's rising smoke → Bell-LaPadula, confidentiality: no read up (simple), no write down (star); secrets only flow upward.",
     "The white pillar's falling water → Biba, integrity: no read down (simple), no write up (star); purity flows downward and mud never climbs.",
-    "The scroll in chest, flight and hand → data at rest, in transit and in use; in use it sits decrypted in memory, the hardest state to protect.",
+    "The scroll in chest, flight and hand → data at rest, in transit and in use; in use it is usually decrypted in memory, the hardest state to protect.",
     "The crescent moon catching ribboned fruit → DLP: it inspects labels and content to stop sensitive data leaving, so it depends on classification."
   ],
   "facts": [

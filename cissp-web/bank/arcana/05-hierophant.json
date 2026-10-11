@@ -15,7 +15,7 @@
   "vision": "A teacher in a triple crown raises a hand of blessing over two kneeling acolytes, counting four vows on it in one fixed order: the city, honor, the master, the guild. The crown's three tiers are courtrooms: a jailer, then a merchant weighing coins, then a clerk stamping permits. Two crossed keys hang at the teacher's belt: a gold one to a glass vault that shows an invention to all and guards it for twenty years, and an iron one to a recipe box that stays locked only while no one tells. One acolyte races a breach letter across the sea before a seventy-two-hour candle burns out; the other is stopped at the river with a crate of ciphers.",
   "decode": [
     "The hand counting four vows in order → the ISC2 canons: protect society and the infrastructure; act honorably and legally; serve principals; advance the profession.",
-    "The crown's three courtrooms → criminal law (prison, beyond reasonable doubt), civil law (damages, preponderance of evidence), administrative law (agency rules).",
+    "The crown's three courtrooms → criminal law (prison, beyond a reasonable doubt), civil law (damages, preponderance of evidence), administrative law (agency rules).",
     "The gold key and the iron key → a patent is disclosed publicly and lasts 20 years from filing; a trade secret is never registered and lasts only while kept secret.",
     "The breach letter and its seventy-two-hour candle → GDPR: notify the supervisory authority within 72 hours of becoming aware of a breach.",
     "The acolyte stopped at the river with ciphers → export controls: encryption and defense technology cannot cross borders freely (ITAR, EAR, Wassenaar)."

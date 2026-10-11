@@ -12,7 +12,7 @@
   "hue": 250,
   "upright": "Seeing through disguises: decoys that study intruders, sensors tuned to the known and the strange, tunnels no one can read.",
   "reversed": "Believing every reply: forged ARP and DNS answers, a sensor nobody watches, and plaintext crossing hostile ground.",
-  "vision": "A painted moon hangs low, a lamp the guards lit on purpose; it glows for prowlers already on the road but never calls to anyone asleep. A dog howls at faces it knows from wanted posters; a wolf howls at anything that walks strangely, and sometimes at the wind. From the pool a hundred crayfish crawl to the tower door, each knocking once and scuttling off before it opens, until real travelers cannot get in. Between the two towers the path runs through a sealed tunnel, each traveler wrapped hat to boots in a dark cloak. A shadow on the path whispers to each tower that it is the other.",
+  "vision": "A painted moon hangs low, a lamp the guards lit on purpose; it glows for prowlers already on the road but never calls to anyone asleep. A dog howls at faces it knows from wanted posters; a wolf howls at anything that walks strangely, and sometimes at the wind. From the pool a hundred crayfish crawl to the tower door, each knocking once and scuttling off while the door creaks ajar and waits, until real travelers cannot get in. Between the two towers the path runs through a sealed tunnel, each traveler wrapped hat to boots in a dark cloak. A shadow on the path whispers to each tower that it is the other.",
   "decode": [
     "The moon lamp lit on purpose → honeypot: a decoy with no real users, so any visitor is suspect. It may entice the willing but must never entrap.",
     "Dog of wanted posters, wolf howling at odd gaits and wind → signature detection catches known attacks; anomaly detection finds new ones, with more false positives.",
@@ -21,7 +21,7 @@
     "The shadow telling each tower it is the other → man-in-the-middle, often by ARP poisoning: forged replies map the attacker's MAC to another host's IP."
   ],
   "facts": [
-    "An IDS is passive: it detects and alerts. An IPS sits inline and blocks, so an IPS false positive stops legitimate traffic instead of just raising an alarm.",
+    "An IDS watches and alerts, reacting at most after the fact; an IPS sits inline and blocks, so an IPS false positive stops legitimate traffic, not just raises an alarm.",
     "A honeynet links several honeypots; a padded cell quietly moves a detected intruder into a simulated environment; pseudo flaws are fake vulnerabilities planted as bait.",
     "ARP poisoning works only on the local segment; DNS poisoning plants false name-to-address records to send users to fake sites, and DNSSEC counters it by signing records."
   ],

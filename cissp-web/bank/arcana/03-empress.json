@@ -12,10 +12,10 @@
   "hue": 120,
   "upright": "Security sown at requirements and grown through every phase, with the pipeline testing each build automatically.",
   "reversed": "Security sprayed on at harvest: untested builds, unknown libraries and a password hard-coded in the pipeline.",
-  "vision": "In a ripening wheat field, a crowned figure sows seeds that each carry a tiny padlock, so the wheat grows locked from the root. A stream tumbles past in a waterfall that can climb back only one step, then curls into a spiral that leaves a scarecrow at every turn. Four herons wade in it: one reads seeds before they sprout, one pecks the grown stalks, one swims inside a stalk, one asks which farm each seed came from. The figure's crown of stars kindles in five rows, from a lone flicker to a self-tuning constellation. Every key lies under the heart-shaped shield; none is dropped in the stream.",
+  "vision": "In a ripening wheat field, a crowned figure and farmhands of every trade sow seeds side by side, each seed carrying a tiny padlock, so the wheat grows locked from the root. A stream tumbles past in a waterfall that can climb back only one step, then curls into a spiral that leaves a scarecrow at every turn. Four herons wade in it: one reads seeds before they sprout, one pecks the grown stalks, one swims inside a stalk, one asks which farm each seed came from. The figure's crown of stars kindles in five rows, from a lone flicker to a self-tuning constellation. Every key lies under the heart-shaped shield; none is dropped in the stream.",
   "decode": [
-    "Seeds sown with padlocks → security starts at requirements, before design; the later a flaw is found, the costlier the fix.",
-    "A waterfall that climbs back one step; a spiral of scarecrows → modified waterfall returns only to the prior phase; each spiral loop yields a new prototype.",
+    "Farmhands of every trade sowing padlocked seeds → an integrated product team builds security in from requirements; the later a flaw is found, the costlier the fix.",
+    "A waterfall that climbs back one step; a spiral of scarecrows → waterfall can step back only one phase; each spiral loop yields a new prototype.",
     "Four herons → SAST reads source before it runs; DAST probes the running app; IAST instruments it from inside; SCA traces third-party components.",
     "The crown kindling in five rows → CMM levels: initial, repeatable, defined, managed, optimizing; SAMM rates software security practices by maturity too.",
     "Keys under the shield, none in the stream → secrets live in a vault, never hard-coded in code repositories or CI/CD pipelines."

@@ -24,7 +24,7 @@
   ],
   "facts": [
     "Wet pipe is always charged and fastest; dry pipe holds air for freezing spaces; pre-action fills on detection and sprays when a head opens; deluge floods via open heads.",
-    "Fault and blackout are momentary and prolonged power loss; sag and brownout, low voltage; spike and surge, high voltage. A UPS bridges short gaps; generators carry long ones.",
+    "Momentary vs prolonged: fault and blackout lose power; sag and brownout, low voltage; spike and surge, high voltage. A UPS bridges short gaps; generators, long ones.",
     "CPTED designs out crime with natural access control, natural surveillance and territorial reinforcement: low shrubs, good lighting and clear sightlines."
   ],
   "trap": "The collective remembers the server room that locked its people in. When human life is weighed against data or equipment, life safety wins every time: doors on escape routes fail safe, never secure.",
