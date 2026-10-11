@@ -1,0 +1,697 @@
+# Domain 4: Communication and Network Security (13% of the exam)
+
+## D4-001 | 4.1 | 1
+Q: At which layer of the OSI model do routers forward packets based on logical (IP) addresses?
+A)* Network (Layer 3)
+= Correct. The network layer handles logical addressing and routing between networks.
+B) Data link (Layer 2)
+= The data link layer uses MAC addresses to move frames within one network segment.
+C) Transport (Layer 4)
+= The transport layer provides end-to-end delivery with ports, as in TCP and UDP.
+D) Session (Layer 5)
+= The session layer manages dialogues between applications.
+>> OSI: 7 Application, 6 Presentation, 5 Session, 4 Transport, 3 Network, 2 Data link, 1 Physical.
+
+## D4-002 | 4.1 | 1
+Q: What is the unit of data called at the transport layer when TCP is used?
+A)* Segment
+= Correct. TCP data units are segments; UDP's are usually called datagrams.
+B) Frame
+= Frames belong to the data link layer.
+C) Packet
+= Packets belong to the network layer.
+D) Bit stream
+= Bits are the physical layer's unit.
+>> Encapsulation: data (layers 5–7) → segment (4) → packet (3) → frame (2) → bits (1).
+
+## D4-003 | 4.1 | 2
+Q: An attacker sends thousands of TCP SYN packets with spoofed source addresses and never completes the handshakes. Which control mitigates this attack on the server MOST directly?
+A)* SYN cookies
+= Correct. With SYN cookies the server keeps no state for half-open connections, so the backlog cannot be exhausted.
+B) A longer TCP keep-alive interval
+= Keep-alives apply to established connections, not half-open ones.
+C) Disabling ICMP on the server
+= ICMP is unrelated to a SYN flood.
+D) Increasing the TCP window size
+= The window size controls data flow on established connections.
+>> SYN flood: exhausts the half-open connection backlog. Counter with SYN cookies, rate limiting and upstream filtering.
+
+## D4-004 | 4.1 | 1
+Q: In the TCP three-way handshake, what does the server send in response to the client's SYN?
+A) ACK
+= The client sends the final ACK, third in the sequence.
+B)* SYN-ACK
+= Correct. The sequence is SYN, then SYN-ACK, then ACK.
+C) FIN
+= FIN closes a connection.
+D) RST
+= RST resets or refuses a connection.
+>> TCP handshake: SYN → SYN-ACK → ACK.
+
+## D4-005 | 4.1 | 2
+Q: In IPv6, which addressing method replaces IPv4 broadcast?
+A) Anycast
+= Anycast delivers to the nearest member of a group, not to all members.
+B) Unicast
+= Unicast is one-to-one.
+C)* Multicast
+= Correct. IPv6 has no broadcast; functions such as neighbor discovery use multicast instead.
+D) Link-local unicast
+= Link-local addresses are unicast addresses valid on one link.
+>> IPv6: unicast, multicast and anycast; no broadcast.
+
+## D4-006 | 4.1 | 2
+Q: Several DNS servers around the world share one IP address, and each client reaches the nearest of them. Which addressing method is this?
+A)* Anycast
+= Correct. Anycast routes traffic to the nearest node advertising the address, which improves performance and resilience, including against DDoS.
+B) Multicast
+= Multicast delivers one stream to every member of a group.
+C) Broadcast
+= Broadcast reaches every host on a local network.
+D) Network address translation
+= NAT rewrites addresses at a boundary; it does not choose the nearest server.
+>> Anycast: one address, many locations, nearest one answers. Used by DNS root servers and CDNs.
+
+## D4-007 | 4.1 | 2
+Q: A security team finds that workstations are using an IPv6-over-IPv4 tunneling feature that the perimeter firewall does not inspect. What is the main risk?
+A) The tunnel will slow down IPv4 traffic
+= Performance is not the security concern.
+B)* It can bypass IPv4-only security controls
+= Correct. Traffic can bypass controls that only inspect IPv4: tunneled IPv6 carries it around filtering and monitoring that do not understand it.
+C) IPv6 addresses cannot be logged
+= IPv6 addresses can be logged by tools that support them.
+D) IPv6 cannot be encrypted
+= IPv6 supports IPsec and TLS like IPv4.
+>> Disable or inspect unneeded IPv6 tunneling; unmanaged IPv6 can bypass IPv4-only controls.
+
+## D4-008 | 4.1 | 2
+Q: Which IPsec protocol provides confidentiality for the data it protects?
+A) Authentication Header (AH)
+= AH provides integrity and authentication only; it does not encrypt.
+B) Internet Key Exchange (IKE)
+= IKE negotiates security associations and keys; it does not protect the data itself.
+C)* Encapsulating Security Payload (ESP)
+= Correct. ESP encrypts the payload and can also provide integrity and authentication.
+D) Security Parameter Index (SPI)
+= The SPI is an identifier for a security association, not a protocol.
+>> IPsec: AH = integrity and authentication (no encryption, breaks with NAT); ESP = encryption plus integrity; IKE = key negotiation.
+
+## D4-009 | 4.1 | 2
+Q: Two offices connect their networks through a site-to-site VPN between their gateways. Which IPsec mode is used?
+A) Transport mode, which protects only the payload between end hosts
+= Transport mode suits host-to-host protection, leaving the original IP header visible.
+B)* Tunnel mode, which encapsulates the entire original packet
+= Correct. Gateways wrap each whole packet in a new one, hiding internal addresses as traffic crosses the internet.
+C) Aggressive mode, which speeds up key exchange
+= Aggressive mode is an IKE phase 1 option, not an IPsec protection mode.
+D) Main mode, which hides identities during negotiation
+= Main mode is also an IKE phase 1 option.
+>> IPsec tunnel mode: gateway-to-gateway VPNs. Transport mode: end host to end host.
+
+## D4-010 | 4.1 | 3
+Q: A network team wants IPsec integrity protection that covers the IP header, but the traffic crosses a NAT device. Why does Authentication Header (AH) fail here?
+A) AH requires TCP, while NAT devices only translate UDP
+= AH is its own IP protocol and does not depend on TCP or UDP.
+B) NAT devices cannot route encrypted traffic
+= AH does not encrypt anything.
+C) AH only works with IPv6
+= AH works with both IPv4 and IPv6.
+D)* NAT's address changes break AH's integrity check
+= Correct. AH authenticates parts of the IP header, so NAT's address changes make the check fail. ESP with NAT traversal is used instead.
+>> AH and NAT are incompatible; use ESP with NAT traversal (UDP 4500).
+
+## D4-011 | 4.1 | 1
+Q: Which protocol should replace Telnet for remote command-line administration?
+A)* SSH
+= Correct. SSH encrypts the session, including credentials, and authenticates the server.
+B) SNMPv2c
+= SNMPv2c is for monitoring and uses cleartext community strings.
+C) TFTP
+= TFTP is an unauthenticated file transfer protocol.
+D) rlogin
+= rlogin is as insecure as Telnet.
+>> Replace cleartext protocols: Telnet → SSH, FTP → SFTP or FTPS, HTTP → HTTPS, SNMPv1/v2c → SNMPv3.
+
+## D4-012 | 4.1 | 2
+Q: What does TLS 1.3 require that earlier versions allowed you to skip?
+A) Client certificates for every connection
+= Client certificates remain optional.
+B)* Forward secrecy through ephemeral key exchange
+= Correct. TLS 1.3 removed static RSA key exchange, so every session uses ephemeral Diffie-Hellman and a stolen server key cannot decrypt past traffic.
+C) Pre-shared keys configured on both sides
+= Pre-shared keys are optional in TLS 1.3.
+D) Using SHA-1 for signatures
+= TLS 1.3 removed SHA-1 from signatures.
+>> TLS 1.3: forward secrecy mandatory, legacy ciphers removed, faster handshake.
+
+## D4-013 | 4.1 | 3
+Q: An industrial protocol carries control commands inside ordinary TCP/IP traffic, and an attacker uses that wrapping to slip commands past a firewall that only checks ports. What does this illustrate?
+A) A physical weakness of the fiber-optic cabling used
+= The physical medium is not the issue.
+B) The need to disable IPv6 on all industrial devices
+= IPv6 is unrelated.
+C)* Encapsulation hiding traffic from shallow inspection
+= Correct. This is a risk of multilayer protocols: their encapsulation can carry covert or unexpected content, so protocol-aware inspection and segmentation are needed.
+D) A design flaw in the TCP three-way handshake itself
+= The handshake works as designed here.
+>> Multilayer and encapsulated protocols (DNP3, Modbus TCP, tunnels) need deep, protocol-aware inspection.
+
+## D4-014 | 4.1 | 2
+Q: Which protocol carries SCSI storage commands over a standard IP network?
+A)* iSCSI
+= Correct. iSCSI is a converged protocol that sends block storage commands over TCP/IP.
+B) Fibre Channel over Ethernet (FCoE)
+= FCoE carries Fibre Channel directly over Ethernet frames, not over IP.
+C) Multiprotocol Label Switching (MPLS)
+= MPLS forwards traffic by labels rather than IP lookups.
+D) Session Initiation Protocol (SIP)
+= SIP sets up voice and video sessions.
+>> Converged protocols run specialized traffic over common networks: iSCSI, FCoE, VoIP, MPLS, InfiniBand over Ethernet, CXL.
+
+## D4-015 | 4.1 | 3
+Q: Which converged technology provides a cache-coherent, high-speed interconnect between processors, memory and accelerators over the PCIe physical layer?
+A) InfiniBand over Ethernet
+= InfiniBand is a high-performance network fabric between servers, not a PCIe-based coherent memory interconnect.
+B) iSCSI over 10-gigabit Ethernet
+= iSCSI carries storage commands over IP.
+C)* Compute Express Link (CXL)
+= Correct. CXL builds on PCIe to share memory coherently between CPUs and devices; it is named in the 2024 outline.
+D) Fibre Channel over Ethernet
+= Fibre Channel is a storage network technology.
+>> CXL extends PCIe with coherent memory sharing; securing it means protecting high-speed interconnects inside and between systems.
+
+## D4-016 | 4.1 | 2
+Q: In network architecture, which plane makes routing decisions, such as running routing protocols to build the forwarding table?
+A) Data plane
+= The data plane forwards traffic according to the table the control plane builds.
+B)* Control plane
+= Correct. The control plane decides where traffic should go.
+C) Management plane
+= The management plane is used to configure and monitor devices, for example over SSH or SNMP.
+D) User plane
+= In this context, the user plane is another name for the data plane.
+>> Data plane forwards; control plane decides; management plane configures. Protect the control and management planes most.
+
+## D4-017 | 4.1 | 2
+Q: A switch begins forwarding a frame as soon as it reads the destination MAC address, before the whole frame arrives. What is the trade-off of this cut-through approach?
+A) It is slower but checks every frame for errors
+= That describes store-and-forward switching.
+B) It cannot forward broadcast frames
+= Switching method does not affect broadcast handling.
+C) It requires routers on every segment
+= Cut-through is purely a switching technique.
+D)* Lower latency, but corrupted frames may be forwarded
+= Correct. Cut-through does not wait to verify the frame check sequence, so damaged frames can propagate.
+>> Cut-through: fast, no error check. Store-and-forward: receives and checks the whole frame first.
+
+## D4-018 | 4.1 | 1
+Q: Voice calls over the corporate network sound choppy because packets arrive at uneven intervals. Which performance metric describes this variation?
+A)* Jitter
+= Correct. Jitter is the variation in packet delay, which harms real-time traffic such as voice and video.
+B) Throughput
+= Throughput is the amount of data actually delivered per unit of time.
+C) Bandwidth
+= Bandwidth is a link's maximum capacity.
+D) Signal-to-noise ratio
+= SNR compares signal strength to background noise on a medium.
+>> Performance metrics: bandwidth (capacity), throughput (actual), latency (delay), jitter (delay variation), SNR (signal quality).
+
+## D4-019 | 4.1 | 2
+Q: After compromising one web server, an attacker moves to database servers in the same data center. Which kind of traffic should be monitored and controlled to catch this?
+A) North-south traffic
+= North-south traffic enters or leaves the data center; this movement stays inside it.
+B)* East-west traffic
+= Correct. East-west traffic flows laterally between internal systems, which is where lateral movement happens.
+C) Out-of-band traffic
+= Out-of-band refers to separate management networks.
+D) Multicast traffic
+= Multicast is an addressing method, not a direction of flow.
+>> Perimeter controls watch north-south; microsegmentation and internal monitoring are needed for east-west.
+
+## D4-020 | 4.1 | 2
+Q: Network devices are managed over a separate network that carries no production traffic. What is this called?
+A)* Out-of-band management
+= Correct. A dedicated management network keeps administrative access off the production network, where attackers could reach it.
+B) In-band management
+= In-band management uses the same network as production traffic.
+C) A demilitarized zone
+= A DMZ hosts internet-facing services.
+D) A virtual routing and forwarding instance
+= VRF separates routing tables logically on shared devices.
+>> Physical segmentation options: in-band, out-of-band and air-gapped networks.
+
+## D4-021 | 4.1 | 2
+Q: A service provider needs separate routing tables for several customers on the same physical router, so their overlapping address ranges do not conflict. Which technology provides this?
+A) VLANs with separate trunk links
+= VLANs separate Layer 2 broadcast domains, not routing tables.
+B) A VPN concentrator per customer
+= VPN concentrators terminate encrypted tunnels.
+C)* Virtual routing and forwarding (VRF)
+= Correct. VRF creates multiple independent routing tables on one device, a form of logical segmentation.
+D) Network address translation (NAT)
+= NAT translates addresses; it does not separate routing tables.
+>> Logical segmentation: VLANs (Layer 2), VRFs (Layer 3 routing tables), VPNs, virtual domains.
+
+## D4-022 | 4.1 | 2
+Q: A company wants each workload to be allowed to talk only to the specific workloads it needs, even within the same subnet. Which approach achieves this?
+A) Larger VLANs, so traffic stays local
+= Larger broadcast domains widen access.
+B) A stronger perimeter firewall
+= The perimeter does not see traffic between workloads in the same subnet.
+C) Network address translation inside the data center
+= NAT does not enforce workload-to-workload policy.
+D)* Microsegmentation with distributed firewalls
+= Correct. Microsegmentation applies fine-grained policy at each workload, a core zero trust technique.
+>> Microsegmentation enforces least privilege between individual workloads, limiting lateral movement.
+
+## D4-023 | 4.1 | 2
+Q: At its internet edge, a company drops inbound packets whose source address claims to be from the company's own internal address range. What is this control?
+A)* Ingress filtering of spoofed sources
+= Correct. Packets arriving from outside should never carry internal source addresses, so they are spoofed.
+B) Egress filtering of outbound traffic
+= Egress filtering checks traffic leaving the network.
+C) Port address translation at the edge
+= PAT maps many internal hosts to one public address.
+D) Rate limiting of inbound connections
+= Rate limiting caps traffic volume, not source address validity.
+>> Ingress filtering drops spoofed inbound traffic; egress filtering keeps your network from sending spoofed or unauthorized traffic out.
+
+## D4-024 | 4.1 | 2
+Q: Why should an organization filter outbound traffic so that only packets with its own source addresses leave its network?
+A) To speed up outbound connections through the firewall
+= Filtering adds a check; it does not speed anything up.
+B) To hide internal addresses from the internet
+= That is NAT's role.
+C)* To stop its hosts from sending spoofed attack traffic
+= Correct. Egress filtering (BCP 38) stops compromised hosts from sending traffic with forged sources, as used in reflection DDoS.
+D) To block all malware downloads
+= Downloads are inbound content; source-address filtering does not inspect it.
+>> Egress filtering protects others from your network and also helps detect compromised internal hosts.
+
+## D4-025 | 4.1 | 2
+Q: Which Wi-Fi security option resists offline dictionary attacks against a captured handshake when a shared passphrase is used?
+A) WPA2-Personal (PSK)
+= A captured WPA2-PSK handshake can be attacked offline with a dictionary.
+B) WEP
+= WEP is broken entirely.
+C)* WPA3-Personal with SAE
+= Correct. Simultaneous Authentication of Equals uses a password-authenticated key exchange, so each guess requires an online interaction.
+D) WPS PIN mode
+= WPS PIN mode is easily brute-forced.
+>> WPA3-Personal (SAE) resists offline cracking and adds forward secrecy; use WPA3- or WPA2-Enterprise (802.1X) for organizations.
+
+## D4-026 | 4.1 | 2
+Q: In 802.1X port-based access control, what role does the wireless access point or switch play?
+A)* Authenticator
+= Correct. The authenticator relays credentials between the client and the authentication server and opens the port only on success.
+B) Supplicant
+= The supplicant is the client device seeking access.
+C) Authentication server
+= The authentication server, usually RADIUS, makes the decision.
+D) Certificate authority
+= A CA issues certificates and has no role in relaying 802.1X exchanges.
+>> 802.1X roles: supplicant (client), authenticator (switch or AP), authentication server (RADIUS).
+
+## D4-027 | 4.1 | 2
+Q: Which EAP method provides the strongest authentication for enterprise Wi-Fi by requiring certificates on both the client and the server?
+A) PEAP with MSCHAPv2
+= PEAP protects a password exchange inside a TLS tunnel; only the server needs a certificate.
+B)* EAP-TLS
+= Correct. EAP-TLS uses mutual certificate authentication, so there are no passwords to steal or phish.
+C) LEAP
+= LEAP is a deprecated Cisco method that is vulnerable to dictionary attacks.
+D) EAP-MD5
+= EAP-MD5 provides no server authentication and is weak.
+>> EAP-TLS (mutual certificates) is the gold standard; PEAP and EAP-TTLS tunnel weaker inner methods.
+
+## D4-028 | 4.1 | 2
+Q: An attacker sets up an access point with the same network name as the corporate Wi-Fi to capture users' logins. What is this attack called?
+A) Bluesnarfing
+= Bluesnarfing steals data over Bluetooth.
+B) War driving
+= War driving is searching for wireless networks while moving.
+C) Jamming
+= Jamming disrupts the radio signal.
+D)* Evil twin
+= Correct. An evil twin imitates a legitimate access point to lure clients. Server certificate validation in 802.1X defends against it.
+>> Evil twins are defeated when clients validate the authentication server's certificate.
+
+## D4-029 | 4.1 | 2
+Q: An attacker connects to a phone over Bluetooth without permission and copies its contacts and messages. What is this attack?
+A)* Bluesnarfing
+= Correct. Bluesnarfing is unauthorized access to data on a Bluetooth device.
+B) Bluejacking
+= Bluejacking sends unsolicited messages; it does not steal data.
+C) Bluebugging
+= Bluebugging takes control of the device's functions, such as making calls.
+D) Bluesmacking
+= Bluesmacking is a denial-of-service attack using oversized packets.
+>> Bluetooth attacks: bluejacking (spam messages), bluesnarfing (data theft), bluebugging (device control).
+
+## D4-030 | 4.1 | 2
+Q: Which wireless technology is a low-power, low-data-rate mesh protocol built on IEEE 802.15.4 and common in smart buildings and IoT sensors?
+A) Wi-Fi 6
+= Wi-Fi 6 is a high-throughput WLAN standard, IEEE 802.11ax.
+B) 5G
+= 5G is a cellular technology.
+C)* Zigbee
+= Correct. Zigbee suits battery-powered sensors in mesh networks; protecting its network keys is critical.
+D) Near-field communication
+= NFC works over a few centimeters, point to point.
+>> Know the outline's wireless list: Bluetooth, Wi-Fi, Zigbee, satellite, and cellular (4G, 5G).
+
+## D4-031 | 4.1 | 3
+Q: Compared with 4G, how does 5G better protect subscribers against IMSI catchers (fake base stations)?
+A) 5G phones refuse to connect to any base station they have not seen before
+= Phones cannot know every legitimate base station in advance.
+B)* 5G encrypts the subscriber's permanent identifier before sending it over the air
+= Correct. 5G conceals the permanent identifier (SUPI) as the SUCI, using the home network's public key, so it is not exposed over the air.
+C) 5G uses only millimeter-wave frequencies, which cannot be intercepted
+= 5G uses several bands, and radio signals can always be intercepted.
+D) 5G no longer uses SIM cards
+= 5G still uses SIMs or eSIMs.
+>> 5G improvements include identifier concealment (SUCI), stronger mutual authentication and network slicing.
+
+## D4-032 | 4.1 | 2
+Q: A company's website suffers frequent volumetric DDoS attacks. Which architectural choice helps MOST?
+A) A larger web server with more memory
+= A bigger server is quickly overwhelmed by a large botnet.
+B)* A content distribution network (CDN)
+= Correct. A CDN spreads content and absorbs attack traffic across its many, distributed edge locations.
+C) A second internet connection from the same provider
+= Two links of similar size are still small compared to a large attack.
+D) Disabling ICMP on the firewall
+= Most volumetric attacks do not depend on ICMP.
+>> CDNs improve performance and absorb DDoS at the edge; combine them with upstream scrubbing services.
+
+## D4-033 | 4.1 | 2
+Q: In a software-defined network (SDN), which component is the MOST attractive target for an attacker?
+A) An individual switch's data plane
+= Compromising one switch affects only that switch.
+B) The physical cabling
+= Cabling affects only local connections.
+C)* The SDN controller
+= Correct. The controller centralizes the control plane, so whoever controls it controls forwarding across the network.
+D) Network time protocol servers
+= Time matters for logs, but the controller is the critical point.
+>> SDN separates the control plane into a central controller; harden it and secure its APIs.
+
+## D4-034 | 4.1 | 2
+Q: In a public cloud, which construct gives a customer a logically isolated network in which to define subnets, routing and security rules?
+A)* A virtual private cloud (VPC)
+= Correct. A VPC is the customer's isolated network inside the provider's infrastructure.
+B) A content distribution network
+= A CDN caches content at edge locations.
+C) A hardware security module
+= An HSM protects keys.
+D) A storage bucket
+= Buckets store objects; they are not networks.
+>> VPCs provide network isolation in the cloud; their security groups and network ACLs act as firewalls.
+
+## D4-035 | 4.1 | 2
+Q: The network team wants records of which hosts talked to which, when, and how much data moved, without capturing full packets. What should they collect?
+A) Full packet captures on every link
+= Full capture gives detail but is expensive at scale and is more than they asked for.
+B)* Flow records such as NetFlow or IPFIX
+= Correct. Flow records summarize conversations and support anomaly detection and capacity planning.
+C) SNMP traps
+= SNMP traps report device events, not conversations between hosts.
+D) Syslog from the web servers
+= Server logs show application events, not network-wide flows.
+>> Network observability: flows for who-talked-to-whom, packet capture for deep forensics, SNMP for device health.
+
+## D4-036 | 4.1 | 2
+Q: An attacker on the LAN sends forged ARP replies so that traffic for the default gateway goes to the attacker's machine. Which switch feature defends against this?
+A) Spanning Tree Protocol
+= STP prevents switching loops.
+B) Port mirroring
+= Port mirroring copies traffic for analysis.
+C) VLAN trunking
+= Trunking carries several VLANs on one link.
+D)* Dynamic ARP inspection
+= Correct. DAI validates ARP messages against trusted bindings, usually from DHCP snooping, and drops forged ones.
+>> ARP poisoning enables on-path (man-in-the-middle) attacks; counter with dynamic ARP inspection and DHCP snooping.
+
+## D4-037 | 4.1 | 3
+Q: An attacker on an access port sends frames with two 802.1Q tags to reach a VLAN they are not assigned to. Which configuration change defeats this?
+A)* Use an unused native VLAN and disable trunk negotiation
+= Correct. Double-tagging relies on the attacker's VLAN matching the trunk's native VLAN. An unused native VLAN, and no dynamic trunking, stop it.
+B) Enable port mirroring on all trunk links for monitoring
+= Mirroring copies traffic; it prevents nothing.
+C) Increase the size of the MAC address table
+= MAC table size relates to MAC flooding, not VLAN hopping.
+D) Put all user ports in the default VLAN 1 for consistency
+= Using VLAN 1 everywhere makes VLAN hopping easier.
+>> VLAN hopping (switch spoofing, double tagging): disable DTP, set unused native VLANs, and don't use VLAN 1.
+
+## D4-038 | 4.1 | 2
+Q: An attacker floods a switch with frames from thousands of fake MAC addresses until the switch starts sending all traffic out of every port. Which control prevents this?
+A) DNSSEC on the internal resolvers
+= DNSSEC protects DNS data.
+B)* Port security limiting MAC addresses per port
+= Correct. Limiting learned MAC addresses per port stops the table from filling up.
+C) Turning off Spanning Tree Protocol on access ports
+= Disabling STP risks loops and does nothing against flooding.
+D) A web application firewall in front of servers
+= A WAF protects web applications at Layer 7.
+>> MAC flooding overflows the switch's address table and makes it act like a hub; port security prevents it.
+
+## D4-039 | 4.1 | 2
+Q: What does DNSSEC provide?
+A) Encryption of DNS queries so observers cannot see them
+= DNSSEC does not encrypt; DNS over HTTPS or DNS over TLS do.
+B) Faster resolution through caching
+= Caching is ordinary DNS behavior.
+C)* Origin authentication and integrity of DNS data
+= Correct. Digital signatures let resolvers verify that answers are authentic and unmodified, defeating cache poisoning.
+D) Protection against DDoS on authoritative servers
+= DNSSEC does not stop DDoS and can even increase response sizes.
+>> DNSSEC = integrity and authenticity of DNS answers; DoH and DoT = confidentiality of queries.
+
+## D4-040 | 4.1 | 1
+Q: An attacker sends ICMP echo requests to a network's broadcast address using the victim's address as the source, so every host replies to the victim. What is this attack?
+A)* Smurf
+= Correct. A Smurf attack amplifies ICMP traffic through broadcast replies.
+B) Fraggle
+= Fraggle is the UDP equivalent, using services such as echo and chargen.
+C) Teardrop
+= Teardrop sends overlapping IP fragments that crash vulnerable hosts.
+D) LAND
+= A LAND attack sends packets whose source and destination are both the victim.
+>> Smurf (ICMP), Fraggle (UDP): broadcast amplification. Block directed broadcasts at routers.
+
+## D4-041 | 4.1 | 3
+Q: A company connects branch offices with SD-WAN that sends some traffic directly to the internet from each branch. What is the MAIN security consideration?
+A) SD-WAN cannot carry real-time voice or video traffic reliably
+= SD-WAN carries voice and often improves it.
+B) SD-WAN requires a separate router for each application
+= Policies are centralized; there are not separate routers per application.
+C) Branches will lose access to cloud services
+= Direct internet breakout usually improves access to cloud services.
+D)* Securing each branch's direct internet traffic
+= Correct. Local breakout bypasses headquarters' security stack, so inspection must move to the branch or the cloud, for example through SASE services.
+>> SD-WAN local breakout moves the perimeter; pair it with cloud-delivered security such as SASE.
+
+## D4-042 | 4.1 | 2
+Q: What is the main difference between network functions virtualization (NFV) and software-defined networking (SDN)?
+A) NFV encrypts traffic between sites, while SDN does not
+= Neither is defined by encryption.
+B)* NFV virtualizes network appliances; SDN centralizes control
+= Correct. NFV runs functions such as firewalls as software; SDN separates the control plane from forwarding. The two are complementary and are often used together.
+C) SDN works only in the cloud; NFV works only on premises
+= Both can be used in either environment.
+D) They are two vendor names for the same underlying technology
+= They solve different problems.
+>> NFV virtualizes network appliances; SDN centralizes control of forwarding. Both need hardened management interfaces.
+
+## D4-043 | 4.2 | 1
+Q: Which transmission medium is immune to electromagnetic interference and the hardest to tap without detection?
+A) Unshielded twisted pair
+= UTP is susceptible to interference and emanations.
+B) Shielded twisted pair
+= STP reduces interference but still carries electrical signals.
+C)* Fiber-optic cable
+= Correct. Fiber carries light, so it neither emits nor picks up electromagnetic interference, and tapping it is difficult.
+D) Coaxial cable
+= Coax carries electrical signals and can be tapped.
+>> Fiber resists EMI and tapping; copper is vulnerable to interference, crosstalk and emanations.
+
+## D4-044 | 4.2 | 2
+Q: A company wants devices to pass a health check, such as current patches and running antivirus, before they get access to the corporate network. Which technology provides this?
+A) A web application firewall
+= A WAF protects web applications.
+B)* Network access control
+= Correct. NAC checks identity and device posture before admitting a device, and can quarantine or remediate it.
+C) A proxy server
+= Proxies mediate web traffic and do not check device posture before admission.
+D) Port address translation
+= PAT maps internal addresses to a public one.
+>> NAC: authenticate the device and user, check posture, then admit, quarantine or remediate.
+
+## D4-045 | 4.2 | 2
+Q: Which type of firewall tracks the state of each connection and allows return traffic only for sessions started from inside?
+A) Static packet filter
+= Static filters inspect each packet alone, against fixed rules.
+B) Circuit-level gateway
+= Circuit-level gateways validate sessions at Layer 5 without inspecting packet contents.
+C)* Stateful inspection firewall
+= Correct. Stateful firewalls keep a state table and match return packets to established connections.
+D) Application-level proxy
+= Proxies inspect application content by terminating and re-establishing connections.
+>> Firewall types: packet filter (Layer 3/4), stateful (connection state), circuit-level (Layer 5), application proxy (Layer 7), NGFW.
+
+## D4-046 | 4.2 | 1
+Q: Which network device forwards frames only out of the port where the destination MAC address is located?
+A)* Switch
+= Correct. Switches learn MAC addresses per port and forward frames only where needed.
+B) Hub
+= Hubs repeat every frame out of every port.
+C) Repeater
+= Repeaters only regenerate signals.
+D) Modem
+= Modems convert between digital and analog signals.
+>> Hubs broadcast everything (easy sniffing); switches forward by MAC; routers forward by IP.
+
+## D4-047 | 4.2 | 2
+Q: A core router has two power supplies on separate circuits and a 4-hour hardware replacement contract. Which aspect of the network does this address?
+A) Network access control for devices joining the network
+= NAC controls who joins the network.
+B) Endpoint security on the router itself
+= Endpoint security protects hosts.
+C) Transmission media security
+= Media security concerns cables and wireless signals.
+D)* Infrastructure operation: redundancy and support
+= Correct. Redundant power and support contracts keep network components available.
+>> Availability of network components depends on redundant power, spares, warranty and support contracts.
+
+## D4-048 | 4.2 | 2
+Q: Which endpoint control records detailed process, file and network activity on hosts and lets responders investigate and isolate a compromised machine?
+A) A host-based firewall on each laptop
+= A host firewall filters traffic but does not record detailed activity for investigation.
+B)* Endpoint detection and response (EDR)
+= Correct. EDR collects telemetry, detects suspicious behavior and supports response actions such as isolation.
+C) Full-disk encryption on every host
+= Disk encryption protects data at rest.
+D) An automated patch management agent
+= Patch agents install updates.
+>> Endpoint security layers: hardening, host firewall, anti-malware, EDR, encryption, patching.
+
+## D4-049 | 4.2 | 2
+Q: What is the main security risk of a network hub compared with a switch?
+A) Hubs cannot route traffic between different networks
+= Neither hubs nor switches route; that is the router's job.
+B) Hubs use more power
+= Power is not the security concern.
+C)* Every host can see all other hosts' traffic
+= Correct. Hubs repeat all traffic to all ports, which makes sniffing trivial.
+D) Hubs do not support IPv6
+= Hubs operate at Layer 1 and are unaware of IP versions.
+>> Replace hubs with switches; a hub turns the whole segment into one shared, sniffable medium.
+
+## D4-050 | 4.3 | 2
+Q: A company's VoIP calls must be protected against eavesdropping on the network. What should be used?
+A)* SRTP for the media, with SIP signaling over TLS
+= Correct. SRTP encrypts the voice stream, and TLS protects the call setup.
+B) A separate VLAN for phones, with no encryption
+= VLANs separate traffic but do not stop someone on that VLAN from listening.
+C) Caller ID verification on every call
+= Caller ID helps with spoofing, not eavesdropping.
+D) Higher-quality codecs
+= Codecs affect sound quality, not confidentiality.
+>> Secure VoIP: SRTP for media, TLS for SIP, voice VLANs for quality and isolation, and toll-fraud controls.
+
+## D4-051 | 4.3 | 2
+Q: Uninvited people keep joining the company's video meetings and disrupting them. Which control is MOST effective?
+A) Recording every meeting for later review
+= Recording documents the disruption but does not prevent it.
+B) Switching the company to a different meeting tool
+= The problem is how meetings are configured.
+C)* Passcodes and host-controlled waiting rooms
+= Correct. Requiring passcodes or authenticated users controls who can join, and admitting people deliberately, stops uninvited participants.
+D) Publishing meeting links only on the intranet
+= Links still leak and get forwarded.
+>> Collaboration security: authenticated or passcode-protected meetings, waiting rooms, host controls and encryption.
+
+## D4-052 | 4.3 | 2
+Q: Remote employees connect through a VPN configured for split tunneling. What is the main security concern?
+A) The VPN will use far more bandwidth at headquarters
+= Split tunneling actually reduces headquarters bandwidth.
+B)* Internet traffic bypasses corporate security controls
+= Correct. A device browsing the internet directly while on the VPN can become a bridge into the corporate network.
+C) Split tunneling disables encryption on the VPN tunnel
+= Corporate-bound traffic is still encrypted.
+D) Users cannot reach cloud applications
+= Split tunneling usually improves access to cloud apps.
+>> Split tunneling sends internet traffic around corporate controls; full tunneling or cloud security services address it.
+
+## D4-053 | 4.3 | 2
+Q: Administrators currently connect over RDP directly from their laptops to production servers. What is the BEST way to secure administrative remote access?
+A) Change RDP to a non-standard port
+= Obscurity is quickly defeated by scanning.
+B) Allow RDP from the internet but require long passwords
+= Exposing RDP to the internet invites brute-force and exploit attempts.
+C) Disable logging to reduce the attack surface
+= Logging is essential for accountability.
+D)* Use a hardened jump host with MFA and session logging
+= Correct. A bastion or jump host concentrates, authenticates and records privileged access in one controlled place.
+>> Remote administration: jump hosts or PAM, MFA, no direct exposure, and recorded sessions.
+
+## D4-054 | 4.3 | 2
+Q: A hardware vendor needs remote access to maintain a storage array in your data center. What is the BEST approach?
+A)* Time-limited access you enable on request, with MFA and monitored sessions
+= Correct. Third-party connectivity should be granted just in time, authenticated strongly and recorded.
+B) A permanent VPN account shared by the vendor's engineers
+= Shared, standing access removes accountability and leaves a door open.
+C) A modem on the array so the vendor can dial in at any time
+= Unmanaged modems bypass network controls.
+D) Remote access only from the vendor's office IP addresses, without monitoring
+= IP restrictions help, but standing, unmonitored access is still risky.
+>> Third-party access: individually authenticated, least privilege, time-bound and monitored.
+
+## D4-055 | 4.3 | 2
+Q: Which email authentication mechanism tells receiving servers what to do with messages that fail SPF or DKIM checks, and sends reports back to the domain owner?
+A) SPF
+= SPF lists the servers authorized to send mail for a domain.
+B) DKIM
+= DKIM signs messages so receivers can verify them.
+C)* DMARC
+= Correct. DMARC sets a policy (none, quarantine or reject), requires alignment with the visible From domain, and provides reporting.
+D) S/MIME
+= S/MIME provides end-to-end signing and encryption of message content.
+>> SPF (who may send), DKIM (signed messages), DMARC (policy, alignment, reports) work together against spoofing.
+
+## D4-056 | 4.3 | 2
+Q: A remote site connects to headquarters over a geostationary satellite link. Which characteristic should the design account for?
+A) Satellite links cannot carry encrypted traffic
+= Satellite links can carry encrypted traffic.
+B) Satellite links are immune to interception from the ground
+= Satellite signals cover wide areas and can be intercepted.
+C)* High latency and a signal exposed over a wide area
+= Correct. Geostationary links add significant delay and broadcast over a large footprint, so encryption is essential and protocols must tolerate latency.
+D) Satellite links need no redundancy
+= Weather and outages make backup paths important.
+>> Data communications over satellite and backhaul links must be encrypted and designed for latency and availability.
+
+## D4-057 | 4.3 | 3
+Q: A mobile operator wants to protect traffic on the backhaul links between its cell sites and core network, which pass through third-party fiber. What is the BEST control?
+A) Rely on the fiber provider's physical security
+= You cannot verify a third party's physical controls along the whole path.
+B)* Encrypt the backhaul links (IPsec or MACsec)
+= Correct. Link encryption protects traffic crossing infrastructure you do not control.
+C) Use unlisted fiber routes
+= Obscurity is not protection.
+D) Increase backhaul bandwidth
+= More bandwidth improves capacity, not confidentiality.
+>> Encrypt traffic that crosses third-party or untrusted infrastructure, including backhaul links.
+
+## D4-058 | 4.3 | 2
+Q: Employees use instant messaging and file sharing in a collaboration platform. Which control BEST prevents sensitive files from being shared with external guests?
+A) Asking users to check guests' identities manually
+= Manual checks are inconsistent.
+B) Disabling the platform's encryption
+= That weakens security and has nothing to do with sharing rules.
+C) Requiring longer passwords for the platform
+= Password length does not control what is shared.
+D)* Platform-enforced sharing policies, labels and DLP
+= Correct. External-sharing policy enforced by the platform, informed by sensitivity labels and DLP, prevents sensitive content leaving through collaboration channels.
+>> Collaboration tools need governance: guest controls, sensitivity labels, DLP and retention policies.

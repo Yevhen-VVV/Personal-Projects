@@ -1,0 +1,553 @@
+# Domain 8: Software Development Security (10% of the exam)
+
+## D8-001 | 8.1 | 1
+Q: In which development methodology does each phase finish before the next begins, with little provision for going back?
+A)* Waterfall
+= Correct. Waterfall is sequential; changes discovered late are expensive.
+B) Agile with two-week sprints
+= Agile delivers in short iterations and expects change.
+C) The spiral model with repeated risk analysis
+= Spiral iterates through planning, risk analysis, engineering and evaluation.
+D) DevOps with continuous delivery
+= DevOps integrates development and operations for frequent, continuous releases.
+>> Waterfall: sequential. Spiral: iterative and risk-driven. Agile: iterative and adaptive. DevOps: continuous delivery.
+
+## D8-002 | 8.1 | 2
+Q: Which development model is built around repeated cycles, each starting with a risk analysis, which makes it suitable for large, high-risk projects?
+A) Waterfall with a final security review
+= Waterfall does not repeat risk analysis in cycles.
+B)* The spiral model
+= Correct. Each loop of the spiral includes risk analysis, and prototypes reduce uncertainty.
+C) Scrum with a product backlog
+= Scrum is an Agile framework built on sprints, not risk-analysis loops.
+D) Rapid application development with prototypes only
+= RAD emphasizes speed and prototyping, not formal risk analysis each cycle.
+>> The spiral model puts risk analysis at the heart of every iteration.
+
+## D8-003 | 8.1 | 2
+Q: A company moving to DevSecOps wants to "shift left". What does that mean?
+A) Moving security reviews to just before release
+= That is shifting right, late in the pipeline.
+B) Letting operations own all security decisions
+= DevSecOps shares responsibility across teams.
+C)* Building security in from the start
+= Correct. Security starts at the earliest stages: threat modeling, secure coding and automated testing happen early, when fixes are cheapest.
+D) Removing security testing to speed up delivery
+= DevSecOps automates security testing rather than removing it.
+>> DevSecOps: security is everyone's job, automated in the pipeline, and starts at the beginning.
+
+## D8-004 | 8.1 | 2
+Q: In the Capability Maturity Model, which level describes processes that are measured and controlled quantitatively?
+A) Repeatable
+= Repeatable (level 2) means basic project management processes exist.
+B) Defined
+= Defined (level 3) means processes are documented and standardized.
+C)* Managed
+= Correct. Managed (level 4) uses quantitative measures to control processes.
+D) Optimizing
+= Optimizing (level 5) focuses on continuous improvement.
+>> CMM levels: 1 Initial, 2 Repeatable, 3 Defined, 4 Managed, 5 Optimizing.
+
+## D8-005 | 8.1 | 2
+Q: Which maturity model is designed specifically to assess and improve an organization's software security practices across governance, design, implementation, verification and operations?
+A)* OWASP SAMM
+= Correct. The Software Assurance Maturity Model organizes software security practices into those five business functions.
+B) The IDEAL model
+= IDEAL is a general model for organizational improvement: initiating, diagnosing, establishing, acting, learning.
+C) ITIL service management
+= ITIL covers IT service management.
+D) The Common Criteria evaluation levels
+= Common Criteria evaluates products, not development organizations.
+>> SAMM measures software security maturity; CMM measures process maturity in general.
+
+## D8-006 | 8.1 | 2
+Q: In software change management, which stage makes sure that only tested and approved code reaches production?
+A) Request control
+= Request control manages incoming change requests and their prioritization.
+B) Change control
+= Change control covers analyzing and developing the change.
+C) Configuration audit
+= Audits verify configurations; they do not gate releases.
+D)* Release control
+= Correct. Release control approves releases, often including acceptance testing, before deployment.
+>> Software change management: request control → change control → release control.
+
+## D8-007 | 8.1 | 2
+Q: A program assembles a team of developers, security, operations, testers and business representatives who share responsibility for a product from the start. What is this?
+A) A change advisory board
+= A CAB approves changes; it does not build the product.
+B)* An integrated product team
+= Correct. An IPT brings all stakeholders, including security, together throughout development.
+C) A red team
+= A red team emulates attackers.
+D) A computer security incident response team
+= A CSIRT responds to incidents.
+>> Integrated product teams (IPTs) build security and operations concerns in from the start.
+
+## D8-008 | 8.1 | 1
+Q: When should security requirements be defined for a new application?
+A)* With the functional requirements, at the start
+= Correct. Security requirements belong in the requirements phase alongside functionality.
+B) After the first release, based on user feedback
+= Post-release security is reactive and costly.
+C) During penetration testing before go-live
+= Testing finds problems; it does not define requirements.
+D) Only if the customer requests them
+= Security is the organization's responsibility, whether asked or not.
+>> Security requirements start at the beginning of the SDLC.
+
+## D8-009 | 8.1 | 2
+Q: An application in production needs an urgent security fix. Which practice keeps operation and maintenance secure?
+A) Developers patch production directly to save time
+= Direct changes bypass testing and approval.
+B) Skip testing because the fix is small
+= Small changes can still break things or introduce flaws.
+C)* Use the change process, expedited if needed
+= Correct. O&M changes go through change management, including testing and documentation, with an expedited path for emergencies.
+D) Wait for the next major release
+= Delaying an urgent fix leaves the vulnerability open.
+>> Operation and maintenance changes still follow change management; urgency changes speed, not control.
+
+## D8-010 | 8.1 | 2
+Q: In Scrum, which artifact holds the prioritized list of work, including security requirements and user stories?
+A) The sprint retrospective
+= A retrospective is a meeting to improve the process.
+B) The burndown chart
+= A burndown chart tracks remaining work over time.
+C)* The product backlog
+= Correct. Security requirements and abuse cases should be in the product backlog so they are planned like any other work.
+D) The daily stand-up
+= The stand-up is a short coordination meeting.
+>> In Agile, security work belongs in the backlog with definitions of done, not in a separate afterthought.
+
+## D8-011 | 8.1 | 3
+Q: A large enterprise coordinates dozens of Agile teams with shared planning increments and portfolio governance. Which framework is this?
+A) Waterfall with phase gates
+= Waterfall is not an Agile framework.
+B) Extreme Programming (XP)
+= XP is a team-level Agile practice focused on engineering.
+C) The spiral model with risk loops
+= Spiral is an iterative risk-driven model, not an enterprise Agile framework.
+D)* Scaled Agile Framework (SAFe)
+= Correct. SAFe scales Agile across many teams with program increments and portfolio management.
+>> The 2024 outline names SAFe alongside Agile, Waterfall, DevOps and DevSecOps.
+
+## D8-012 | 8.2 | 2
+Q: Which tool identifies the open-source libraries an application uses and reports their known vulnerabilities and licenses?
+A) Dynamic application security testing
+= DAST tests the running application from outside.
+B)* Software composition analysis
+= Correct. SCA inventories third-party components and checks them against vulnerability and license databases.
+C) Static application security testing
+= SAST analyzes the organization's own code for flaws.
+D) Interactive application security testing
+= IAST instruments the running app to find flaws during testing.
+>> SCA covers third-party components; SAST covers your code; DAST covers the running app; IAST instruments it.
+
+## D8-013 | 8.2 | 2
+Q: Which testing approach instruments an application while it runs during functional tests, combining insight from inside the code with real execution?
+A)* Interactive application security testing
+= Correct. IAST agents observe code paths and data flows during testing, which reduces false positives.
+B) Static analysis of the source code
+= SAST does not run the code.
+C) Black-box dynamic scanning from outside
+= DAST has no visibility inside the application.
+D) Manual code review by peers
+= Code review is human reading, not instrumentation.
+>> IAST combines SAST-like visibility with DAST-like execution.
+
+## D8-014 | 8.2 | 2
+Q: A developer accidentally commits a cloud access key to a public code repository. What should be done FIRST?
+A) Delete the commit from the repository history
+= Others may already have copied the key; deletion alone is not enough.
+B) Make the repository private
+= The key may already be harvested by automated scanners.
+C) Email the team to remind them about secrets
+= Awareness helps later but does nothing about the exposed key.
+D)* Revoke and rotate the key
+= Correct. Assume compromise: invalidate the key immediately, then review its use and clean up the history.
+>> Exposed secrets: revoke and rotate first, then investigate and prevent recurrence with secret scanning and vaults.
+
+## D8-015 | 8.2 | 2
+Q: Which practice BEST secures a CI/CD pipeline?
+A) Giving the pipeline service account global admin rights
+= Excessive pipeline permissions make it a powerful target.
+B)* Least-privilege runners, vaulted secrets and signed artifacts
+= Correct. Pipelines are part of the attack surface: protect credentials, restrict permissions and verify build outputs.
+C) Allowing any developer to change pipeline definitions without review
+= Unreviewed pipeline changes can inject malicious steps.
+D) Storing credentials in plain text in the pipeline configuration
+= Plain-text secrets in configuration are easily exposed.
+>> Secure the software supply chain: protected pipelines, vaulted secrets, reviewed changes, signed and verified artifacts.
+
+## D8-016 | 8.2 | 2
+Q: Which programming language characteristic MOST reduces buffer overflow vulnerabilities?
+A) Dynamic typing
+= Typing discipline is not what prevents overflows.
+B) Compilation directly to native machine code
+= Native compilation is common in languages prone to overflows.
+C)* Memory safety with bounds checking
+= Correct. Memory-safe languages prevent out-of-bounds reads and writes that cause overflows.
+D) Support for inline assembly
+= Inline assembly bypasses language protections.
+>> Memory-safe languages (Rust, Java, C#, Go) eliminate whole classes of memory corruption bugs.
+
+## D8-017 | 8.2 | 2
+Q: How should source code repositories be protected?
+A) Allow anonymous write access to speed up collaboration
+= Anonymous writes destroy accountability and integrity.
+B) Store production credentials in the repository for convenience
+= Secrets in repositories are a common breach source.
+C) Let anyone merge directly to the main branch
+= Unreviewed merges allow malicious or flawed code into releases.
+D)* Strong authentication, branch protection and required reviews
+= Correct. Repositories hold the organization's code and must be protected for integrity and confidentiality.
+>> Repository security: MFA, least privilege, branch protection, required reviews, signed commits and secret scanning.
+
+## D8-018 | 8.2 | 2
+Q: In a development ecosystem, what is the role of software configuration management (SCM)?
+A)* Version control of code and configuration
+= Correct. SCM gives an auditable history of what changed, when and by whom, and lets teams rebuild any version.
+B) Scanning committed code for vulnerabilities
+= That is application security testing.
+C) Approving production changes at the CAB
+= The CAB is part of change management.
+D) Monitoring production servers for performance
+= That is operations monitoring.
+>> SCM provides version control, baselines and auditability for code and configuration.
+
+## D8-019 | 8.2 | 2
+Q: A security team wants a protection that runs inside the application and blocks attacks such as injection at run time. What is this?
+A) A web application firewall at the network edge
+= A WAF filters traffic outside the application.
+B) Static analysis in the build pipeline
+= SAST runs before deployment.
+C) Software composition analysis
+= SCA examines components, not run-time attacks.
+D)* Runtime application self-protection (RASP)
+= Correct. RASP instruments the runtime to detect and block attacks with the application's own context.
+>> Runtime protections (RASP) complement secure coding and WAFs.
+
+## D8-020 | 8.2 | 3
+Q: A developer installs an IDE plugin from an unknown publisher that requests access to the whole file system and network. What is the main risk?
+A) The plugin may slow down compilation
+= Performance is not the security concern.
+B)* Theft of source code or secrets
+= Correct. Development tools are part of the attack surface; malicious extensions can steal code and credentials.
+C) The plugin may conflict with other installed extensions
+= Compatibility problems are a nuisance, not the main security risk.
+D) The plugin may use too much disk space
+= Not a security concern.
+>> Tool sets and IDEs are part of the supply chain: approve, vet and limit extensions.
+
+## D8-021 | 8.2 | 2
+Q: Which platform automates security response workflows, such as enriching an alert and isolating a host, by running playbooks across many tools?
+A) SIEM
+= A SIEM collects and correlates events; it does not mainly orchestrate responses.
+B) SCA
+= SCA analyzes software components.
+C)* SOAR
+= Correct. Security orchestration, automation and response executes playbooks across integrated tools.
+D) SAST
+= SAST analyzes source code.
+>> SOAR automates and orchestrates response; SIEM detects and correlates.
+
+## D8-022 | 8.3 | 2
+Q: How can an organization show who changed a critical application's code and when?
+A) By asking developers to remember their changes
+= Memory is unreliable and unverifiable.
+B) By checking the application's file timestamps
+= Timestamps can be changed and do not show who made changes.
+C) By reviewing the latest release notes only
+= Release notes summarize changes; they are not an audit trail.
+D)* By auditing the version control history and change logs
+= Correct. Auditing and logging of changes, tied to individual identities, makes software changes accountable.
+>> Assess software security effectiveness through audited, attributable change logs.
+
+## D8-023 | 8.3 | 2
+Q: Which measure BEST shows whether a secure development program is effective?
+A)* Vulnerability trends per release
+= Correct. Trends in vulnerabilities found per release, and how fast they are fixed, show whether fewer flaws reach production and how quickly they are closed.
+B) The number of developers who attended secure coding training
+= Attendance is an input; it does not show whether fewer flaws reach production.
+C) The total lines of code written per month
+= Productivity is not a security outcome.
+D) How many tools the security team has bought
+= Tools are inputs, not outcomes.
+>> Measure software security by outcomes: defect density, time to remediate, escaped vulnerabilities.
+
+## D8-024 | 8.3 | 2
+Q: A risk analysis of a new feature finds that it could expose personal data through an API. What should happen next?
+A) Ship it and monitor for complaints
+= Knowingly shipping an unmitigated risk ignores the analysis.
+B)* Mitigate the risk, then verify
+= Correct. Risk analysis leads to mitigation, such as access controls and data minimization, and then testing that it works.
+C) Cancel the whole product
+= Cancellation may be unnecessary if the risk can be mitigated.
+D) Hide the API's documentation
+= Obscurity does not protect the data.
+>> Risk analysis in development leads to mitigations that are verified before release.
+
+## D8-025 | 8.3 | 2
+Q: Users need assurance that an installer really comes from the vendor and has not been altered. What should the vendor do?
+A) Publish the installer on a popular download site
+= Distribution channels can be compromised.
+B) Compress the installer
+= Compression provides no authenticity.
+C) Rename the file to include the version number
+= Names prove nothing.
+D)* Sign the code with the vendor's certificate
+= Correct. Code signing provides integrity and proves the publisher's identity.
+>> Code signing proves authorship and integrity, but not that the code is safe.
+
+## D8-026 | 8.4 | 2
+Q: Before buying a commercial off-the-shelf (COTS) application, what should the security team do?
+A) Rely on the vendor's marketing claims
+= Marketing is not assurance.
+B)* Assess the vendor's security with evidence
+= Correct. Assess acquired software through evidence: questionnaires, independent reports, testing and enforceable requirements.
+C) Reverse engineer the product to find its flaws
+= Licenses usually prohibit reverse engineering, and it is rarely practical.
+D) Buy it, then assess it after deployment
+= Assessment should inform the purchase decision.
+>> Assess acquired software before purchase: vendor practices, attestations, testing, SBOM and contract terms.
+
+## D8-027 | 8.4 | 2
+Q: A company depends on a small vendor's custom software. What protects the company if the vendor goes out of business?
+A) Buying extra licenses in advance
+= Licenses do not help if no one can maintain the software.
+B) An extended warranty
+= Warranties end with the vendor.
+C)* A source code escrow agreement
+= Correct. A third party holds the source code and releases it under defined conditions, such as vendor failure.
+D) A non-disclosure agreement
+= An NDA protects confidentiality, not continuity.
+>> Software escrow protects customers against a vendor's failure to support critical software.
+
+## D8-028 | 8.4 | 2
+Q: Developers want to use an open-source library in a commercial product. What should be checked BEFORE adopting it?
+A) The number of stars it has on the hosting site
+= Popularity is not assurance.
+B) Whether its documentation is available in several languages
+= Good documentation is helpful, but it says nothing about legal or security risk.
+C) Whether the maintainer lives in the same country
+= Location is rarely the deciding factor.
+D)* Its license, vulnerabilities and upkeep
+= Correct. Open-source components carry legal and security risk; check licenses, vulnerabilities and project health.
+>> Open-source due diligence: license compatibility, vulnerability history, maintenance activity and provenance.
+
+## D8-029 | 8.4 | 2
+Q: The company adopts a SaaS customer relationship management platform. Which security responsibility remains with the company?
+A) Patching the SaaS application servers
+= The provider patches its platform.
+B) Physical security of the provider's data centers
+= That is the provider's job.
+C)* Its users, access settings and data
+= Correct. Customers keep responsibility for identities, configuration and how their data is used and shared.
+D) Writing the SaaS application's code
+= The provider develops the application.
+>> Acquired cloud services shift infrastructure duties but never data, identity and configuration responsibility.
+
+## D8-030 | 8.4 | 3
+Q: A managed service provider will run the company's enterprise resource planning (ERP) system. Which is the MOST important security consideration in the contract?
+A) The provider's office location and staff size
+= Location matters only through data residency requirements.
+B) The provider's preferred programming language
+= Not a contract security priority.
+C) The brand of server hardware the provider uses
+= Hardware choice is the provider's operational decision; the contract should focus on obligations and outcomes.
+D)* Enforceable security and exit terms
+= Correct. Security requirements, breach notification, audit rights and exit terms: managed services need enforceable obligations and a way to verify them and leave safely.
+>> Managed services: define security requirements, SLAs, incident notification, right to audit and data return at exit.
+
+## D8-031 | 8.4 | 2
+Q: A vendor refuses to say which third-party components its product contains. Which request would MOST improve visibility of supply chain risk?
+A)* A software bill of materials
+= Correct. An SBOM lists components and versions so new vulnerabilities can be matched quickly.
+B) A list of the vendor's customers
+= Customer lists say nothing about components.
+C) The vendor's marketing roadmap
+= Roadmaps describe future features.
+D) The vendor's financial statements
+= Financial health matters but does not reveal components.
+>> Ask suppliers for SBOMs to manage vulnerabilities in acquired software.
+
+## D8-032 | 8.5 | 2
+Q: Which coding practice MOST effectively prevents SQL injection?
+A) Escaping single quotes with a custom function
+= Custom escaping is error-prone and easy to bypass.
+B)* Parameterized queries (prepared statements)
+= Correct. Parameters keep data separate from SQL code, so input cannot change the query's structure.
+C) Hiding database error messages from users
+= Hiding errors makes attacks harder to tune but does not prevent injection.
+D) Using a longer database password
+= Credential strength does not stop injection through the application.
+>> Prevent injection with parameterized queries, least-privilege database accounts and input validation.
+
+## D8-033 | 8.5 | 2
+Q: A forum displays users' posts without encoding them, so a posted script runs in every reader's browser. What is this vulnerability?
+A) SQL injection
+= SQL injection targets the database.
+B) Cross-site request forgery
+= CSRF tricks a browser into sending unwanted requests.
+C)* Stored cross-site scripting
+= Correct. Stored XSS saves malicious script on the server and serves it to other users.
+D) Server-side request forgery
+= SSRF makes the server send requests to places it should not.
+>> XSS: reflected, stored or DOM-based. Prevent with output encoding, input validation and Content Security Policy.
+
+## D8-034 | 8.5 | 2
+Q: A malicious site causes a logged-in user's browser to submit a funds transfer to their bank without their knowledge. Which defense addresses this?
+A)* Anti-CSRF tokens and SameSite cookies
+= Correct. Unpredictable per-request tokens and SameSite cookies stop forged cross-site requests.
+B) Output encoding of user input
+= Output encoding prevents XSS, not CSRF.
+C) Parameterized SQL queries
+= These prevent SQL injection.
+D) Longer session timeouts
+= Longer sessions make CSRF easier.
+>> CSRF abuses the browser's automatic credentials; defend with tokens, SameSite cookies and reauthentication for sensitive actions.
+
+## D8-035 | 8.5 | 3
+Q: An application fetches images from URLs that users supply. An attacker submits an internal address and retrieves the cloud provider's metadata service, including credentials. What is this vulnerability?
+A) Cross-site scripting
+= XSS runs scripts in users' browsers.
+B) Directory traversal
+= Traversal accesses files outside the intended directory.
+C) Insecure direct object reference
+= IDOR accesses other users' objects by changing identifiers.
+D)* Server-side request forgery
+= Correct. SSRF makes the server issue requests to internal resources; allow-list destinations and block metadata endpoints.
+>> SSRF: validate and allow-list outbound destinations, block internal and metadata addresses, and segment the network.
+
+## D8-036 | 8.5 | 2
+Q: Where must input validation be enforced to be effective?
+A) Only in client-side JavaScript
+= Attackers bypass client-side checks easily.
+B)* On the server, using allow lists
+= Correct. Server-side validation against expected formats cannot be bypassed by the client; client checks are for usability only.
+C) Only in the database
+= Validation should happen before data reaches the database.
+D) Nowhere, if a WAF is in place
+= WAFs are a supplement, not a replacement for validation.
+>> Validate input on the server with allow lists; treat all client input as untrusted.
+
+## D8-037 | 8.5 | 2
+Q: A program copies user input into a fixed-size buffer without checking its length, letting an attacker overwrite adjacent memory. What should developers do?
+A) Increase the buffer size
+= A bigger buffer only raises the threshold for overflow.
+B) Run the program as administrator
+= Elevated privileges make exploitation worse.
+C)* Check input length and use safe functions
+= Correct. Bounds checking and safe library functions prevent the overflow; compiler and OS protections add layers.
+D) Disable logging to save memory
+= Logging is unrelated.
+>> Buffer overflows: bounds checking, safe functions, memory-safe languages, plus ASLR and DEP as extra layers.
+
+## D8-038 | 8.5 | 3
+Q: A program checks that a file is safe, then opens it a moment later. An attacker swaps the file in between. What is this flaw?
+A) An integer overflow
+= Integer overflows involve arithmetic exceeding a type's range.
+B) Cross-site scripting
+= XSS is a web output problem.
+C) Covert storage channel
+= Covert channels communicate information secretly.
+D)* A TOCTOU race condition
+= Correct. Time-of-check to time-of-use flaws exploit the gap between a check and the use of what was checked.
+>> TOCTOU race conditions: make check-and-use atomic, use file handles rather than names, and use locking.
+
+## D8-039 | 8.5 | 2
+Q: A web application displays full stack traces and database errors to users when something fails. What should be done?
+A) Keep them, because they help users report bugs
+= Detailed errors give attackers information about the system.
+B)* Show generic messages and log details internally
+= Correct. Secure error handling reveals nothing useful to attackers while preserving details for developers.
+C) Disable all error logging
+= Developers and responders need the details.
+D) Show the details only to users who are logged in
+= Logged-in users can be attackers too; detailed errors should not reach any user.
+>> Fail securely: generic messages to users, detailed logs internally.
+
+## D8-040 | 8.5 | 2
+Q: An API returns any customer's records when a user simply changes the customer ID in the request. What is the flaw?
+A) Missing rate limiting
+= Rate limiting slows abuse but is not the root cause.
+B) Weak TLS configuration
+= Transport security is not involved.
+C)* Broken object-level authorization
+= Correct. The API must check that the caller is allowed to access each specific object, not just that they are logged in.
+D) Lack of input validation on the ID format
+= A well-formed ID for another customer would still be returned.
+>> API security: authorize every object access, authenticate callers, rate-limit, validate input and log.
+
+## D8-041 | 8.5 | 2
+Q: Developers left an undocumented command in production code that bypasses authentication "for support purposes". What is this called?
+A) A logic bomb
+= A logic bomb triggers malicious action on a condition.
+B)* A maintenance hook (backdoor)
+= Correct. Maintenance hooks bypass normal controls and must be removed before release.
+C) A covert timing channel
+= Covert channels leak information through timing or storage.
+D) A polymorphic virus
+= Polymorphic viruses change their code to evade detection.
+>> Remove maintenance hooks and backdoors before release; code review and testing should look for them.
+
+## D8-042 | 8.5 | 2
+Q: In object-oriented design, which combination is considered best for secure, maintainable code?
+A) Low cohesion and high coupling
+= That is the worst combination: modules do many things and depend heavily on each other.
+B) High cohesion and high coupling
+= High coupling makes changes ripple and isolation difficult.
+C)* High cohesion and low coupling
+= Correct. Modules that do one thing well and depend little on others are easier to secure and test.
+D) Low cohesion and low coupling
+= Low cohesion makes modules hard to understand.
+>> Aim for high cohesion and low coupling; encapsulation hides internal details.
+
+## D8-043 | 8.5 | 3
+Q: An application deserializes objects received from users without validation, allowing an attacker to run code on the server. What is the BEST mitigation?
+A) Compress serialized data before sending it
+= Compression does not prevent malicious objects.
+B) Use longer session timeouts
+= Session length is unrelated.
+C) Move the server behind a corporate VPN
+= Internal attackers or compromised clients can still send payloads.
+D)* Don't deserialize untrusted data
+= Correct. Avoid deserializing untrusted input; where unavoidable, use strict type allow lists and integrity checks to restrict what can be created.
+>> Insecure deserialization: avoid native deserialization of untrusted data; prefer simple data formats with schema validation.
+
+## D8-044 | 8.5 | 2
+Q: A cloud team defines firewall rules, encryption settings and access policies in code that is deployed and enforced automatically. What does the 2024 outline call this?
+A) Security through obscurity
+= Nothing is hidden here.
+B) Static application security testing
+= SAST analyzes source code for flaws.
+C) Shadow IT
+= Shadow IT is unapproved technology.
+D)* Software-defined security
+= Correct. Security controls defined and enforced through software and APIs can be versioned, reviewed and applied consistently.
+>> Software-defined security treats controls as code: versioned, reviewed, tested and automatically enforced.
+
+## D8-045 | 8.5 | 2
+Q: Where should an application store the database password it needs at run time?
+A) Hard-coded in the source code
+= Hard-coded secrets end up in repositories and binaries.
+B) In a comment at the top of the configuration file
+= Anyone with file access can read it.
+C)* In a secrets manager
+= Correct. The application retrieves it at run time; a secrets manager controls access, audits use and supports rotation without code changes.
+D) In the application's public README
+= Public documentation is the worst place for a secret.
+>> Never hard-code secrets; use a secrets manager or vault, with rotation and least-privilege access.
+
+## D8-046 | 8.5 | 3
+Q: Which security weakness at the source-code level is MOST likely to be found by static analysis but missed by a quick functional test?
+A) A slow page load under heavy user traffic
+= Performance is found by load testing.
+B)* Unvalidated input on a rarely used path
+= Correct. For example, input that reaches a SQL query unvalidated. SAST follows data flows through all code paths, including ones functional tests rarely exercise.
+C) A misconfigured TLS certificate on the server
+= Server configuration is found by scanning the running system.
+D) A missing HTTP security header on responses
+= Headers appear in every response, so dynamic scanning of the running site finds them easily.
+>> Static analysis sees every path in the code; dynamic testing sees only what it exercises.

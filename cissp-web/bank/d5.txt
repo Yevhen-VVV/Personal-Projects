@@ -1,0 +1,673 @@
+# Domain 5: Identity and Access Management (13% of the exam)
+
+## D5-001 | 5.1 | 1
+Q: An employee holds the door open so a stranger can follow them into a secure area without badging. Which physical control is designed to prevent this?
+A)* An access control vestibule (mantrap)
+= Correct. A vestibule lets only one authenticated person through at a time, stopping tailgating and piggybacking.
+B) A badge reader with a longer read range
+= Read range does not stop a second person walking through behind the first.
+C) A security camera recording the door all day
+= Cameras deter and record tailgating but do not physically prevent it.
+D) A sign reminding staff not to hold the door for others
+= Signs raise awareness but enforce nothing.
+>> Tailgating and piggybacking are stopped by vestibules, turnstiles and guards, and reinforced by awareness.
+
+## D5-002 | 5.1 | 2
+Q: A company wants one place to control access to all its SaaS applications, so that disabling a user there removes their access to every app. What should it implement?
+A)* A central identity provider with single sign-on for each application
+= Correct. Centralizing authentication means access decisions and deprovisioning happen in one place for information, systems, applications and services.
+B) Separate local accounts in each application, reviewed every quarter
+= Local accounts multiply the places where a leaver keeps access.
+C) A shared administrator password for each application stored in a vault
+= Shared credentials remove individual accountability.
+D) A network firewall rule blocking each departing user's IP address
+= Users change IP addresses; network rules do not track identity.
+>> Logical access control is strongest when identity is centralized and every application trusts it.
+
+## D5-003 | 5.1 | 1
+Q: Which control protects an unattended, logged-in workstation from being used by a passer-by?
+A) A cable lock attaching the computer to the desk
+= A cable lock prevents theft of the device, not use of the session.
+B)* Automatic screen lock after inactivity
+= Correct. Session locks require reauthentication after inactivity.
+C) Full-disk encryption
+= Disk encryption protects data when the device is off, not an unlocked session.
+D) A privacy screen filter
+= Privacy filters limit viewing angles but do not stop someone sitting down at the keyboard.
+>> Device access controls include screen locks, session timeouts and requiring reauthentication.
+
+## D5-004 | 5.1 | 2
+Q: A data center uses badge readers at the entrance. Which addition would MOST improve assurance that the badge holder is the person it was issued to?
+A) Making badges larger and easier to see
+= Visibility helps guards spot badges, not confirm the holder.
+B) Logging every badge swipe to the central SIEM
+= Logging records who used the badge, not who held it.
+C)* A PIN or biometric along with the badge
+= Correct. Adding a second factor confirms the badge is being used by its owner, not someone who found or stole it.
+D) Replacing all badges with new ones every year
+= Rotation does not stop someone else using a valid badge today.
+>> Physical access is strengthened by combining something you have (badge) with something you know or are.
+
+## D5-005 | 5.2 | 1
+Q: A login requires a password and a security question answer. Why is this NOT multifactor authentication?
+A) Security questions are never stored securely
+= Storage is a separate issue; the factor type is the problem.
+B) Two factors are needed, and this has three
+= There are only two items here, and both are the same type.
+C)* Both are something you know
+= Correct. MFA requires factors of different types: know, have, are.
+D) Passwords are no longer considered a factor
+= Passwords remain a valid "something you know" factor.
+>> MFA requires two or more different factor types; two knowledge factors are still single-factor authentication.
+
+## D5-006 | 5.2 | 2
+Q: A biometric system's sensitivity is raised so that it rejects more impostors. What happens to its error rates?
+A)* The false acceptance rate falls and the false rejection rate rises
+= Correct. Stricter matching lets fewer impostors in (fewer Type II errors) but rejects more legitimate users (more Type I errors).
+B) Both error rates fall together
+= Sensitivity trades one error for the other; both cannot fall together.
+C) The false rejection rate falls and the false acceptance rate rises
+= That is what happens when sensitivity is lowered.
+D) Neither rate changes, only the crossover error rate does
+= The CER is a property of the device; adjusting sensitivity moves both FAR and FRR.
+>> FRR = Type I (false rejection); FAR = Type II (false acceptance). The CER (EER) compares devices: lower is better.
+
+## D5-007 | 5.2 | 2
+Q: When comparing biometric devices, which measure indicates overall accuracy?
+A) The false rejection rate alone
+= FRR alone ignores impostor acceptance.
+B) The time needed to enroll each user
+= Enrollment time affects acceptability, not accuracy.
+C) The throughput rate
+= Throughput is how many people per minute can be processed.
+D)* The crossover error rate (CER)
+= Correct. The CER, also called the equal error rate, is where FAR equals FRR; a lower CER means a more accurate device.
+>> Use the crossover error rate to compare biometric accuracy; a lower CER is better.
+
+## D5-008 | 5.2 | 1
+Q: In biometrics, what is a Type II error?
+A) A legitimate user is rejected
+= That is a Type I error, false rejection.
+B)* An impostor is accepted
+= Correct. False acceptance is the more dangerous error for security.
+C) The sensor fails to capture a sample
+= That is a failure to capture, not a Type II error.
+D) A user cannot be enrolled
+= That is a failure to enroll.
+>> Type I = false rejection (annoying); Type II = false acceptance (dangerous).
+
+## D5-009 | 5.2 | 2
+Q: Users keep approving MFA push notifications they did not request after attackers bombard them with prompts. Which change MOST directly counters this?
+A) Sending prompts by SMS instead of push
+= SMS codes are phishable and can be intercepted by SIM swapping.
+B) Shortening the push notification timeout
+= A shorter timeout does not stop a user from approving the prompt.
+C)* Number matching on the login screen
+= Correct. The user must type a code shown on the actual login screen to approve, so blind approvals of unsolicited prompts fail.
+D) Training users to approve only during working hours
+= Attackers can time their attempts to working hours.
+>> MFA fatigue (prompt bombing) is countered by number matching, rate limits and phishing-resistant authenticators.
+
+## D5-010 | 5.2 | 2
+Q: Which authentication method is MOST resistant to phishing?
+A) One-time codes from an authenticator app
+= Users can be tricked into typing the code into a fake site that relays it.
+B) SMS one-time passcodes
+= SMS codes can be phished, intercepted or redirected through SIM swapping.
+C) Push notifications without number matching
+= Push approvals can be relayed or approved out of fatigue.
+D)* FIDO2 passkeys or security keys
+= Correct. FIDO2 binds each credential to the real website's origin, so a look-alike site cannot use it.
+>> Passwordless FIDO2/WebAuthn (passkeys, security keys) is phishing-resistant because credentials are bound to the origin.
+
+## D5-011 | 5.2 | 2
+Q: Following NIST SP 800-63B, which password practice should an organization adopt?
+A) Force all users to change passwords every 60 days
+= Routine forced changes lead to weaker, predictable passwords; change only on evidence of compromise.
+B)* Check new passwords against lists of known breached passwords
+= Correct. Screening against compromised and common passwords blocks the passwords attackers try first.
+C) Require at least one uppercase letter, number and symbol
+= Composition rules add little strength and frustrate users; length matters more.
+D) Allow password hints visible to anyone at the login screen
+= Hints help attackers guess.
+>> NIST 800-63B: favor length, screen against breached lists, allow paste and password managers, no forced periodic changes, no hints.
+
+## D5-012 | 5.2 | 2
+Q: Before issuing credentials to a new remote contractor, the company verifies a government ID and confirms the person matches it on a live video call. What is this step called?
+A) Authorization
+= Authorization decides what an authenticated identity may do.
+B) Accountability
+= Accountability ties actions to identities through logging.
+C) Credential rotation
+= Rotation replaces existing credentials.
+D)* Identity proofing
+= Correct. Proofing establishes that a person is who they claim to be before an identity is registered.
+>> Registration starts with identity proofing; NIST defines identity assurance levels (IAL) for how strong it must be.
+
+## D5-013 | 5.2 | 2
+Q: What is the main security risk of single sign-on?
+A)* One compromised credential can unlock many systems
+= Correct. SSO concentrates risk in one credential, so it must be paired with strong MFA and monitoring.
+B) Users must remember more passwords
+= SSO reduces the number of passwords.
+C) Applications can no longer log user activity
+= Applications still log activity under the SSO identity.
+D) SSO cannot be used with cloud applications
+= SSO is widely used with cloud applications.
+>> SSO improves usability and centralizes control, but makes the primary credential a high-value target.
+
+## D5-014 | 5.2 | 2
+Q: An administrator receives elevated rights only after requesting them for a specific task, and the rights expire automatically after two hours. What is this approach called?
+A) Role-based access control
+= RBAC assigns standing permissions by role.
+B)* Just-in-time access
+= Correct. JIT access grants privileges only when needed and for a limited time, reducing standing privilege.
+C) Discretionary access control
+= DAC lets owners grant access at their discretion.
+D) Federated identity
+= Federation shares identities across organizations.
+>> Just-in-time access removes standing privileges; combine it with approval workflows and logging.
+
+## D5-015 | 5.2 | 1
+Q: Which tool helps users keep long, unique passwords for every site without having to remember them?
+A) A shared spreadsheet on the team drive
+= Shared spreadsheets expose every password to everyone who can open them.
+B) Writing passwords in a notebook kept in a desk
+= Physical notes are easily lost or seen.
+C)* A password manager (credential vault)
+= Correct. Password managers generate and store strong, unique credentials protected by a master secret and ideally MFA.
+D) Reusing one strong password everywhere
+= Reuse means one breach exposes every account.
+>> Credential management systems (password vaults) make unique, strong passwords practical.
+
+## D5-016 | 5.2 | 2
+Q: A web application keeps users logged in indefinitely with a session cookie that never expires. Which change BEST improves session management?
+A) Store the session ID in the URL instead of a cookie
+= URLs leak through logs, browser history and referrer headers.
+B) Use the user's email address as the session ID
+= Predictable session IDs can be guessed.
+C) Allow a session to be used from any IP address worldwide
+= That makes stolen session tokens easier to use.
+D)* Idle and absolute timeouts with secure cookie flags
+= Correct. Timeouts limit how long a stolen token is useful, and the Secure and HttpOnly flags protect the cookie in transit and from scripts.
+>> Session management: random IDs, idle and absolute timeouts, Secure/HttpOnly/SameSite cookies, and invalidation at logout.
+
+## D5-017 | 5.2 | 2
+Q: What distinguishes a TOTP code from an HOTP code?
+A)* TOTP uses time; HOTP uses a counter
+= Correct. TOTP codes expire after a short window, typically 30 seconds; HOTP codes stay valid until used.
+B) TOTP codes are longer than HOTP codes
+= Code length is configurable and is not the difference.
+C) HOTP requires a smartphone, TOTP does not
+= Both can be generated by apps or hardware tokens.
+D) HOTP is phishing-resistant and TOTP is not
+= Neither one-time password type is phishing-resistant.
+>> TOTP = time-based, short-lived; HOTP = counter-based, valid until used.
+
+## D5-018 | 5.2 | 2
+Q: A user authenticates with a fingerprint and a smart card. Which factor types are these?
+A) Something you know and something you have
+= A fingerprint is not something you know.
+B) Something you have and somewhere you are
+= Location is not involved.
+C)* Something you are and something you have
+= Correct. The fingerprint is inherence (Type 3) and the smart card is possession (Type 2).
+D) Something you do and something you are
+= A smart card is a possession factor, not a behavior.
+>> Factor types: know (Type 1), have (Type 2), are (Type 3); also location and behavior as context.
+
+## D5-019 | 5.2 | 3
+Q: A bank detects a login from a new device in a new country at 3 a.m. and requires an extra verification step, while a login from the usual device and location needs only one factor. What is this?
+A) Rule-based access control
+= Static rules do not weigh multiple contextual signals into a risk score.
+B) Mandatory access control
+= MAC uses labels and clearances, not login context.
+C)* Risk-based (adaptive) authentication
+= Correct. The system scores context such as device, location and time, and steps up authentication when risk is high.
+D) Discretionary access control
+= DAC concerns owner-granted permissions.
+>> Risk-based or adaptive authentication steps up requirements as contextual risk rises.
+
+## D5-020 | 5.2 | 3
+Q: A company issues smart cards with certificates for logon. A user loses a card. What should happen FIRST?
+A) Issue a new card and leave the old one active in case it is found
+= An active lost card can be used by whoever finds it, if the PIN is guessed or observed.
+B)* Revoke the lost card's certificate
+= Correct. Revocation stops the credential working everywhere that checks certificate status.
+C) Ask the user to change their account password
+= The card's certificate, not the password, is the credential at risk.
+D) Wait 24 hours to see whether the card turns up
+= Delay leaves a working credential in unknown hands.
+>> Credential lifecycle: revoke lost or compromised credentials immediately, then reissue.
+
+## D5-021 | 5.3 | 2
+Q: In a SAML-based federation, which party authenticates the user and issues assertions about them?
+A)* The identity provider
+= Correct. The IdP authenticates the principal and sends signed assertions to the service provider.
+B) The service provider
+= The SP consumes assertions and grants access to its application.
+C) The user agent (browser)
+= The browser only carries messages between the IdP and SP.
+D) The certificate authority
+= A CA may issue the signing certificates but plays no part in each login.
+>> SAML roles: principal (user), identity provider (authenticates, asserts), service provider (relies on assertions).
+
+## D5-022 | 5.3 | 2
+Q: A company runs an on-premises directory and wants users to sign in to cloud applications with the same accounts. Which model is this?
+A) Cloud-only identity
+= Cloud-only means identities live only in the cloud provider.
+B) On-premises-only identity
+= That would not extend sign-in to cloud applications.
+C)* Hybrid identity
+= Correct. The on-premises directory is synchronized or federated to a cloud identity service, so users have one identity everywhere.
+D) Discretionary identity
+= This is not an identity model.
+>> Federated identity can be on-premises, cloud or hybrid; hybrid links the on-premises directory to cloud services.
+
+## D5-023 | 5.3 | 2
+Q: When an employee is disabled in the company's directory, their accounts in federated SaaS applications should be removed automatically too. Which standard is designed for this cross-domain provisioning?
+A) SAML
+= SAML handles authentication assertions, not account provisioning and deprovisioning.
+B) Kerberos
+= Kerberos is for authentication within a realm.
+C) LDAP
+= LDAP queries directories; it is not a cross-domain provisioning protocol for SaaS.
+D)* SCIM
+= Correct. The System for Cross-domain Identity Management automates creating, updating and removing accounts in other systems.
+>> SAML/OIDC handle sign-in; SCIM handles provisioning and deprovisioning across domains.
+
+## D5-024 | 5.3 | 3
+Q: Your company accepts logins from a partner's identity provider. What is the MAIN risk you are accepting?
+A) Your users will need to remember more passwords
+= Federation reduces passwords.
+B) Your applications will stop logging access
+= Applications still log access by the federated identity.
+C)* Reliance on the partner's account management
+= Correct. You depend on the partner's identity proofing and account management: if it fails to disable a leaver or proofs identities poorly, your systems inherit the weakness.
+D) Your encryption keys must be shared with the partner
+= Federation uses signed assertions; you do not share your encryption keys.
+>> Federation is a trust relationship; define it in agreements covering proofing, deprovisioning and incident notification.
+
+## D5-025 | 5.3 | 2
+Q: A user signs in to a new SaaS application through the corporate identity provider, and the application creates the user's account during that first login. What is this called?
+A)* Just-in-time provisioning
+= Correct. The account is created from the assertion's attributes at first sign-in.
+B) Manual provisioning
+= Nobody created the account by hand here.
+C) Account recertification
+= Recertification reviews existing access.
+D) Privilege escalation
+= Escalation is gaining extra rights.
+>> JIT provisioning creates accounts at first federated login; it still needs a deprovisioning path such as SCIM.
+
+## D5-026 | 5.4 | 1
+Q: In which access control model can the owner of a file decide who else may access it?
+A)* Discretionary access control (DAC)
+= Correct. DAC leaves access decisions to the data owner, typically through ACLs.
+B) Mandatory access control (MAC)
+= In MAC the system enforces labels and clearances; owners cannot change access.
+C) Role-based access control (RBAC)
+= RBAC grants access through roles defined centrally.
+D) Rule-based access control
+= Rule-based access applies global rules, such as firewall rules, to all users.
+>> DAC: owner decides. MAC: labels decide. RBAC: roles decide. ABAC: attributes decide.
+
+## D5-027 | 5.4 | 2
+Q: A military system grants access only when a user's clearance dominates the data's classification label and the user belongs to the right compartment. Which model is this?
+A) Role-based access control
+= Roles do not compare clearances with labels.
+B)* Mandatory access control
+= Correct. MAC uses labels set by the system or administrators, which users cannot override.
+C) Discretionary access control
+= In DAC, owners decide access.
+D) Risk-based access control
+= Risk-based access weighs context in real time.
+>> MAC is nondiscretionary and label-based, often lattice-based with compartments for need to know.
+
+## D5-028 | 5.4 | 2
+Q: A hospital lets nurses access patient records only for patients on their ward, during their shift, from hospital devices. Which model can express all of these conditions?
+A) Role-based access control
+= A role alone cannot express ward, time and device conditions.
+B) Discretionary access control
+= Owner-granted permissions do not handle dynamic conditions.
+C)* Attribute-based access control
+= Correct. ABAC evaluates attributes of the user, resource, action and environment in policies.
+D) Mandatory access control
+= MAC uses classification labels, not shift times or devices.
+>> ABAC handles fine-grained, context-rich policies that RBAC cannot express without role explosion.
+
+## D5-029 | 5.4 | 2
+Q: A company assigns permissions to job functions such as "Accounts Payable Clerk", and users get permissions by being placed in those functions. Which model is this?
+A) Discretionary access control
+= DAC is owner-driven, not job-function-driven.
+B) Rule-based access control
+= Rule-based access applies the same rules to everyone.
+C) Attribute-based access control
+= ABAC uses policies over many attributes.
+D)* Role-based access control
+= Correct. RBAC maps permissions to roles and users to roles, which simplifies administration.
+>> RBAC suits stable job functions; watch for privilege creep as people change roles.
+
+## D5-030 | 5.4 | 2
+Q: A firewall allows remote desktop connections to a server only between 8 a.m. and 6 p.m. for everyone. Which model does this best represent?
+A)* Rule-based access control
+= Correct. Global rules applied equally to all subjects are rule-based access control.
+B) Role-based access control
+= Roles are not involved; the rule applies to everyone.
+C) Discretionary access control
+= No owner is granting access.
+D) Mandatory access control
+= No labels or clearances are compared.
+>> Rule-based access control applies the same rules to all subjects, as in firewalls and time restrictions.
+
+## D5-031 | 5.4 | 2
+Q: In an access control architecture, which component evaluates requests against policy and decides whether to allow them?
+A) The policy enforcement point
+= The PEP intercepts requests and enforces the decision it receives.
+B) The policy information point
+= The PIP supplies attribute values used in decisions.
+C)* The policy decision point
+= Correct. The PDP evaluates policy and returns permit or deny to the PEP.
+D) The policy administration point
+= The PAP is where policies are written and managed.
+>> PEP enforces, PDP decides, PIP supplies attributes, PAP manages policies (as in XACML and zero trust).
+
+## D5-032 | 5.4 | 3
+Q: An access control system stores, for each user, a list of the objects they may access and their rights on each. What is this structure?
+A) An access control list
+= An ACL is attached to an object and lists the subjects that may access it.
+B)* A capability table
+= Correct. Capability tables are subject-centric: each row is one subject's rights.
+C) A clearance label
+= A label is a classification marking, not a list of rights.
+D) A constrained interface
+= Constrained interfaces limit what users can see or do in an application.
+>> ACLs are object-centric (columns of the access matrix); capability tables are subject-centric (rows).
+
+## D5-033 | 5.4 | 2
+Q: A database view shows managers only the rows for employees who report to them. Which type of access control is this?
+A)* Content-dependent access control
+= Correct. Access depends on the data itself, here whether the employee reports to the viewer.
+B) Context-dependent access control
+= Context-dependent access depends on circumstances such as time or location.
+C) Rule-based access control
+= Rule-based access applies global rules regardless of data content.
+D) Mandatory access control
+= MAC compares labels with clearances.
+>> Content-dependent: what the data says. Context-dependent: when, where or how the request is made.
+
+## D5-034 | 5.4 | 2
+Q: An ATM menu shows a customer only the functions they are allowed to use and greys out the rest. What is this control?
+A) Rule-based access control
+= The menu is not applying global network rules.
+B) Separation of duties
+= No task is split between people.
+C)* A constrained interface
+= Correct. Constrained (restricted) interfaces limit the actions available to a user based on their privileges.
+D) Mandatory access control
+= No classification labels are compared.
+>> Constrained interfaces hide or disable functions a user is not authorized for.
+
+## D5-035 | 5.4 | 3
+Q: A cloud application must enforce the same authorization policy across dozens of microservices written by different teams. Which design is BEST?
+A) Let each team write its own authorization logic
+= Duplicated logic drifts and becomes inconsistent.
+B) Grant every authenticated user full access and audit later
+= That abandons least privilege.
+C) Put all permissions in each user's JWT and let services trust them indefinitely
+= Long-lived, bloated tokens become stale and cannot reflect revoked access promptly.
+D)* Externalize decisions to a central policy decision point that every service queries
+= Correct. Central policy with local enforcement keeps authorization consistent and auditable.
+>> Externalized authorization (central PDP, local PEPs) keeps policy consistent across distributed systems.
+
+## D5-036 | 5.4 | 2
+Q: Which of the following is a nondiscretionary access control model?
+A) Discretionary access control
+= By definition, DAC is discretionary.
+B) User-directed access control
+= User-directed access control is a form of DAC: users decide who may access what they own.
+C) Identity-based access control with owner-set ACLs
+= Identity-based access with owner-managed ACLs is the most common form of DAC.
+D)* Role-based access control
+= Correct. In RBAC, central administrators define access through roles; users cannot pass on their permissions at will.
+>> Nondiscretionary models (RBAC, rule-based, ABAC, MAC) are centrally administered.
+
+## D5-037 | 5.5 | 1
+Q: An employee who has worked in four departments over ten years still has access from every previous role. What is this called?
+A)* Privilege creep
+= Correct. Access accumulates when transfers add rights without removing the old ones.
+B) Privilege escalation
+= Escalation is gaining higher rights through an exploit or misuse, not accumulation.
+C) Least privilege
+= Least privilege is the principle being violated here.
+D) Separation of duties
+= SoD splits tasks; it does not describe accumulated access.
+>> Prevent privilege creep with access reviews and by removing old access at every transfer.
+
+## D5-038 | 5.5 | 2
+Q: What is the PRIMARY purpose of periodic user access reviews (recertifications)?
+A) To reset every user's password
+= Password resets are unrelated to reviewing entitlements.
+B) To measure system performance
+= Performance is not part of access review.
+C)* To confirm access is still appropriate
+= Correct. Managers or data owners attest to each user's access and remove what is not needed, catching privilege creep and orphaned accounts.
+D) To train users on the acceptable use policy
+= Training is a separate activity.
+>> Access reviews verify that access still matches need; they find privilege creep, orphaned accounts and SoD conflicts.
+
+## D5-039 | 5.5 | 2
+Q: An access review finds dozens of active accounts belonging to people who left the company months ago. Which process failed?
+A) Identity proofing
+= Proofing happens when an identity is first registered.
+B)* Deprovisioning
+= Correct. Accounts should be disabled or removed promptly when people leave, triggered by HR events.
+C) Authentication
+= The accounts authenticate correctly; the problem is that they still exist.
+D) Federation
+= Federation trust is not the issue here.
+>> Orphaned accounts come from weak deprovisioning; tie account removal to HR offboarding.
+
+## D5-040 | 5.5 | 2
+Q: How should administrators' use of elevated privileges on Linux servers be managed?
+A) Share the root password among the admin team
+= Shared root access destroys accountability.
+B)* Individual accounts with logged sudo rules
+= Correct. Individual accounts, with sudo rules for specific commands and every use logged, give accountability with limited, audited elevation.
+C) Allow every administrator to log in directly as root over SSH
+= Direct root logins hide who did what and expose a high-value account.
+D) Disable logging of sudo to reduce noise
+= Logging privileged use is essential for accountability and detection.
+>> Privilege escalation should be limited, individual and audited; sudo logs must be reviewed.
+
+## D5-041 | 5.5 | 2
+Q: A service account used by a nightly batch job has a password that has never changed and is known to several former developers. What is the BEST improvement?
+A) Allow interactive logon so the account can be tested easily
+= Interactive logon widens the attack surface of a non-human account.
+B) Add the account to the domain administrators group to avoid failures
+= That violates least privilege.
+C) Document the password in the team wiki for continuity
+= That spreads the secret further.
+D)* Vault and rotate it, cut its rights, block interactive logon
+= Correct. Service accounts need an owner, least privilege, vaulted and rotated secrets, and no interactive use.
+>> Service accounts: an owner, least privilege, no interactive logon, managed secrets and regular review.
+
+## D5-042 | 5.5 | 2
+Q: A manager approves an employee's transfer to a new team. What should the access process do?
+A) Keep the old access for 90 days in case the employee is needed back
+= Lingering access creates privilege creep.
+B)* Grant access for the new role and remove access no longer needed
+= Correct. Role transitions are handled as a change of role definition, not an addition.
+C) Disable all access until the employee completes training
+= That disrupts work without reducing risk.
+D) Let the employee decide which old permissions to keep
+= Users should not decide their own entitlements.
+>> Role transitions: add what the new role needs, remove what the old role had.
+
+## D5-043 | 5.5 | 3
+Q: Access reviews keep finding that managers rubber-stamp approvals without looking at them. What is the BEST improvement?
+A) Run the reviews more often
+= More frequent rubber-stamping does not help.
+B)* Show risk-ranked data and require justifications
+= Correct. Reviews work when reviewers see risk-ranked, role-relative data that highlights what is unusual, and must justify high-risk entitlements.
+C) Have the security team approve all access instead of managers
+= Security staff lack the business context to judge need to know.
+D) Stop the reviews, since they add no value
+= Reviews are a key control; the fix is to make them meaningful.
+>> Make access reviews effective: highlight outliers and risky entitlements, require justification, and track revocations.
+
+## D5-044 | 5.5 | 2
+Q: Which account type is MOST important to include in access reviews?
+A) Guest Wi-Fi accounts that expire daily
+= These are low risk and short-lived.
+B) Disabled accounts awaiting deletion
+= Disabled accounts matter less than active privileged ones.
+C) Read-only accounts on public websites
+= Low risk.
+D)* Privileged and service accounts
+= Correct. They have the most power, are often shared or forgotten, and attackers target them.
+>> Review privileged and service accounts most often and most rigorously.
+
+## D5-045 | 5.5 | 1
+Q: When should a new employee's accounts be created?
+A)* After HR confirms the hire
+= Correct. Provisioning follows an authoritative HR trigger and grants role-based access.
+B) As soon as a candidate accepts an interview
+= Candidates are not employees; that creates unused accounts.
+C) On request from any team member
+= Requests must come through an authorized process.
+D) After the employee has worked for 30 days
+= Employees need appropriate access to do their jobs from the start.
+>> Provisioning is driven by authoritative sources (HR) and role definitions, with approvals.
+
+## D5-046 | 5.6 | 2
+Q: What does OAuth 2.0 provide on its own?
+A) Authentication of users to applications
+= OAuth alone does not define how to authenticate a user; that is OpenID Connect's role.
+B)* Delegated authorization for apps
+= Correct. An app gets limited access to resources on a user's behalf: OAuth issues access tokens with scopes, without sharing the user's password.
+C) Encryption of data at rest
+= OAuth has nothing to do with storage encryption.
+D) Network-level access control
+= OAuth works at the application layer.
+>> OAuth 2.0 = authorization (access tokens). OpenID Connect = authentication layered on OAuth (ID tokens).
+
+## D5-047 | 5.6 | 2
+Q: A mobile app wants to sign users in with their existing account at a large identity provider and receive a verified identity token. Which protocol is designed for this?
+A) RADIUS
+= RADIUS is for network access authentication.
+B) Kerberos
+= Kerberos is for authentication within an enterprise realm.
+C)* OpenID Connect
+= Correct. OIDC adds an ID token (a signed JWT) describing the authenticated user on top of OAuth 2.0.
+D) TACACS+
+= TACACS+ is for device administration.
+>> OIDC: modern web and mobile sign-in with ID tokens; SAML: XML assertions, common in enterprise web SSO.
+
+## D5-048 | 5.6 | 2
+Q: A public mobile app uses the OAuth authorization code flow. Which addition protects the authorization code from being intercepted and redeemed by a malicious app?
+A) Storing the client secret inside the app
+= Secrets embedded in public apps can be extracted.
+B) Using the implicit flow instead
+= The implicit flow is deprecated because it exposes tokens.
+C) Making access tokens never expire
+= Long-lived tokens increase the impact of theft.
+D)* Proof Key for Code Exchange (PKCE)
+= Correct. PKCE binds the code to a secret the app created, so an intercepted code is useless to anyone else.
+>> Public OAuth clients use the authorization code flow with PKCE; avoid the implicit flow.
+
+## D5-049 | 5.6 | 2
+Q: In Kerberos, what does a client present to the ticket-granting service to obtain a ticket for a specific application server?
+A) Its password, encrypted with the server's key
+= Kerberos never sends passwords over the network.
+B)* Its ticket-granting ticket (TGT) and an authenticator
+= Correct. The TGT, issued by the authentication service, lets the client request service tickets without re-entering credentials.
+C) A SAML assertion
+= SAML is unrelated to Kerberos.
+D) A one-time password from a token
+= OTPs are not part of the standard Kerberos exchange.
+>> Kerberos: authenticate to the AS to get a TGT; present the TGT to the TGS for service tickets; present those to services.
+
+## D5-050 | 5.6 | 2
+Q: Users suddenly cannot authenticate with Kerberos, and the domain controller logs show "clock skew too great". What is the cause?
+A) The users' passwords have expired
+= Expired passwords produce different errors.
+B) The KDC certificate has been revoked
+= Classic Kerberos does not rely on certificates.
+C)* Clients and the KDC disagree on the time
+= Correct. Kerberos uses timestamps to prevent replay, so clocks must be synchronized, typically within five minutes.
+D) Port 88 is blocked
+= A blocked port would cause connection failures, not clock skew errors.
+>> Kerberos depends on synchronized time (NTP) and an available KDC, which is a single point of failure.
+
+## D5-051 | 5.6 | 2
+Q: Which AAA protocol uses TCP, encrypts the entire packet body, and separates authentication, authorization and accounting?
+A) RADIUS
+= RADIUS uses UDP, encrypts only the password, and combines authentication with authorization.
+B)* TACACS+
+= Correct. TACACS+ runs over TCP port 49, encrypts the whole payload and handles each A separately, which suits device administration.
+C) Diameter
+= Diameter is RADIUS's successor, used mainly in mobile networks.
+D) Kerberos
+= Kerberos is a ticket-based authentication protocol, not an AAA protocol for network devices.
+>> RADIUS: UDP, password-only encryption, network access. TACACS+: TCP 49, full encryption, separate AAA, device admin.
+
+## D5-052 | 5.6 | 2
+Q: An organization uses RADIUS to authenticate VPN and Wi-Fi users. Which weakness should it compensate for?
+A) RADIUS cannot carry MFA challenges
+= RADIUS can carry MFA exchanges.
+B) RADIUS requires TCP, which is slow
+= RADIUS uses UDP.
+C) RADIUS cannot log accounting data
+= Accounting is one of RADIUS's three functions.
+D)* Only the password is encrypted
+= Correct. Everything except the password attribute travels in the clear, so protect RADIUS traffic, for example with EAP-TLS inside, IPsec, or RADIUS over TLS (RadSec).
+>> RADIUS encrypts only the password attribute; protect its transport on untrusted networks.
+
+## D5-053 | 5.6 | 3
+Q: An attacker with any domain account requests service tickets for accounts that have service principal names, then cracks them offline to recover service account passwords. What is this attack?
+A)* Kerberoasting
+= Correct. Service tickets are encrypted with the service account's key, so weak service account passwords can be cracked offline.
+B) Golden ticket
+= A golden ticket forges TGTs with the KRBTGT key.
+C) Pass the hash
+= Pass the hash reuses NTLM hashes without cracking them.
+D) Replay attack
+= Replay resends captured authentication messages.
+>> Counter Kerberoasting with long random service account passwords or managed service accounts, AES-only tickets and monitoring.
+
+## D5-054 | 5.6 | 2
+Q: In SAML, what does the service provider receive to prove the user authenticated at the identity provider?
+A) The user's password, encrypted
+= SAML never passes passwords to the service provider.
+B) A Kerberos ticket
+= Kerberos tickets are a different technology.
+C)* A digitally signed XML assertion
+= Correct. The SP validates the IdP's signature on the assertion, then trusts its statements about the user.
+D) An OAuth refresh token
+= Refresh tokens belong to OAuth.
+>> SAML assertions are signed XML statements about authentication, attributes and authorization.
+
+## D5-055 | 5.6 | 3
+Q: A SAML service provider accepts assertions without checking that they were issued for it and within their validity window. What attack does this enable?
+A) SQL injection
+= SQL injection targets database queries.
+B) VLAN hopping
+= VLAN hopping is a network attack.
+C) A birthday attack on the signature
+= The weakness is in validation, not the hash function.
+D)* Replay of assertions
+= Correct. Assertions captured or intended for other services can be replayed. SPs must check the signature, audience, recipient, validity period and one-time use of each assertion.
+>> Validate SAML assertions fully: signature, issuer, audience, recipient, time window and replay.
+
+## D5-056 | 5.6 | 1
+Q: Which TCP/UDP port does Kerberos use?
+A) 389
+= 389 is LDAP.
+B)* 88
+= Correct. Kerberos uses port 88.
+C) 1812
+= 1812 is RADIUS authentication.
+D) 49
+= 49 is TACACS+.
+>> Ports to know: Kerberos 88, LDAP 389, LDAPS 636, RADIUS 1812/1813, TACACS+ 49.

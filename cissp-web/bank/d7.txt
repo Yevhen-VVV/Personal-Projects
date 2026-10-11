@@ -1,0 +1,817 @@
+# Domain 7: Security Operations (13% of the exam)
+
+## D7-001 | 7.1 | 1
+Q: A server's hard drive is seized and presented in court as evidence. What type of evidence is the drive itself?
+A)* Real evidence
+= Correct. Real (object) evidence is a physical item brought into court.
+B) Testimonial evidence from the server administrator
+= Testimonial evidence is what a witness says, orally or in writing.
+C) Demonstrative evidence, such as a diagram of the network
+= Demonstrative evidence helps explain other evidence, such as charts and diagrams.
+D) Documentary evidence, such as printed log reports
+= Documentary evidence is written material, including printouts, brought in to prove a fact.
+>> Evidence types: real (objects), documentary (writings and records), testimonial (witnesses), demonstrative (aids that explain).
+
+## D7-002 | 7.1 | 2
+Q: Which rule says that when a document is introduced as evidence, the original must be used unless a valid exception applies?
+A) The parol evidence rule, which governs written agreements
+= The parol evidence rule says a written agreement is assumed to contain all its terms; oral side agreements cannot change it.
+B)* The best evidence rule
+= Correct. The original document is preferred over copies or descriptions of it.
+C) The hearsay rule, which limits second-hand statements
+= Hearsay concerns statements made outside court by someone not testifying.
+D) The exclusionary rule for illegally obtained evidence
+= That rule excludes evidence obtained in violation of rights.
+>> Best evidence: originals preferred. Parol evidence: written contracts stand alone. Hearsay: second-hand statements are limited.
+
+## D7-003 | 7.1 | 2
+Q: Responders arrive at a running server that is suspected of compromise. According to the order of volatility, which data should they collect FIRST?
+A) The contents of the hard disk
+= Disk data persists after power-off, so it can wait.
+B) Archived backup tapes stored offsite
+= Archives are the least volatile source.
+C)* The contents of memory (RAM)
+= Correct. Registers, cache and memory disappear when the system is powered off, so they are captured first.
+D) The physical network topology diagrams
+= Topology changes slowly and can be documented later.
+>> Order of volatility (RFC 3227): registers and cache → memory, routing and process tables → temporary files → disk → remote logs → archives.
+
+## D7-004 | 7.1 | 2
+Q: How should an investigator create a forensic copy of a seized hard drive?
+A) Copy the files with the operating system's file manager
+= File copies miss deleted data and slack space and change timestamps.
+B) Boot the suspect system and run a backup to an external drive
+= Booting the suspect system alters evidence.
+C) Take a photo of the drive label and keep the original in a drawer
+= That preserves nothing about the contents.
+D)* Make a bit-for-bit image through a write blocker and hash both copies
+= Correct. A write blocker prevents changes to the original, and matching hashes prove the image is identical.
+>> Forensic imaging: write blocker, bit-stream copy, hashes of original and image, analysis on the copy only.
+
+## D7-005 | 7.1 | 1
+Q: What is the PRIMARY purpose of the chain of custody?
+A)* To prove evidence integrity from collection to court
+= Correct. It shows the evidence was controlled and unaltered by recording who handled it, when, where and why.
+B) To list the investigators who are qualified to testify
+= Qualifications matter, but they are not what the chain of custody records.
+C) To speed up the processing of evidence in the lab
+= Documentation adds steps; its purpose is integrity, not speed.
+D) To determine which law enforcement agency has jurisdiction
+= Jurisdiction is decided separately.
+>> Chain of custody documents every transfer of evidence so its integrity can be proven.
+
+## D7-006 | 7.1 | 2
+Q: A smartphone seized as evidence is still powered on. What should the investigator do to preserve it?
+A) Power it off immediately to save the battery
+= Powering off may lose volatile data and can trigger encryption that locks the device.
+B) Browse its messages to decide whether it is relevant
+= Browsing changes data and may break evidence integrity.
+C)* Isolate it from networks, for example in a Faraday bag
+= Correct. Isolation prevents remote wiping or new data arriving, while keeping the device's state.
+D) Reset it to factory settings so it can be examined safely
+= A reset destroys the evidence.
+>> Mobile device artifacts: isolate from networks (Faraday bag), keep power, document state, use proper forensic tools.
+
+## D7-007 | 7.1 | 3
+Q: A company receives a court request to produce all emails related to a contract dispute. Which framework describes the process of identifying, preserving, collecting and producing this electronic information?
+A) The NIST Cybersecurity Framework
+= The CSF organizes cybersecurity functions; it is not an eDiscovery process.
+B) The incident response lifecycle in NIST SP 800-61
+= That covers responding to security incidents.
+C) The Common Criteria evaluation process
+= Common Criteria evaluates product security.
+D)* The Electronic Discovery Reference Model
+= Correct. The EDRM covers identification, preservation, collection, processing, review, analysis and production of electronically stored information.
+>> eDiscovery follows the EDRM; good information governance and legal holds make it far easier.
+
+## D7-008 | 7.2 | 2
+Q: Logs from firewalls, servers and applications are collected in one place and analyzed together to spot attacks that no single source would reveal. Which system does this?
+A)* A SIEM
+= Correct. A security information and event management system aggregates, normalizes and correlates events, then alerts.
+B) An intrusion prevention system on the perimeter
+= An IPS inspects traffic at one point; it does not correlate logs from many systems.
+C) A data loss prevention agent on each endpoint
+= DLP watches sensitive data, not event correlation across sources.
+D) A configuration management database
+= A CMDB records assets and their configurations.
+>> SIEM: centralize, normalize, correlate and alert; SOAR then automates the response.
+
+## D7-009 | 7.2 | 2
+Q: Investigators cannot reconstruct the order of an attack because each server's log timestamps disagree by several minutes. Which control would have prevented this?
+A) Larger log storage capacity on each server
+= Storage size does not affect timestamp accuracy.
+B) Encrypting logs in transit
+= Encryption protects confidentiality, not time accuracy.
+C) Logging more event types
+= More events do not fix clock differences.
+D)* Synchronized clocks (NTP)
+= Correct. Synchronizing every clock to a common time source is essential to correlate events across systems.
+>> Synchronize clocks (NTP) so logs can be correlated and stand up as evidence.
+
+## D7-010 | 7.2 | 2
+Q: How should an organization protect the integrity of its security logs against an attacker who gains administrator access to a server?
+A) Store the logs on the same server in a hidden folder
+= An administrator on that server can still find and change them.
+B)* Forward them in real time to a separate log store
+= Correct. Centralized, access-restricted, write-protected logging keeps evidence out of reach of an attacker on the source system.
+C) Delete logs older than a day to reduce what can be altered
+= Short retention destroys evidence.
+D) Make the log files read-only for administrators on the server
+= Administrators can change permissions back.
+>> Protect logs: forward off-host promptly, restrict access, use write-once storage or hashing, and retain per policy.
+
+## D7-011 | 7.2 | 2
+Q: Analysts start from the hypothesis that an attacker is using a specific technique in their network, then search proactively for evidence of it. What is this activity called?
+A)* Threat hunting
+= Correct. Threat hunting is proactive and hypothesis-driven, looking for threats that automated alerts have missed.
+B) Vulnerability scanning of all subnets
+= Scanning looks for weaknesses, not active attackers.
+C) Log rotation and archiving
+= Rotation manages storage, not detection.
+D) Penetration testing by an outside firm
+= Penetration testing simulates attacks; it does not search for real ones.
+>> Threat hunting assumes compromise and looks for it, guided by threat intelligence and hypotheses.
+
+## D7-012 | 7.2 | 2
+Q: A tool learns each user's normal behavior and alerts when an account suddenly downloads far more data than usual at an odd hour. What is this technology?
+A) Signature-based network intrusion detection
+= Signatures match known attack patterns, not deviations from normal behavior.
+B) A web application firewall
+= A WAF filters web traffic.
+C)* User and entity behavior analytics (UEBA)
+= Correct. UEBA models normal behavior for users and devices and flags anomalies, such as signs of an insider or a compromised account.
+D) Network address translation logging
+= NAT logs record address translations.
+>> UEBA detects anomalies in user and entity behavior; it complements signature-based detection.
+
+## D7-013 | 7.2 | 2
+Q: Which monitoring activity is MOST likely to detect data being exfiltrated from the network?
+A) Monitoring inbound firewall denies
+= Inbound denies show attempted entry, not data leaving.
+B) Reviewing antivirus update logs
+= Update logs show whether signatures are current.
+C) Counting failed logins on the VPN
+= Failed logins indicate access attempts, not data theft.
+D)* Egress monitoring of outbound traffic
+= Correct. Watching outbound flows, DNS and proxy traffic reveals unusual volumes and destinations.
+>> Egress monitoring (outbound traffic, DLP, DNS) catches data leaving and command-and-control traffic.
+
+## D7-014 | 7.2 | 2
+Q: The SOC wants to receive machine-readable threat intelligence from industry partners automatically. Which standards are designed for this?
+A)* STIX and TAXII
+= Correct. STIX describes threat intelligence in a structured format, and TAXII transports it between parties.
+B) SAML and OpenID Connect
+= These are identity federation standards.
+C) SNMP and syslog
+= These carry device management data and logs.
+D) SPF and DKIM
+= These authenticate email.
+>> Threat intelligence sharing: STIX (format) over TAXII (transport); ISACs share sector-specific intelligence.
+
+## D7-015 | 7.2 | 2
+Q: A system records failed logins but raises an alert only after five failures in ten minutes for the same account. What is this threshold called?
+A) A baseline configuration
+= A baseline is a minimum security configuration.
+B)* A clipping level
+= Correct. Clipping levels ignore routine errors below a threshold and flag activity above it.
+C) A recovery point objective
+= An RPO is a recovery measure.
+D) A service level agreement
+= An SLA defines service commitments.
+>> Clipping levels reduce noise by alerting only when activity crosses a defined threshold.
+
+## D7-016 | 7.2 | 3
+Q: The SIEM generates thousands of low-value alerts a day, and analysts are missing real incidents. What is the BEST response?
+A) Disable alerting until analysts catch up
+= Turning off detection hides real attacks.
+B) Hire enough analysts to review every alert
+= Scaling people to noise is costly and unsustainable.
+C) Raise every threshold to the maximum
+= Blanket changes will suppress real detections too.
+D)* Tune rules and prioritize by risk
+= Correct. Continuous monitoring includes tuning to the environment's context: remove false positives, enrich alerts and prioritize by asset and threat.
+>> Monitoring needs continuous tuning; alert fatigue is a detection failure in its own right.
+
+## D7-017 | 7.3 | 2
+Q: Servers are built from a hardened, approved image, and a tool alerts when a server's configuration drifts from it. What practice is this?
+A)* Configuration management with baselining
+= Correct. A secure baseline is applied consistently, and deviations are detected and corrected.
+B) Change management through the advisory board
+= Change management approves changes; baselining defines and enforces the approved state.
+C) Patch management for operating systems
+= Patching is one input to baselines, not the whole practice.
+D) Vulnerability scanning from outside
+= Scanning finds vulnerabilities rather than tracking configuration state.
+>> Configuration management: define baselines, provision consistently (often automated), detect and correct drift.
+
+## D7-018 | 7.3 | 2
+Q: Infrastructure is defined in code templates stored in version control and deployed automatically. What is the main security benefit?
+A) No security reviews are needed any more
+= Code still needs review; the benefit is that reviews become possible and repeatable.
+B)* Consistent, reviewable and repeatable configurations
+= Correct. Infrastructure as code lets teams review, test and reproduce configurations and spot unauthorized changes.
+C) Servers no longer need patching
+= Templates must still be updated to deploy patched images.
+D) Encryption is enabled automatically everywhere
+= Only if the templates specify it.
+>> Automation and infrastructure as code make configuration consistent, auditable and recoverable.
+
+## D7-019 | 7.3 | 1
+Q: Before a new server joins production, what should configuration management ensure?
+A) That the administrator has customized it to their preferences
+= Personal customizations create inconsistency.
+B) That it uses the vendor's default settings
+= Defaults are often insecure.
+C)* That it matches the approved secure baseline
+= Correct. Every system should start from the approved baseline and be recorded in the CMDB.
+D) That it has every available software package installed
+= Unnecessary software increases the attack surface.
+>> Provision from approved baselines; record what you deploy.
+
+## D7-020 | 7.4 | 2
+Q: An analyst has a Top Secret clearance but is denied a Top Secret report unrelated to their work. Which principle is being applied?
+A) Separation of duties
+= SoD splits tasks; it does not limit access to particular information.
+B) Job rotation
+= Rotation moves people between roles.
+C) Least privilege
+= Least privilege limits rights and permissions; need to know specifically limits access to information.
+D)* Need to know
+= Correct. Clearance makes someone eligible; need to know restricts access to information required for their duties.
+>> Need to know restricts information access to what a job requires; least privilege restricts rights and permissions.
+
+## D7-021 | 7.4 | 2
+Q: Why do separation of duties controls still leave some risk of fraud?
+A) Because they rely on encryption
+= SoD does not depend on encryption.
+B)* Two or more people can collude
+= Correct. SoD requires collusion to commit fraud, which makes it harder but not impossible; job rotation and audits help detect it.
+C) Because they only work on weekends
+= SoD applies at all times.
+D) Because they prevent all errors
+= SoD reduces fraud and errors but cannot prevent them all.
+>> Separation of duties forces collusion; job rotation and mandatory vacations help uncover it.
+
+## D7-022 | 7.4 | 2
+Q: A bank requires employees in sensitive roles to take two consecutive weeks of vacation each year. What is the PRIMARY purpose?
+A) To improve morale and reduce burnout
+= That is a welcome side effect, not the security purpose.
+B) To reduce payroll costs
+= Vacation does not reduce payroll.
+C)* To uncover ongoing fraud
+= Correct. Fraud often depends on the employee's continuous presence; someone else does the job meanwhile, so ongoing fraud or irregularities are likely to surface.
+D) To meet labor law requirements
+= Labor law is not the security reason.
+>> Mandatory vacations and job rotation are detective controls against fraud.
+
+## D7-023 | 7.4 | 2
+Q: Opening the vault holding the root CA's private key requires two authorized officers to be present together. What is this control?
+A) Need to know
+= Need to know limits information access.
+B) Least privilege
+= Least privilege limits rights; it does not require two people.
+C) Job rotation
+= Rotation moves people between roles.
+D)* Two-person control
+= Correct. Two-person (dual) control requires two people for a critical action, preventing one person acting alone.
+>> Two-person control and split knowledge (M of N) protect the most critical operations.
+
+## D7-024 | 7.4 | 2
+Q: Which practice BEST manages the risk of privileged administrator accounts?
+A)* Privileged access management with vaulting and monitoring
+= Correct. PAM vaults credentials, grants them just in time, records sessions and audits use.
+B) Giving every administrator the same domain admin account
+= Shared accounts remove accountability.
+C) Using privileged accounts for daily email and browsing
+= That exposes powerful credentials to phishing and malware.
+D) Never reviewing privileged access, to avoid disruption
+= Privileged access needs the most frequent review.
+>> Privileged account management: separate admin accounts, vaulting, JIT elevation, session recording and review.
+
+## D7-025 | 7.4 | 1
+Q: Which document defines the level of service a provider commits to deliver, such as 99.9% uptime, and the remedies if it falls short?
+A) A memorandum of understanding
+= An MOU records intentions, usually without enforceable penalties.
+B)* A service level agreement
+= Correct. SLAs set measurable service levels and consequences for missing them.
+C) An interconnection security agreement
+= An ISA covers the security of connections between organizations.
+D) A non-disclosure agreement
+= An NDA protects confidential information.
+>> SLAs define measurable commitments; OLAs cover internal teams; ISAs cover interconnections; MOUs record intent.
+
+## D7-026 | 7.5 | 2
+Q: Backup tapes are rotated offsite. Which practice protects them throughout their life?
+A) Reusing tapes indefinitely to save costs
+= Old media degrades and may fail during restore.
+B) Labeling tapes with only the date
+= Without a classification label, handlers cannot apply the right protection.
+C)* Labeling, encryption and tracked custody
+= Correct. Media management covers marking, protection, tracking, storage and sanitization at end of life.
+D) Keeping the only copy in the server room
+= A single onsite copy is lost with the site.
+>> Media management: label by classification, encrypt, track custody, store securely, retire and sanitize.
+
+## D7-027 | 7.5 | 2
+Q: A company must keep backups of critical data protected even if an attacker gains administrator access to the backup system. Which technique helps MOST?
+A) Storing backups on a file share mapped to every server
+= Mapped shares are easily reached and encrypted by ransomware.
+B)* Immutable or offline backup copies
+= Correct. Write-once or air-gapped copies cannot be altered or deleted by an attacker with online access.
+C) Compressing backups to save space
+= Compression does not protect integrity or availability.
+D) Running backups more frequently on the same system
+= More copies in the same reachable place do not survive a targeted attack.
+>> Protect backups from ransomware with immutability, offline or air-gapped copies and separate credentials.
+
+## D7-028 | 7.6 | 1
+Q: Following the incident management steps in the CISSP Official Study Guide, what comes immediately after detection?
+A) Mitigation
+= Mitigation (containment) follows response.
+B)* Response
+= Correct. The order is detection, response, mitigation, reporting, recovery, remediation, lessons learned.
+C) Recovery
+= Recovery comes later, after mitigation and reporting.
+D) Lessons learned
+= Lessons learned is the final step.
+>> OSG incident steps: detection → response → mitigation → reporting → recovery → remediation → lessons learned.
+
+## D7-029 | 7.6 | 2
+Q: The SOC confirms that ransomware is spreading from one workstation to file servers. What should responders do FIRST?
+A) Wipe and rebuild every affected server
+= Rebuilding is recovery; it comes after containment and evidence preservation.
+B) Contact the attackers to negotiate
+= Negotiation is a later business decision with legal input, not a first step.
+C)* Isolate the affected systems
+= Correct. Containment by disconnecting affected systems from the network stops further spread and limits damage while the investigation continues.
+D) Publish a statement to customers
+= Communications follow the plan and legal guidance once the scope is understood.
+>> Contain first to limit damage; then eradicate, recover and learn.
+
+## D7-030 | 7.6 | 2
+Q: Which phase of the NIST SP 800-61 incident response lifecycle includes building the team, tools and playbooks before any incident occurs?
+A)* Preparation
+= Correct. Preparation creates the capability to respond: people, processes, tools and communications.
+B) Detection and analysis
+= That phase begins when signs of an incident appear.
+C) Containment, eradication and recovery
+= That phase acts on an incident in progress.
+D) Post-incident activity
+= That phase captures lessons after an incident.
+>> NIST 800-61: preparation → detection and analysis → containment, eradication and recovery → post-incident activity.
+
+## D7-031 | 7.6 | 2
+Q: During remediation after an incident, what is the MOST important activity?
+A) Restoring systems from backup as fast as possible
+= Restoration is recovery; remediation fixes why the incident happened.
+B) Disciplining the employee who clicked the link
+= Blame does not fix the underlying weakness.
+C) Closing the ticket so metrics stay green
+= Closure without a fix invites repetition.
+D)* Root cause analysis, then fixing the cause
+= Correct. Remediation identifies why the incident happened and corrects it to prevent recurrence.
+>> Remediation = root cause analysis plus fixes; lessons learned improve the process itself.
+
+## D7-032 | 7.6 | 2
+Q: A breach exposed customers' personal data. Who should decide what must be reported to regulators and customers, and when?
+A) The SOC analyst who first detected the incident
+= Analysts detect and escalate; they do not make legal reporting decisions.
+B)* Management, advised by legal counsel
+= Correct. Reporting obligations depend on law and contracts, so counsel advises and management decides.
+C) The IT help desk, using a standard template
+= The help desk lacks the authority and legal context.
+D) The affected customers themselves
+= Customers are recipients of notification, not the decision makers.
+>> Incident reporting follows legal and contractual requirements; involve counsel and follow the communication plan.
+
+## D7-033 | 7.6 | 2
+Q: What is the PRIMARY purpose of a lessons-learned meeting after an incident?
+A) To identify the person to blame
+= A blame-focused review discourages honest reporting.
+B)* To improve controls and the response process
+= Correct. The review captures what went well, what failed and what to change, feeding back into preparation.
+C) To close the incident ticket
+= Closing tickets is administrative.
+D) To estimate the cost of the incident for insurance
+= Costing may be part of the report, but improvement is the purpose.
+>> Lessons learned should be blameless and lead to concrete improvements in controls, playbooks and training.
+
+## D7-034 | 7.6 | 3
+Q: While containing an incident, a responder wants to power off a compromised server immediately. Why might the incident handler object?
+A) Powering off is always against policy
+= Sometimes shutdown is the right call; it depends on the situation.
+B) The server's warranty would be voided
+= Warranty is irrelevant.
+C)* Volatile evidence in memory would be lost
+= Correct. Isolating the network while keeping power on can preserve memory evidence; the decision weighs evidence against further harm.
+D) The attacker would be alerted to the investigation
+= That may be a factor, but the key concern is losing volatile evidence.
+>> Containment decisions balance stopping harm with preserving evidence; isolate the network before pulling power when possible.
+
+## D7-035 | 7.7 | 2
+Q: What is the key difference between an IDS and an IPS?
+A) An IDS can only examine encrypted traffic
+= Neither is limited that way; both need decryption to inspect encrypted content.
+B)* An IPS sits inline and can block traffic; an IDS only alerts
+= Correct. An IPS can stop attacks in real time, at the risk of blocking legitimate traffic on a false positive.
+C) An IDS uses signatures and an IPS uses anomalies
+= Both can use signatures, anomaly detection or both.
+D) An IPS works only on hosts and an IDS only on networks
+= Both have network-based and host-based forms.
+>> IDS: detect and alert (passive). IPS: detect and block (inline).
+
+## D7-036 | 7.7 | 2
+Q: Which detection method can recognize a new, previously unseen attack?
+A) Signature-based detection using known patterns
+= Signatures match only attacks that are already known.
+B) Hash matching against a malware database
+= Hash matching catches only known files.
+C) A static access control list on the router
+= ACLs filter by rules, not by detecting attacks.
+D)* Anomaly-based (behavioral) detection
+= Correct. Anomaly detection compares activity with a baseline of normal behavior, so it can flag novel attacks, at the cost of more false positives.
+>> Signature: precise but blind to new attacks. Anomaly: catches the new, with more false positives.
+
+## D7-037 | 7.7 | 2
+Q: A company wants to block SQL injection and cross-site scripting attempts against its public web application. Which control fits BEST?
+A)* A web application firewall
+= Correct. A WAF inspects HTTP requests and responses at Layer 7 for application attacks.
+B) A packet-filtering router
+= Packet filters see addresses and ports, not application content.
+C) A VPN concentrator
+= VPNs encrypt connections; they do not inspect web attacks.
+D) A network-based antivirus appliance
+= Antivirus looks for malware, not injection attacks.
+>> WAFs protect web applications; they complement, not replace, secure coding.
+
+## D7-038 | 7.7 | 2
+Q: On a set of kiosk machines, only approved applications should ever run. Which control is MOST effective?
+A) Signature-based antivirus
+= Antivirus blocks known malware but lets any other program run.
+B) A block list of known bad applications
+= Block lists cannot keep up with new software.
+C)* Application allow listing
+= Correct. Allow listing permits only approved software, which suits fixed-purpose systems.
+D) A host-based intrusion detection system
+= A HIDS detects but does not restrict what runs.
+>> Allow listing (whitelisting) denies everything not approved; block listing (blacklisting) allows everything not denied.
+
+## D7-039 | 7.7 | 2
+Q: Suspicious email attachments are opened in an isolated virtual environment and their behavior observed before they are delivered. What is this?
+A) A honeypot on the perimeter
+= A honeypot is a decoy to attract attackers.
+B)* Sandboxing
+= Correct. A sandbox executes untrusted code in isolation to see what it does.
+C) Data masking of attachments
+= Masking hides data values.
+D) A DMZ for mail servers
+= A DMZ is a network zone, not a behavioral analysis tool.
+>> Sandboxing detonates suspicious files safely to detect unknown malware by behavior.
+
+## D7-040 | 7.7 | 3
+Q: A company sets up a honeypot that advertises "free movie downloads" on its network and then prosecutes the visitors. What legal concern arises?
+A) Honeypots are always illegal
+= Honeypots are legal and widely used for detection and research.
+B) The company may breach its software licenses
+= Licensing is not the issue here.
+C) Logging visitors breaches every privacy law
+= Monitoring one's own systems can be lawful with proper policy.
+D)* It may amount to entrapment
+= Correct. Passive enticement is generally acceptable; actively luring people into an offense they would not otherwise commit may be entrapment.
+>> Honeypots: enticement (an opportunity for someone already intent) is acceptable; entrapment (inducing a crime) is not.
+
+## D7-041 | 7.7 | 2
+Q: The SOC adopts a machine-learning tool to detect malicious behavior. What is the MAIN operational concern?
+A) Machine learning cannot analyze network traffic
+= ML is widely used on network data.
+B) Machine learning tools never produce false negatives
+= All detection tools produce false negatives.
+C)* False positives, model drift and opaque reasoning
+= Correct. Models need tuning, retraining and human review, and their decisions can be hard to explain.
+D) Machine learning removes the need for analysts
+= ML assists analysts; it does not replace them.
+>> AI and ML tools help detection but need validation, tuning, explainability and human oversight.
+
+## D7-042 | 7.7 | 2
+Q: A small company outsources 24/7 monitoring to a managed security service provider. What must it still do?
+A)* Manage the provider and keep accountability
+= Correct. Define responsibilities, escalation and SLAs. Third-party services provide capability, but the organization remains accountable and must manage the relationship.
+B) Nothing; the provider takes full legal accountability
+= Accountability for security cannot be transferred.
+C) Give the provider unrestricted domain administrator access
+= Access should follow least privilege.
+D) Stop collecting any logs internally
+= The organization still needs the data the provider analyzes.
+>> Third-party security services need clear contracts, SLAs, escalation paths and ongoing oversight.
+
+## D7-043 | 7.8 | 2
+Q: A vendor releases a critical patch. What should be done before deploying it across production servers?
+A) Wait six months to see if other companies have problems
+= That leaves a critical vulnerability open far too long.
+B)* Test it in a non-production environment first
+= Correct. Testing catches compatibility problems before they cause outages; the change process then schedules deployment.
+C) Deploy it to all servers at once without testing
+= Untested patches can break production.
+D) Skip it if the servers are behind a firewall
+= Internal servers are still reachable by attackers already inside.
+>> Patch management: evaluate, test, approve, deploy, verify, with an expedited path for emergencies.
+
+## D7-044 | 7.8 | 3
+Q: A zero-day vulnerability with active exploitation is announced, and no patch exists. What should the organization do?
+A) Wait for the vendor patch before taking any action
+= Waiting leaves systems exposed to active exploitation.
+B) Turn off all affected systems permanently
+= That may cause more harm than the risk itself.
+C) Ignore it because no CVE score is available yet
+= Active exploitation is reason enough to act.
+D)* Mitigate and monitor until a patch exists
+= Correct. Vendor workarounds, configuration changes, virtual patching and focused monitoring reduce risk until a fix ships.
+>> No patch? Mitigate (workarounds, WAF or IPS rules, isolation), monitor closely, then patch and verify.
+
+## D7-045 | 7.8 | 2
+Q: How can an organization confirm that patches were actually applied across its estate?
+A) By trusting the patch tool's "deployment sent" status
+= A sent deployment may have failed on the target.
+B) By asking each administrator in a survey
+= Self-reporting is unreliable.
+C)* By rescanning to verify the vulnerabilities are gone
+= Correct. Verification closes the loop by measuring the actual state of systems.
+D) By checking the vendor's release notes
+= Release notes describe the patch, not your systems.
+>> Verify patching with credentialed scans or compliance checks; report coverage as a metric.
+
+## D7-046 | 7.9 | 2
+Q: In a formal change management process, what should happen BEFORE a change is implemented in production?
+A) Users should be told only after it is complete
+= Communicating beforehand reduces disruption.
+B)* Review, approval, testing and a rollback plan
+= Correct. A change is requested, reviewed for impact, approved, tested and scheduled with a way back.
+C) The change should be applied first and documented later
+= That is only acceptable for genuine emergencies, with documentation immediately after.
+D) Only the developer's approval is needed
+= Independent review prevents unsafe or unauthorized changes.
+>> Change management: request → review and impact analysis → approve → test → implement → document, with rollback planned.
+
+## D7-047 | 7.9 | 2
+Q: To stop an active attack, an administrator makes an emergency firewall change outside normal change approval. What must happen next?
+A) Nothing; emergencies are exempt from change management
+= Emergency changes still require control.
+B) The change should be reversed once the attack stops
+= It may need to stay; reversal is a separate decision.
+C)* The change is documented and reviewed retroactively
+= Correct. Emergency change procedures allow fast action, followed promptly by documentation and approval.
+D) The administrator should be disciplined for bypassing the process
+= Following the emergency procedure is not misconduct.
+>> Emergency changes are allowed, but must be documented and reviewed after the fact.
+
+## D7-048 | 7.9 | 2
+Q: A file integrity monitoring tool alerts that a production web server's configuration changed, but there is no matching change request. What does this MOST likely indicate?
+A) The change process is working as intended
+= An unrecorded change means the process was bypassed.
+B)* An unauthorized change that must be investigated
+= Correct. It could be a mistake or an attacker; either way, it needs investigation and possibly rollback.
+C) The monitoring tool is faulty and should be disabled
+= Disabling detection on the first alert is wrong.
+D) A routine automatic update that can be ignored
+= Approved automatic updates should still map to the change process.
+>> Detect unauthorized changes (file integrity monitoring, drift detection) and reconcile against approved changes.
+
+## D7-049 | 7.10 | 1
+Q: Which recovery site can take over operations within hours because it has current data and fully configured systems?
+A)* A hot site
+= Correct. Hot sites are fully equipped and kept in sync, offering the fastest recovery at the highest cost.
+B) A cold site with power and space only
+= Cold sites need equipment installed and data restored, which takes weeks.
+C) A warm site with equipment but no current data
+= Warm sites need data restored and configuration, which takes days.
+D) A reciprocal agreement with a partner company
+= Mutual assistance agreements are hard to enforce and rarely provide fast recovery.
+>> Recovery sites: hot (hours, costly), warm (days), cold (weeks, cheapest); mobile and cloud options vary.
+
+## D7-050 | 7.10 | 2
+Q: What is the main weakness of a mutual assistance (reciprocal) agreement as a recovery strategy?
+A) It is always more expensive than a hot site
+= Reciprocal agreements are usually cheap.
+B) It requires a third-party vendor
+= It is between two organizations, not a vendor.
+C) It cannot be documented in writing
+= It can and should be written.
+D)* Enforcement and partner capacity
+= Correct. It is hard to enforce, and a partner may be hit by the same disaster or be unable to absorb your workload, and confidentiality is a concern.
+>> Mutual assistance agreements are cheap but weak: enforcement, capacity, confidentiality and shared disasters.
+
+## D7-051 | 7.10 | 2
+Q: A company takes a full backup every Sunday night and a differential backup every Monday through Saturday night. The server fails on Thursday morning. Which backups are needed to restore it?
+A) Sunday's full backup and every differential from Monday to Wednesday
+= Each differential contains all changes since the full backup, so only the latest is needed.
+B)* Sunday's full backup and Wednesday's differential
+= Correct. The latest differential holds every change since the last full backup.
+C) Wednesday's differential alone
+= A differential needs the full backup it is based on.
+D) Sunday's full backup alone
+= That loses Monday to Wednesday's changes.
+>> Restore = full + latest differential, or full + every incremental since the full.
+
+## D7-052 | 7.10 | 2
+Q: Which RAID level stripes data with parity across at least three disks and survives the failure of one disk?
+A) RAID 0
+= RAID 0 stripes without redundancy; one failure loses everything.
+B) RAID 1
+= RAID 1 mirrors data across two disks.
+C)* RAID 5
+= Correct. RAID 5 stripes data with distributed parity and tolerates one disk failure.
+D) RAID 10 with two disks
+= RAID 10 needs at least four disks and combines mirroring with striping.
+>> RAID 0 striping (no fault tolerance), 1 mirroring, 5 striping with parity, 6 double parity, 10 mirrored stripes.
+
+## D7-053 | 7.10 | 3
+Q: What distinguishes fault tolerance from high availability?
+A) High availability requires no redundant components
+= HA depends on redundancy and failover.
+B) Fault tolerance is only about software
+= Fault tolerance covers hardware too, such as redundant power supplies and RAID.
+C) They mean exactly the same thing
+= They differ in how failures affect service.
+D)* Fault tolerance avoids any interruption
+= Correct. Fault-tolerant systems keep running through a failure; highly available systems recover quickly, minimizing downtime through failover.
+>> Fault tolerance: no interruption. High availability: minimal interruption. QoS prioritizes critical traffic.
+
+## D7-054 | 7.11 | 1
+Q: A fire breaks out in the data center during business hours. What is the FIRST priority?
+A) Starting the backup tapes on their way to the recovery site
+= Data can be recovered; people cannot.
+B) Calling the insurance company
+= Insurance comes much later.
+C)* The safety of personnel
+= Correct. Life safety always comes first in any disaster response.
+D) Shutting down the servers gracefully
+= Equipment is secondary to people's safety.
+>> In every disaster, people first.
+
+## D7-055 | 7.11 | 2
+Q: After a disaster, the organization moves operations to its recovery site. When the primary site is repaired, which functions should move back FIRST?
+A) The most critical functions
+= Moving the most critical first risks them on a site that is not yet proven.
+B)* The least critical functions
+= Correct. Least critical functions go first to prove the restored site before critical ones return.
+C) All functions at the same moment
+= A single cutover risks everything at once.
+D) Whichever functions the IT team prefers
+= Order should follow risk, not convenience.
+>> Recover to the alternate site most-critical-first; return to the primary site least-critical-first.
+
+## D7-056 | 7.11 | 2
+Q: Which DR process element ensures that employees, customers and regulators get accurate information during a disaster?
+A) The backup schedule for critical data
+= Backups protect data, not communications.
+B) The hardware maintenance contract
+= Maintenance contracts cover equipment.
+C) The data classification policy
+= Classification governs handling, not crisis communication.
+D)* A communications plan
+= Correct. The plan names spokespeople and methods: who communicates what, to whom, through which channels, including alternatives when normal systems are down.
+>> DR processes include response, personnel, communications, assessment, restoration, training and lessons learned.
+
+## D7-057 | 7.12 | 1
+Q: Team members meet in a conference room to walk through a disaster scenario and talk about their responses, without touching any systems. What type of test is this?
+A)* Structured walk-through (tabletop)
+= Correct. A tabletop has team members discuss their roles in a scenario.
+B) Parallel test at the recovery site
+= A parallel test runs systems at the recovery site.
+C) Full interruption test
+= A full interruption test shuts down the primary site.
+D) Simulation test with live systems
+= Simulations exercise the response to a scenario more realistically, often involving actual systems.
+>> DR tests: checklist (read-through) → structured walk-through (tabletop) → simulation → parallel → full interruption.
+
+## D7-058 | 7.12 | 2
+Q: Which DR test activates the recovery site and processes real data there, while the primary site keeps running normally?
+A) Checklist test
+= A checklist test only has people review the plan.
+B) Structured walk-through
+= A walk-through is a discussion.
+C)* Parallel test
+= Correct. A parallel test proves the recovery site works without disrupting operations at the primary site.
+D) Full interruption test
+= A full interruption test shuts down the primary site.
+>> A parallel test proves recovery without risking operations; full interruption is the riskiest and rarest test.
+
+## D7-059 | 7.12 | 3
+Q: Management proposes a full interruption test of the DR plan next month. What should the security professional advise?
+A) It is the best test, so it should be run every month
+= Its risk makes frequent use unwise.
+B) It is useless compared with a checklist review
+= It is the most realistic test; the issue is its risk.
+C)* Build up to it with lesser tests, and get approval
+= Correct. A full interruption test can cause a real outage, so succeed first at less disruptive tests; it carries real business risk and need careful planning and senior management approval.
+D) It should be done without telling management, to make it realistic
+= Senior management must approve such a test.
+>> Full interruption tests are the most realistic and the most dangerous; build up to them and get senior approval.
+
+## D7-060 | 7.13 | 2
+Q: Who should take part in business continuity exercises?
+A) Only the IT department and its vendors
+= Continuity covers business processes, not just IT.
+B) Only the security team
+= Security is one participant among many.
+C) Only senior management
+= Leaders decide, but the people who perform recovery must practice it.
+D)* Everyone with a role in the plan
+= Correct. Exercises involve business process owners, IT and support functions, including facilities, HR, communications and key suppliers.
+>> BC exercises involve business owners, IT, support functions and key suppliers; plans are updated from what is learned.
+
+## D7-061 | 7.13 | 2
+Q: The company reorganized, moved offices and replaced its ERP system last year, but the BCP has not changed in three years. What is the MOST likely problem?
+A) The plan is too detailed
+= Detail is not the issue.
+B)* It is out of date
+= Correct. The plan no longer reflects how the business works. BCPs must be maintained and retested when the business, technology or people change.
+C) The plan needs more pages
+= Length is irrelevant.
+D) The plan should be moved to the cloud
+= Storage location does not fix outdated content.
+>> Maintain the BCP: review it regularly and after significant change, and retest it.
+
+## D7-062 | 7.14 | 1
+Q: Which fence height is generally considered enough to deter a determined intruder?
+A) 3 to 4 feet
+= That deters casual trespassers only.
+B) 6 to 7 feet
+= That is difficult to climb but not a deterrent to the determined.
+C)* 8 feet with barbed wire on top
+= Correct. Eight feet or higher, topped with barbed or razor wire, deters determined intruders.
+D) Fence height makes no difference to deterrence
+= Height is the main factor in how much a fence deters.
+>> Fences: 3–4 ft deters casual trespassers, 6–7 ft is hard to climb, 8 ft plus wire deters determined intruders.
+
+## D7-063 | 7.14 | 2
+Q: Which physical security control is the MOST flexible, able to use judgment and respond to unexpected situations?
+A) Motion detectors
+= Detectors only sense and alert.
+B)* Security guards
+= Correct. Guards can assess situations and adapt, though they are expensive and can make errors or be deceived.
+C) Bollards
+= Bollards stop vehicles but cannot adapt.
+D) Badge readers
+= Readers apply fixed rules.
+>> Guards are the most adaptable control; dogs are a strong deterrent; technology provides consistency.
+
+## D7-064 | 7.14 | 2
+Q: A company wants to stop vehicles being driven through the glass front of its lobby. Which control fits BEST?
+A) Brighter lighting at the entrance
+= Lighting deters and aids surveillance but does not stop a vehicle.
+B) A receptionist at the front desk
+= People cannot stop a vehicle.
+C) More CCTV cameras outside
+= Cameras record but do not prevent.
+D)* Bollards
+= Correct. Bollards are a perimeter control that prevents vehicles from approaching or ramming entrances.
+>> Perimeter controls: fences, gates, bollards, lighting, CCTV, guards; internal controls: locks, badges, vestibules.
+
+## D7-065 | 7.15 | 2
+Q: Executives are travelling to a country known for state-sponsored industrial espionage. What is the BEST practice for their devices?
+A) Bring their usual laptops and phones for convenience
+= Full devices carry full access and data into a high-risk environment.
+B) Leave their devices in hotel safes when not in use
+= Hotel safes are easily opened by staff or authorities.
+C) Disable encryption to pass through customs faster
+= That exposes data if the device is inspected or stolen.
+D)* Issue clean loaner devices and reimage them on return
+= Correct. Loaners hold minimal data, and reimaging removes anything implanted during the trip.
+>> Travel security: loaner devices, minimal data, VPN, and wiping and inspecting devices on return.
+
+## D7-066 | 7.15 | 2
+Q: An employee being forced at gunpoint to open the vault can enter a special code that opens it but silently alerts security. What is this?
+A) A clipping level
+= Clipping levels are monitoring thresholds.
+B) Two-person control
+= Two-person control requires two people for an action.
+C)* A duress code
+= Correct. Duress codes signal coercion covertly while appearing to comply, protecting the employee.
+D) An access control vestibule
+= Vestibules control entry one person at a time.
+>> Duress systems protect people: comply visibly, alert covertly.
+
+## D7-067 | 7.15 | 2
+Q: Which topic belongs in personnel security awareness training on social media?
+A)* Oversharing details that enable social engineering
+= Correct. Posts about travel, roles or projects help attackers craft pretexts and target people.
+B) How to configure the corporate firewall
+= That is technical training for administrators.
+C) The company's disaster recovery site location
+= That is sensitive and not general awareness material.
+D) Encryption algorithms used by the VPN
+= Not relevant to personal social media risk.
+>> Personnel safety training covers social media exposure, insider threats, MFA fatigue and travel risk.
+
+## D7-068 | 7.15 | 2
+Q: An employee notices a colleague copying large amounts of confidential data to a personal drive shortly after being denied a promotion. What should the employee do?
+A) Confront the colleague directly
+= Confrontation can escalate the situation and tip them off.
+B) Ignore it to avoid getting involved
+= Ignoring possible insider activity lets it continue.
+C) Post about it on the team's internal chat channel
+= Public accusations harm the investigation and the person.
+D)* Report it through the insider threat channel
+= Correct. Awareness programs should teach staff to recognize insider threat indicators and report them confidentially.
+>> Insider threat programs rely on trained employees who report concerning behavior through confidential channels.

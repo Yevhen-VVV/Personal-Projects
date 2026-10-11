@@ -1,0 +1,26 @@
+# Checks the CISSP study app: the question bank must validate, the built page
+# must match its sources, and the engine tests must pass.
+name: CISSP app checks
+
+on:
+  push:
+    paths: ["cissp-web/**", ".github/workflows/cissp-web.yml"]
+  pull_request:
+    paths: ["cissp-web/**", ".github/workflows/cissp-web.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate the bank and check the built page is current
+        run: node cissp-web/build.mjs --check
+      - name: Test the engine
+        run: node cissp-web/engine.test.mjs

@@ -1,0 +1,865 @@
+# Domain 1: Security and Risk Management (16% of the exam)
+
+## D1-001 | 1.1 | 2
+Q: A medical-device maker employs a CISSP who finds a flaw that can make an insulin pump deliver the wrong dose. A sales director tells the CISSP to keep the flaw out of a regulator filing until a fix ships next year. Under the ISC2 Code of Ethics, which canon should guide the CISSP's decision FIRST?
+A) Provide diligent and competent service to principals
+= The employer is a principal, but service to principals is the third canon and gives way to the first two when they conflict.
+B) Advance and protect the profession
+= This is the fourth canon. It matters, but it is the lowest in precedence and does not address the danger to patients.
+C)* Protect society, the common good, necessary public trust and confidence, and the infrastructure
+= Correct. The canons are applied in order, and the first one protects society. A safety flaw hidden from a regulator puts the public at risk, so this canon governs.
+D) Act honorably, honestly, justly, responsibly, and legally
+= Concealing the flaw would also be dishonest, but when canons conflict the first one, protecting society, takes precedence.
+>> The ISC2 canons are applied in order: protect society, act honorably, serve principals, advance the profession. Public safety outranks the employer's wishes.
+
+## D1-002 | 1.1 | 1
+Q: A candidate posts a list of questions remembered from a recent CISSP exam to an online forum. Which ISC2 Code of Ethics canon is MOST concerned with protecting the value of the credential itself?
+A) Protect society, the common good, necessary public trust and confidence, and the infrastructure
+= This canon is about society at large and critical infrastructure, not the integrity of a professional credential.
+B)* Advance and protect the profession
+= Correct. Leaking exam content devalues the certification for everyone who holds it, which is exactly what the fourth canon protects. It also breaches the exam NDA.
+C) Provide diligent and competent service to principals
+= Principals are employers and clients. Exam leaks do not primarily harm them.
+D) Act honorably, honestly, justly, responsibly, and legally
+= Leaking is dishonest, but the canon that specifically protects the credential and the profession is the fourth.
+>> Canon 4, "advance and protect the profession", covers actions that undermine the credential, such as sharing exam content.
+
+## D1-003 | 1.1 | 1
+Q: RFC 1087, "Ethics and the Internet", lists activities it considers unethical. Which of the following is NOT one of them?
+A) Wasting resources such as people, capacity and computers
+= RFC 1087 explicitly lists wasting resources as unethical.
+B) Compromising the privacy of users
+= Compromising user privacy is on the RFC 1087 list.
+C) Disrupting the intended use of the internet
+= Disrupting intended use is on the RFC 1087 list.
+D)* Authorized testing of your own systems
+= Correct. Authorized testing of your own systems is not on the list. RFC 1087 condemns unauthorized access, disruption, waste, destroying the integrity of information and compromising privacy.
+>> RFC 1087 calls unethical: seeking unauthorized access, disrupting intended use, wasting resources, destroying integrity of information, and compromising privacy.
+
+## D1-004 | 1.1 | 2
+Q: A security manager is drafting a code of ethics for the organization. Which step will do the MOST to make the code effective?
+A) Publishing it on the intranet with a link in the employee handbook
+= Publication makes the code available but does nothing to show it matters or that it will be applied.
+B)* Having senior leadership adopt it and visibly follow it themselves
+= Correct. A code of ethics works when leadership sponsors it and models it. Tone at the top is what turns a document into a culture.
+C) Copying the ISC2 Code of Ethics word for word so it carries professional authority
+= The ISC2 code is written for certified professionals. An organizational code must reflect the organization's own values and context.
+D) Assigning the security team to investigate every reported violation
+= Enforcement matters, but without leadership ownership the code is seen as a security-team rule rather than an organizational value.
+>> Codes of ethics, like policies, succeed through senior management sponsorship and visible example.
+
+## D1-005 | 1.2 | 1
+Q: A partner signs a purchase order with their private key and sends it to you. Which security objective does the digital signature NOT provide on its own?
+A) Integrity
+= A signature covers a hash of the message, so any change is detected. It does provide integrity.
+B)* Confidentiality
+= Correct. Anyone with the sender's public key can verify the signature, and the message itself is not encrypted. To keep it secret it must also be encrypted.
+C) Nonrepudiation
+= Only the holder of the private key could have produced the signature, so the sender cannot credibly deny it.
+D) Authenticity of the origin
+= Verifying with the sender's public key proves the message came from the private-key holder.
+>> Digital signatures give integrity, authentication of origin and nonrepudiation, but not confidentiality.
+
+## D1-006 | 1.2 | 2
+Q: An attacker registers a look-alike domain and sends an unaltered copy of a real invoice, changing only the sender address, so the payment goes to the attacker. The invoice text was never modified. Which security property did the victim fail to verify?
+A) Integrity
+= The invoice content was not modified, so integrity was not the failure.
+B) Availability
+= Nothing was made unavailable. The systems worked as designed.
+C) Confidentiality
+= No secret data was disclosed in this scenario.
+D)* Authenticity
+= Correct. Authenticity is assurance that the data comes from who it claims to come from. The content was genuine, but its source was not.
+>> Authenticity is about the genuineness of the source; integrity is about whether the content changed. One can hold while the other fails.
+
+## D1-007 | 1.2 | 1
+Q: Which control MOST directly supports availability?
+A) Hashing stored files and checking the hashes weekly
+= Hash checks detect changes. That supports integrity.
+B)* A load-balanced cluster spanning two sites
+= Correct. Redundancy and load balancing keep a service reachable when a component fails, which is availability.
+C) Encrypting the database at rest
+= Encryption at rest protects confidentiality.
+D) Recording every administrator command in an audit log
+= Audit logs support accountability and detection, not availability.
+>> Availability controls include redundancy, fault tolerance, clustering, backups and capacity planning.
+
+## D1-008 | 1.2 | 2
+Q: Two banks authenticate transfer messages with a message authentication code (MAC) computed with a shared secret key. A dispute arises over whether one bank actually sent a transfer. Why can't the MAC settle the dispute?
+A) MACs do not detect changes to the message
+= A MAC does detect modification. That is its purpose.
+B) MACs only work over encrypted channels
+= A MAC can be used with or without encryption. The channel is not the issue.
+C)* Either bank holds the same key, so either could have produced the MAC
+= Correct. Nonrepudiation requires that only one party could have created the proof. With a shared symmetric key, both parties could compute the same MAC.
+D) The MAC algorithm reveals the key to anyone who sees the message
+= A properly designed MAC does not reveal its key.
+>> Nonrepudiation needs asymmetric digital signatures. Symmetric MACs prove integrity and authenticity between the key holders, not to a third party.
+
+## D1-009 | 1.3 | 1
+Q: A new CISO is building the information security strategy. From what should it be derived PRIMARILY?
+A) The latest threat intelligence reports for the industry
+= Threat intelligence informs priorities, but strategy starts from what the business is trying to achieve.
+B) A widely used control framework such as ISO/IEC 27001
+= Frameworks help structure the program; they do not define its purpose.
+C) The regulatory requirements that apply to the organization
+= Compliance is one input. Strategy must serve the whole mission, not just legal obligations.
+D)* The organization's mission, goals and business objectives
+= Correct. Security exists to support the business. The strategy aligns with its mission and objectives, and everything else is an input.
+>> Security governance aligns the security function with business strategy, goals, mission and objectives.
+
+## D1-010 | 1.3 | 2
+Q: Your company has agreed to acquire a smaller competitor, and its network is due to be connected to yours within 90 days. What should the security team do FIRST?
+A) Establish a site-to-site VPN so integration can start early
+= Connecting before you understand the other environment imports unknown risk directly into your network.
+B)* Assess the acquired company's security posture, policies and existing risks
+= Correct. Due diligence comes before integration: understand their controls, incidents, compliance gaps and liabilities, then plan how to connect safely.
+C) Replace all of the acquired company's systems with your standard builds
+= That may eventually happen, but it is expensive and premature before you know what they have.
+D) Require the acquired staff to sign your acceptable use policy
+= Useful later in onboarding, but it does not tell you what risk you are taking on.
+>> In acquisitions and mergers, assess the other organization's security before connecting systems or sharing data.
+
+## D1-011 | 1.3 | 2
+Q: A company is divesting a business unit, which will become a separate company. Which concern should the security team prioritize?
+A) Rebranding the unit's email addresses before the announcement
+= A cosmetic change, not a security priority.
+B) Negotiating which of the two companies keeps the security operations staff
+= A staffing question. It does not protect information.
+C) Transferring the unit's software licenses on time
+= A legal and procurement task with little security impact.
+D)* Revoking departing staff's access and separating each company's data
+= Correct. Divestitures create risk that people and systems leaving the organization keep access to, or copies of, data they should no longer have.
+>> In divestitures, focus on separating data and revoking access so that nothing leaves with the departing unit that should not.
+
+## D1-012 | 1.3 | 1
+Q: Who bears ultimate responsibility for protecting an organization's information assets?
+A) The chief information security officer
+= The CISO runs the security program and advises, but accountability rests above that role.
+B)* Senior management, such as the CEO and the board
+= Correct. Senior management is ultimately accountable for security and for the risk decisions the organization makes.
+C) The data custodians who operate the systems
+= Custodians implement controls day to day; they are not ultimately accountable.
+D) Each individual user
+= Users are responsible for following policy, but not for the organization's security as a whole.
+>> Senior management holds ultimate responsibility for security; it can delegate tasks but not accountability.
+
+## D1-013 | 1.3 | 2
+Q: Before signing with a cloud provider, an organization reviews the provider's SOC 2 Type II report, its incident history and its answers to a security questionnaire. What does this activity BEST demonstrate?
+A)* Due diligence
+= Correct. Investigating and verifying a provider before committing is due diligence: knowing what you are getting into.
+B) Due care
+= Due care is acting reasonably to protect assets, such as applying controls. Here the organization is researching, not yet acting.
+C) Risk transference
+= Transference shifts the financial impact of a risk, for example through insurance or contracts. Reviewing a report does not shift anything.
+D) Separation of duties
+= Separation of duties splits critical tasks among people. It is unrelated to vendor review.
+>> Due diligence is researching and verifying (knowing); due care is doing what a reasonable person would do (acting).
+
+## D1-014 | 1.3 | 2
+Q: A company applies a vendor's critical security patch to its internet-facing web servers within days of release, as a prudent organization in its position would. What does this BEST demonstrate?
+A) Due diligence
+= Due diligence is the investigation and planning behind decisions. Applying the patch is the action itself.
+B) Defense in depth
+= Defense in depth means layering controls. A single patch does not illustrate it.
+C)* Due care
+= Correct. Due care is taking the reasonable actions a prudent person would take to protect assets. Failing to do so is the basis of negligence.
+D) Risk avoidance
+= Avoidance means stopping the risky activity altogether, such as taking the servers offline for good.
+>> Due care is doing the right thing; failing to exercise it can make an organization negligent.
+
+## D1-015 | 1.3 | 1
+Q: Which framework is designed for the governance and management of enterprise IT, aligning IT with business goals through components such as processes, organizational structures and information flows?
+A) PCI DSS
+= PCI DSS is an industry standard for protecting payment card data.
+B) SABSA
+= SABSA is a framework for enterprise security architecture, not IT governance as a whole.
+C)* COBIT
+= Correct. COBIT, from ISACA, is a framework for governing and managing enterprise IT so that it delivers business value.
+D) NIST SP 800-53
+= SP 800-53 is a catalog of security and privacy controls, not an IT governance framework.
+>> COBIT is the IT governance framework; ISO 27001 defines an ISMS; SABSA is security architecture; PCI DSS protects card data.
+
+## D1-016 | 1.3 | 2
+Q: An organization wants an independent certification that its information security management system meets an international standard. Which standard will the auditor certify against?
+A) ISO/IEC 27002
+= ISO 27002 is guidance on implementing controls. Organizations are not certified against it.
+B)* ISO/IEC 27001
+= Correct. ISO 27001 sets out the requirements for an ISMS, and certification audits are performed against it.
+C) ISO 31000
+= ISO 31000 provides risk management guidelines. It is not a certifiable ISMS standard.
+D) ISO/IEC 27701
+= ISO 27701 covers privacy information management. Certification of an information security management system is against 27001.
+>> ISO 27001 is the certifiable ISMS requirements standard; ISO 27002 is the companion code of practice for controls.
+
+## D1-017 | 1.3 | 1
+Q: A software-as-a-service company wants to sell its platform to U.S. federal civilian agencies. Under which program will it most likely need a security authorization?
+A) PCI DSS
+= PCI DSS applies to organizations handling payment card data.
+B) HITRUST
+= HITRUST is a certifiable framework common in healthcare, not the federal cloud program.
+C) SOC 2
+= A SOC 2 report is useful assurance, but federal agencies require a specific authorization for cloud services.
+D)* FedRAMP
+= Correct. FedRAMP standardizes security assessment and authorization of cloud products and services used by U.S. federal agencies.
+>> FedRAMP authorizes cloud services for U.S. federal use, building on NIST SP 800-53 controls.
+
+## D1-018 | 1.4 | 1
+Q: Under the EU General Data Protection Regulation (GDPR), how quickly must a controller notify the supervisory authority of a personal data breach, where feasible, after becoming aware of it?
+A) Within 24 hours
+= 24 hours is not the GDPR deadline.
+B)* Within 72 hours
+= Correct. GDPR Article 33 requires notification without undue delay and, where feasible, within 72 hours of becoming aware of the breach.
+C) Within 7 days
+= Seven days is too long under GDPR.
+D) Within 30 days
+= Thirty days is far beyond the GDPR requirement.
+>> GDPR: notify the supervisory authority within 72 hours of becoming aware of a personal data breach, where feasible.
+
+## D1-019 | 1.4 | 1
+Q: A payroll SaaS provider processes employees' personal data only on its customers' documented instructions. Under GDPR, what is the provider's role?
+A) Data controller
+= The controller decides the purposes and means of processing. Here the customers decide.
+B) Data subject
+= Data subjects are the individuals the data is about: the employees.
+C)* Data processor
+= Correct. A processor handles personal data on behalf of, and on the instructions of, the controller.
+D) Data protection officer
+= A DPO is a role within an organization that oversees GDPR compliance, not a party processing data for others.
+>> Controllers decide why and how personal data is processed; processors act on the controller's instructions.
+
+## D1-020 | 1.4 | 2
+Q: A U.S. company wants to transfer personal data about EU customers to its headquarters in the United States. Which option provides a recognized legal basis for the transfer?
+A) Encrypting the data with AES-256 while it is transferred across the Atlantic
+= Encryption is a good safeguard, but it is not by itself a legal transfer mechanism under GDPR.
+B)* Standard contractual clauses (SCCs) approved by the European Commission
+= Correct. SCCs, backed by a transfer risk assessment, are a recognized mechanism for international transfers. The EU–U.S. Data Privacy Framework is another option for self-certified U.S. organizations.
+C) Self-certifying under the EU–U.S. Privacy Shield program
+= Privacy Shield was invalidated by the Court of Justice of the EU in 2020 (Schrems II) and is no longer a valid basis.
+D) Holding an ISO/IEC 27001 certificate for the U.S. data center
+= Certification shows good security management but is not a legal basis for transborder transfers.
+>> Transborder transfers of EU personal data need a legal mechanism such as an adequacy decision, the Data Privacy Framework, SCCs or binding corporate rules.
+
+## D1-021 | 1.4 | 1
+Q: A beverage company wants to protect its recipe indefinitely without ever disclosing it publicly. Which form of intellectual property protection fits BEST?
+A) Patent
+= A patent requires public disclosure and expires, typically 20 years after filing.
+B) Copyright
+= Copyright protects the expression of a work, not a formula or process.
+C)* Trade secret
+= Correct. A trade secret is protected for as long as the owner keeps it secret through reasonable measures such as NDAs and access controls.
+D) Trademark
+= A trademark protects brand names and logos, not the recipe.
+>> Trade secrets last as long as they stay secret; patents trade public disclosure for limited-term exclusivity.
+
+## D1-022 | 1.4 | 1
+Q: Which form of intellectual property protection exists automatically as soon as an original work is fixed in a tangible form, without registration?
+A)* Copyright
+= Correct. Copyright arises on creation. Registration is optional, though in the U.S. it is needed before suing for infringement.
+B) Patent
+= Patents must be applied for and granted.
+C) Trademark
+= Trademark rights can arise from use, but registration is the norm, and a trademark protects brands rather than original works.
+D) Utility model
+= Utility models, available in some countries, must be registered.
+>> Copyright is automatic on creation; patents and registered trademarks must be applied for.
+
+## D1-023 | 1.4 | 2
+Q: A U.S. manufacturer plans to ship firewalls with strong encryption to customers in several countries. Which regulations must it review before shipping?
+A) The Health Insurance Portability and Accountability Act (HIPAA)
+= HIPAA governs protected health information, not product exports.
+B)* The Export Administration Regulations (EAR)
+= Correct. The EAR, administered by the Commerce Department's Bureau of Industry and Security, controls exports of dual-use items, including many encryption products.
+C) The Gramm-Leach-Bliley Act (GLBA)
+= GLBA concerns financial institutions' handling of customer information.
+D) The Federal Information Security Modernization Act (FISMA)
+= FISMA governs security programs in U.S. federal agencies.
+>> Encryption products are dual-use items subject to export controls such as the EAR; the Wassenaar Arrangement coordinates such controls internationally.
+
+## D1-024 | 1.4 | 1
+Q: A retailer is opening stores in mainland China and will collect personal information from Chinese residents. Which law primarily governs that personal information?
+A) POPIA
+= POPIA is South Africa's Protection of Personal Information Act.
+B) CCPA
+= The CCPA protects California residents.
+C) PIPEDA
+= PIPEDA is Canada's federal private-sector privacy law.
+D)* PIPL
+= Correct. China's Personal Information Protection Law governs processing of personal information of individuals in China, including strict rules on cross-border transfers.
+>> Know the main privacy laws named in the outline: GDPR (EU), CCPA (California), PIPL (China), POPIA (South Africa).
+
+## D1-025 | 1.4 | 1
+Q: Which U.S. federal law is the primary statute criminalizing unauthorized access to protected computers?
+A) Electronic Communications Privacy Act
+= ECPA protects the privacy of electronic communications, such as against interception.
+B) Digital Millennium Copyright Act
+= The DMCA concerns copyright, including circumventing copy protection.
+C)* Computer Fraud and Abuse Act
+= Correct. The CFAA criminalizes unauthorized access to protected computers and related offenses.
+D) Federal Information Security Modernization Act
+= FISMA requires federal agencies to run security programs. It does not define computer crimes.
+>> The CFAA is the core U.S. computer crime law.
+
+## D1-026 | 1.4 | 2
+Q: After a ransomware attack exposed files on a file server, legal counsel asks the CISO whether the company must notify anyone. What determines the answer MOST?
+A) Whether the company decided to pay the ransom demand
+= Paying or not paying does not change notification obligations.
+B) Whether the attacker has already published the stolen data online
+= Many laws trigger on unauthorized access or acquisition, not public release.
+C)* The data types, the affected people's locations, and contracts
+= Correct. Breach notification duties come from the laws of the jurisdictions where affected individuals reside, sector regulations, and contractual commitments, all of which depend on the data involved.
+D) Whether the attacker encrypted the files on the server
+= Encryption by the attacker is the attack, not a safe harbor. Safe harbors apply when the organization's own encryption kept data unreadable.
+>> Breach notification depends on data type, jurisdiction of the affected individuals, sector regulation and contracts.
+
+## D1-027 | 1.4 | 2
+Q: A merchant asks why it must comply with PCI DSS even though no national law names the standard. From what do PCI DSS obligations PRIMARILY arise?
+A) A federal statute enforced by the Federal Trade Commission
+= PCI DSS is not a law, and no federal statute mandates it.
+B)* Contracts with the card brands and acquiring banks
+= Correct. PCI DSS is an industry standard enforced through merchant and service-provider agreements. Some states reference it, but the obligation is fundamentally contractual.
+C) The organization's own information security policy
+= Internal policy may adopt PCI DSS, but the obligation comes from outside the organization.
+D) ISO/IEC 27001 certification requirements
+= ISO certification is voluntary and separate from PCI DSS.
+>> Not every compliance requirement is law: PCI DSS is contractual, enforced by the payment card brands through acquirers.
+
+## D1-028 | 1.5 | 1
+Q: A company sues a former contractor for breach of contract over a data leak. What standard of proof applies?
+A) Beyond a reasonable doubt
+= That is the standard for criminal cases.
+B)* Preponderance of the evidence
+= Correct. Civil cases are decided on the preponderance of the evidence: more likely than not.
+C) Clear and present danger
+= That phrase relates to free-speech law, not a standard of proof.
+D) Probable cause
+= Probable cause is the threshold for warrants and arrests, not for deciding a civil case.
+>> Criminal: beyond a reasonable doubt. Civil: preponderance of the evidence.
+
+## D1-029 | 1.5 | 2
+Q: During an internal administrative investigation into an employee's misuse of email, the investigator finds evidence that the employee also sold customer records to an outside party. What should the investigator do NEXT?
+A) Finish the administrative investigation and issue a written warning
+= The matter may now be criminal. Continuing as a routine HR case risks mishandling evidence.
+B) Confront the employee to obtain a confession
+= Confronting the subject may prompt destruction of evidence and is not the investigator's call at this stage.
+C) Delete the copies of the records to limit further exposure
+= Destroying material is spoliation of evidence and could itself be unlawful.
+D)* Pause, preserve the evidence and escalate to legal counsel and management
+= Correct. The investigation may become criminal or civil. Counsel decides on involving law enforcement, and evidence must be handled to court standards from now on.
+>> An administrative investigation can turn criminal; when it does, preserve evidence and involve legal counsel before going further.
+
+## D1-030 | 1.5 | 1
+Q: A government agency investigates whether a bank violated rules issued under its regulatory authority. What type of investigation is this?
+A) Civil
+= Civil investigations support lawsuits between private parties.
+B) Administrative
+= Administrative investigations are internal to an organization, such as an HR or policy matter.
+C)* Regulatory
+= Correct. Regulatory investigations are conducted by government bodies when an organization may have violated administrative law or regulations. The standard of proof varies.
+D) Criminal
+= Criminal investigations, by law enforcement, concern violations of criminal law.
+>> Investigation types: administrative (internal), criminal, civil, regulatory, and industry-standards based.
+
+## D1-031 | 1.6 | 1
+Q: A document states: "All company laptops must use full-disk encryption with AES-256." What type of document is this?
+A) Policy
+= A policy states high-level management intent, such as "data on portable devices must be protected." It does not name an algorithm.
+B)* Standard
+= Correct. Standards are mandatory, specific requirements, such as a particular technology or setting, that support a policy.
+C) Guideline
+= Guidelines are recommendations and are not mandatory. This statement says "must".
+D) Procedure
+= A procedure gives step-by-step instructions for how to do something, such as how to enable encryption on a laptop.
+>> Policy (why, mandatory, high level) → standard (what, mandatory, specific) → procedure (how, step by step); guidelines are optional advice.
+
+## D1-032 | 1.6 | 1
+Q: Which type of security document is discretionary rather than mandatory?
+A) Baseline
+= A baseline sets a mandatory minimum configuration.
+B) Procedure
+= Procedures are mandatory step-by-step instructions.
+C) Standard
+= Standards are mandatory.
+D)* Guideline
+= Correct. Guidelines recommend how to meet a policy or standard when there is no specific requirement.
+>> Guidelines are the only discretionary document in the policy framework.
+
+## D1-033 | 1.6 | 1
+Q: The security team defines the minimum set of security settings that every Windows server must have before it can be connected to the production network. What is this called?
+A)* A baseline
+= Correct. A baseline is the minimum security level a system must meet, often expressed as a configuration build.
+B) A guideline
+= Guidelines are optional recommendations.
+C) A policy
+= Policies are high-level statements of intent, not configuration settings.
+D) A procedure
+= A procedure describes how to perform a task, such as how to apply the baseline.
+>> A baseline is a mandatory minimum configuration; organizations often derive it from benchmarks such as CIS and then tailor it.
+
+## D1-034 | 1.6 | 2
+Q: A new regulation changes how customer data must be retained. The organization's security documentation follows the usual policy framework. Which document should be updated FIRST?
+A) The procedures that staff follow to archive records
+= Procedures implement standards and policy. Changing them first leaves the higher documents out of step.
+B)* The data retention policy
+= Correct. Change flows top-down: management's policy sets the direction, then standards and procedures are updated to support it.
+C) The guidelines for choosing storage media
+= Guidelines are optional and sit at the bottom of the hierarchy.
+D) The configuration baselines for the archive servers
+= Baselines may need to change, but they follow from the policy and standards.
+>> Documentation changes cascade from policy down to standards, baselines, procedures and guidelines.
+
+## D1-035 | 1.7 | 1
+Q: What is the PRIMARY purpose of a business impact analysis (BIA)?
+A) To choose the alternate site for disaster recovery
+= Choosing recovery strategies comes after the BIA and depends on its results.
+B) To test whether the business continuity plan works
+= Testing happens after the plan is written.
+C)* To identify critical functions and the impact of losing them
+= Correct. The BIA identifies what matters most and how quickly loss of it hurts, producing values such as MTD, RTO and RPO that drive the rest of the plan.
+D) To calculate the annualized loss expectancy for every IT asset
+= Some BIAs use quantitative values, but the purpose is prioritizing business functions, not cataloguing ALE.
+>> The BIA tells you what to recover first and how fast; strategy selection depends on it.
+
+## D1-036 | 1.7 | 1
+Q: The business impact analysis sets the maximum tolerable downtime (MTD) for order processing at 24 hours. What must the recovery time objective (RTO) be?
+A) Greater than 24 hours, to leave room for testing
+= An RTO longer than the MTD means the business fails before recovery completes.
+B) Exactly 48 hours, twice the MTD
+= Doubling the MTD guarantees recovery would be too late.
+C) Independent of the MTD, set by the IT department's capacity
+= The RTO is driven by the business tolerance in the MTD, not by IT convenience.
+D)* Less than or equal to 24 hours
+= Correct. The RTO is the target for restoring the function and must not exceed the MTD.
+>> RTO ≤ MTD. The MTD is the business's limit; the RTO is the recovery target set inside it.
+
+## D1-037 | 1.7 | 1
+Q: The sales system can lose no more than 15 minutes of transactions in a disaster. Which metric does this define?
+A) Recovery time objective
+= The RTO is how quickly the system must be back, not how much data can be lost.
+B)* Recovery point objective
+= Correct. The RPO is the maximum acceptable data loss measured in time, and it drives backup and replication frequency.
+C) Mean time to repair
+= MTTR is the average time to fix a failed component.
+D) Maximum tolerable downtime
+= MTD is the longest the function can be unavailable before the damage is unacceptable.
+>> RPO = how much data you can afford to lose (time since last good copy); RTO = how long you can be down.
+
+## D1-038 | 1.7 | 3
+Q: Following the business impact analysis steps described in the CISSP Official Study Guide, the team has identified and ranked the organization's business priorities. What is the NEXT step?
+A) Resource prioritization
+= Resource prioritization is the final BIA step, after impacts are assessed.
+B) Impact assessment
+= Impact assessment comes after you know the risks and how likely they are.
+C)* Risk identification
+= Correct. The order is identify priorities, risk identification, likelihood assessment, impact assessment, then resource prioritization.
+D) Likelihood assessment
+= You must identify the risks before you can estimate how likely they are.
+>> BIA steps (OSG): priorities → risk identification → likelihood → impact → resource prioritization.
+
+## D1-039 | 1.7 | 2
+Q: The BIA shows that payroll, a critical process, depends entirely on a single SaaS provider. What should the business continuity team do?
+A) Exclude the process from the plan because the provider is responsible for it
+= Outsourcing the service does not outsource the business's responsibility to keep paying staff.
+B)* Review the provider's continuity commitments and plan for its failure
+= Correct. The provider is an external dependency, and those belong in BC requirements. Verify the provider's BC/DR capabilities and SLAs, and plan a workaround if it fails.
+C) Move payroll back in-house immediately
+= That may not be justified. The first step is to understand and manage the dependency.
+D) Buy cyber insurance to cover the outage
+= Insurance compensates for loss but does not keep payroll running.
+>> BC requirements must include external dependencies such as suppliers, utilities and cloud services.
+
+## D1-040 | 1.7 | 1
+Q: Which phase comes FIRST in the business continuity planning process described in the CISSP Official Study Guide?
+A) Business impact analysis
+= The BIA is the second phase.
+B) Continuity planning
+= Continuity planning develops strategies after the BIA.
+C)* Project scope and planning
+= Correct. It covers business organization analysis, selecting the BCP team, resource requirements and legal requirements, with senior management support.
+D) Approval and implementation
+= Approval and implementation is the final phase.
+>> BCP phases: project scope and planning → BIA → continuity planning → approval and implementation.
+
+## D1-041 | 1.8 | 1
+Q: Which control is MOST effective at preventing the hiring of someone with a history of financial fraud into a finance role?
+A) Mandatory vacations for all finance staff
+= Mandatory vacations help detect fraud after hiring; they do not prevent the hire.
+B)* Background checks before an offer is final
+= Correct. Pre-employment screening, within the law, is a preventive personnel control.
+C) Job rotation within the finance department
+= Rotation helps detect fraud by existing staff.
+D) Exit interviews when employees leave
+= Exit interviews happen at the end of employment.
+>> Personnel security starts before hiring: job descriptions, screening and background checks.
+
+## D1-042 | 1.8 | 1
+Q: A system administrator with privileged access is being terminated. When should the administrator's access be disabled?
+A) At the end of the last working day after notification
+= That leaves a window in which an upset administrator could cause damage.
+B) After the exit interview is complete
+= The exit interview should happen with access already removed.
+C)* At the moment they are told, or just before
+= Correct. Coordinate with HR so access is revoked as the termination is communicated, and have the person escorted.
+D) Within 30 days, per the standard account review
+= Waiting for a periodic review is far too slow for a privileged user.
+>> Revoke a departing employee's access at the moment of notification, especially for privileged or involuntary terminations.
+
+## D1-043 | 1.8 | 1
+Q: An analyst moves from the finance department to marketing. What should happen to the analyst's access?
+A) Keep the finance access in case the analyst is asked to help
+= Retaining old rights leads to privilege creep.
+B) Freeze all access until a full background check is repeated
+= A transfer does not normally require a new background check, and freezing all access is disruptive.
+C) Add marketing access and review the finance access at the annual recertification
+= Waiting a year leaves unnecessary access in place.
+D)* Remove the finance access and grant what the marketing role needs
+= Correct. A transfer should be handled like an exit from one role and an entry to another, which prevents privilege creep.
+>> Transfers must remove old access as well as grant new access; otherwise privileges accumulate.
+
+## D1-044 | 1.8 | 2
+Q: What is the BEST way to make sure an outside contractor follows your organization's security requirements?
+A) Brief the contractor in person during the onboarding session
+= A briefing is useful but not enforceable.
+B) Rely on the contractor's ISO/IEC 27001 certificate
+= Certification shows the contractor runs an ISMS, not that it meets your specific requirements.
+C)* Put the requirements and a right to audit in the contract
+= Correct. Contracts and SLAs make security requirements enforceable and give you a way to verify compliance.
+D) Email the contractor a copy of your security policies
+= Sending policies informs but does not bind the contractor.
+>> Vendor, consultant and contractor controls belong in contracts: security requirements, NDAs, SLAs and the right to audit.
+
+## D1-045 | 1.8 | 1
+Q: When should a new employee sign the acceptable use policy?
+A) After the first performance review
+= Months of system access without agreeing to the rules is too long.
+B)* Before being given access to systems and data
+= Correct. Users should acknowledge the rules before using the systems, which also supports later enforcement.
+C) Only if the employee will handle confidential data
+= Everyone with system access should agree to acceptable use.
+D) At the end of the probation period
+= Access usually starts on day one, so the agreement must come first.
+>> Onboarding includes policy acknowledgments such as the AUP and NDA before access is granted.
+
+## D1-046 | 1.9 | 2
+Q: A data center's equipment is valued at $200,000. A flood would destroy 40% of it, and floods are expected once every 20 years. What is the annualized loss expectancy (ALE)?
+A) $80,000
+= $80,000 is the single loss expectancy (200,000 × 0.4), not the annualized figure.
+B)* $4,000
+= Correct. SLE = AV × EF = $200,000 × 0.4 = $80,000. ARO = 1/20 = 0.05. ALE = SLE × ARO = $4,000.
+C) $10,000
+= $10,000 would be the asset value divided by 20, which ignores the exposure factor.
+D) $8,000
+= $8,000 multiplies the SLE by 0.1, which would mean a flood every 10 years.
+>> SLE = AV × EF; ALE = SLE × ARO.
+
+## D1-047 | 1.9 | 2
+Q: A risk has an ALE of $20,000 per year. A safeguard costing $12,000 per year would reduce the ALE to $5,000. What is the annual value of the safeguard to the organization?
+A) $15,000
+= $15,000 is the reduction in ALE, but it ignores the safeguard's cost.
+B) $8,000
+= $8,000 subtracts the cost from the original ALE but ignores the remaining ALE.
+C) –$7,000
+= This compares the remaining ALE with the cost, which is not the formula.
+D)* $3,000
+= Correct. Value = ALE before − ALE after − annual cost = $20,000 − $5,000 − $12,000 = $3,000. It is positive, so the safeguard is cost-justified.
+>> Safeguard value = (ALE before − ALE after) − annual cost of the safeguard.
+
+## D1-048 | 1.9 | 1
+Q: A company buys a cybersecurity insurance policy to cover losses from data breaches. Which risk response is this?
+A) Risk avoidance
+= Avoidance stops the risky activity entirely.
+B) Risk mitigation
+= Mitigation reduces likelihood or impact with controls.
+C)* Risk transference
+= Correct. Insurance transfers (shares) the financial impact of the risk to a third party.
+D) Risk acceptance
+= Acceptance means consciously bearing the risk without further action.
+>> Risk responses: mitigate (reduce), transfer or share (insurance, contracts), avoid (stop the activity), accept. Ignoring risk is never acceptable.
+
+## D1-049 | 1.9 | 2
+Q: A system owner wants to launch an application with a known medium-severity vulnerability, because the vendor's fix will take six months. What should the security professional do?
+A) Block the launch until the vendor's fix is available and tested in staging
+= The security professional advises; the business decides. A blanket block ignores the business case.
+B) Approve the launch personally, since the severity is only medium
+= The security professional does not own the risk and should not be the one to accept it.
+C)* Document it and get formal risk acceptance from the accountable manager
+= Correct. Risk acceptance is a documented management decision by the risk owner, ideally with compensating controls and a date to revisit it.
+D) Launch quietly and fix it when the patch arrives
+= Undocumented risk is unmanaged risk.
+>> Security advises; the accountable manager or risk owner formally accepts residual risk.
+
+## D1-050 | 1.9 | 2
+Q: A risk team collects anonymous opinions from experts in several rounds, sharing summarized results between rounds until the group converges. Which technique is this?
+A) Monte Carlo simulation
+= Monte Carlo is a quantitative technique using repeated random sampling.
+B)* The Delphi technique
+= Correct. Delphi gathers anonymous expert input over multiple rounds to reach consensus, avoiding groupthink. It is used in qualitative analysis.
+C) Fault tree analysis
+= Fault trees model combinations of failures that lead to an event.
+D) Annualized loss expectancy
+= ALE is a quantitative calculation, not a consensus technique.
+>> The Delphi technique is an anonymous, iterative consensus method used in qualitative risk analysis.
+
+## D1-051 | 1.9 | 1
+Q: A merchant cannot meet a PCI DSS requirement as written because of a legacy system, so it implements an alternative control that meets the intent of the requirement. What type of control is this?
+A) Deterrent
+= Deterrent controls discourage violations, such as warning banners.
+B) Corrective
+= Corrective controls restore systems after an incident.
+C) Directive
+= Directive controls direct behavior, such as policies.
+D)* Compensating
+= Correct. A compensating control provides an alternative way to meet a requirement when the primary control is not feasible.
+>> Compensating controls substitute for a required control that cannot be implemented as specified.
+
+## D1-052 | 1.9 | 2
+Q: In the NIST Risk Management Framework (SP 800-37), which step immediately follows Implement?
+A) Authorize
+= Authorization comes after the controls have been assessed.
+B) Monitor
+= Monitoring is the last step, continuing after authorization.
+C)* Assess
+= Correct. The steps are Prepare, Categorize, Select, Implement, Assess, Authorize, Monitor.
+D) Select
+= Controls are selected before they are implemented.
+>> NIST RMF: Prepare → Categorize → Select → Implement → Assess → Authorize → Monitor.
+
+## D1-053 | 1.9 | 3
+Q: An organization's risk management processes are standardized and documented across all departments, but risk is not yet built into business decisions or measured with metrics. Using the risk maturity model described in the CISSP Official Study Guide, which level is this?
+A) Preliminary
+= At the preliminary level, departments make loose, independent attempts at risk management.
+B) Integrated
+= At the integrated level, risk management is built into business processes and metrics are used.
+C)* Defined
+= Correct. A common, standardized framework across the organization is the defined level.
+D) Optimized
+= Optimized focuses on achieving objectives and resilience through lessons learned.
+>> Risk maturity levels: ad hoc → preliminary → defined → integrated → optimized.
+
+## D1-054 | 1.9 | 1
+Q: Which statement BEST describes residual risk?
+A) Risk that has been transferred to an insurer
+= Transferred risk is a treatment choice, not the definition of residual risk.
+B) Total risk before any safeguards
+= That is inherent (total) risk.
+C) Risk that management has refused to accept
+= Unaccepted risk must still be treated; that is not what residual means.
+D)* The risk that remains after safeguards are applied
+= Correct. Residual risk is what is left after controls, and management must accept it or treat it further.
+>> Residual risk = total risk − controls gap; management must accept or further treat it.
+
+## D1-055 | 1.9 | 1
+Q: Which document records identified risks along with their owners, ratings and treatment status?
+A) Security policy
+= The policy sets direction; it does not track individual risks.
+B)* Risk register
+= Correct. A risk register is the central record of risks, owners, analysis results and responses.
+C) Business impact analysis
+= The BIA assesses impacts on business functions; it is not an ongoing risk tracker.
+D) System security plan
+= An SSP describes the controls for a specific system.
+>> The risk register tracks each risk's owner, rating, response and status, and supports risk reporting.
+
+## D1-056 | 1.10 | 1
+Q: An attacker intercepts an API request and changes the price field from 499.00 to 4.99 before it reaches the server. In the STRIDE model, which threat category is this?
+A) Spoofing
+= Spoofing is pretending to be someone or something else.
+B)* Tampering
+= Correct. Tampering is unauthorized modification of data, a threat to integrity.
+C) Repudiation
+= Repudiation is denying having performed an action.
+D) Information disclosure
+= Disclosure exposes data to unauthorized parties, a confidentiality threat.
+>> STRIDE: Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege.
+
+## D1-057 | 1.10 | 2
+Q: Which threat modeling methodology is a seven-stage, risk-centric process that starts from business objectives and ends with risk and impact analysis?
+A) STRIDE
+= STRIDE is a threat categorization scheme developed at Microsoft, not a seven-stage process.
+B) DREAD
+= DREAD is a scheme for rating threats.
+C) VAST
+= VAST is designed to scale threat modeling across agile and DevOps environments.
+D)* PASTA
+= Correct. PASTA (Process for Attack Simulation and Threat Analysis) has seven stages that tie business objectives to technical threats and impacts.
+>> PASTA is a seven-stage, risk-centric methodology; STRIDE classifies threats; DREAD rates them.
+
+## D1-058 | 1.10 | 1
+Q: When is threat modeling MOST effective in a system's life?
+A)* Early in design, and revisited as the design changes
+= Correct. Finding design-level threats before code is written is the cheapest time to fix them; the model is then updated as the system evolves.
+B) Just before the production release, as a final gate
+= Late threat modeling finds problems when they are most expensive to fix.
+C) After the first penetration test has reported findings
+= Penetration testing validates a built system; threat modeling should guide the design that comes before it.
+D) Only after a security incident has occurred
+= Waiting for an incident makes threat modeling reactive.
+>> Threat model early and iteratively; it is a design activity, not an afterthought.
+
+## D1-059 | 1.10 | 1
+Q: Which scheme rates threats by damage potential, reproducibility, exploitability, affected users and discoverability?
+A) CVSS
+= CVSS scores vulnerabilities using base, temporal and environmental metrics.
+B) STRIDE
+= STRIDE categorizes threats but does not score them.
+C)* DREAD
+= Correct. DREAD is named for the five factors it rates.
+D) OCTAVE
+= OCTAVE is a risk assessment methodology from Carnegie Mellon.
+>> DREAD: Damage, Reproducibility, Exploitability, Affected users, Discoverability.
+
+## D1-060 | 1.11 | 1
+Q: A critical vulnerability is announced in a widely used open-source logging library. Which artifact would tell you MOST quickly which of your purchased software products contain it?
+A) Each vendor's SOC 2 report
+= SOC 2 reports describe controls, not the components inside a product.
+B) The vendors' license agreements
+= Licenses rarely list components and are not built for this purpose.
+C)* A software bill of materials for each product
+= Correct. An SBOM lists a product's components and versions, so you can search for the affected library across your portfolio.
+D) Network vulnerability scans of each product
+= Scans may eventually find it, but more slowly and less completely.
+>> An SBOM is an inventory of software components; it makes supply chain vulnerabilities searchable.
+
+## D1-061 | 1.11 | 2
+Q: Which hardware feature uses tiny, uncontrollable manufacturing variations in a chip to produce a unique identity that is very hard to clone?
+A) Trusted Platform Module
+= A TPM stores keys and measurements; its uniqueness comes from stored keys, not from physical variations.
+B) Hardware security module
+= An HSM is a dedicated device for key management and cryptographic operations.
+C) Secure enclave
+= An enclave isolates code and data during processing.
+D)* Physically unclonable function
+= Correct. A PUF derives a device-unique response from physical variations, supporting authentication and anti-counterfeiting.
+>> PUFs and silicon roots of trust are supply chain mitigations named in the 2024 outline.
+
+## D1-062 | 1.11 | 2
+Q: A server vendor builds an immutable component into the board's silicon that verifies the firmware's signature before anything else runs, so tampered firmware will not boot. What is this component?
+A) A software bill of materials
+= An SBOM is a list of components, not a boot-time verifier.
+B)* A silicon root of trust
+= Correct. A hardware root of trust anchored in silicon starts the chain of trust by verifying firmware, defending against tampering in the supply chain.
+C) A code-signing certificate
+= Code signing produces the signature; the root of trust is what verifies it at boot.
+D) A secure boot policy in the operating system
+= The OS loads after firmware, which is too late to catch firmware tampering.
+>> A silicon root of trust verifies firmware integrity from the first instruction, mitigating implants and tampering.
+
+## D1-063 | 1.11 | 2
+Q: A procurement team is offered network switches at 40% below the usual price by an unfamiliar reseller. What is the BEST way to manage the supply chain risk?
+A) Buy them and run a vulnerability scan before deployment
+= A scan will not reliably detect counterfeit hardware or implants.
+B) Buy them if the reseller signs a non-disclosure agreement
+= An NDA does nothing to establish the hardware's authenticity.
+C) Buy a sample first and compare its appearance with a genuine unit
+= Counterfeits can look identical; visual inspection is weak assurance.
+D)* Buy only from authorized channels and verify units on delivery
+= Correct. Manufacturer-authorized channels reduce the risk of counterfeit or tampered equipment, and verification checks what arrives.
+>> Counterfeits, tampering and implants are supply chain risks; mitigate with trusted sources, third-party assessment and verification.
+
+## D1-064 | 1.12 | 2
+Q: Which measure BEST shows whether a security awareness program is changing behavior?
+A) The percentage of staff who completed the annual training
+= Completion shows attendance, not changed behavior.
+B) The number of training hours delivered
+= Volume of training is an input, not an outcome.
+C) Satisfaction scores from the course survey
+= People can enjoy a course without changing how they act.
+D)* Lower phishing-simulation click rates and more reports
+= Correct. Click rates falling and report rates rising over time are outcome metrics: they measure whether people now behave more securely.
+>> Evaluate awareness programs by behavior change, not by attendance.
+
+## D1-065 | 1.12 | 2
+Q: Help desk staff are taught a specific procedure for verifying a caller's identity before resetting a password. Which category does this fall under?
+A) Awareness
+= Awareness makes people recognize security issues in general; it does not teach job procedures.
+B) Education
+= Education builds broad, deep understanding, such as a degree or certification.
+C)* Training
+= Correct. Training teaches people to perform specific security tasks required by their role.
+D) Security champions
+= A champion program embeds advocates in teams; it is not a teaching category.
+>> Awareness = recognize; training = do a specific job securely; education = understand deeply.
+
+## D1-066 | 1.12 | 2
+Q: The security team finds that employees are pasting confidential source code into a public generative AI chatbot. What should be done FIRST?
+A) Block all AI websites at the proxy without explanation
+= Blocking without a policy or explanation tends to drive the behavior underground to personal devices.
+B)* Set an acceptable-use policy for AI tools and communicate it
+= Correct. Policy states management's direction; awareness then explains what is allowed and why. Technical controls such as DLP or approved tools follow.
+C) Discipline the employees involved to set an example for others
+= Without a clear policy, discipline is hard to justify and does not fix the root cause.
+D) Ask the AI provider to delete the submitted code
+= Worth trying, but it does nothing to prevent the next occurrence.
+>> Emerging technology risks (AI, crypto, blockchain) start with policy and awareness, followed by technical controls.
+
+## D1-067 | 1.9 | 2
+Q: An e-commerce web server costs $50,000 to replace. A denial-of-service attack takes the site down for 5 hours without damaging any hardware, and such attacks are expected twice a year. The site earns $10,000 per hour. What is the annualized loss expectancy for this threat?
+A)* $100,000
+= Correct. The loss per event is lost revenue: 5 hours × $10,000 = $50,000. Twice a year gives an ALE of $100,000. The hardware value is irrelevant because it is not damaged.
+B) $50,000
+= $50,000 is the single loss expectancy, one event's loss, not the annual figure.
+C) $200,000
+= This double-counts by adding the server's replacement cost to each event.
+D) $25,000
+= This halves the per-event loss instead of doubling it.
+>> Value what the threat actually destroys. For an outage, that is often lost revenue and productivity, not the hardware.
+
+## D1-068 | 1.4 | 3
+Q: A customer in the EU asks your company to erase all of their personal data. Tax law requires you to keep their invoices for seven years. What should you do?
+A) Refuse the request, because any legal retention duty overrides the right to erasure
+= The retention duty covers only the invoices. Refusing everything ignores the rest of the customer's data.
+B) Delete everything, including the invoices, because the customer's rights take precedence
+= Deleting records you are legally required to keep would break tax law. GDPR's erasure right has an exception for legal obligations.
+C)* Erase the rest, keeping invoices only for tax purposes
+= Correct. Erase the data you have no other basis to keep: erasure applies where there is no overriding legal basis. Retain the invoices for the legal obligation, restrict their use to that purpose, and tell the customer.
+D) Anonymize the invoices so they can be kept and still used for marketing
+= Tax authorities need identifiable invoices, and using retained data for marketing would breach purpose limitation.
+>> The right to erasure is not absolute; data required by a legal obligation may be kept, but only for that purpose.
+
+## D1-069 | 1.3 | 3
+Q: Auditors note that the information security manager reports to the CIO, who also owns the IT operations budget and often overrides security findings to meet delivery dates. Which change BEST addresses the concern?
+A) Increase the security manager's budget so findings can be fixed faster
+= More money does not remove the conflict of interest in who decides.
+B)* Make security report independently of IT operations
+= Correct. Reporting to a function such as the CEO or a risk committee means security oversight is not subordinate to the function it oversees. Independence lets security findings reach the people who own the risk.
+C) Require the CIO to document every override
+= Documentation helps accountability, but the conflict of interest remains.
+D) Move security staff into each IT delivery team
+= Embedding staff can improve collaboration, but it deepens the reporting conflict.
+>> Governance: the security function needs enough independence and authority to report risk to those accountable for it.
+
+## D1-070 | 1.7 | 3
+Q: During the business impact analysis, a department head insists their reporting process has a maximum tolerable downtime of one hour. The financial data shows that a one-week outage would cost very little. How should the BCP coordinator resolve this?
+A) Accept the department head's figure, because process owners know their processes best
+= Owners supply input, but MTDs must be supported by evidence of impact so that recovery spending is justified.
+B) Set the MTD to the IT department's current recovery capability
+= Recovery capability should be designed to meet business needs, not the other way round.
+C) Average the department's estimate with the financial estimate
+= Averaging two inconsistent numbers produces a third number with no basis.
+D)* Present the impact evidence to senior management, who set the recovery priorities
+= Correct. The BIA should be grounded in quantitative and qualitative impact. Where views conflict, senior management decides priorities based on the evidence.
+>> BIA priorities must be evidence-based, and senior management arbitrates competing claims of criticality.
+
+## D1-071 | 1.10 | 2
+Q: While threat modeling a funds-transfer service with STRIDE, a team notices that the service does not record which user approved each transfer. Which threat does this gap MOST directly enable?
+A) Elevation of privilege
+= Elevation of privilege is gaining rights you should not have; missing logs do not grant rights.
+B) Spoofing
+= Spoofing is impersonation. The gap here is the lack of a record afterward.
+C) Information disclosure
+= Nothing is exposed by missing logs.
+D)* Repudiation
+= Correct. Without a reliable audit record, a user can deny approving a transfer. Logging with user attribution counters repudiation.
+>> Repudiation threats are countered by strong authentication plus tamper-resistant audit trails.
+
+## D1-072 | 1.8 | 2
+Q: A company plans to start monitoring employees' use of company email and internet access. What should it do FIRST to reduce legal and employee-relations risk?
+A) Deploy the monitoring tools quietly to see what they reveal
+= Covert monitoring without notice can create legal exposure and destroys trust.
+B) Ask each employee for written consent after monitoring begins
+= Consent obtained after the fact does not cover what was already collected.
+C)* Publish a monitoring policy and notify users
+= Correct. A clear policy stating that systems are monitored and users have no expectation of privacy, acknowledged by employees and reinforced with logon banners, sets expectations and supports lawful monitoring.
+D) Limit monitoring to employees who are already suspected of misconduct
+= Selective, undisclosed monitoring raises fairness and legal concerns, and the policy question remains.
+>> Monitoring starts with policy and notice: an AUP and banners that remove the expectation of privacy.

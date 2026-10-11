@@ -1,0 +1,889 @@
+# Domain 3: Security Architecture and Engineering (13% of the exam)
+
+## D3-001 | 3.1 | 2
+Q: A web application's database account has full owner rights on the database, although the application only ever reads the product catalog. Which design principle does this violate?
+A)* Least privilege
+= Correct. The account should have only the rights it needs, here read access to the catalog. Excess rights turn an application flaw such as SQL injection into a much bigger breach.
+B) Defense in depth
+= Defense in depth is about layering controls; the problem here is the size of one account's rights.
+C) Separation of duties
+= Separation of duties splits a sensitive task between people so no one can complete it alone.
+D) Fail securely
+= Failing securely concerns how a system behaves when something breaks.
+>> Least privilege applies to service accounts and applications as much as to people.
+
+## D3-002 | 3.1 | 2
+Q: A VPN gateway authenticates users against a central directory. What should the gateway do when the directory becomes unreachable?
+A)* Deny new connections until the directory is reachable again
+= Correct. Failing secure (closed) means a failure of the control does not become a way around it.
+B) Allow connections from users who connected in the last 24 hours
+= Cached trust may let in an account that has since been disabled.
+C) Allow all connections and log them for later review
+= Failing open turns an outage, or an attack on the directory, into open access.
+D) Fall back to a shared emergency password published to staff
+= A shared password destroys accountability and is easily leaked.
+>> Fail securely: when a security control fails, it should deny rather than permit, unless life safety requires otherwise.
+
+## D3-003 | 3.1 | 2
+Q: An office uses electronically locked doors. How should the locks behave when power fails?
+A) All doors should fail secure, staying locked, to protect equipment
+= Locking stairwell and exit doors in an emergency can trap people.
+B) All doors should fail safe, unlocking, so no one is ever trapped
+= Unlocking server rooms and cages on every power cut exposes critical assets unnecessarily.
+C)* Exit and stairwell doors fail safe; server cage doors fail secure
+= Correct. Life safety comes first on egress routes, while doors that protect assets and are not escape routes can stay locked.
+D) Doors should keep their current state until a guard decides
+= In an emergency there may be no time for a decision, and egress must be guaranteed.
+>> Fail-safe protects people (unlock); fail-secure protects assets (lock). Life safety always wins on escape routes.
+
+## D3-004 | 3.1 | 1
+Q: Which statement BEST describes the zero trust approach?
+A) Users inside the corporate network are trusted; only external users are verified
+= That is the traditional perimeter model zero trust replaces.
+B) No user is ever granted access to sensitive systems
+= Zero trust grants access, just never implicitly.
+C)* Every request is verified on identity, device and context, wherever it comes from
+= Correct. No request is trusted because of its network location; zero trust authenticates and authorizes every access decision continuously, with least privilege.
+D) All traffic is encrypted, so trust is no longer needed
+= Encryption is part of it, but zero trust is about verifying access, not just protecting the channel.
+>> Zero trust: never trust, always verify; location on the network grants nothing.
+
+## D3-005 | 3.1 | 2
+Q: A company runs its application on infrastructure as a service (IaaS) virtual machines. Who is responsible for patching the guest operating system?
+A) The cloud provider, because it owns the hardware
+= In IaaS the provider secures the physical hosts and hypervisor, not the guest OS.
+B)* The customer
+= Correct. In IaaS the customer manages the operating system, middleware, applications and data on its VMs.
+C) Both, on a schedule the provider sets
+= The shared responsibility model gives this task to the customer alone.
+D) Neither, because the hypervisor isolates the guest
+= Isolation does not fix vulnerabilities inside the guest.
+>> Shared responsibility: the further up the stack you consume (IaaS → PaaS → SaaS), the less you manage yourself.
+
+## D3-006 | 3.1 | 2
+Q: An organization wants to combine SD-WAN networking with cloud-delivered security services such as a secure web gateway, CASB, zero trust network access and firewall as a service. What is this architecture called?
+A) Software-defined perimeter
+= SDP is an approach to zero trust access, one component that SASE can include.
+B) Network functions virtualization
+= NFV runs network functions as software on standard hardware; it is not a converged security service model.
+C) Virtual private cloud
+= A VPC is an isolated network inside a public cloud.
+D)* Secure access service edge (SASE)
+= Correct. SASE converges wide-area networking and security functions into a cloud-delivered service close to users.
+>> SASE = SD-WAN + cloud-delivered security (SWG, CASB, ZTNA, FWaaS), new in the 2024 outline.
+
+## D3-007 | 3.1 | 1
+Q: A router ships with remote administration turned off and a unique random administrator password printed on each unit. Which principle does this demonstrate?
+A)* Secure defaults
+= Correct. The out-of-the-box configuration is the secure one; users must choose to open things up.
+B) Defense in depth
+= One device's default settings are not layered defenses.
+C) Separation of duties
+= Nothing here is split between people.
+D) Security through obscurity
+= Nothing relies on hiding how the device works.
+>> Secure defaults: ship and deploy in the most secure state, and make opening up a deliberate choice.
+
+## D3-008 | 3.1 | 2
+Q: Which design principle reduces attack surface and makes a security mechanism easier to analyze and verify?
+A) Defense in depth with layered controls
+= Layering adds protection but also adds complexity.
+B) Open design
+= Open design means security should not depend on the design being secret.
+C)* Keep it simple and small
+= Correct. Simpler, smaller mechanisms have fewer flaws and can be reviewed thoroughly, which is the economy of mechanism principle.
+D) Complete mediation
+= Complete mediation checks every access; it does not by itself reduce complexity.
+>> Complexity is the enemy of security: keep mechanisms simple and small so they can be verified.
+
+## D3-009 | 3.1 | 3
+Q: In a new accounts payable system, any user with the "finance" role can both create a new vendor and approve payments to it. What is the BEST design change?
+A) Log every vendor creation and have a manager review the logs monthly
+= Logging detects fraud after the fact; the design still allows one person to commit it.
+B) Require all finance users to sign an annual code of conduct
+= A policy statement does not prevent the abuse the design allows.
+C) Limit the finance role to senior staff only
+= Seniority does not remove the conflict; one person can still complete the fraud.
+D)* Split vendor creation and payment approval into separate roles
+= Correct. Separation of duties enforced by the system means fraud would need collusion between two people.
+>> Design separation of duties into systems so no single role can complete a sensitive transaction end to end.
+
+## D3-010 | 3.2 | 1
+Q: In the Bell-LaPadula model, which property prevents a subject cleared for Secret from reading a Top Secret document?
+A)* The simple security property
+= Correct. "No read up": a subject cannot read data at a higher classification than its clearance.
+B) The star (*) property
+= The star property is "no write down".
+C) The simple integrity property
+= That is a Biba property, concerned with integrity.
+D) The discretionary security property
+= That property uses an access matrix for discretionary access, not levels.
+>> Bell-LaPadula protects confidentiality: no read up (simple security), no write down (star property).
+
+## D3-011 | 3.2 | 2
+Q: A user logged in at Secret tries to save a file to a share classified Confidential. Bell-LaPadula blocks the write. Why?
+A) The user might corrupt higher-integrity data
+= Integrity is Biba's concern. Bell-LaPadula is about confidentiality.
+B)* Writing down could leak Secret information to a lower level
+= Correct. The star property, "no write down", prevents information flowing from a higher classification to a lower one.
+C) The share has not been accredited
+= Accreditation is not part of the model's rules.
+D) Users may never write files at any level other than their own
+= That is the strong star property, which is stricter than what standard Bell-LaPadula requires.
+>> The star property stops leaks: a subject cannot write to a lower classification.
+
+## D3-012 | 3.2 | 2
+Q: A plant's control system must ensure that readings from an untrusted network cannot contaminate high-integrity control records. Which model's rules fit this requirement?
+A) Bell-LaPadula
+= Bell-LaPadula protects confidentiality, not integrity.
+B) Brewer-Nash
+= Brewer-Nash prevents conflicts of interest.
+C)* Biba
+= Correct. Biba prevents reading down (low-integrity data influencing a subject) and writing up (a subject corrupting higher-integrity objects).
+D) Take-Grant
+= Take-Grant models how rights are passed between subjects.
+>> Biba protects integrity: no read down, no write up.
+
+## D3-013 | 3.2 | 2
+Q: Users may change financial records only through approved programs that enforce business rules, never directly. The records are checked regularly by verification procedures. Which model is this?
+A) Bell-LaPadula
+= Bell-LaPadula is about classification levels and confidentiality.
+B) Graham-Denning
+= Graham-Denning defines protection rights for creating and deleting subjects and objects.
+C) Brewer-Nash
+= Brewer-Nash is about conflicts of interest.
+D)* Clark-Wilson
+= Correct. Clark-Wilson uses the access triple of subject, program (transformation procedure) and object, with well-formed transactions and separation of duties.
+>> Clark-Wilson: subjects reach constrained data only through transformation procedures; integrity verification procedures check it.
+
+## D3-014 | 3.2 | 1
+Q: A consulting firm must stop an analyst who has worked on one bank's data from accessing a competing bank's data. Which model addresses this?
+A)* Brewer-Nash
+= Correct. The "Chinese wall" model changes access dynamically based on what a subject has already accessed, preventing conflicts of interest.
+B) Biba
+= Biba is about integrity levels.
+C) Bell-LaPadula
+= Bell-LaPadula is about fixed classification levels.
+D) Lattice-based access control
+= Lattices define fixed bounds between levels, not history-based restrictions.
+>> Brewer-Nash (Chinese wall) prevents conflicts of interest based on what you have already accessed.
+
+## D3-015 | 3.2 | 2
+Q: Which security model uses a directed graph to show how rights can be passed from one subject to another?
+A) Graham-Denning
+= Graham-Denning defines eight protection rights but is not built on a directed graph.
+B)* Take-Grant
+= Correct. Take-Grant uses take, grant, create and remove rules over a directed graph to determine how rights can propagate.
+C) Clark-Wilson
+= Clark-Wilson is about integrity through well-formed transactions.
+D) State machine
+= The state machine model requires the system to be secure in every state; it does not model rights transfer as a graph.
+>> Take-Grant models rights propagation as a directed graph; Graham-Denning defines eight protection rights.
+
+## D3-016 | 3.2 | 3
+Q: Which model requires that the actions of subjects at a higher security level cannot be observed by, or affect, subjects at a lower level, which helps prevent covert channels and inference?
+A) Information flow
+= Information flow models track and restrict flows between levels; noninterference is the specific "no observable effect" requirement.
+B) Harrison-Ruzzo-Ullman
+= HRU addresses whether rights can be leaked when subjects and objects are created and modified.
+C)* Noninterference
+= Correct. Noninterference holds when high-level activity has no effect a low-level subject could observe.
+D) Lattice
+= A lattice defines ordered security levels and their bounds.
+>> Noninterference: high-level actions must not be observable at lower levels, addressing covert channels.
+
+## D3-017 | 3.2 | 3
+Q: Under which Bell-LaPadula rule can a subject read and write only at its own security level?
+A) The simple security property
+= That rule only forbids reading up.
+B) The tranquility principle
+= Tranquility concerns whether security labels may change during operation.
+C) The discretionary security property
+= That rule uses an access matrix for discretionary permissions.
+D)* The strong star property
+= Correct. The strong star property restricts both reading and writing to the subject's own level.
+>> Strong star: read and write only at your own level. Star: no write down.
+
+## D3-018 | 3.3 | 2
+Q: Under the Common Criteria, what describes the security requirements a group of consumers want for a category of products, such as firewalls?
+A)* A protection profile
+= Correct. A protection profile states implementation-independent security needs for a type of product.
+B) A security target
+= A security target is written by the vendor to describe the security of a specific product being evaluated.
+C) The target of evaluation
+= The TOE is the product or system being evaluated.
+D) An evaluation assurance level
+= The EAL is the depth of evaluation, not a statement of requirements.
+>> Common Criteria: protection profile (what consumers want), security target (what the vendor claims), TOE (what is evaluated), EAL (how deeply).
+
+## D3-019 | 3.3 | 2
+Q: Which Common Criteria evaluation assurance level means the product's design has been formally verified and tested?
+A) EAL1
+= EAL1 is functionally tested, the lowest level.
+B) EAL4
+= EAL4 is methodically designed, tested and reviewed.
+C) EAL5
+= EAL5 is semiformally designed and tested.
+D)* EAL7
+= Correct. EAL7 is formally verified design and tested, the highest level.
+>> EAL1 functionally tested → EAL4 methodically designed, tested and reviewed → EAL7 formally verified design and tested.
+
+## D3-020 | 3.3 | 2
+Q: A security architect is choosing controls for a new customer portal. What should the architect do FIRST?
+A) Select controls from the most recent industry benchmark for portals
+= Benchmarks help, but controls should answer this system's requirements.
+B)* Define its security requirements from data, risks and obligations
+= Correct. Controls are selected to meet requirements derived from classification, risk assessment and legal or contractual obligations.
+C) Buy the controls the organization already licenses
+= Using existing tools may be efficient but does not show they meet the need.
+D) Ask the developers which controls they prefer
+= Developer input is valuable, but preference is not a basis for selection.
+>> Select controls based on security requirements, which come from data classification, risk and obligations.
+
+## D3-021 | 3.3 | 2
+Q: What is the formal management decision to accept a system's residual risk and allow it to operate?
+A) Certification of the controls
+= Certification is the technical evaluation of a system's security controls.
+B) Validation by stakeholders
+= Validation confirms the system meets stakeholders' needs.
+C)* Authorization (accreditation)
+= Correct. An authorizing official grants authority to operate, accepting the residual risk on behalf of the organization.
+D) Verification against the design
+= Verification confirms the system was built to its specification.
+>> Certification (technical evaluation) informs authorization (management's acceptance of risk to operate).
+
+## D3-022 | 3.4 | 1
+Q: Which component on a computer's motherboard stores keys for full-disk encryption and records measurements of the boot process?
+A) A hardware security module
+= HSMs are dedicated appliances or cards for enterprise key management, not motherboard chips.
+B)* A Trusted Platform Module
+= Correct. The TPM is a secure cryptoprocessor that can seal keys to a known-good boot state.
+C) The BIOS setup password
+= A firmware password restricts setup changes; it does not store encryption keys.
+D) The CPU cache
+= Cache is ordinary fast memory with no security function.
+>> TPM: on-board chip for key storage, sealing and boot measurement (attestation).
+
+## D3-023 | 3.4 | 2
+Q: What prevents one process from reading or altering another process's memory?
+A) Hyperthreading
+= Hyperthreading improves CPU utilization and has nothing to do with isolation.
+B) Disk encryption
+= Disk encryption protects data at rest, not memory at run time.
+C)* Memory protection that isolates each process
+= Correct. The operating system and hardware give each process its own address space and block access to others.
+D) Running every application process in user mode (ring 3)
+= User mode limits access to privileged instructions, but separate address spaces are what keep processes apart.
+>> Memory protection and process isolation keep processes from interfering with each other.
+
+## D3-024 | 3.4 | 1
+Q: In the protection ring model, which ring holds the most privileged code, such as the operating system kernel?
+A)* Ring 0
+= Correct. Ring 0 is the most privileged level, used by the kernel.
+B) Ring 1
+= Rings 1 and 2 are intermediate levels, sometimes used for drivers.
+C) Ring 2
+= Ring 2 is an intermediate level.
+D) Ring 3
+= Ring 3 is the least privileged level, where user applications run.
+>> Lower ring number = more privilege. Kernel in ring 0, applications in ring 3.
+
+## D3-025 | 3.4 | 2
+Q: Which concept mediates every access by subjects to objects and must be tamperproof, always invoked and small enough to be verified?
+A) The security perimeter
+= The perimeter separates the trusted computing base from the rest of the system.
+B) The trusted computing base
+= The TCB is all the protection mechanisms together; the reference monitor is the access-mediating concept within it.
+C) The access control list
+= An ACL is data the reference monitor consults.
+D)* The reference monitor
+= Correct. The security kernel implements the reference monitor concept.
+>> Reference monitor: complete mediation, tamperproof, verifiable. The security kernel implements it.
+
+## D3-026 | 3.5 | 3
+Q: Users may query average salaries by department. One department has a single employee, so a user can learn that person's salary. Which control BEST addresses this?
+A) Encrypting the salary column
+= Encryption at rest does not stop authorized queries from revealing the result.
+B) Polyinstantiation
+= Polyinstantiation creates multiple records at different classification levels; it does not fix small result sets.
+C) Restricting the database to read-only access
+= Read-only access still allows the inference.
+D)* Suppressing results drawn from too few records
+= Correct. Cell suppression or minimum query-set sizes stop aggregate results from exposing individuals.
+>> Inference attacks deduce sensitive data from permitted queries; counter with cell suppression, query-size limits and noise.
+
+## D3-027 | 3.5 | 2
+Q: A database holds two records with the same key: one visible to cleared users with the true cargo of a ship, and a cover story visible to everyone else. What is this technique?
+A) Aggregation
+= Aggregation is the problem of combining data into something more sensitive.
+B)* Polyinstantiation
+= Correct. Polyinstantiation creates multiple versions of a record at different classification levels to prevent inference.
+C) Data masking
+= Masking hides part of a value but does not create alternative records.
+D) Normalization
+= Normalization organizes tables to reduce redundancy.
+>> Polyinstantiation prevents inference by giving lower levels a different version of the record.
+
+## D3-028 | 3.5 | 2
+Q: A manufacturer's industrial control system runs legacy software that cannot easily be patched. What should be done FIRST to reduce risk?
+A) Install endpoint antivirus on the controllers
+= Many controllers cannot run agents, and agents can disrupt real-time operations.
+B) Replace all controllers with current models
+= That may be the long-term plan, but it is slow and costly.
+C)* Segment the ICS network from the corporate network and restrict remote access
+= Correct. Zones and tightly controlled conduits, as in ISA/IEC 62443, limit who and what can reach the controllers.
+D) Scan the controllers weekly with an aggressive vulnerability scanner
+= Active scanning can crash fragile industrial devices.
+>> Protect ICS with segmentation, strict remote access and monitoring; availability and safety come first there.
+
+## D3-029 | 3.5 | 1
+Q: What is the MOST serious security risk specific to virtualization?
+A)* VM escape from a guest to the hypervisor
+= Correct. Escaping a VM can compromise the hypervisor and every other guest on the host.
+B) VM sprawl, with forgotten and unpatched guests
+= Sprawl is a management problem that leads to unpatched VMs, but escape is the more severe risk.
+C) Higher licensing costs for guest operating systems
+= Cost is not a security risk.
+D) Slower disk performance from shared storage
+= Performance is not a security risk.
+>> VM escape threatens the hypervisor and all co-hosted guests; keep hypervisors patched and minimal.
+
+## D3-030 | 3.5 | 2
+Q: What is the key security difference between containers and virtual machines?
+A) Containers cannot use encryption
+= Containers can use encryption like any other workload.
+B) Virtual machines cannot run in the cloud
+= VMs are the basis of most cloud IaaS.
+C) Containers are always more secure because they are smaller
+= Smaller images help, but the shared kernel weakens isolation.
+D)* Containers share the host operating system kernel
+= Correct. A kernel flaw or misconfiguration can let one container affect the host or others, so isolation is weaker than between VMs.
+>> Containers share the host kernel: harden the host, run as non-root, use minimal images, and isolate sensitive workloads.
+
+## D3-031 | 3.5 | 2
+Q: A team builds an application on serverless functions (FaaS). What remains the customer's security responsibility?
+A) Patching the operating system under the function runtime
+= The provider manages the underlying servers and runtime.
+B) Physical security of the provider's data centers
+= That is always the provider's job.
+C)* The function code and the permissions it is granted
+= Correct. Customers secure their code, dependencies, configuration and the identity permissions their functions use.
+D) Scaling the servers to handle load
+= Automatic scaling is part of the serverless service.
+>> In serverless, you own code, dependencies, configuration and IAM permissions; over-permissive function roles are a common flaw.
+
+## D3-032 | 3.5 | 1
+Q: Facilities installed smart thermostats on the corporate network. They use default credentials and get no security updates. What is the BEST response?
+A)* Isolate them on their own segment and change the defaults
+= Correct. Isolation limits what a compromised device can reach, and changing defaults closes the easiest way in.
+B) Leave them as they are, since thermostats hold no sensitive data
+= Compromised IoT devices are footholds into the network and can join botnets.
+C) Install antivirus on each thermostat
+= Most IoT devices cannot run security agents.
+D) Allow them only outbound access to the internet
+= That does not protect the internal network from the devices.
+>> Treat IoT devices as untrusted: segment them, change defaults and monitor their traffic.
+
+## D3-033 | 3.5 | 3
+Q: How should calls between internal services in a microservices application BEST be secured?
+A) Trust any call that originates inside the cluster's private network
+= Network location is not identity; one compromised service could then call any other.
+B) Use a single shared API key for all internal services
+= A shared key gives every service the same identity and cannot express least privilege.
+C)* Mutual TLS with per-service identities and per-call authorization
+= Correct. Each service authenticates its peer and is authorized only for the calls it needs, applying zero trust inside the application.
+D) Rely on the external API gateway to authenticate users
+= Gateway authentication protects the edge, not service-to-service traffic.
+>> Microservices: authenticate and authorize every service call (mTLS, service identities), not just the edge.
+
+## D3-034 | 3.5 | 2
+Q: Thousands of edge devices receive firmware updates over the internet. Which control is MOST important for the update process?
+A) Compressing update packages to reduce bandwidth costs
+= Efficiency, not security.
+B)* Signature verification of each image before install
+= Correct. Devices check a digital signature on each firmware image, so only authentic, unmodified firmware from the manufacturer is installed.
+C) Scheduling updates at night to avoid service disruption
+= Scheduling reduces disruption but does nothing against malicious firmware.
+D) Serving updates from a hidden, unpublished download URL
+= Obscurity is not protection.
+>> Embedded and edge devices must accept only signed, verified firmware, ideally anchored in a hardware root of trust.
+
+## D3-035 | 3.5 | 2
+Q: A desktop application connects directly to the central database using a privileged account whose password is stored in a configuration file on every workstation. What is the BEST fix?
+A) Encrypt the configuration file with a key stored next to it
+= If the key sits beside the file, an attacker gets both.
+B) Make the configuration file read-only
+= Read-only still lets anyone read the password.
+C) Change the password every month
+= Rotation shortens exposure but every workstation still holds a privileged secret.
+D)* Put a server-side tier between the clients and the database
+= Correct. Clients should never hold privileged credentials; a server-side tier authenticates each user and enforces authorization.
+>> Client-based systems are untrusted: keep secrets and authorization decisions on the server.
+
+## D3-036 | 3.5 | 1
+Q: In which cloud service model does the customer have the LEAST responsibility for security?
+A) Infrastructure as a service
+= In IaaS the customer manages the OS and everything above it.
+B) Platform as a service
+= In PaaS the customer still manages its applications and their configuration.
+C)* Software as a service
+= Correct. In SaaS the provider runs the application; the customer mainly manages its data, users and access.
+D) On-premises private cloud
+= In a private cloud the organization is responsible for everything.
+>> Even in SaaS, the customer keeps responsibility for its data, identities and access configuration.
+
+## D3-037 | 3.6 | 2
+Q: Twenty users must each be able to communicate privately with every other user using symmetric encryption. How many unique keys are needed?
+A)* 190
+= Correct. Symmetric pairs need n(n − 1)/2 keys: 20 × 19 / 2 = 190.
+B) 20
+= One key per user would let users read each other's traffic.
+C) 40
+= 40 is the number of keys for asymmetric encryption: two per user.
+D) 380
+= 380 counts each pair twice; n(n − 1) must be divided by 2.
+>> Symmetric keys for n users: n(n − 1)/2. Asymmetric: 2n.
+
+## D3-038 | 3.6 | 1
+Q: How many keys are needed in total for 50 users to communicate securely using asymmetric encryption?
+A) 50
+= Each user needs a key pair, not a single key.
+B)* 100
+= Correct. Each user has one public and one private key: 2 × 50 = 100.
+C) 1,225
+= 1,225 is the symmetric figure, 50 × 49 / 2.
+D) 2,500
+= That is 50 squared, which has no meaning here.
+>> Asymmetric cryptography scales: two keys per user, whatever the number of conversations.
+
+## D3-039 | 3.6 | 1
+Q: Alice wants to send Bob a message that only Bob can read, using asymmetric cryptography. Which key should she encrypt it with?
+A) Alice's private key
+= Anyone with Alice's public key could decrypt that, so it provides a signature, not confidentiality.
+B) Alice's public key
+= Only Alice could decrypt it.
+C)* Bob's public key
+= Correct. Only Bob's private key can decrypt a message encrypted with his public key.
+D) Bob's private key
+= Alice does not have it; only Bob should.
+>> Confidentiality: encrypt with the recipient's public key. Signature: sign with the sender's private key.
+
+## D3-040 | 3.6 | 2
+Q: How is a digital signature created?
+A) The sender encrypts the whole message with the recipient's public key
+= That provides confidentiality, not a signature.
+B) The sender encrypts the message with a shared secret key
+= That is symmetric encryption, which cannot prove which party created it.
+C) The recipient hashes the message and sends the hash back to the sender
+= The recipient does not create the signature.
+D)* The sender encrypts a hash of the message with the sender's private key
+= Correct. The recipient decrypts the hash with the sender's public key and compares it to their own hash of the message.
+>> Sign: hash, then encrypt the hash with your private key. Verify: decrypt with the sender's public key and compare hashes.
+
+## D3-041 | 3.6 | 2
+Q: An application encrypts a bitmap image with AES in ECB mode. The outline of the picture is still visible in the ciphertext. Why?
+A) AES has a known weakness when encrypting image files
+= AES itself is sound; the mode is the problem.
+B)* Identical input blocks give identical output blocks
+= Correct. ECB encrypts each block independently, with no chaining or randomization, so repeating patterns in the input show through in the output.
+C) The key was too short for the size of the image
+= Key length does not create visible patterns.
+D) The initialization vector was reused for every block
+= ECB does not use an IV at all.
+>> Avoid ECB: it leaks patterns. Use modes with IVs or nonces, preferably authenticated ones such as GCM.
+
+## D3-042 | 3.6 | 2
+Q: Which AES mode provides both confidentiality and integrity (authenticated encryption)?
+A)* Galois/Counter Mode (GCM)
+= Correct. GCM combines counter-mode encryption with an authentication tag that detects tampering.
+B) Electronic Codebook (ECB)
+= ECB provides weak confidentiality and no integrity.
+C) Cipher Block Chaining (CBC)
+= CBC provides confidentiality only and needs a separate MAC for integrity.
+D) Output Feedback (OFB)
+= OFB is a stream mode with no built-in integrity.
+>> Authenticated encryption (AEAD) modes such as GCM give confidentiality and integrity together.
+
+## D3-043 | 3.6 | 1
+Q: Why are random salts added to passwords before hashing them?
+A) To make the hash function run faster
+= Salts do not speed up hashing.
+B) To allow passwords to be decrypted if a user forgets one
+= Hashes are one-way; salting does not make them reversible.
+C)* To defeat precomputed attacks such as rainbow tables
+= Correct. A unique salt makes identical passwords hash differently, so precomputed tables are useless and each hash must be attacked separately.
+D) To shorten stored hashes
+= Salting makes stored values slightly longer, not shorter.
+>> Salt every password with a unique random value and use a slow password hashing function.
+
+## D3-044 | 3.6 | 1
+Q: Why does TLS use asymmetric cryptography to establish a session key and then symmetric encryption for the data?
+A)* Symmetric is faster; asymmetric solves key exchange
+= Correct. This hybrid approach combines asymmetric key establishment with fast symmetric bulk encryption.
+B) Asymmetric algorithms are unable to encrypt bulk data at all
+= It can, but it is slow and limited in message size.
+C) Symmetric encryption provides nonrepudiation
+= Symmetric encryption does not provide nonrepudiation.
+D) Regulations require two different algorithm types in TLS
+= No regulation drives this design; performance and key distribution do.
+>> Hybrid cryptography: asymmetric to agree or exchange keys, symmetric for bulk data.
+
+## D3-045 | 3.6 | 3
+Q: A web server attaches a recent, CA-signed certificate status response to its TLS handshake. What does this OCSP stapling achieve?
+A) It lets the server skip renewing its certificate each year
+= Stapling has nothing to do with renewal.
+B) It removes the need for any certificate revocation
+= Revocation still exists; stapling is a better way to deliver its status.
+C) It encrypts the certificate so attackers cannot read it
+= Certificates are public and are not encrypted by stapling.
+D)* Clients learn revocation status without querying the CA
+= Correct. The server fetches and caches the signed OCSP response, so clients skip their own lookup: faster, and the CA does not learn which sites they visit.
+>> Revocation checking: CRLs (periodic lists), OCSP (online queries), OCSP stapling (the server supplies the signed response).
+
+## D3-046 | 3.6 | 2
+Q: Copies of encryption keys are held by a trusted third party and released only under defined conditions, such as a court order. What is this?
+A) Key stretching
+= Key stretching strengthens weak keys such as passwords.
+B) Key rotation
+= Rotation replaces keys on a schedule.
+C)* Key escrow
+= Correct. Escrow places keys with a third party for recovery or lawful access under agreed conditions.
+D) Key clustering
+= Key clustering is a weakness where different keys produce the same ciphertext.
+>> Key escrow keeps copies of keys with a trusted party; M-of-N control can protect recovery.
+
+## D3-047 | 3.6 | 2
+Q: Why do organizations limit how long a single encryption key is used (its cryptoperiod)?
+A) Keys automatically stop working after about a year
+= Keys do not expire on their own.
+B) Longer keys are slower, so shorter use periods save time
+= Cryptoperiod is about time in use, not key length.
+C) Regulations ban reusing any key for more than one message
+= Regulations may set limits, but the reason is risk.
+D)* To limit exposure if the key is compromised
+= Correct. Rotating keys bounds how much data a compromised key exposes and how much ciphertext is available for cryptanalysis.
+>> Key management includes generation, distribution, storage, rotation, revocation and destruction.
+
+## D3-048 | 3.6 | 2
+Q: Which cryptographic algorithms are MOST threatened by a large-scale quantum computer running Shor's algorithm?
+A)* RSA, Diffie-Hellman and ECC
+= Correct. Shor's algorithm efficiently solves the factoring and discrete logarithm problems these depend on.
+B) Symmetric ciphers such as AES-256 and ChaCha20
+= Symmetric ciphers face only Grover's algorithm, which roughly halves effective key strength.
+C) Hash functions such as SHA-256 and SHA-3
+= Shor's algorithm does not apply to hash functions; Grover's algorithm only weakens them somewhat.
+D) One-time pads used with truly random keys
+= A properly used one-time pad is information-theoretically secure.
+>> Quantum threat: Shor breaks today's public-key cryptography; Grover only weakens symmetric keys and hashes.
+
+## D3-049 | 3.6 | 3
+Q: A company wants its symmetric encryption to remain strong if large quantum computers arrive. What is the BEST action?
+A) Replace AES with RSA-4096
+= RSA is the algorithm quantum computers would break.
+B)* Use AES-256 rather than AES-128
+= Correct. Grover's algorithm roughly halves effective key strength, so AES-256 still offers about 128-bit security.
+C) Switch to 3DES with three keys
+= 3DES is deprecated and weaker than AES.
+D) Double-encrypt with AES-128
+= Double encryption is vulnerable to meet-in-the-middle attacks and adds little over a longer key.
+>> Against quantum attack: use 256-bit symmetric keys and migrate public-key algorithms to post-quantum ones.
+
+## D3-050 | 3.6 | 3
+Q: Customer records must stay confidential for fifteen years. Analysts warn that adversaries may be recording today's encrypted traffic to decrypt later with quantum computers. What should the organization prioritize?
+A) Longer RSA keys, such as 8,192 bits, for TLS key exchange
+= Longer RSA keys do not resist Shor's algorithm.
+B) Shorter certificate lifetimes for all public web servers
+= Short-lived certificates do not protect recorded traffic.
+C)* Post-quantum or hybrid key establishment, such as ML-KEM
+= Correct. "Harvest now, decrypt later" targets key exchange, so moving it to ML-KEM (FIPS 203) or a hybrid scheme comes first; so long-lived secrets need quantum-resistant key establishment first.
+D) Disabling TLS session resumption to force fresh handshakes
+= Session resumption is unrelated to quantum risk.
+>> Harvest now, decrypt later: migrate key establishment for long-lived data first. NIST FIPS 203 (ML-KEM), 204 (ML-DSA), 205 (SLH-DSA).
+
+## D3-051 | 3.6 | 3
+Q: What does quantum key distribution (QKD) provide?
+A) Encryption that cannot be broken by any computer
+= QKD distributes keys; the encryption algorithm used with those keys is separate.
+B) Post-quantum digital signatures for software updates
+= QKD provides no signatures and still needs separate authentication.
+C) Faster key exchange over existing internet routes
+= QKD needs special hardware and dedicated links and is distance-limited.
+D)* Key exchange in which eavesdropping can be detected
+= Correct. Measuring quantum states changes them, so an interceptor reveals itself.
+>> QKD detects eavesdropping during key exchange; it needs special links and authenticated channels, and is named in the 2024 outline.
+
+## D3-052 | 3.6 | 1
+Q: Which hash function property means it is infeasible to find any two different inputs that produce the same output?
+A) Preimage resistance
+= Preimage resistance means you cannot find an input that produces a given hash.
+B)* Collision resistance
+= Correct. Collision resistance means you cannot find any pair of inputs with the same hash.
+C) The avalanche effect
+= The avalanche effect means a small change in input changes the output a lot.
+D) Determinism
+= Determinism means the same input always gives the same output.
+>> Hash properties: preimage resistance, second-preimage resistance, collision resistance.
+
+## D3-053 | 3.6 | 1
+Q: Why is elliptic curve cryptography popular for mobile and IoT devices?
+A) It is a symmetric algorithm and therefore faster
+= ECC is asymmetric.
+B) It is immune to quantum computers
+= ECC is as vulnerable to Shor's algorithm as RSA.
+C)* It provides comparable security with much shorter keys
+= Correct. A 256-bit ECC key offers security comparable to a roughly 3,072-bit RSA key, saving computation, power and bandwidth.
+D) It requires no key management
+= Every asymmetric system requires key management.
+>> ECC: equivalent strength to RSA with far smaller keys, which suits constrained devices.
+
+## D3-054 | 3.7 | 1
+Q: An attacker has several messages in both plaintext and encrypted form and uses them to work out the key. What type of attack is this?
+A)* Known plaintext
+= Correct. The attacker has matching plaintext and ciphertext pairs but did not choose them.
+B) Ciphertext only
+= In a ciphertext-only attack, the attacker has only encrypted messages.
+C) Chosen plaintext
+= In chosen plaintext, the attacker picks the plaintexts and gets them encrypted.
+D) Brute force
+= Brute force tries every possible key without exploiting known pairs.
+>> Cryptanalysis attacks differ by what the attacker has: ciphertext only, known plaintext, chosen plaintext, chosen ciphertext.
+
+## D3-055 | 3.7 | 2
+Q: An attacker can submit chosen encrypted messages to a server and observe the decrypted results or error messages. What type of attack does this enable?
+A) Known plaintext
+= In known plaintext, the attacker has pairs but cannot submit their own.
+B) Frequency analysis
+= Frequency analysis studies letter patterns in ciphertext.
+C) Birthday attack
+= Birthday attacks find hash collisions.
+D)* Chosen ciphertext
+= Correct. Choosing ciphertexts and seeing the results, including padding oracle errors, is a chosen-ciphertext attack.
+>> Chosen-ciphertext attacks exploit decryption oracles; uniform error handling and authenticated encryption defeat them.
+
+## D3-056 | 3.7 | 1
+Q: A researcher measures how long a smart card takes to process different inputs and uses the differences to recover its private key. What type of attack is this?
+A) A brute-force key search
+= The researcher is not trying every key.
+B)* A timing (side-channel) attack
+= Correct. Side-channel attacks use physical effects such as time, power or radiation rather than the algorithm's math.
+C) A replay of captured card messages
+= Replay resends captured messages.
+D) A dictionary attack on the card PIN
+= Dictionary attacks guess passwords from word lists.
+>> Side channels (timing, power, electromagnetic emissions) attack the implementation; use constant-time code and shielding.
+
+## D3-057 | 3.7 | 2
+Q: An attacker captures a Windows administrator's NTLM password hash from memory and uses it to log on to other servers without ever cracking it. What is this attack?
+A) Rainbow table attack
+= Rainbow tables recover the password from the hash; here the hash is used as is.
+B) Kerberoasting
+= Kerberoasting cracks service-ticket hashes offline.
+C)* Pass the hash
+= Correct. NTLM accepts the hash itself as proof, so a stolen hash works like the password.
+D) Credential stuffing
+= Credential stuffing tries leaked username and password pairs on other sites.
+>> Counter pass-the-hash: limit privileged logons, use unique local admin passwords, protect credentials in memory and reduce NTLM use.
+
+## D3-058 | 3.7 | 3
+Q: Investigators find that attackers forged Kerberos ticket-granting tickets that are valid for any account in the domain. What must be done to invalidate the forged tickets?
+A) Reset the passwords of all user accounts
+= User password resets do not invalidate TGTs signed with the KRBTGT key.
+B) Reboot all domain controllers
+= A reboot does not change the key used to sign tickets.
+C) Disable NTLM across the domain
+= This is a Kerberos attack; NTLM is unrelated.
+D)* Reset the KRBTGT account password twice
+= Correct. A golden ticket is signed with the KRBTGT key. Resetting it twice, allowing replication between resets, removes both the current and previous keys.
+>> Golden ticket: forged TGTs using the KRBTGT hash. Remediate by resetting KRBTGT twice and finding how the attacker got domain admin.
+
+## D3-059 | 3.7 | 2
+Q: Why does a birthday attack against a hash function succeed much faster than trying to match one specific hash?
+A) Hash functions are reversible with enough computing power
+= Hash functions are one-way; the birthday attack does not reverse them.
+B) It only works on salted hashes
+= Salting is irrelevant to the birthday bound.
+C) It exploits weak random number generators
+= The birthday paradox is about probability, not weak randomness.
+D)* Any collision will do, needing roughly square-root effort
+= Correct. Finding any two inputs with the same hash is far easier than matching a given one: collisions appear after roughly 2^(n/2) attempts for an n-bit hash, so longer hashes are needed for collision resistance.
+>> Birthday attacks target collision resistance; an n-bit hash gives about n/2 bits of collision security.
+
+## D3-060 | 3.7 | 1
+Q: An analyst notices that the letter "X" appears in a ciphertext about as often as "E" appears in English text. Which technique is the analyst using?
+A)* Frequency analysis
+= Correct. Frequency analysis matches symbol frequencies in ciphertext to known patterns in the language, breaking simple substitution ciphers.
+B) Differential cryptanalysis
+= Differential cryptanalysis studies how input differences affect output differences in block ciphers.
+C) Fault injection
+= Fault injection induces errors in hardware to leak secrets.
+D) A meet-in-the-middle attack
+= That attack targets double encryption.
+>> Frequency analysis defeats simple substitution ciphers; modern ciphers resist it through confusion and diffusion.
+
+## D3-061 | 3.8 | 2
+Q: Landscaping is kept low and lighting is placed so that staff can easily see anyone approaching the building entrance. Which crime prevention through environmental design (CPTED) strategy is this?
+A) Natural access control
+= Natural access control guides people toward entrances using design elements such as paths and planters.
+B)* Natural surveillance
+= Correct. Natural surveillance makes intruders visible to legitimate occupants, which deters crime.
+C) Territorial reinforcement
+= Territorial reinforcement signals ownership of space, for example with fences or signs.
+D) Target hardening
+= Target hardening means adding locks and barriers, which is not the CPTED approach here.
+>> CPTED: natural access control, natural surveillance, territorial reinforcement.
+
+## D3-062 | 3.8 | 1
+Q: Where in a multi-story office building is the BEST place for a data center?
+A) The basement, for natural cooling
+= Basements are prone to flooding.
+B) The top floor, away from foot traffic
+= Top floors are exposed to roof leaks, weather and fire spreading upward.
+C) Next to the main lobby, for easy deliveries
+= High-traffic areas increase exposure to unauthorized access.
+D)* The core of a middle floor
+= Correct. The center of a middle floor avoids flooding, roof damage and exterior attack, and is easier to secure.
+>> Locate data centers away from exterior walls, water and heavy foot traffic.
+
+## D3-063 | 3.8 | 3
+Q: While designing a new facility, a team maps the relationships between mission-critical applications, processes and operations and every supporting element they depend on, such as power, cooling and network paths. What is this activity called?
+A) Business impact analysis
+= A BIA measures the impact of disruption on business functions; it does not map supporting infrastructure.
+B)* Critical path analysis
+= Correct. Critical path analysis identifies the dependencies that mission-critical functions need, guiding facility design.
+C) Site survey
+= A site survey assesses a location's physical characteristics.
+D) Fault tree analysis
+= Fault trees model combinations of failures that lead to an event.
+>> Critical path analysis maps mission-critical functions to all supporting elements, including technology convergence points.
+
+## D3-064 | 3.9 | 1
+Q: A fire breaks out in energized electrical equipment. Which suppression method is appropriate?
+A) A pressurized water extinguisher
+= Water conducts electricity and risks electrocution.
+B) Soda acid
+= Soda acid is water-based and unsuitable for electrical fires.
+C)* Carbon dioxide or a clean agent
+= Correct. Non-conductive agents such as CO2 or clean agents suppress electrical fires without conducting current.
+D) Dry powder for metals
+= Dry powder is meant for combustible metal fires.
+>> Fire classes (U.S.): A common combustibles (water, foam), B flammable liquids (CO2, foam), C electrical (CO2, clean agent), D metals (dry powder), K cooking oils (wet chemical).
+
+## D3-065 | 3.9 | 2
+Q: Which water sprinkler system is generally BEST for a data center?
+A) Wet pipe
+= Wet pipes are always full of water, so a damaged pipe or head floods equipment at once.
+B) Dry pipe
+= Dry pipe systems are meant for areas that freeze, and they still discharge after one trigger.
+C) Deluge
+= Deluge systems open all heads at once and dump large volumes of water.
+D)* Pre-action
+= Correct. Pre-action fills the pipes only after an alarm and discharges only after a head also fuses, giving time to stop false discharges.
+>> Pre-action sprinklers are preferred for data centers: two triggers before water flows.
+
+## D3-066 | 3.9 | 1
+Q: The humidity in a server room has fallen well below the recommended range. What is the main risk?
+A) Corrosion of components
+= Corrosion results from humidity that is too high.
+B)* Static electricity discharges
+= Correct. Dry air allows static to build up, which can damage electronic components.
+C) Condensation on the equipment
+= Condensation occurs at high humidity or around the dew point.
+D) Faster drive wear
+= Drive wear is not the main effect of low humidity.
+>> Keep humidity in range: too low causes static; too high causes condensation and corrosion.
+
+## D3-067 | 3.9 | 2
+Q: A facility experiences a prolonged period of low voltage from the utility. What is this called?
+A) Sag
+= A sag is a momentary low voltage.
+B) Fault
+= A fault is a momentary loss of power.
+C)* Brownout
+= Correct. A brownout is prolonged low voltage.
+D) Surge
+= A surge is prolonged high voltage.
+>> Power issues: fault (brief loss), blackout (long loss), sag (brief low), brownout (long low), spike (brief high), surge (long high).
+
+## D3-068 | 3.9 | 1
+Q: When the utility supply fails, what keeps servers running during the seconds it takes a backup generator to start?
+A) A surge protector
+= Surge protectors block voltage spikes but supply no power.
+B) A redundant power supply in each server
+= Redundant supplies protect against a failed supply unit, not a lost feed.
+C)* An uninterruptible power supply (UPS)
+= Correct. A UPS bridges the gap with battery power until the generator takes over.
+D) A power distribution unit
+= A PDU distributes power; it does not store it.
+>> UPS for seconds to minutes; generators for long outages; together they keep the data center powered.
+
+## D3-069 | 3.9 | 2
+Q: For convenience, the evidence storage room is open to every analyst in the security operations center. What is the main concern?
+A) The room may run out of space
+= Capacity is not the security concern.
+B) Analysts may not enjoy the extra responsibility
+= Not a security concern.
+C)* Broad access undermines the evidence's chain of custody
+= Correct. Evidence storage must be restricted and access-logged so the integrity of every item can be demonstrated in court.
+D) The room's fire suppression may damage evidence
+= Suppression should be appropriate, but the larger issue is access control.
+>> Evidence storage: restricted, logged access and a documented chain of custody.
+
+## D3-070 | 3.9 | 1
+Q: Which practice is MOST important for the security of wiring closets (intermediate distribution frames)?
+A) Using them to store spare equipment so it is close at hand
+= Using closets as storerooms brings in more people and fire risk.
+B) Leaving the doors open for ventilation
+= Open doors let anyone tamper with network connections.
+C) Labeling them clearly for visitors
+= Clear external labeling helps attackers find them.
+D)* Keeping them locked, with restricted and logged access
+= Correct. Wiring closets give direct access to the network and must be physically controlled.
+>> Wiring closets and IDFs are often neglected; lock them, restrict and log access, and don't use them for storage.
+
+## D3-071 | 3.9 | 2
+Q: A server room is protected by a clean-agent gas suppression system. Which feature protects the people who work in the room?
+A) A manual override that prevents discharge entirely
+= Disabling suppression protects nobody from the fire.
+B) Fast discharge within one second of detection
+= Instant discharge leaves no time to evacuate.
+C)* A pre-discharge alarm and delay so people can leave
+= Correct. Pre-discharge alarms and delays let people evacuate before the agent fills the room.
+D) A sign warning that the room is protected by gas
+= Signage helps, but an alarm and delay are what give people time to get out.
+>> In gas-protected rooms, warning alarms and discharge delays protect people; life safety comes first.
+
+## D3-072 | 3.10 | 2
+Q: Testing confirms that a new system meets its stakeholders' real needs in its intended environment. What is this activity called?
+A) Verification
+= Verification confirms the system was built to its specification: built right.
+B) Certification
+= Certification evaluates security controls.
+C) Unit testing
+= Unit tests check individual components.
+D)* Validation
+= Correct. Validation confirms it is the right system for its users and mission: the right thing was built.
+>> Verification: built to spec. Validation: meets the stakeholders' actual needs.
+
+## D3-073 | 3.10 | 1
+Q: When should security requirements FIRST be identified for a new information system?
+A)* When stakeholder needs and requirements are defined
+= Correct. Security requirements belong with the other requirements, before architecture and design begin.
+B) During integration testing
+= By then the design is fixed, and changes are expensive.
+C) Before deployment, during the security review
+= A late review finds problems when they are costliest to fix.
+D) During operations, as threats appear
+= Security must be designed in, not bolted on.
+>> Build security into the lifecycle from requirements onward; retrofitting costs more and works less well.
+
+## D3-074 | 3.10 | 1
+Q: A system is being retired. Which activity is MOST important for security during this phase?
+A) Recycling the hardware as quickly as possible to cut costs
+= Speed matters less than making sure no data leaves with the hardware.
+B) Turning off monitoring to save costs
+= Monitoring should continue until the system is fully decommissioned.
+C) Deleting all user accounts first
+= Accounts must be removed, but the data on the media is the larger risk.
+D)* Archiving required data and sanitizing the media
+= Correct. Retirement must preserve what must be kept and destroy what must not leave.
+>> Disposal: retain what is required, sanitize or destroy media, remove access, and update the inventory.

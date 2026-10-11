@@ -1,0 +1,565 @@
+# Domain 6: Security Assessment and Testing (12% of the exam)
+
+## D6-001 | 6.1 | 2
+Q: A company's customers want assurance about its security controls from someone other than the company's own staff. Which option gives them the MOST independent view?
+A)* An external audit by an independent firm
+= Correct. External auditors are outside the organization's control and have no stake in the result, so customers and regulators can rely on their findings.
+B) An internal audit by the company's own audit team
+= Internal auditors can be independent of the areas they audit, but they are still the company's employees.
+C) A self-assessment questionnaire completed by IT
+= Self-assessment is the least independent option of all.
+D) A review by the developers who built the system
+= Builders reviewing their own work have an obvious conflict of interest.
+>> Internal audits use the organization's own staff; external audits use an outside firm; third-party audits are performed by or for another organization, such as a customer or regulator.
+
+## D6-002 | 6.1 | 2
+Q: Before a penetration test begins, what MUST be in place?
+A) A list of the vulnerabilities the testers are expected to find
+= Testers discover vulnerabilities; they do not start with a list of expected findings.
+B)* Written authorization and agreed rules of engagement
+= Correct. Signed permission from someone with authority, plus scope, timing, methods and contacts, separates a test from an attack.
+C) Full administrator credentials for every system
+= Credentials depend on the test type; many tests start with none.
+D) A press release announcing the test
+= Tests are usually kept to a small group to avoid tipping off staff or attackers.
+>> Never test without written authorization and rules of engagement that define scope, methods, timing and contacts.
+
+## D6-003 | 6.1 | 2
+Q: A company wants to penetration-test its application running on a major public cloud platform. What should it check FIRST?
+A) Whether its own firewall allows outbound scans
+= Outbound rules matter less than whether testing is permitted at all.
+B) Whether the testers have cloud certifications
+= Tester qualifications matter, but permission comes first.
+C)* The provider's rules on customer testing
+= Correct. The cloud provider's testing policy sets what customers may test, and testing their shared infrastructure without permission can breach the contract or the law.
+D) Whether the test can be run during business hours
+= Timing is part of planning, after confirming the test is permitted.
+>> Location matters: on-premises, cloud and hybrid environments have different ownership, permissions and responsibilities for testing.
+
+## D6-004 | 6.1 | 2
+Q: How should an organization decide which systems to assess most often?
+A) Alphabetically, so every system gets its turn
+= An arbitrary order ignores risk.
+B) By whichever system administrators volunteer
+= Volunteering does not reflect risk.
+C) Equally, with every system assessed every quarter
+= Equal frequency wastes effort on low-risk systems and under-tests critical ones.
+D)* By risk to the business
+= Correct. Weigh criticality, data sensitivity, exposure and regulatory requirements, and focus effort where the risk is highest.
+>> Design assessment strategies around risk, compliance obligations and change; validate that they cover what matters.
+
+## D6-005 | 6.1 | 3
+Q: A company's application runs partly in its own data center and partly on a SaaS platform. How should its assessment strategy cover the SaaS portion?
+A)* Use the provider's attestations and test its own configuration
+= Correct. In a hybrid environment you rely on independent attestations, such as SOC 2 Type II, for the provider's controls, and test what you control yourself: configuration and integrations.
+B) Run an unannounced penetration test against the SaaS provider's infrastructure
+= Testing a provider without permission may be illegal and breaches its terms.
+C) Exclude it, because the SaaS provider is responsible for security
+= Shared responsibility leaves the customer accountable for its data, identities and configuration.
+D) Ask the provider to send its internal vulnerability scan results each week
+= Providers rarely share raw internal results; independent attestations are the normal route.
+>> For cloud and hybrid systems: rely on provider attestations for their side, and test your own configuration, identities and integrations.
+
+## D6-006 | 6.1 | 2
+Q: Which statement BEST distinguishes an audit from an assessment?
+A) An audit is always performed by the organization's internal security team
+= Audits can be internal or external.
+B) An assessment always results in a certification
+= Assessments are usually advisory and lead to recommendations.
+C)* Audits test against criteria; assessments evaluate and advise
+= Correct. An audit checks compliance against defined criteria and is formally reported; an assessment evaluates risk and recommends improvements.
+D) There is no difference; the terms are interchangeable
+= They differ in purpose, rigor and reporting.
+>> Audits measure against criteria with formal attestation; assessments evaluate and advise.
+
+## D6-007 | 6.1 | 2
+Q: A new regulation requires annual independent testing of security controls. Which design element ensures the testing strategy remains valid as the environment changes?
+A) Using the same test plan every year without changes
+= A static plan misses new systems and threats.
+B) Testing only the systems that failed last year
+= That ignores new and changed systems.
+C) Letting the test vendor decide the scope each year
+= The organization must own the scope based on its risk.
+D)* Updating the scope as systems and threats change
+= Correct. Strategies must be validated and refreshed so testing keeps covering the real environment.
+>> Validate assessment strategies regularly: scope, methods and frequency must follow changes in systems, threats and requirements.
+
+## D6-008 | 6.2 | 1
+Q: What is the main difference between a vulnerability assessment and a penetration test?
+A)* Pen tests exploit weaknesses; assessments find them
+= Correct. Exploitation shows real impact and attack paths; vulnerability assessments find and rank potential weaknesses.
+B) Vulnerability assessments are always performed manually
+= Most vulnerability assessments rely heavily on automated scanners.
+C) Penetration tests never require authorization
+= Penetration tests absolutely require authorization.
+D) A vulnerability assessment is more intrusive
+= Penetration testing is the more intrusive of the two.
+>> Vulnerability assessment: find and prioritize. Penetration test: exploit to demonstrate impact.
+
+## D6-009 | 6.2 | 2
+Q: Why are credentialed (authenticated) vulnerability scans usually more accurate than uncredentialed ones?
+A) They run faster across the network
+= Speed is not why they are more accurate.
+B)* The scanner can check software and settings directly
+= Correct. Logging in lets the scanner read configuration and versions instead of guessing from the outside, reducing false positives and negatives.
+C) They do not require written authorization from owners
+= All scans require authorization.
+D) They only look for zero-day vulnerabilities
+= Scanners look mostly for known vulnerabilities.
+>> Credentialed scans see inside the host; uncredentialed scans show the attacker's external view. Both are useful.
+
+## D6-010 | 6.2 | 2
+Q: A scanner reports a critical vulnerability, but investigation shows the affected software is not installed on the host. What is this result?
+A) A false negative
+= A false negative is a missed real vulnerability.
+B) A true positive
+= A true positive is a real vulnerability that was correctly reported.
+C)* A false positive
+= Correct. The scanner reported a vulnerability that does not exist.
+D) A true negative
+= A true negative is correctly reporting that no vulnerability exists.
+>> False positives waste effort; false negatives leave real risk hidden. Tune scanners and validate findings.
+
+## D6-011 | 6.2 | 2
+Q: During a penetration test, the testers are given network diagrams, source code and credentials in advance. What type of test is this?
+A) Black box
+= Black-box testers start with no knowledge, like an outside attacker.
+B) Gray box
+= Gray-box testers get partial knowledge, such as user credentials.
+C) Blind test
+= In a blind test, the testers know little about the target.
+D)* White box
+= Correct. White-box (crystal box) testers get full knowledge, allowing thorough coverage in less time.
+>> Black box: no knowledge. Gray box: partial. White box: full knowledge.
+
+## D6-012 | 6.2 | 2
+Q: In which exercise do attackers and defenders work together in real time, sharing what they see so the defenders can improve detection?
+A) Red team exercise
+= A red team emulates adversaries, usually without telling the defenders.
+B)* Purple team exercise
+= Correct. Purple teaming combines the red and blue teams collaboratively to improve detection and response.
+C) Blue team exercise
+= The blue team defends; on its own it does not emulate attacks.
+D) Tabletop exercise
+= Tabletops discuss scenarios verbally without live attack activity.
+>> Red attacks, blue defends, purple collaborates to turn findings into better detection.
+
+## D6-013 | 6.2 | 2
+Q: In a double-blind penetration test, who knows the test is taking place?
+A) Everyone in the IT, security and operations teams
+= If everyone knows, the test is not blind at all.
+B) Only the testers
+= Someone with authority must always know and authorize the test.
+C)* Testers and the senior managers who authorized it
+= Correct. The defenders are not told, so the test measures real detection and response.
+D) Only the system administrators
+= Administrators are typically among those not told.
+>> Blind: testers have little information. Double-blind: defenders are not told either, which tests detection and response.
+
+## D6-014 | 6.2 | 2
+Q: A monitoring tool runs a scripted login and purchase on the e-commerce site every five minutes from several locations. What is this?
+A)* Synthetic transactions
+= Correct. Scripted, simulated transactions check availability and function proactively, even when no real users are active.
+B) Real user monitoring (RUM)
+= RUM passively records real users' sessions.
+C) Fuzz testing of the checkout
+= Fuzzing feeds malformed input to find crashes.
+D) Static analysis of site code
+= Static analysis examines code without running it.
+>> Synthetic transactions are proactive and scripted; real user monitoring is passive and based on actual traffic.
+
+## D6-015 | 6.2 | 2
+Q: A security team wants to find flaws in source code before it is compiled or run. Which technique should it use?
+A) Dynamic application security testing
+= DAST tests the running application from outside.
+B)* Static application security testing
+= Correct. SAST analyzes source code or binaries without executing them.
+C) Penetration testing
+= Penetration testing attacks a running system.
+D) Real user monitoring
+= RUM observes production traffic.
+>> SAST: code at rest (early, white box). DAST: running app (black box). IAST: instrumented runtime. SCA: third-party components.
+
+## D6-016 | 6.2 | 2
+Q: A tester feeds a file parser thousands of randomly modified versions of valid input files to find crashes. What is this technique?
+A) Generational fuzzing
+= Generational fuzzing builds inputs from a model of the format rather than changing samples.
+B) Regression testing
+= Regression tests check that old functionality still works after a change.
+C)* Mutation (dumb) fuzzing
+= Correct. Mutation fuzzing alters existing valid inputs to create test cases.
+D) Misuse case testing
+= Misuse cases test scenarios of abuse defined by people, not random changes.
+>> Fuzzing: mutation alters samples; generational builds inputs from a specification. Both find input-handling flaws.
+
+## D6-017 | 6.2 | 2
+Q: A team writes test scenarios describing how an attacker might abuse the application, such as entering negative quantities to get refunds, and tests that the application resists them. What is this?
+A) Unit testing
+= Unit tests check individual components against their expected behavior.
+B) Synthetic transaction testing
+= Synthetic transactions simulate normal user activity.
+C) Load testing
+= Load testing checks performance under volume.
+D)* Misuse case testing
+= Correct. Misuse (abuse) cases model how the system could be attacked and verify the defenses.
+>> Misuse case testing turns attacker behavior into test cases alongside normal use cases.
+
+## D6-018 | 6.2 | 3
+Q: Testing executed every line of code, but not every true/false outcome of each decision. Which coverage measure is still incomplete?
+A) Function coverage
+= Functions were all called if every line ran.
+B) Statement coverage
+= Executing every line achieves full statement coverage.
+C)* Branch coverage
+= Correct. Branch coverage requires each decision to take both its true and false paths, which line coverage does not guarantee.
+D) Loop coverage
+= Loop coverage is a different measure, concerning loop iterations.
+>> Coverage analysis: statement, branch, condition, function and loop coverage measure how thoroughly tests exercise code.
+
+## D6-019 | 6.2 | 2
+Q: Testers send malformed and unexpected requests directly to an application's REST API, bypassing the web interface. What type of testing is this?
+A)* Interface testing
+= Correct. Interface testing checks how components behave at their boundaries: user interfaces, network interfaces and APIs.
+B) User acceptance testing
+= UAT confirms the system meets business needs.
+C) Regression testing
+= Regression testing checks that changes did not break existing functions.
+D) Code review
+= Code review reads code; it does not send requests.
+>> Test every interface, especially APIs, which often lack the validation the user interface performs.
+
+## D6-020 | 6.2 | 2
+Q: A company runs a platform that continuously simulates known attack techniques against its environment to check whether its controls detect and block them. What is this?
+A) A tabletop exercise for responders
+= Tabletops are discussions, not technical simulations.
+B) A configuration compliance check
+= Compliance checks verify configurations against requirements.
+C)* Breach and attack simulation
+= Correct. BAS tools automate safe attack scenarios, often mapped to MITRE ATT&CK, to validate controls continuously.
+D) Fuzz testing
+= Fuzzing targets input handling in software.
+>> Breach and attack simulation continuously validates whether controls detect and stop real techniques.
+
+## D6-021 | 6.2 | 2
+Q: Which code review method is the most formal, with defined roles, preparation, an inspection meeting, rework and follow-up?
+A) Pair programming
+= Pairing reviews code informally as it is written.
+B) Over-the-shoulder review
+= An informal walkthrough at a developer's desk.
+C) Tool-assisted review in a pull request
+= Lightweight and common, but not the formal inspection process.
+D)* Fagan inspection
+= Correct. Fagan inspections follow planning, overview, preparation, inspection, rework and follow-up.
+>> Fagan inspection is the most formal code review; lighter methods include pull-request review and pair programming.
+
+## D6-022 | 6.2 | 1
+Q: Why are log reviews valuable as a security control test?
+A)* They show whether controls are working and reveal suspicious activity
+= Correct. Reviewing logs verifies that controls operate as intended and catches anomalies, such as failed logins or policy violations.
+B) They replace the need for vulnerability scanning
+= Logs and scans answer different questions.
+C) They prevent attacks from occurring
+= Log review is detective, not preventive.
+D) They are required only for compliance and have no security value
+= Logs are a primary source of security evidence.
+>> Log reviews are a detective test of controls; they need synchronized time and protected logs to be trustworthy.
+
+## D6-023 | 6.2 | 2
+Q: After a patch is applied, testers re-run earlier test cases to confirm that nothing that worked before is now broken. What is this?
+A) Acceptance testing
+= Acceptance testing confirms the system meets requirements before go-live.
+B)* Regression testing
+= Correct. Regression testing checks that changes have not reintroduced old defects or broken existing functions.
+C) Fuzz testing
+= Fuzzing uses malformed inputs.
+D) Penetration testing
+= Penetration testing attempts to exploit weaknesses.
+>> Regression testing protects against changes that break what already worked.
+
+## D6-024 | 6.2 | 2
+Q: An automated tool compares server configurations with the organization's hardening standard and reports deviations. What type of test is this?
+A) Penetration testing
+= Nothing is being exploited.
+B) Misuse case testing
+= No abuse scenarios are being exercised.
+C)* A compliance check
+= Correct. Compliance checks verify that systems meet defined requirements and baselines.
+D) Real user monitoring
+= RUM observes user traffic.
+>> Compliance checks compare actual configurations with required baselines and policies.
+
+## D6-025 | 6.2 | 3
+Q: A penetration tester gains access to a database server and finds customer data. The rules of engagement do not mention data handling. What should the tester do?
+A) Download a sample of records to prove impact in the report
+= Copying real customer data creates a data breach of its own.
+B) Continue deeper into the network to see how far the access goes
+= Continuing beyond authorized scope or without guidance risks harm.
+C)* Stop, record the access without copying data, and escalate
+= Correct. Testers minimize exposure of sensitive data and escalate unexpected situations to the client's designated contact.
+D) Delete the data to show it was not protected
+= Destroying data causes real damage.
+>> Pen testers prove access with minimal evidence, never exfiltrate real sensitive data, and escalate unexpected findings.
+
+## D6-026 | 6.3 | 2
+Q: Which metric is a key risk indicator (KRI) rather than a key performance indicator (KPI)?
+A) Percentage of help desk tickets closed within SLA
+= That measures operational performance.
+B) Number of awareness courses delivered this quarter
+= That measures activity or performance.
+C) Average time to deploy a new server
+= That measures operational efficiency.
+D)* Critical vulnerabilities open past their deadline
+= Correct. KRIs signal rising risk exposure, prompting action before it materializes into an incident.
+>> KPIs measure how well processes perform; KRIs warn that risk is rising toward or beyond appetite.
+
+## D6-027 | 6.3 | 2
+Q: Backup jobs have reported "success" every night for a year, but no one has ever restored from them. What security process data is missing?
+A) Backup job completion logs
+= Those exist; they show only that jobs ran.
+B)* Evidence from regular test restores
+= Correct. Only restore tests prove that backups are complete and usable.
+C) Storage capacity reports
+= Capacity data does not show whether backups can be restored.
+D) The backup software's license status
+= Licensing is unrelated to recoverability.
+>> Backup verification data comes from test restores, not just job success messages.
+
+## D6-028 | 6.3 | 2
+Q: Which data BEST shows that account management processes are working?
+A) The number of accounts in the directory
+= A count alone says nothing about correctness.
+B) The password complexity setting
+= A setting shows configuration, not process effectiveness.
+C)* Accounts reconciled against HR records
+= Correct. Reconciling active accounts against authoritative HR records shows orphaned accounts and how long leavers take to be disabled.
+D) The number of failed logins recorded per day
+= Failed logins indicate attacks or user error, not account management quality.
+>> Account management data: leaver deprovisioning times, orphaned accounts found, access review results.
+
+## D6-029 | 6.3 | 2
+Q: Why should security process data be presented to management for review and approval?
+A) To prove the security team is busy
+= Activity reports are not the purpose.
+B) Because auditors require a signature on every report
+= Audit requirements are a by-product, not the reason.
+C) So management can tune the technical configuration of controls
+= Technical tuning is the operational team's job.
+D)* So the risk owners can make informed decisions
+= Correct. Those accountable for risk use the data to decide and allocate resources; management review closes the loop between measurement and governance.
+>> Management review and approval turn security metrics into governance decisions.
+
+## D6-030 | 6.3 | 2
+Q: Which measure of an awareness program is the MOST useful security process data?
+A) The number of posters displayed in offices
+= Posters are an activity, not an outcome.
+B)* Trends in phishing reports and clicks
+= Correct. The trend in reported phishing versus simulated-phishing clicks shows whether training is changing how people act.
+C) The training vendor's customer satisfaction score
+= Vendor satisfaction is not a security outcome.
+D) The length of the training videos
+= Length is not effectiveness.
+>> Measure training by behavior: reporting rates, click rates and incident trends.
+
+## D6-031 | 6.3 | 2
+Q: After a disaster recovery test, which data is MOST important to collect and report?
+A) The number of people who attended the test
+= Attendance does not show whether recovery works.
+B) The cost of catering for the test day
+= Not relevant to recoverability.
+C)* Measured recovery against RTO and RPO
+= Correct. Comparing actual recovery times and data loss to the objectives shows whether the plan can meet business requirements.
+D) The names of the vendors involved
+= Vendor names do not measure recovery capability.
+>> DR and BC data: measured recovery times and data loss against RTO and RPO, plus issues found and fixed.
+
+## D6-032 | 6.3 | 3
+Q: Management asks for a single dashboard to judge whether the security program is effective. Which approach is BEST?
+A) Show raw counts of firewall blocks and antivirus detections
+= Large numbers of blocked events are activity, not evidence of effectiveness, and are easily misread.
+B) Show only metrics that are currently green
+= Hiding bad news prevents informed decisions.
+C) Show every metric the tools can generate
+= Too many metrics bury the signal.
+D)* A few business-aligned KPIs and KRIs, with trends
+= Correct. Metrics should be relevant, trended and tied to decisions management can make.
+>> Good security metrics are few, business-aligned, trended and actionable.
+
+## D6-033 | 6.4 | 2
+Q: A vulnerability scan finds hundreds of issues. How should remediation be prioritized?
+A) In the order the scanner listed them
+= Scanner order does not reflect risk.
+B)* By severity, asset value and exploitability
+= Correct. Risk-based prioritization uses CVSS together with context, such as internet exposure and known exploits.
+C) Fix the easiest ones first to reduce the count quickly
+= Quick wins may leave the most dangerous issues open.
+D) Fix everything at once in a single maintenance window
+= Rarely feasible and risky for stability.
+>> Prioritize remediation by risk: severity, asset value, exposure and exploit availability.
+
+## D6-034 | 6.4 | 2
+Q: A critical vulnerability cannot be patched for three months because the vendor has no fix. How should this be handled?
+A) Mark the finding as resolved in the report with a note
+= That misrepresents the risk.
+B) Remove the system from future scans until a patch exists
+= Hiding the finding does not reduce the risk.
+C) Ignore it until the vendor releases a patch
+= Ignoring risk is never acceptable.
+D)* A time-limited, approved risk exception
+= Correct. Document the exception with compensating controls, approval by the risk owner and an expiry date.
+>> Exceptions must be documented, justified, approved by the risk owner, time-bound and reviewed.
+
+## D6-035 | 6.4 | 2
+Q: A researcher finds a vulnerability in a vendor's product. Which approach follows coordinated (responsible) disclosure?
+A) Publish full details immediately so users can protect themselves
+= Immediate full disclosure exposes users before a fix exists.
+B)* Report it privately and agree a disclosure date
+= Correct. Reporting privately to the vendor with an agreed timeline gives it time to fix the flaw while committing to eventual publication.
+C) Sell the details to the highest bidder
+= Selling vulnerabilities to unknown buyers is unethical and may be illegal.
+D) Never tell anyone, to avoid legal risk
+= Silence leaves users exposed indefinitely.
+>> Ethical disclosure: private report, reasonable deadline, coordinated publication.
+
+## D6-036 | 6.4 | 2
+Q: A penetration test report will be read by the board and by system administrators. How should it be structured?
+A) A single technical section written for every reader
+= Executives need business impact, not packet captures.
+B) Only an executive summary, with technical details withheld
+= Administrators need technical details to fix issues.
+C)* Executive summary first, then technical findings
+= Correct. An executive summary of risk and impact serves leaders, who decide; detailed findings and remediation steps serve technical teams, who fix.
+D) A list of every command the testers ran
+= Logs belong in an appendix, not as the report.
+>> Test reports: executive summary (risk, impact, priorities) plus technical findings with evidence and remediation.
+
+## D6-037 | 6.4 | 2
+Q: After remediation, what should happen to the findings from a penetration test?
+A) Close them as soon as the owners say they are fixed
+= Owner claims need verification.
+B) Archive them; the test is over
+= Unverified fixes may not work.
+C)* Retest to confirm the fixes are effective
+= Correct. Verification testing confirms the vulnerabilities are actually closed and no new ones were introduced.
+D) Wait for the next annual test to check
+= A year is too long to leave fixes unverified.
+>> Close the loop: remediate, retest, then close findings with evidence.
+
+## D6-038 | 6.4 | 3
+Q: A penetration test finds a critical flaw that is being actively exploited elsewhere. The final report is due in two weeks. What should the testers do?
+A)* Tell the client's designated contact now
+= Correct. Critical, exploitable findings should be escalated as soon as they are found, as the rules of engagement typically require.
+B) Include it in the final report as planned
+= Waiting two weeks leaves the client exposed to an active threat.
+C) Fix the flaw themselves to save time
+= Testers should not change production systems outside their authority.
+D) Publish an advisory to warn other companies
+= Client findings are confidential.
+>> Critical findings are reported immediately through agreed channels, not held for the final report.
+
+## D6-039 | 6.5 | 1
+Q: A cloud provider's customers need assurance about the controls relevant to their financial reporting. Which report should the provider supply?
+A)* SOC 1
+= Correct. SOC 1 reports cover controls relevant to customers' internal control over financial reporting.
+B) SOC 2
+= SOC 2 covers the Trust Services Criteria: security, availability, processing integrity, confidentiality and privacy.
+C) SOC 3
+= SOC 3 is a general-use summary of a SOC 2 engagement.
+D) ISO 27001 certificate
+= ISO certification covers an ISMS, not financial reporting controls.
+>> SOC 1: financial reporting controls. SOC 2: Trust Services Criteria, restricted use. SOC 3: public summary.
+
+## D6-040 | 6.5 | 2
+Q: A customer wants evidence that a provider's security controls operated effectively over the past twelve months, not just that they were designed well. Which report should it ask for?
+A) SOC 2 Type I
+= Type I reports on control design at a single point in time.
+B)* SOC 2 Type II
+= Correct. Type II reports test whether controls operated effectively over a period, typically 6–12 months.
+C) SOC 3
+= SOC 3 is a high-level public report without detailed test results.
+D) A vendor self-assessment questionnaire
+= Self-assessment is not independent assurance.
+>> Type I: design at a point in time. Type II: operating effectiveness over a period.
+
+## D6-041 | 6.5 | 2
+Q: A company wants to publish a security assurance report on its website for prospective customers. Which report is designed for general use?
+A) SOC 1 Type II
+= SOC 1 reports are restricted to customers and their auditors.
+B) SOC 2 Type II
+= SOC 2 reports are restricted-use and usually shared under NDA.
+C)* SOC 3
+= Correct. SOC 3 is a general-use report suitable for public distribution.
+D) An internal audit report
+= Internal reports are not meant for public release.
+>> SOC 3 is the public, general-use report; SOC 1 and SOC 2 are restricted.
+
+## D6-042 | 6.5 | 2
+Q: Which attestation standard governs SOC reports in the United States?
+A) ISO/IEC 27001
+= ISO 27001 is a management system standard, not an attestation standard for SOC reports.
+B) PCI DSS
+= PCI DSS is a payment card industry standard.
+C) NIST SP 800-53
+= SP 800-53 is a control catalog.
+D)* SSAE 18
+= Correct. SOC reports are issued under the AICPA's SSAE 18; ISAE 3402 is the international counterpart.
+>> SSAE 18 (U.S.) and ISAE 3402 (international) govern service organization control reports.
+
+## D6-043 | 6.5 | 2
+Q: What is the MOST important characteristic of an internal audit function?
+A) It reports to the IT department it audits
+= Reporting to the audited function undermines objectivity.
+B)* Independence from the areas it audits
+= Correct. Auditors must be free from influence by the functions they assess, for example by reporting to the audit committee.
+C) It performs all security operations tasks
+= Auditors evaluate controls; they should not operate them.
+D) It only audits areas management asks it to
+= Auditors should be able to set scope based on risk.
+>> Auditor independence is essential: internal audit typically reports to the board's audit committee.
+
+## D6-044 | 6.5 | 2
+Q: A company outsources payroll to a provider. Which contract clause BEST supports the company's ability to verify the provider's security?
+A) A clause requiring the provider to follow industry best practices
+= Too vague to verify or enforce.
+B) A clause promising the provider will never be breached
+= No provider can guarantee that.
+C) A clause requiring monthly invoices
+= Billing terms do not provide assurance.
+D)* A right-to-audit or attestation clause
+= Correct. A right to audit, or a duty to supply independent attestations such as SOC 2 Type II, gives you evidence that controls work.
+>> Third-party audits rely on contract terms: right to audit or regular independent attestations.
+
+## D6-045 | 6.5 | 3
+Q: An external auditor reviewing a provider's SOC 2 Type II report notes several "complementary user entity controls". What do these mean for the customer?
+A) They are optional suggestions with no effect on assurance
+= They are required for the provider's controls to achieve their objectives.
+B) They are controls the auditor tested at the customer's site
+= The auditor does not test the customer's controls in the provider's report.
+C)* The customer must run some controls itself
+= Correct. The provider's controls are only effective if customers implement these controls themselves, such as managing their own user access, or the assurance does not hold.
+D) They are controls the provider failed to implement
+= Exceptions are reported separately from complementary user entity controls.
+>> Read SOC reports fully: exceptions, scope, carve-outs and the complementary controls you must operate yourself.
+
+## D6-046 | 6.5 | 2
+Q: The external auditor finds a control deficiency. Who should decide how it is addressed?
+A) The auditor, who should then fix it
+= Auditors report findings; fixing them would compromise their independence.
+B)* Management, as the risk owner
+= Correct. Management decides the response and remediation plan; auditors later verify it.
+C) The help desk
+= The help desk is not accountable for control design.
+D) The vendor who supplied the system
+= Vendors may help, but the organization owns its controls.
+>> Auditors find and report; management owns remediation decisions.
+
+## D6-047 | 6.5 | 2
+Q: Internal and external audits are both planned this year. Where do they differ MOST?
+A) Only internal audits can examine security controls
+= Both can examine security controls.
+B) External audits never involve any testing of controls
+= External audits test controls extensively.
+C) Internal audits always result in certification
+= Certification comes from external assessments against a standard.
+D)* Who performs them, and their independence
+= Correct. Internal auditors are employees; external auditors are hired from outside and provide greater independence.
+>> Audit types differ by who performs them and by their independence: internal, external, third-party.

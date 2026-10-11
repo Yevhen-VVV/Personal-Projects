@@ -1,0 +1,2067 @@
+<title>CISSP Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap">
+<style>
+  /* Layout: one 720px column, built for a phone first. A fixed tab bar for the
+     five sections; during a question the tab bar gives way to a sticky action bar. */
+  :root {
+    --bg: #edf1f0;
+    --surface: #ffffff;
+    --surface-2: #e2e9e8;
+    --ink: #11201f;
+    --muted: #556664;
+    --line: #cad6d4;
+    --accent: #135d6c;
+    --accent-ink: #ffffff;
+    --accent-soft: #d8e9ec;
+    --ochre: #94570a;
+    --ochre-soft: #f5e8d3;
+    --good: #19753f;
+    --good-soft: #dbf0e2;
+    --bad: #ad3628;
+    --bad-soft: #f8e0dc;
+    --shadow: 0 1px 2px rgb(17 32 31 / 0.06), 0 4px 14px rgb(17 32 31 / 0.06);
+    --font-ui: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-read: "Literata", Georgia, "Times New Roman", serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --radius: 14px;
+    --tabbar: 62px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0b1516;
+      --surface: #122123;
+      --surface-2: #1a2d30;
+      --ink: #e2edeb;
+      --muted: #91a6a3;
+      --line: #27393c;
+      --accent: #6ec4d4;
+      --accent-ink: #0b1516;
+      --accent-soft: #15393f;
+      --ochre: #e3a64d;
+      --ochre-soft: #3a2a12;
+      --good: #5bcf8c;
+      --good-soft: #12301f;
+      --bad: #f28c7e;
+      --bad-soft: #3b1c18;
+      --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0b1516;
+    --surface: #122123;
+    --surface-2: #1a2d30;
+    --ink: #e2edeb;
+    --muted: #91a6a3;
+    --line: #27393c;
+    --accent: #6ec4d4;
+    --accent-ink: #0b1516;
+    --accent-soft: #15393f;
+    --ochre: #e3a64d;
+    --ochre-soft: #3a2a12;
+    --good: #5bcf8c;
+    --good-soft: #12301f;
+    --bad: #f28c7e;
+    --bad-soft: #3b1c18;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.5 var(--font-ui);
+    padding-inline: 16px;
+    padding-block: 0 calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 28px);
+    -webkit-text-size-adjust: 100%;
+  }
+  body.focus-mode { padding-block-end: calc(96px + env(safe-area-inset-bottom, 0px)); }
+  .app { max-width: 720px; margin-inline: auto; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  h2 { font: 700 1.35rem/1.25 var(--font-ui); letter-spacing: -0.01em; }
+  h3 { font: 700 1.05rem/1.3 var(--font-ui); }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .mono { font-family: var(--font-mono); font-weight: 500; }
+  .muted { color: var(--muted); }
+  .small { font-size: 14px; line-height: 1.45; }
+  .num { font-variant-numeric: tabular-nums; }
+  .measure { max-width: 64ch; }
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .stack-sm { display: flex; flex-direction: column; gap: 8px; }
+  .stack-lg { display: flex; flex-direction: column; gap: 24px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .spread { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .grow { flex: 1 1 auto; min-width: 0; }
+
+  /* Masthead */
+  .masthead { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; font: 800 19px/1 var(--font-ui); letter-spacing: 0.02em; }
+  .brand svg { color: var(--accent); flex: none; }
+  .brand small { font: 500 12px/1 var(--font-mono); color: var(--muted); letter-spacing: 0; }
+  .countdown { font: 600 13px/1 var(--font-mono); color: var(--ochre); background: var(--ochre-soft); border-radius: 999px; padding: 7px 11px; white-space: nowrap; border: 0; cursor: pointer; }
+
+  .eyebrow { font: 600 12px/1.3 var(--font-ui); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+  .section-title { font: 700 12px/1.3 var(--font-ui); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-block: 8px -6px; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .card.raised { box-shadow: var(--shadow); }
+  .card.quiet { background: transparent; }
+  .note { background: var(--surface-2); border-radius: 12px; padding: 12px 14px; font-size: 14px; }
+  .note.warn { background: var(--ochre-soft); }
+  .note.bad { background: var(--bad-soft); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 46px; padding: 0 18px; border-radius: 12px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    font: 600 15px/1.2 var(--font-ui); cursor: pointer; text-decoration: none;
+    transition: background-color 120ms ease, border-color 120ms ease, transform 80ms ease;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn:active { transform: translateY(1px); }
+  .btn svg { flex: none; }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn-primary:hover { filter: brightness(1.07); }
+  .btn-quiet { background: transparent; border-color: transparent; color: var(--accent); padding-inline: 8px; min-height: 38px; }
+  .btn-quiet:hover { border-color: transparent; text-decoration: underline; }
+  .btn-danger { color: var(--bad); }
+  .btn-danger.armed { background: var(--bad); color: var(--surface); border-color: var(--bad); }
+  .btn-wide { flex: 1 1 0; }
+  .btn-sm { min-height: 36px; padding: 0 12px; font-size: 14px; border-radius: 10px; }
+  .btn:disabled { opacity: 0.45; cursor: default; transform: none; }
+
+  /* Chips */
+  .chip { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--font-mono); padding: 5px 8px; border-radius: 7px; background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+  .chip.accent { background: var(--accent-soft); color: var(--accent); }
+  .chip.ochre { background: var(--ochre-soft); color: var(--ochre); }
+  .chip.good { background: var(--good-soft); color: var(--good); }
+  .chip.bad { background: var(--bad-soft); color: var(--bad); }
+  .dots { display: inline-flex; gap: 3px; vertical-align: middle; }
+  .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+  .dots i.on { background: var(--ochre); }
+
+  /* Today: readiness */
+  .ready { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+  .ready-figure { font: 800 3.1rem/1 var(--font-ui); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .ready-figure small { font-size: 1.2rem; font-weight: 700; }
+  .meter { position: relative; height: 10px; border-radius: 999px; background: var(--surface-2); overflow: visible; }
+  .meter > span { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+  .meter .mark { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 1px; }
+  .meter-legend { display: flex; justify-content: space-between; font: 500 11px/1 var(--font-mono); color: var(--muted); margin-top: 6px; }
+
+  .heat { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
+  .heat button { display: flex; flex-direction: column; gap: 4px; align-items: stretch; padding: 8px 4px 6px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; min-width: 0; }
+  .heat .d { font: 700 12px/1 var(--font-mono); color: var(--muted); text-align: center; }
+  .heat .v { font: 700 15px/1 var(--font-ui); text-align: center; font-variant-numeric: tabular-nums; }
+  .heat .bar { height: 4px; border-radius: 2px; background: var(--surface-2); overflow: hidden; }
+  .heat .bar span { display: block; height: 100%; background: var(--muted); }
+  .lvl-good .v { color: var(--good); } .lvl-good .bar span { background: var(--good); }
+  .lvl-mid .v { color: var(--ochre); } .lvl-mid .bar span { background: var(--ochre); }
+  .lvl-low .v { color: var(--bad); } .lvl-low .bar span { background: var(--bad); }
+  .lvl-none .v { color: var(--muted); }
+  @media (max-width: 480px) { .heat { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+  .goal { display: flex; gap: 14px; align-items: center; }
+  .goal-ring { flex: none; }
+
+  /* Menus */
+  .menu { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .menu > button, .menu > a, .menu > .menu-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 3px 12px; align-items: center; text-align: left;
+    padding: 14px 16px; border: 0; border-top: 1px solid var(--line); background: transparent; cursor: pointer; width: 100%; color: inherit; text-decoration: none;
+  }
+  .menu > :first-child { border-top: 0; }
+  .menu > button:hover, .menu > a:hover { background: var(--surface-2); }
+  .menu .title { font-weight: 650; }
+  .menu .detail { grid-column: 1; font-size: 14px; color: var(--muted); }
+  .menu .side { grid-row: 1 / span 2; grid-column: 2; color: var(--muted); font: 600 13px/1 var(--font-mono); }
+
+  /* Form controls */
+  .field { display: grid; gap: 6px; }
+  .field label, .field .label { font-weight: 600; font-size: 14px; }
+  input[type="text"], input[type="date"], input[type="number"], select, textarea {
+    min-height: 44px; padding: 8px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-size: 16px; width: 100%;
+  }
+  textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .seg { display: inline-grid; grid-auto-flow: column; background: var(--surface-2); border-radius: 11px; padding: 3px; gap: 3px; }
+  .seg button { min-height: 34px; min-width: 38px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; font: 600 14px/1 var(--font-ui); cursor: pointer; color: var(--muted); }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgb(0 0 0 / 0.14); }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .check { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; background: var(--surface); font-size: 14px; font-weight: 600; }
+  .check[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .switch-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; cursor: pointer; }
+  .switch { appearance: none; -webkit-appearance: none; width: 48px; height: 28px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); position: relative; flex: none; cursor: pointer; margin: 0; transition: background-color 150ms ease; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 3px rgb(0 0 0 / 0.3); transition: transform 150ms ease; }
+  .switch:checked { background: var(--accent); border-color: var(--accent); }
+  .switch:checked::after { transform: translateX(20px); }
+
+  /* The question */
+  .qhead { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .progress-line { height: 4px; border-radius: 2px; background: var(--surface-2); overflow: hidden; }
+  .progress-line span { display: block; height: 100%; background: var(--accent); }
+  .stem { font: 500 clamp(1.08rem, 1rem + 0.45vw, 1.24rem)/1.55 var(--font-read); white-space: pre-line; text-wrap: pretty; }
+  .stem em { font-style: normal; font-weight: 700; }
+  .options { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    width: 100%; display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; text-align: left;
+    padding: 13px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); cursor: pointer;
+    font: 400 15.5px/1.45 var(--font-ui);
+  }
+  .opt:hover:not(:disabled) { border-color: var(--accent); }
+  .opt .letter { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font: 700 14px/1 var(--font-mono); background: var(--surface-2); color: var(--muted); }
+  .opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .opt[aria-pressed="true"] .letter { background: var(--accent); color: var(--accent-ink); }
+  .opt:disabled { cursor: default; color: inherit; }
+  .opt.is-right { border-color: var(--good); background: var(--good-soft); }
+  .opt.is-right .letter { background: var(--good); color: var(--surface); }
+  .opt.is-wrong { border-color: var(--bad); background: var(--bad-soft); }
+  .opt.is-wrong .letter { background: var(--bad); color: var(--surface); }
+  .opt.is-other { opacity: 0.92; }
+  .opt .why { grid-column: 2; font-size: 14.5px; line-height: 1.5; color: var(--ink); border-top: 1px dashed var(--line); padding-top: 8px; margin-top: 2px; }
+  .opt .why b { font-weight: 700; }
+  .opt .tagline { font: 700 11px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; margin-right: 6px; }
+  .is-right .tagline { color: var(--good); }
+  .is-wrong .tagline { color: var(--bad); }
+  .is-other .tagline { color: var(--muted); }
+
+  .verdict { display: flex; align-items: center; gap: 10px; font: 800 1.3rem/1.2 var(--font-ui); }
+  .verdict.good { color: var(--good); }
+  .verdict.bad { color: var(--bad); }
+  .keypoint { border-left: 3px solid var(--ochre); padding: 4px 0 4px 14px; }
+  .keypoint .eyebrow { color: var(--ochre); }
+  .keypoint p { font: 500 15.5px/1.5 var(--font-read); }
+
+  .actionbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    background: var(--surface); border-top: 1px solid var(--line);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .actionbar-inner { max-width: 720px; margin-inline: auto; display: flex; gap: 10px; align-items: center; }
+
+  /* Ask Claude */
+  .ask { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .ask-out { font: 400 15px/1.55 var(--font-read); white-space: pre-wrap; }
+  .ask-out.thinking { color: var(--muted); font-family: var(--font-ui); }
+  .prompts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .prompts button { border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px; padding: 6px 11px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .prompts button:hover { border-color: var(--accent); }
+
+  /* Mock exam */
+  .examhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+  .clock { font: 700 18px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .clock.low { color: var(--bad); }
+  .stamp { display: inline-block; font: 800 1.6rem/1 var(--font-ui); letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 16px; border: 3px solid currentColor; border-radius: 8px; transform: rotate(-2deg); }
+  .stamp.pass { color: var(--good); }
+  .stamp.fail { color: var(--bad); }
+  .scale { position: relative; height: 54px; }
+  .scale .track { position: absolute; left: 0; right: 0; top: 22px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--bad-soft) 0 70%, var(--good-soft) 70% 100%); border: 1px solid var(--line); }
+  .scale .cut { position: absolute; left: 70%; top: 14px; height: 26px; width: 2px; background: var(--ink); }
+  .scale .you { position: absolute; top: 12px; width: 16px; height: 30px; margin-left: -8px; border-radius: 4px; background: var(--accent); border: 2px solid var(--surface); }
+  .scale .ticks { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; font: 500 11px/1 var(--font-mono); color: var(--muted); }
+  .scale .cutlabel { position: absolute; left: 70%; top: 0; transform: translateX(-50%); font: 700 11px/1 var(--font-mono); }
+  .prof { display: grid; grid-template-columns: auto 1fr auto; gap: 8px 12px; align-items: center; }
+  .prof .lvl { font: 700 12px/1 var(--font-mono); padding: 5px 8px; border-radius: 6px; text-align: center; white-space: nowrap; }
+  .lvl-above { background: var(--good-soft); color: var(--good); }
+  .lvl-near { background: var(--ochre-soft); color: var(--ochre); }
+  .lvl-below { background: var(--bad-soft); color: var(--bad); }
+  .lvl-nodata { background: var(--surface-2); color: var(--muted); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { padding: 10px 12px; text-align: left; border-top: 1px solid var(--line); vertical-align: top; }
+  thead th { border-top: 0; font: 700 11px/1.2 var(--font-ui); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); white-space: nowrap; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .domain-card { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start; }
+  .dnum { font: 700 13px/1 var(--font-mono); color: var(--accent); background: var(--accent-soft); border-radius: 8px; padding: 7px 8px; }
+  .statline { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); }
+  .statline b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  .chart { width: 100%; height: auto; display: block; }
+  .chart text { fill: var(--muted); font: 500 10px var(--font-mono); }
+
+  .list-plain { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .kp { padding: 12px 0; border-top: 1px solid var(--line); display: grid; gap: 4px; }
+  .kp:first-child { border-top: 0; }
+  .kp p { font: 400 15px/1.5 var(--font-read); }
+
+  /* Tab bar */
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--surface); border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .tabbar-inner { max-width: 720px; margin-inline: auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+  .tabbar button {
+    min-height: var(--tabbar); border: 0; background: transparent; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    font: 600 11.5px/1 var(--font-ui); color: var(--muted);
+  }
+  .tabbar button[aria-current="page"] { color: var(--accent); }
+  .tabbar button[aria-current="page"] svg { stroke-width: 2.3; }
+
+  .toast { position: fixed; left: 50%; bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 14px); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14px; z-index: 40; max-width: calc(100% - 32px); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app">
+  <header class="masthead">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.1 8.4-7.5 9.8-4.4-1.4-7.5-5.2-7.5-9.8V5.8z"/><path d="M8.6 12.2l2.4 2.4 4.6-4.8" stroke-linecap="round"/></svg>
+      <span>CISSP Prep</span>
+    </div>
+    <button type="button" class="countdown" id="countdown" data-act="tab" data-tab="tracker" hidden></button>
+  </header>
+  <main id="view" aria-live="polite"></main>
+</div>
+
+<nav class="tabbar" id="tabbar" aria-label="Sections">
+  <div class="tabbar-inner">
+    <button type="button" data-act="tab" data-tab="today">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+      Today
+    </button>
+    <button type="button" data-act="tab" data-tab="practice">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 9h8M8 13h5"/><path d="M8.5 17l1.5 1.5 3-3"/></svg>
+      Practice
+    </button>
+    <button type="button" data-act="tab" data-tab="mock">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+      Mock exam
+    </button>
+    <button type="button" data-act="tab" data-tab="tracker">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19l5-6 4 3 7-9"/><path d="M15 7h5v5"/></svg>
+      Tracker
+    </button>
+    <button type="button" data-act="tab" data-tab="library">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>
+      Library
+    </button>
+  </div>
+</nav>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script id="bank" type="application/json">__BANK__</script>
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+"use strict";
+(() => {
+  const BANK = JSON.parse(document.getElementById("bank").textContent);
+  const DOMAINS = BANK.domains;
+  const CURATED = BANK.questions;
+  const DEFAULT_EXAM_DATE = "2026-12-31";
+  const READY_TARGET = 0.75;
+
+  // ---------------------------------------------------------------- helpers
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const pct = (x) => (x == null ? "–" : Math.round(x * 100) + "%");
+  const DAY = Engine.DAY;
+  const todayKey = (t = Date.now()) => {
+    const d = new Date(t);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+  const parseDate = (s) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || "");
+    return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 9, 0, 0).getTime() : null;
+  };
+  const fmtDate = (t, opts = { month: "short", day: "numeric" }) => new Date(t).toLocaleDateString(undefined, opts);
+  const fmtClock = (ms) => {
+    const s = Math.max(0, Math.round(ms / 1000));
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return (h ? h + ":" + String(m).padStart(2, "0") : String(m)) + ":" + String(sec).padStart(2, "0");
+  };
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const domainOf = (n) => DOMAINS[n - 1];
+  const objName = (obj) => {
+    const d = DOMAINS[Number(obj.split(".")[0]) - 1];
+    return d ? d.objectives[obj] || "" : "";
+  };
+  const level = (rate, seen) => (!seen ? "none" : rate >= READY_TARGET ? "good" : rate >= 0.6 ? "mid" : "low");
+  const lsGet = (k, fallback) => {
+    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch { return fallback; }
+  };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage unavailable */ } };
+
+  // Minimal formatting for Claude's answers: paragraphs, bullets and **bold**.
+  function richText(text) {
+    return esc(text)
+      .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
+      .replace(/^#{1,4}\s*(.+)$/gm, "<b>$1</b>");
+  }
+
+  let toastTimer = 0;
+  function toast(msg) {
+    const t = $("#toast");
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, 2600);
+  }
+
+  // ---------------------------------------------------------------- storage
+  // Progress lives in this artifact's private database when you open it
+  // signed in as its owner, so the phone and the laptop share one record.
+  // Anywhere else (signed out, someone you shared the link with) it falls
+  // back to this browser. A copy is always kept in the browser for a fast start.
+  const LS = "cissp-prep:";
+  const Store = {
+    mode: "local",
+    db: null,
+    queues: {},
+    async connect() {
+      if (!window.claude || typeof window.claude.use !== "function") return false;
+      try {
+        const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+        if (!db) return false;
+        const owner = user ? await user.isOwner() : false;
+        if (!owner) return false;
+        this.db = db;
+        this.mode = "db";
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    async getDoc(path) {
+      const local = lsGet(LS + path, null);
+      if (this.mode !== "db") return local;
+      try {
+        const snap = await this.db.doc(path).get();
+        return snap.exists ? JSON.parse(JSON.stringify(snap.data())) : null;
+      } catch {
+        return local;
+      }
+    },
+    // One write at a time per document; a burst collapses into the latest body.
+    setDoc(path, body) {
+      lsSet(LS + path, body);
+      if (this.mode !== "db") return;
+      const q = this.queues[path] || (this.queues[path] = { busy: false, next: null });
+      q.next = body;
+      if (q.busy) return;
+      const run = async () => {
+        q.busy = true;
+        while (q.next) {
+          const b = q.next;
+          q.next = null;
+          try {
+            await this.db.doc(path).set(b);
+          } catch (e) {
+            if (e && e.code === "quota_exceeded") toast("Storage is full. Delete old sessions in Tracker.");
+            else if (e && e.code === "unavailable") {
+              await new Promise((r) => setTimeout(r, 800 + Math.random() * 800));
+              if (!q.next) q.next = b;
+            }
+          }
+        }
+        q.busy = false;
+      };
+      run();
+    },
+    async list(collection) {
+      const local = lsGet(LS + collection, {});
+      if (this.mode !== "db") return Object.values(local);
+      try {
+        const snap = await this.db.collection(collection).limit(1000).get();
+        return snap.docs.map((d) => JSON.parse(JSON.stringify(d.data())));
+      } catch {
+        return Object.values(local);
+      }
+    },
+    put(collection, id, body) {
+      const local = lsGet(LS + collection, {});
+      local[id] = body;
+      lsSet(LS + collection, local);
+      if (this.mode === "db") this.setDoc(collection + "/" + id, body);
+    },
+    async remove(collection, id) {
+      const local = lsGet(LS + collection, {});
+      delete local[id];
+      lsSet(LS + collection, local);
+      if (this.mode === "db") {
+        try { await this.db.doc(collection + "/" + id).delete(); } catch { /* best effort */ }
+      }
+    },
+  };
+
+  // ---------------------------------------------------------------- state
+  const defaultProfile = () => ({
+    v: 1,
+    examDate: DEFAULT_EXAM_DATE,
+    examBooked: false,
+    dailyGoal: 30,
+    selfRatings: {},
+    notes: {},
+    scores: [],
+    confirm: true,
+    trackerSummary: "",
+    updatedAt: 0,
+  });
+
+  const S = {
+    tab: "today",
+    profile: defaultProfile(),
+    progress: { p: {}, days: {}, updatedAt: 0 },
+    sessions: [],
+    flags: {},
+    generated: [],
+    mock: null,          // a mock exam in progress
+    mockStamp: 0,        // when the mock record was last written
+    run: null,           // a practice session in progress
+    result: null,        // the last finished practice session, for its results screen
+    mockResult: null,    // the last finished mock, for its score report
+    sub: null,           // sub-view within a tab
+    sample: null,        // Claude, when the viewer allows it
+    ask: null,           // the Ask Claude panel's state
+    tool: {},            // transient form state
+  };
+
+  const allQuestions = () => CURATED.concat(S.generated);
+  const byId = (id) => QINDEX.get(id) || S.generated.find((q) => q.id === id);
+  const QINDEX = new Map(CURATED.map((q) => [q.id, q]));
+
+  function saveProfile() {
+    S.profile.updatedAt = Date.now();
+    Store.setDoc("me/profile", S.profile);
+  }
+  function saveProgress() {
+    S.progress.updatedAt = Date.now();
+    Store.setDoc("me/progress", S.progress);
+  }
+  function saveMock() {
+    S.mockStamp = Date.now();
+    Store.setDoc("me/mock", { state: S.mock, updatedAt: S.mockStamp });
+  }
+  function saveRun() {
+    lsSet(LS + "run", S.run);
+  }
+
+  // Merge two progress records, keeping the more recent answer for each question.
+  function mergeProgress(a, b) {
+    const out = { p: { ...(a?.p || {}) }, days: { ...(a?.days || {}) }, updatedAt: Math.max(a?.updatedAt || 0, b?.updatedAt || 0) };
+    for (const [id, r] of Object.entries(b?.p || {})) {
+      if (!out.p[id] || (r[4] || 0) > (out.p[id][4] || 0)) out.p[id] = r;
+    }
+    for (const [day, v] of Object.entries(b?.days || {})) {
+      const cur = out.days[day];
+      if (!cur || v[0] > cur[0]) out.days[day] = v;
+    }
+    return out;
+  }
+
+  async function loadAll() {
+    const [profile, progress, mock, sessions, flags, generated] = await Promise.all([
+      Store.getDoc("me/profile"),
+      Store.getDoc("me/progress"),
+      Store.getDoc("me/mock"),
+      Store.list("sessions"),
+      Store.list("flags"),
+      Store.list("gen"),
+    ]);
+    return { profile, progress, mock, sessions, flags, generated };
+  }
+
+  function applyLoaded(data, { fromDb = false } = {}) {
+    if (data.profile && (data.profile.updatedAt || 0) >= (S.profile.updatedAt || 0)) {
+      S.profile = { ...defaultProfile(), ...data.profile };
+    }
+    if (data.progress) S.progress = mergeProgress(S.progress, data.progress);
+    // The newest mock record wins, including "no mock in progress" from another device.
+    if (data.mock && (data.mock.updatedAt || 0) > (S.mockStamp || 0)) {
+      S.mockStamp = data.mock.updatedAt || 0;
+      const st = data.mock.state;
+      S.mock = st && !st.finished ? st : null;
+    }
+    const sessionMap = new Map(S.sessions.map((s) => [s.id, s]));
+    for (const s of data.sessions || []) if (s && s.id) sessionMap.set(s.id, s);
+    S.sessions = [...sessionMap.values()].sort((a, b) => b.startedAt - a.startedAt);
+    for (const f of data.flags || []) if (f && f.id) S.flags[f.id] = f;
+    const genMap = new Map(S.generated.map((q) => [q.id, q]));
+    for (const q of data.generated || []) if (q && q.id && validGenerated(q)) genMap.set(q.id, q);
+    S.generated = [...genMap.values()];
+    if (fromDb) {
+      // First connection on a device that practised before: carry its local record up.
+      saveProgress();
+      saveProfile();
+    }
+  }
+
+  // ---------------------------------------------------------------- stats
+  const curatedStats = () => Engine.domainStats(CURATED, S.progress.p, DOMAINS);
+  function examTime() { return parseDate(S.profile.examDate); }
+  function daysLeft() {
+    const t = examTime();
+    return t ? Math.ceil((t - Date.now()) / DAY) : null;
+  }
+  function today() {
+    return S.progress.days[todayKey()] || [0, 0];
+  }
+  function countAnswer(correct) {
+    const k = todayKey();
+    const v = S.progress.days[k] || [0, 0];
+    S.progress.days[k] = [v[0] + 1, v[1] + (correct ? 1 : 0)];
+  }
+  function streak() {
+    let n = 0;
+    let t = Date.now();
+    if (!S.progress.days[todayKey(t)]) t -= DAY;
+    while (S.progress.days[todayKey(t)]) { n++; t -= DAY; }
+    return n;
+  }
+
+  // Objectives where your latest answers are weakest, among those with at least two answered.
+  function weakObjectives(limit = 6) {
+    const by = {};
+    for (const q of CURATED) {
+      const r = S.progress.p[q.id];
+      if (!r) continue;
+      const v = by[q.obj] || (by[q.obj] = { obj: q.obj, seen: 0, right: 0 });
+      v.seen++;
+      v.right += r[3];
+    }
+    return Object.values(by)
+      .filter((v) => v.seen >= 2 && v.right / v.seen < READY_TARGET)
+      .sort((a, b) => a.right / a.seen - b.right / b.seen || b.seen - a.seen)
+      .slice(0, limit);
+  }
+
+  function weakList(list) {
+    return `<div class="menu">${list.map((v) => `<button type="button" data-act="start-objective" data-obj="${v.obj}">
+      <span class="title"><span class="mono">${v.obj}</span> ${esc(objName(v.obj))}</span>
+      <span class="detail num">${v.right} of ${v.seen} right on your latest try</span>
+      <span class="side">Drill ›</span></button>`).join("")}</div>`;
+  }
+
+  // ---------------------------------------------------------------- render shell
+  const TAB_TITLES = { today: "Today", practice: "Practice", mock: "Mock exam", tracker: "Tracker", library: "Library" };
+
+  function render() {
+    const view = $("#view");
+    const focus = (S.tab === "practice" && S.run && !S.run.done) || (S.tab === "mock" && S.mock && !S.mock.finished && !S.mock.paused);
+    document.body.classList.toggle("focus-mode", !!focus);
+    $("#tabbar").hidden = !!focus;
+    document.querySelectorAll(".tabbar button").forEach((b) => {
+      if (b.dataset.tab === S.tab) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
+    });
+    const left = daysLeft();
+    const cd = $("#countdown");
+    if (left != null && left >= 0) {
+      cd.hidden = false;
+      cd.textContent = left === 0 ? "Exam day" : `${left} day${left === 1 ? "" : "s"} to exam`;
+    } else cd.hidden = true;
+
+    let html = "";
+    if (S.tab === "today") html = viewToday();
+    else if (S.tab === "practice") html = S.run ? (S.run.done ? viewResults() : viewQuestion()) : viewPracticeMenu();
+    else if (S.tab === "mock") html = S.mockResult ? viewMockResult() : S.mock ? (S.mock.paused ? viewMockPaused() : viewMockItem()) : viewMockMenu();
+    else if (S.tab === "tracker") html = viewTracker();
+    else if (S.tab === "library") html = viewLibrary();
+    view.innerHTML = html;
+    afterRender();
+  }
+
+  function afterRender() {
+    clearInterval(S.clockTimer);
+    if (S.tab === "mock" && S.mock && !S.mock.paused && !S.mockResult) {
+      S.clockTimer = setInterval(tickClock, 1000);
+      tickClock();
+    }
+  }
+
+  function go(tab) {
+    S.tab = tab;
+    S.sub = null;
+    S.ask = null;
+    lsSet(LS + "tab", tab);
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  // ---------------------------------------------------------------- Today
+  function ring(value, size = 64, stroke = 7) {
+    const r = (size - stroke) / 2;
+    const c = 2 * Math.PI * r;
+    const v = Math.max(0, Math.min(1, value));
+    return `<svg class="goal-ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="${stroke}"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--accent)" stroke-width="${stroke}" stroke-linecap="round"
+        stroke-dasharray="${(c * v).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${size / 2} ${size / 2})"/>
+    </svg>`;
+  }
+
+  function heatStrip(stats, act = "domain-practice") {
+    return `<div class="heat">${stats.map((s) => {
+      const lv = level(s.firstRate, s.seen);
+      return `<button type="button" class="lvl-${lv}" data-act="${act}" data-d="${s.n}" title="${esc(domainOf(s.n).name)}">
+        <span class="d">D${s.n}</span>
+        <span class="v">${s.seen ? pct(s.firstRate) : "–"}</span>
+        <span class="bar"><span style="width:${Math.round(s.coverage * 100)}%"></span></span>
+      </button>`;
+    }).join("")}</div>`;
+  }
+
+  function viewToday() {
+    const stats = curatedStats();
+    const rd = Engine.readiness(stats);
+    const t = today();
+    const goal = S.profile.dailyGoal || 30;
+    const due = Object.values(S.progress.p).filter((r) => r[6] <= Date.now()).length;
+    const exam = examTime();
+    const plan = exam ? Engine.studyPlan(exam, stats, S.profile.selfRatings) : null;
+    const week = plan && plan.weeks[0];
+    const lastMock = S.sessions.find((s) => s.kind === "mock");
+    const started = rd.seen > 0;
+    const left = daysLeft();
+    const st = streak();
+
+    return `<div class="stack-lg">
+      <section class="stack-sm">
+        <p class="eyebrow">${fmtDate(Date.now(), { weekday: "long", month: "long", day: "numeric" })}</p>
+        <h2>${left == null ? "Set your exam date to get a plan." : left > 0 ? `${left} days until ${S.profile.examBooked ? "your exam" : "your end-of-year target"}` : left === 0 ? "Exam day. Read the questions twice, answer once." : "Your exam date has passed. Set the next one in Tracker."}</h2>
+        ${week ? `<p class="muted">This week: ${week.focus.map((n) => `<b>D${n}</b> ${esc(domainOf(n).short)}`).join(" and ")}. ${esc(week.note)}</p>` : ""}
+      </section>
+
+      <section class="card raised stack">
+        <div class="goal">
+          ${ring(t[0] / goal)}
+          <div class="grow stack-sm">
+            <h3>Today's practice</h3>
+            <p class="muted small num">${t[0] >= goal ? `Goal met: ${t[0]} answered` : `${t[0]} of ${goal} answered`}${t[0] ? ` · ${pct(t[1] / t[0])} right` : ""}${due ? ` · ${due} due for review` : ""}${st > 1 ? ` · ${st}-day streak` : ""}</p>
+          </div>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary btn-wide" data-act="start-smart" data-count="${Math.max(10, Math.min(goal - t[0] > 0 ? goal - t[0] : 15, 50))}">
+            Start smart session
+          </button>
+          <button type="button" class="btn" data-act="start-smart" data-count="10">Quick 10</button>
+        </div>
+        <p class="small muted">Smart sessions bring back what you missed, then lean on the domains where your first-try accuracy is lowest, weighted by how much each domain counts on the exam.</p>
+      </section>
+
+      <section class="stack">
+        <div class="spread"><h3>Readiness</h3><button type="button" class="btn-quiet btn" data-act="tab" data-tab="tracker">Details</button></div>
+        <div class="card ready">
+          <div class="ready-figure">${started ? Math.round(rd.score * 100) : "–"}<small>${started ? "%" : ""}</small></div>
+          <div class="stack-sm">
+            <p class="small"><b>First-try accuracy</b>, weighted by the exam's domain weights. Aim for ${Math.round(READY_TARGET * 100)}% or better across every domain before you sit.</p>
+            <div class="meter" aria-hidden="true"><span style="width:${started ? Math.round(rd.score * 100) : 0}%"></span><i class="mark" style="left:${READY_TARGET * 100}%"></i></div>
+            <div class="meter-legend"><span>0</span><span>target ${Math.round(READY_TARGET * 100)}%</span><span>100</span></div>
+            <p class="small muted num">${rd.seen} of ${CURATED.length} questions seen (${pct(rd.coverage)} of the bank)</p>
+          </div>
+        </div>
+        ${heatStrip(stats)}
+        <p class="small muted">Each tile is a domain's first-try accuracy; the thin bar under it is how much of that domain you have covered. Tap one to drill it.</p>
+      </section>
+      ${(() => { const w = weakObjectives(3); return w.length ? `<section class="stack"><h3>Weakest objectives</h3>${weakList(w)}</section>` : ""; })()}
+
+      <section class="stack">
+        <h3>Mock exam</h3>
+        ${lastMock ? `<div class="card spread">
+            <div class="stack-sm"><p class="eyebrow">${fmtDate(lastMock.startedAt)} · ${lastMock.total} items</p>
+            <p><span class="chip ${lastMock.pass ? "good" : "bad"}">${lastMock.pass ? "PASS" : "FAIL"} estimate</span> <b class="num">${lastMock.scaled}</b> <span class="muted">/ 1000</span></p></div>
+            <button type="button" class="btn" data-act="tab" data-tab="mock">New mock</button>
+          </div>`
+          : `<div class="card stack-sm"><p>No mock yet. The adaptive mock behaves like the real exam: 100 to 150 items in 3 hours, no going back, and it stops once it is sure of the result.</p><div><button type="button" class="btn" data-act="tab" data-tab="mock">See mock options</button></div></div>`}
+      </section>
+      ${!started ? `<section class="note">New here? Read <a href="#" data-act="lib" data-sub="mindset">How to think like a CISSP</a> first, then start a smart session. If you kept a study tracker elsewhere, paste it into <a href="#" data-act="tab" data-tab="tracker">Tracker › Import</a>.</section>` : ""}
+    </div>`;
+  }
+
+  // ---------------------------------------------------------------- Practice menu
+  function viewPracticeMenu() {
+    const t = S.tool;
+    t.domains = t.domains || [];
+    t.count = t.count || 20;
+    const missed = Object.entries(S.progress.p).filter(([id, r]) => r[3] === 0 && byId(id)).length;
+    const flagged = Object.keys(S.flags).filter((id) => byId(id)).length;
+    const due = Object.values(S.progress.p).filter((r) => r[6] <= Date.now()).length;
+    const stats = curatedStats();
+    return `<div class="stack-lg">
+      <section class="stack-sm">
+        <h2>Practice</h2>
+        <p class="muted">Instant feedback. After each answer you see why every option is right or wrong.</p>
+      </section>
+
+      <div class="menu">
+        <button type="button" data-act="start-smart" data-count="${S.profile.dailyGoal || 30}">
+          <span class="title">Smart session</span><span class="detail">Due reviews first, then your weakest heavy domains</span><span class="side">${S.profile.dailyGoal || 30}</span>
+        </button>
+        <button type="button" data-act="start-review" ${due ? "" : "disabled"}>
+          <span class="title">Due for review</span><span class="detail">Spaced repetition: questions whose interval has come round</span><span class="side">${due}</span>
+        </button>
+        <button type="button" data-act="start-missed" ${missed ? "" : "disabled"}>
+          <span class="title">Missed last time</span><span class="detail">Every question your latest answer got wrong</span><span class="side">${missed}</span>
+        </button>
+        <button type="button" data-act="start-flagged" ${flagged ? "" : "disabled"}>
+          <span class="title">Flagged</span><span class="detail">Questions you marked to revisit or dispute</span><span class="side">${flagged}</span>
+        </button>
+      </div>
+
+      <section class="card stack">
+        <h3>Choose domains</h3>
+        <div class="checks">${DOMAINS.map((d) => `<button type="button" class="check" data-act="toggle-domain" data-d="${d.n}" aria-pressed="${t.domains.includes(d.n)}"><span class="mono">D${d.n}</span> ${esc(d.short)}</button>`).join("")}</div>
+        <div class="spread">
+          <div class="seg" role="group" aria-label="Number of questions">${[10, 20, 40, 60].map((n) => `<button type="button" data-act="set-count" data-n="${n}" aria-pressed="${t.count === n}">${n}</button>`).join("")}</div>
+          <button type="button" class="btn btn-primary" data-act="start-domains" ${t.domains.length ? "" : "disabled"}>Start</button>
+        </div>
+        <p class="small muted">Questions you have not seen come first; the set spreads across each domain's objectives.</p>
+      </section>
+
+      ${freshPanel(stats)}
+    </div>`;
+  }
+
+  function freshPanel(stats) {
+    const gen = S.generated.length;
+    const weakest = stats.slice().sort((a, b) => a.smoothed - b.smoothed)[0];
+    const t = S.tool;
+    t.genDomain = t.genDomain || (weakest ? weakest.n : 1);
+    const d = domainOf(t.genDomain);
+    return `<section class="card stack" id="fresh">
+      <div class="spread"><h3>Fresh questions from Claude</h3><span class="chip ochre">${gen} saved</span></div>
+      <p class="small muted">Claude writes five new questions on a domain, aimed at the objectives you have practised least. They are marked as AI-written, kept out of mock exams, and you can flag any you disagree with.</p>
+      ${S.sample ? `
+        <div class="field"><label for="gen-domain">Domain</label>
+          <select id="gen-domain" data-field="genDomain">${DOMAINS.map((x) => `<option value="${x.n}" ${x.n === t.genDomain ? "selected" : ""}>D${x.n} ${esc(x.name)}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label for="gen-obj">Objective</label>
+          <select id="gen-obj" data-field="genObj"><option value="">Least practised in ${esc(d.short)}</option>${Object.entries(d.objectives).map(([k, v]) => `<option value="${k}" ${t.genObj === k ? "selected" : ""}>${k} ${esc(v)}</option>`).join("")}</select>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary" data-act="generate" ${t.generating ? "disabled" : ""}>${t.generating ? "Writing questions…" : "Write 5 questions"}</button>
+          ${gen ? `<button type="button" class="btn" data-act="start-generated">Practise saved (${gen})</button>` : ""}
+        </div>
+        ${t.genMsg ? `<p class="small ${t.genErr ? "note bad" : "muted"}">${esc(t.genMsg)}</p>` : ""}
+      ` : `<p class="note small">Available when you open this page in Claude and allow it to use Claude. ${gen ? `<button type="button" class="btn btn-sm" data-act="start-generated">Practise saved (${gen})</button>` : ""}</p>`}
+    </section>`;
+  }
+
+  // ---------------------------------------------------------------- sessions
+  function startRun(items, title) {
+    if (!items.length) {
+      toast("No questions match that selection yet.");
+      return;
+    }
+    S.run = {
+      id: uid(),
+      title,
+      items: items.map((q) => q.id),
+      orders: Object.fromEntries(items.map((q) => [q.id, Engine.shuffle([0, 1, 2, 3])])),
+      idx: 0,
+      answers: [],
+      selected: null,
+      submitted: false,
+      shownAt: Date.now(),
+      startedAt: Date.now(),
+      done: false,
+    };
+    S.ask = null;
+    saveRun();
+    go("practice");
+  }
+
+  function startSmart(count, opts = {}) {
+    const items = Engine.smartSet(allQuestions(), S.progress.p, DOMAINS, count, { selfRatings: S.profile.selfRatings, ...opts });
+    startRun(items, opts.reviewOnly ? "Review" : opts.domains ? "Domain practice" : "Smart session");
+  }
+
+  function currentQ() {
+    const r = S.run;
+    return r ? byId(r.items[r.idx]) : null;
+  }
+
+  function diffDots(n) {
+    return `<span class="dots" title="${["", "Easier", "Medium", "Harder"][n]}">${[1, 2, 3].map((i) => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`;
+  }
+
+  function optionList(q, order, { selected, submitted, chosenOrig, interactive = true, act = "select" }) {
+    return `<ol class="options">${order.map((orig, pos) => {
+      const text = q.o[orig][0];
+      // The tag already says which answer is correct, so the explanation's own "Correct." is dropped.
+      const why = orig === q.a ? q.o[orig][1].replace(/^Correct\.\s*/, "") : q.o[orig][1];
+      const letter = "ABCD"[pos];
+      let cls = "", tag = "";
+      if (submitted) {
+        if (orig === q.a) { cls = "is-right"; tag = orig === chosenOrig ? "Your answer · correct" : "Correct answer"; }
+        else if (orig === chosenOrig) { cls = "is-wrong"; tag = "Your answer"; }
+        else { cls = "is-other"; tag = "Not the best"; }
+      }
+      return `<li><button type="button" class="opt ${cls}" ${submitted || !interactive ? "disabled" : `data-act="${act}" data-pos="${pos}"`} aria-pressed="${!submitted && selected === pos}">
+        <span class="letter">${letter}</span>
+        <span>${esc(text)}</span>
+        ${submitted ? `<span class="why"><span class="tagline">${tag}</span>${esc(why)}</span>` : ""}
+      </button></li>`;
+    }).join("")}</ol>`;
+  }
+
+  function viewQuestion() {
+    const r = S.run;
+    const q = currentQ();
+    if (!q) { S.run = null; return viewPracticeMenu(); }
+    const order = r.orders[q.id];
+    const ans = r.submitted ? r.answers[r.answers.length - 1] : null;
+    const total = r.items.length;
+    const correctSoFar = r.answers.filter((a) => a.correct).length;
+    const d = domainOf(q.d);
+    const flagged = !!S.flags[q.id];
+    return `<div class="stack">
+      <div class="qhead">
+        <div class="row"><span class="chip accent">D${q.d} · ${esc(q.obj)}</span>${q.gen ? `<span class="chip ochre">AI-written</span>` : ""}${diffDots(q.diff)}</div>
+        <span class="mono muted small num">${r.idx + 1} / ${total} · ${correctSoFar} right</span>
+      </div>
+      <div class="progress-line"><span style="width:${(100 * (r.idx + (r.submitted ? 1 : 0))) / total}%"></span></div>
+      <p class="eyebrow">${esc(d.name)} · ${esc(objName(q.obj))}</p>
+      <p class="stem">${esc(q.q)}</p>
+      ${r.submitted ? `<div class="verdict ${ans.correct ? "good" : "bad"}">${ans.correct ? "Correct" : `Not quite. The answer is ${"ABCD"[order.indexOf(q.a)]}.`}</div>` : ""}
+      ${optionList(q, order, { selected: r.selected, submitted: r.submitted, chosenOrig: ans ? ans.chosen : null })}
+      ${r.submitted ? `
+        <div class="keypoint"><p class="eyebrow">Key point</p><p>${esc(q.k)}</p></div>
+        ${askPanel(q, order, ans)}
+        ${flagNote(q.id)}
+      ` : ""}
+    </div>
+    <div class="actionbar"><div class="actionbar-inner">
+      <button type="button" class="btn btn-quiet" data-act="end-run">End</button>
+      <span class="grow"></span>
+      ${r.submitted
+        ? `<button type="button" class="btn btn-primary" data-act="next" style="min-width:150px">${r.idx + 1 < total ? "Next question" : "See results"}</button>`
+        : `<button type="button" class="btn btn-primary" data-act="submit" style="min-width:150px" ${r.selected == null ? "disabled" : ""}>Check answer</button>`}
+    </div></div>`;
+  }
+
+  function askPanel(q, order, ans) {
+    if (!S.sample) return "";
+    const a = S.ask && S.ask.qid === q.id ? S.ask : null;
+    return `<section class="ask" aria-label="Ask Claude about this question">
+      <div class="spread"><h3>Ask Claude</h3>${a && a.busy ? `<button type="button" class="btn btn-sm" data-act="ask-stop">Stop</button>` : ""}</div>
+      ${a && (a.out || a.busy) ? `<div class="ask-out ${a.busy && !a.out ? "thinking" : ""}" id="ask-out">${a.out ? richText(a.out) : "Thinking…"}</div>` : ""}
+      ${a && a.err ? `<p class="small note bad">${esc(a.err)}</p>` : ""}
+      <div class="prompts">
+        ${(ans.correct
+          ? ["Why are the others worse?", "Give me a memory hook", "How would the exam twist this?"]
+          : ["Why is my answer wrong?", "Explain it like a risk advisor", "Give me a memory hook"])
+          .map((p) => `<button type="button" data-act="ask" data-prompt="${esc(p)}" ${a && a.busy ? "disabled" : ""}>${esc(p)}</button>`).join("")}
+      </div>
+      <div class="row">
+        <input type="text" id="ask-input" class="grow" placeholder="Your own question about this item" data-field="askText" value="${esc(S.tool.askText || "")}" style="flex:1 1 200px">
+        <button type="button" class="btn btn-sm" data-act="ask" ${a && a.busy ? "disabled" : ""}>Ask</button>
+      </div>
+    </section>`;
+  }
+
+  function submitAnswer() {
+    const r = S.run;
+    if (!r || r.submitted || r.selected == null) return;
+    const q = currentQ();
+    const chosen = r.orders[q.id][r.selected];
+    const correct = chosen === q.a;
+    r.answers.push({ id: q.id, chosen, correct, ms: Date.now() - r.shownAt });
+    r.submitted = true;
+    S.progress.p[q.id] = Engine.record(S.progress.p[q.id], correct, Date.now());
+    countAnswer(correct);
+    saveProgress();
+    saveRun();
+    render();
+  }
+
+  function nextQuestion() {
+    const r = S.run;
+    if (!r) return;
+    S.ask = null;
+    S.tool.askText = "";
+    if (r.idx + 1 >= r.items.length) {
+      finishRun();
+      return;
+    }
+    r.idx += 1;
+    r.selected = null;
+    r.submitted = false;
+    r.shownAt = Date.now();
+    saveRun();
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function finishRun() {
+    const r = S.run;
+    if (!r) return;
+    r.done = true;
+    if (r.answers.length) {
+      const session = {
+        id: r.id,
+        kind: "practice",
+        title: r.title,
+        startedAt: r.startedAt,
+        endedAt: Date.now(),
+        total: r.answers.length,
+        correct: r.answers.filter((a) => a.correct).length,
+        items: r.answers.map((a) => [a.id, a.correct ? 1 : 0, a.chosen, Math.round(a.ms / 1000)]),
+      };
+      S.sessions.unshift(session);
+      Store.put("sessions", session.id, session);
+    }
+    saveRun();
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function viewResults() {
+    const r = S.run;
+    const n = r.answers.length;
+    const right = r.answers.filter((a) => a.correct).length;
+    const byD = {};
+    for (const a of r.answers) {
+      const q = byId(a.id);
+      if (!q) continue;
+      const v = byD[q.d] || (byD[q.d] = [0, 0]);
+      v[0]++;
+      if (a.correct) v[1]++;
+    }
+    const missed = r.answers.filter((a) => !a.correct);
+    return `<div class="stack-lg">
+      <section class="stack-sm">
+        <p class="eyebrow">${esc(r.title)} · finished</p>
+        <h2 class="num">${n ? `${right} of ${n} right (${pct(right / n)})` : "No questions answered"}</h2>
+        ${n ? `<p class="muted">${right / n >= READY_TARGET ? "That is at or above the 75% mark that suggests exam readiness on fresh questions." : "Missed questions come back tomorrow in your smart session."}</p>` : ""}
+      </section>
+      ${n ? `<div class="table-wrap"><table>
+        <thead><tr><th>Domain</th><th class="n">Right</th><th class="n">%</th></tr></thead>
+        <tbody>${Object.entries(byD).sort((a, b) => a[0] - b[0]).map(([d, v]) => `<tr><td><span class="mono">D${d}</span> ${esc(domainOf(Number(d)).short)}</td><td class="n">${v[1]} / ${v[0]}</td><td class="n">${pct(v[1] / v[0])}</td></tr>`).join("")}</tbody>
+      </table></div>` : ""}
+      ${missed.length ? `<section class="stack">
+        <h3>Key points from your misses</h3>
+        <div class="card">${missed.map((a) => {
+          const q = byId(a.id);
+          return q ? `<div class="kp"><span class="chip accent">D${q.d} · ${esc(q.obj)}</span><p>${esc(q.k)}</p><button type="button" class="btn-quiet btn" style="justify-self:start" data-act="study" data-id="${q.id}">Review question</button></div>` : "";
+        }).join("")}</div>
+      </section>` : ""}
+      <div class="row">
+        <button type="button" class="btn btn-primary" data-act="close-run">Done</button>
+        ${missed.length ? `<button type="button" class="btn" data-act="retry-missed">Retry the ${missed.length} missed</button>` : ""}
+      </div>
+    </div>`;
+  }
+
+  // A read-only look at a question with its answer and every explanation.
+  function viewStudy(q, back) {
+    return `<div class="stack">
+      <button type="button" class="btn btn-quiet" style="align-self:flex-start" data-act="${back.act}" ${back.attrs || ""}>‹ ${esc(back.label)}</button>
+      <div class="row"><span class="chip accent">D${q.d} · ${esc(q.obj)}</span><span class="mono small muted">${esc(q.id)}</span>${diffDots(q.diff)}</div>
+      <p class="eyebrow">${esc(objName(q.obj))}</p>
+      <p class="stem">${esc(q.q)}</p>
+      ${optionList(q, [0, 1, 2, 3], { submitted: true, chosenOrig: null, interactive: false })}
+      <div class="keypoint"><p class="eyebrow">Key point</p><p>${esc(q.k)}</p></div>
+      ${flagNote(q.id)}
+    </div>`;
+  }
+
+  // Flagging, with an optional note on why: "answer looks wrong", "unclear wording", "review later".
+  function flagNote(id) {
+    const f = S.flags[id];
+    return `<div class="stack-sm">
+      <div class="row"><button type="button" class="btn btn-sm" data-act="flag" data-id="${esc(id)}">${f ? "Flagged ✓ (tap to remove)" : "Flag this question"}</button></div>
+      ${f ? `<input type="text" data-field="flagNote" data-id="${esc(id)}" value="${esc(f.note || "")}" placeholder="Why? For example: the answer looks wrong, or review before the exam" aria-label="Reason for flagging">` : ""}
+    </div>`;
+  }
+
+  // ---------------------------------------------------------------- Ask Claude
+  function askPrompt(q, order, ans, userText) {
+    const lines = order.map((orig, pos) => `${"ABCD"[pos]}) ${q.o[orig][0]}\n   Explanation: ${q.o[orig][1]}`).join("\n");
+    const keyLetter = "ABCD"[order.indexOf(q.a)];
+    const chosenLetter = "ABCD"[order.indexOf(ans.chosen)];
+    return `You are a CISSP tutor helping a working security professional prepare for the ISC2 CISSP exam (2024 outline). Use ISC2 and Official Study Guide terminology. Think like a risk advisor to senior management, as the exam expects.
+
+Practice question (${domainOf(q.d).name}, objective ${q.obj} ${objName(q.obj)}):
+${q.q}
+
+${lines}
+
+Keyed answer: ${keyLetter}. The learner chose ${chosenLetter} (${ans.correct ? "correct" : "incorrect"}).
+Key point: ${q.k}
+
+The learner asks: ${userText}
+
+Answer in at most 180 words of plain prose (short paragraphs or a few "- " bullets, no headings). Be concrete and exam-focused. If you believe the keyed answer is debatable, say so plainly and explain which answer ISC2 would most likely expect and why.`;
+  }
+
+  async function askClaude(text) {
+    const q = currentQ() || (S.sub && S.sub.qid ? byId(S.sub.qid) : null);
+    const r = S.run;
+    if (!q || !S.sample || !r) return;
+    const order = r.orders[q.id];
+    const ans = r.answers[r.answers.length - 1];
+    const prompt = (text || S.tool.askText || "").trim();
+    if (!prompt) { toast("Type a question or pick one of the suggestions."); return; }
+    if (S.ask && S.ask.ctl) S.ask.ctl.abort();
+    const ctl = new AbortController();
+    S.ask = { qid: q.id, busy: true, out: "", err: "", ctl };
+    S.tool.askText = "";
+    render();
+    try {
+      await S.sample(askPrompt(q, order, ans, prompt), {
+        signal: ctl.signal,
+        onText: ({ text: t }) => {
+          if (S.ask && S.ask.ctl === ctl) {
+            S.ask.out = t;
+            const out = $("#ask-out");
+            if (out) { out.classList.remove("thinking"); out.innerHTML = richText(t); }
+          }
+        },
+      });
+      if (S.ask && S.ask.ctl === ctl) S.ask.busy = false;
+    } catch (e) {
+      if (!S.ask || S.ask.ctl !== ctl) return;
+      S.ask.busy = false;
+      S.ask.out = e && e.text ? e.text : S.ask.out;
+      S.ask.err = sampleError(e);
+      if (e && ["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e.code)) S.sample = null;
+    }
+    render();
+  }
+
+  function sampleError(e) {
+    const code = e && e.code;
+    if (code === "cancelled") return "";
+    if (code === "rate_limited") return "Claude is busy or your usage limit was reached. Try again in a little while.";
+    if (code === "session_expired") return "Your Claude session expired. Sign in again, then retry.";
+    if (code === "refused") return "Claude declined that request. Try rephrasing it.";
+    if (code === "invalid_json") return "Claude's reply could not be read as data. Try again.";
+    if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(code)) return "Claude isn't available on this page right now.";
+    return "Something went wrong reaching Claude. Try again.";
+  }
+
+  // ---------------------------------------------------------------- Fresh questions
+  function validGenerated(q) {
+    return q && typeof q.q === "string" && q.q.length > 20 && Array.isArray(q.o) && q.o.length === 4 &&
+      q.o.every((o) => Array.isArray(o) && typeof o[0] === "string" && typeof o[1] === "string" && o[0] && o[1]) &&
+      Number.isInteger(q.a) && q.a >= 0 && q.a < 4 && DOMAINS[q.d - 1] && DOMAINS[q.d - 1].objectives[q.obj] && typeof q.k === "string";
+  }
+
+  async function generate() {
+    const t = S.tool;
+    if (!S.sample || t.generating) return;
+    const d = domainOf(Number(t.genDomain) || 1);
+    let obj = t.genObj;
+    if (!obj) {
+      const seenBy = {};
+      for (const q of allQuestions()) if (q.d === d.n && S.progress.p[q.id]) seenBy[q.obj] = (seenBy[q.obj] || 0) + 1;
+      const objs = Object.keys(d.objectives);
+      obj = objs.sort((a, b) => (seenBy[a] || 0) - (seenBy[b] || 0))[0];
+    }
+    const existing = allQuestions().filter((q) => q.obj === obj).map((q) => "- " + q.q.split("\n")[0].slice(0, 140)).slice(0, 40).join("\n");
+    const prompt = `Write 5 original ISC2 CISSP practice questions for objective ${obj} "${d.objectives[obj]}" in Domain ${d.n} ${d.name} (CISSP exam outline effective April 15, 2024).
+
+Requirements:
+- Scenario-based where possible, at the depth of the real exam; use qualifiers like BEST, FIRST, MOST or PRIMARY where they fit, and think like a risk advisor to senior management.
+- Exactly four options, one unambiguously best answer by ISC2 / Official Study Guide reasoning, plausible distractors, no "all/none of the above", options of similar length.
+- Every option gets a one- or two-sentence explanation of why it is right or wrong.
+- A one-sentence takeaway that states the rule to remember.
+- Vary the position of the correct answer.
+- Do not repeat these existing questions:
+${existing || "(none)"}
+
+Reply with only a JSON array of 5 objects shaped like:
+{"q": "question stem", "options": [{"t": "option text", "why": "explanation"}, {"t": "...", "why": "..."}, {"t": "...", "why": "..."}, {"t": "...", "why": "..."}], "answer": 0, "difficulty": 2, "takeaway": "rule to remember"}
+where "answer" is the 0-based index of the correct option and "difficulty" is 1 (easier), 2 or 3 (harder).`;
+    t.generating = true;
+    t.genMsg = "Claude is writing five questions. This usually takes under a minute.";
+    t.genErr = false;
+    render();
+    try {
+      const out = await S.sample.json(prompt, { modelTier: "complex", cache: false });
+      const list = Array.isArray(out) ? out : Array.isArray(out && out.questions) ? out.questions : [];
+      const made = [];
+      for (const raw of list) {
+        const q = {
+          id: "G-" + uid(),
+          gen: true,
+          d: d.n,
+          obj,
+          diff: [1, 2, 3].includes(Number(raw && raw.difficulty)) ? Number(raw.difficulty) : 2,
+          q: String((raw && raw.q) || "").trim(),
+          o: Array.isArray(raw && raw.options) ? raw.options.map((o) => [String((o && o.t) || "").trim(), String((o && o.why) || "").trim()]) : [],
+          a: Number(raw && raw.answer),
+          k: String((raw && raw.takeaway) || "").trim(),
+          createdAt: Date.now(),
+        };
+        if (validGenerated(q)) {
+          made.push(q);
+          S.generated.push(q);
+          Store.put("gen", q.id, q);
+        }
+      }
+      t.generating = false;
+      if (made.length) {
+        t.genMsg = `Saved ${made.length} new question${made.length === 1 ? "" : "s"} on ${obj}.`;
+        startRun(made, `Fresh questions · ${obj}`);
+        return;
+      }
+      t.genMsg = "Claude's reply didn't contain usable questions. Try again.";
+      t.genErr = true;
+    } catch (e) {
+      t.generating = false;
+      t.genMsg = sampleError(e) || "Stopped.";
+      t.genErr = true;
+      if (e && ["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e.code)) S.sample = null;
+    }
+    render();
+  }
+
+  // ---------------------------------------------------------------- Mock exam
+  function viewMockMenu() {
+    const mocks = S.sessions.filter((s) => s.kind === "mock");
+    return `<div class="stack-lg">
+      <section class="stack-sm">
+        <h2>Mock exam</h2>
+        <p class="muted measure">An adaptive exam built like the real English CISSP: each answer sets the difficulty of the next item, there is no going back and no feedback until the end, and it stops once it is 95% sure whether you are above or below the passing line.</p>
+      </section>
+      <div class="menu">
+        ${Object.entries(Engine.FORMS).map(([key, f]) => `<button type="button" data-act="start-mock" data-form="${key}">
+          <span class="title">${esc(f.label)}</span><span class="detail">${f.min}–${f.max} items · ${f.minutes >= 60 ? f.minutes / 60 + " hours" : f.minutes + " minutes"}${key === "half" ? " · a lunch-break version" : " · the real exam's length"}</span><span class="side">${f.min}–${f.max}</span>
+        </button>`).join("")}
+      </div>
+      <section class="note small stack-sm">
+        <p><b>How the result is estimated.</b> Each question's difficulty rating places it on an ability scale, your ability estimate updates after every answer, and the score is shown on the 0–1000 scale with 700 as the pass mark. The line sits where you would get about 71% of medium questions right. It is a practice estimate, not ISC2's own scoring.</p>
+        <p>Mock items are picked from questions you have not practised where possible, so a fresh mock is a fair test. Your answers also count toward your practice record.</p>
+      </section>
+      ${mocks.length ? `<section class="stack"><h3>Past mocks</h3>
+        <div class="table-wrap"><table><thead><tr><th>Date</th><th>Form</th><th class="n">Items</th><th class="n">Score</th><th>Result</th></tr></thead><tbody>
+        ${mocks.map((m) => `<tr><td>${fmtDate(m.startedAt)}</td><td>${esc(m.form === "half" ? "Half" : "Full")}</td><td class="n">${m.total}</td><td class="n">${m.scaled}</td><td><span class="chip ${m.pass ? "good" : "bad"}">${m.pass ? "PASS" : "FAIL"}</span> <button type="button" class="btn-quiet btn btn-sm" data-act="open-mock" data-id="${m.id}">Report</button></td></tr>`).join("")}
+        </tbody></table></div></section>` : ""}
+    </div>`;
+  }
+
+  function startMock(formKey) {
+    const form = Engine.FORMS[formKey];
+    S.mock = {
+      id: uid(),
+      form: formKey,
+      startedAt: Date.now(),
+      elapsed: 0,
+      resumedAt: Date.now(),
+      paused: false,
+      used: [],
+      responses: [],
+      current: null,
+      selected: null,
+      finished: false,
+    };
+    nextMockItem();
+    S.mockResult = null;
+    saveMock();
+    go("mock");
+    return form;
+  }
+
+  function mockElapsed(m) {
+    return m.elapsed + (m.paused ? 0 : Date.now() - m.resumedAt);
+  }
+
+  function nextMockItem() {
+    const m = S.mock;
+    const q = Engine.nextCatItem(CURATED, m.used, m.responses, DOMAINS, S.progress.p);
+    if (!q) { finishMock("bank"); return; }
+    m.used.push(q.id);
+    m.current = { id: q.id, order: Engine.shuffle([0, 1, 2, 3]), shownAt: Date.now() };
+    m.selected = null;
+  }
+
+  function viewMockItem() {
+    const m = S.mock;
+    const form = Engine.FORMS[m.form];
+    const q = byId(m.current.id);
+    const n = m.responses.length + 1;
+    return `<div class="stack">
+      <div class="examhead">
+        <span class="mono small"><b>Item ${n}</b> <span class="muted">of ${form.min}–${form.max}</span></span>
+        <span class="clock" id="clock">--:--</span>
+      </div>
+      <p class="stem">${esc(q.q)}</p>
+      ${optionList(q, m.current.order, { selected: m.selected, submitted: false, act: "mock-select" })}
+      <p class="small muted">Answers are final once you move on, as on the real exam.</p>
+    </div>
+    <div class="actionbar"><div class="actionbar-inner">
+      <button type="button" class="btn btn-quiet" data-act="mock-pause">Pause</button>
+      <span class="grow"></span>
+      <button type="button" class="btn btn-primary" data-act="mock-next" style="min-width:150px" ${m.selected == null ? "disabled" : ""}>Next</button>
+    </div></div>`;
+  }
+
+  function viewMockPaused() {
+    const m = S.mock;
+    const form = Engine.FORMS[m.form];
+    return `<div class="stack">
+      <h2>Mock paused</h2>
+      <p class="muted num">${m.responses.length} items answered · ${fmtClock(form.minutes * 60000 - mockElapsed(m))} left on the clock. The real exam's clock never stops, but breaks are allowed.</p>
+      <div class="row">
+        <button type="button" class="btn btn-primary" data-act="mock-resume">Resume</button>
+        <button type="button" class="btn" data-act="mock-finish-now">End and score now</button>
+        <button type="button" class="btn btn-danger ${S.tool.armDiscard ? "armed" : ""}" data-act="mock-discard">${S.tool.armDiscard ? "Tap again to discard" : "Discard"}</button>
+      </div>
+    </div>`;
+  }
+
+  function tickClock() {
+    const m = S.mock;
+    const el = $("#clock");
+    if (!m || !el) return;
+    const left = Engine.FORMS[m.form].minutes * 60000 - mockElapsed(m);
+    el.textContent = fmtClock(left);
+    el.classList.toggle("low", left < 10 * 60000);
+    if (left <= 0) finishMock("time");
+  }
+
+  function mockAnswer() {
+    const m = S.mock;
+    if (!m || m.selected == null) return;
+    const q = byId(m.current.id);
+    const chosen = m.current.order[m.selected];
+    const correct = chosen === q.a;
+    m.responses.push({ id: q.id, d: q.d, b: Engine.DIFFICULTY[q.diff], correct, chosen, ms: Date.now() - m.current.shownAt });
+    S.progress.p[q.id] = Engine.record(S.progress.p[q.id], correct, Date.now());
+    countAnswer(correct);
+    saveProgress();
+    const decision = Engine.catDecision(m.responses, Engine.FORMS[m.form]);
+    if (decision.done) { finishMock(decision.reason); return; }
+    nextMockItem();
+    m.savedAt = Date.now();
+    saveMock();
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function finishMock(reason) {
+    const m = S.mock;
+    if (!m || m.finished) return;
+    const form = Engine.FORMS[m.form];
+    m.finished = true;
+    const est = Engine.estimate(m.responses);
+    const elapsed = Math.min(mockElapsed(m), form.minutes * 60000);
+    let pass = est.theta >= Engine.PASS_THETA;
+    let why = "";
+    if (reason === "time" && m.responses.length < form.min) {
+      pass = false;
+      why = `Time ran out before the minimum ${form.min} items. On the real exam that is a fail.`;
+    } else if (reason === "confident") why = `Stopped at ${m.responses.length} items: 95% confident of the result.`;
+    else if (reason === "max") why = `Reached the ${form.max}-item maximum; decided on the final ability estimate.`;
+    else if (reason === "time") why = "Time ran out after the minimum; decided on the final ability estimate.";
+    else if (reason === "early") why = "Ended early by you; scored on the items answered so far.";
+    else if (reason === "bank") why = "The question bank ran out of unused items for this mock.";
+    const session = {
+      id: m.id,
+      kind: "mock",
+      form: m.form,
+      title: form.label,
+      startedAt: m.startedAt,
+      endedAt: Date.now(),
+      elapsedMs: elapsed,
+      total: m.responses.length,
+      correct: m.responses.filter((r) => r.correct).length,
+      theta: Number(est.theta.toFixed(3)),
+      se: Number(est.se.toFixed(3)),
+      pass,
+      scaled: Engine.scaledScore(est.theta),
+      why,
+      domains: Engine.domainProficiency(m.responses, DOMAINS).map((x) => ({ n: x.n, count: x.count, correct: x.correct, level: x.level })),
+      items: m.responses.map((r) => [r.id, r.correct ? 1 : 0, r.chosen, Math.round(r.ms / 1000)]),
+    };
+    S.sessions.unshift(session);
+    Store.put("sessions", session.id, session);
+    S.mock = null;
+    saveMock();
+    S.mockResult = session;
+    clearInterval(S.clockTimer);
+    if (S.tab === "mock") { render(); window.scrollTo(0, 0); }
+  }
+
+  function viewMockResult() {
+    const s = S.mockResult;
+    const pos = Math.max(0, Math.min(100, s.scaled / 10));
+    const order = { below: 0, near: 1, above: 2, none: 3 };
+    const doms = s.domains.slice().sort((a, b) => order[a.level] - order[b.level]);
+    const review = S.sub && S.sub.review;
+    return `<div class="stack-lg">
+      <section class="stack">
+        <p class="eyebrow">${esc(s.title)} · ${fmtDate(s.startedAt, { month: "long", day: "numeric" })}</p>
+        <div class="row" style="gap:18px"><span class="stamp ${s.pass ? "pass" : "fail"}">${s.pass ? "Pass" : "Fail"}</span>
+          <div class="stack-sm"><p class="num"><b style="font-size:1.6rem">${s.scaled}</b> <span class="muted">/ 1000 estimated</span></p>
+          <p class="small muted num">${s.total} items · ${s.correct} right · ${fmtClock(s.elapsedMs)} used</p></div></div>
+        <p class="small">${esc(s.why)}</p>
+        <div class="scale" aria-label="Estimated scaled score ${s.scaled} of 1000, pass mark 700">
+          <span class="cutlabel">700</span><span class="track"></span><span class="cut"></span>
+          <span class="you" style="left:${pos}%"></span>
+          <span class="ticks"><span>0</span><span>500</span><span>1000</span></span>
+        </div>
+      </section>
+      <section class="stack">
+        <h3>Domain proficiency</h3>
+        <p class="small muted">As on ISC2's score report for candidates who do not pass: each domain placed above, near or below the passing standard, weakest first.</p>
+        <div class="card prof">
+          ${doms.map((x) => `<span class="mono small">D${x.n}</span><span class="small">${esc(domainOf(x.n).name)} <span class="muted num">· ${x.correct}/${x.count}</span></span><span class="lvl lvl-${x.level === "none" ? "nodata" : x.level}">${x.level === "none" ? "No items" : x.level === "above" ? "Above" : x.level === "near" ? "Near" : "Below"}</span>`).join("")}
+        </div>
+      </section>
+      <section class="stack">
+        <div class="spread"><h3>Review every item</h3><button type="button" class="btn btn-sm" data-act="mock-review-toggle">${review ? "Hide" : "Show"}</button></div>
+        ${review ? `<div class="stack">${s.items.map(([id, ok, chosen], i) => {
+          const q = byId(id);
+          if (!q) return "";
+          return `<details class="card"><summary class="spread" style="cursor:pointer"><span class="small"><span class="mono">${i + 1}.</span> <span class="chip ${ok ? "good" : "bad"}">${ok ? "Right" : "Missed"}</span> <span class="chip accent">D${q.d} · ${esc(q.obj)}</span></span></summary>
+            <div class="stack" style="margin-top:12px"><p class="stem">${esc(q.q)}</p>${optionList(q, [0, 1, 2, 3], { submitted: true, chosenOrig: chosen, interactive: false })}<div class="keypoint"><p class="eyebrow">Key point</p><p>${esc(q.k)}</p></div></div></details>`;
+        }).join("")}</div>` : ""}
+      </section>
+      <div class="row">
+        <button type="button" class="btn btn-primary" data-act="close-mock-result">Done</button>
+        ${s.items.some((x) => !x[1]) ? `<button type="button" class="btn" data-act="practise-mock-misses">Practise the ${s.items.filter((x) => !x[1]).length} misses</button>` : ""}
+      </div>
+    </div>`;
+  }
+
+  // ---------------------------------------------------------------- Tracker
+  function chartHistory() {
+    const days = [];
+    for (let i = 29; i >= 0; i--) {
+      const k = todayKey(Date.now() - i * DAY);
+      days.push([k, S.progress.days[k] || [0, 0]]);
+    }
+    const max = Math.max(10, ...days.map((d) => d[1][0]));
+    const W = 600, H = 150, pad = 26, bw = (W - pad * 2) / days.length;
+    const bars = days.map(([k, v], i) => {
+      const h = ((H - pad * 2) * v[0]) / max;
+      const x = pad + i * bw + 1.5;
+      const rate = v[0] ? v[1] / v[0] : null;
+      const color = rate == null ? "var(--surface-2)" : rate >= READY_TARGET ? "var(--good)" : rate >= 0.6 ? "var(--ochre)" : "var(--bad)";
+      return `<rect x="${x.toFixed(1)}" y="${(H - pad - h).toFixed(1)}" width="${(bw - 3).toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${color}"><title>${k}: ${v[0]} answered${v[0] ? `, ${pct(v[1] / v[0])} right` : ""}</title></rect>`;
+    }).join("");
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Questions answered per day over the last 30 days, coloured by accuracy">
+      <line x1="${pad}" x2="${W - pad}" y1="${H - pad}" y2="${H - pad}" stroke="var(--line)"/>
+      <line x1="${pad}" x2="${W - pad}" y1="${pad}" y2="${pad}" stroke="var(--line)" stroke-dasharray="3 4"/>
+      <text x="${pad - 4}" y="${pad + 3}" text-anchor="end">${max}</text>
+      <text x="${pad - 4}" y="${H - pad + 3}" text-anchor="end">0</text>
+      ${bars}
+      <text x="${pad}" y="${H - 8}">${fmtDate(Date.now() - 29 * DAY)}</text>
+      <text x="${W - pad}" y="${H - 8}" text-anchor="end">today</text>
+    </svg>`;
+  }
+
+  function viewTracker() {
+    const p = S.profile;
+    const stats = curatedStats();
+    const rd = Engine.readiness(stats);
+    const exam = examTime();
+    const plan = exam ? Engine.studyPlan(exam, stats, p.selfRatings) : null;
+    const t = S.tool;
+    const flagged = Object.values(S.flags).filter((f) => byId(f.id));
+    return `<div class="stack-lg">
+      <section class="stack-sm">
+        <h2>Tracker</h2>
+        <p class="muted">Your exam date, where you stand in each domain, and your study plan to exam day.${Store.mode === "db" ? " Saved to your account, so your phone and computer stay in step." : " Saved in this browser."}</p>
+      </section>
+
+      <section class="card stack">
+        <h3>Exam</h3>
+        <div class="row" style="align-items:flex-end">
+          <div class="field grow" style="flex:1 1 180px"><label for="exam-date">Exam date</label><input type="date" id="exam-date" data-field="examDate" value="${esc(p.examDate || "")}"></div>
+          <div class="field" style="flex:1 1 160px"><span class="label">Status</span>
+            <div class="seg" role="group" aria-label="Booking status"><button type="button" data-act="set-booked" data-v="0" aria-pressed="${!p.examBooked}">Target</button><button type="button" data-act="set-booked" data-v="1" aria-pressed="${!!p.examBooked}">Booked</button></div>
+          </div>
+          <div class="field" style="flex:0 1 120px"><label for="daily-goal">Daily goal</label><input type="number" id="daily-goal" min="5" max="150" step="5" data-field="dailyGoal" value="${p.dailyGoal}"></div>
+        </div>
+        ${!p.examBooked ? `<p class="small note warn">Seats for December dates fill early. Booking through Pearson VUE turns the target into a deadline. <a href="https://www.pearsonvue.com/us/en/isc2.html" target="_blank" rel="noopener">Pearson VUE for ISC2</a></p>` : ""}
+      </section>
+
+      <section class="stack">
+        <h3>Domains</h3>
+        <p class="small muted">First-try is your accuracy the first time you met each question; latest is your most recent answer. Rate your own confidence 1–5: weak self-ratings pull more practice toward that domain.</p>
+        <div class="stack-sm">${stats.map((s) => {
+          const d = domainOf(s.n);
+          const rating = Number(p.selfRatings[s.n]) || 0;
+          return `<div class="card domain-card">
+            <span class="dnum">D${s.n}</span>
+            <div class="stack-sm" style="min-width:0">
+              <div class="spread"><b>${esc(d.name)}</b><span class="chip">${d.weight}% of exam</span></div>
+              <div class="statline"><span>Seen <b>${s.seen}/${s.total}</b></span><span>First-try <b>${pct(s.firstRate)}</b></span><span>Latest <b>${pct(s.lastRate)}</b></span>${s.dueMissed ? `<span>To review <b>${s.dueMissed}</b></span>` : ""}</div>
+              <div class="spread">
+                <div class="seg" role="group" aria-label="Confidence in D${s.n}">${[1, 2, 3, 4, 5].map((v) => `<button type="button" data-act="rate" data-d="${s.n}" data-v="${v}" aria-pressed="${rating === v}">${v}</button>`).join("")}</div>
+                <button type="button" class="btn btn-sm" data-act="domain-practice" data-d="${s.n}">Practise</button>
+              </div>
+              <details ${p.notes[s.n] ? "open" : ""}><summary class="small muted" style="cursor:pointer">Notes${p.notes[s.n] ? "" : " (none yet)"}</summary>
+                <textarea data-field="note" data-d="${s.n}" rows="2" placeholder="Chapters read, weak topics, mnemonics" style="min-height:56px;margin-top:8px" aria-label="Notes for D${s.n}">${esc(p.notes[s.n] || "")}</textarea>
+              </details>
+            </div>
+          </div>`;
+        }).join("")}</div>
+      </section>
+
+      <section class="stack">
+        <h3>Weakest objectives</h3>
+        ${(() => { const w = weakObjectives(8); return w.length ? weakList(w) + `<p class="small muted">Ranked by your latest answers, among objectives where you have answered at least two questions. Each drill brings back your misses first, then questions you have not seen.</p>` : `<p class="note small">Answer at least two questions in an objective to see it ranked here.</p>`; })()}
+      </section>
+
+      <section class="stack">
+        <h3>Study plan</h3>
+        ${plan && plan.weeks.length ? `<div class="table-wrap"><table>
+          <thead><tr><th>Week of</th><th>Focus</th><th>Phase</th></tr></thead>
+          <tbody>${plan.weeks.map((w, i) => `<tr${i === 0 ? ' style="background:var(--accent-soft)"' : ""}><td class="num" style="white-space:nowrap">${fmtDate(w.start)}</td><td style="white-space:nowrap">${w.focus.map((n) => `<span class="chip accent" title="${esc(domainOf(n).name)}">D${n}</span>`).join(" ")}</td><td class="small">${w.phase === "build" ? "Learn and practise" : w.phase === "exam" ? "<b>Mock exams</b>" : "<b>Final review</b>"}</td></tr>`).join("")}</tbody>
+        </table></div>
+        <ul class="list-plain small">
+          <li><b>Learn and practise:</b> read the two focus domains in the Official Study Guide, then do your daily smart sessions. Smart review keeps the other domains from fading.</li>
+          <li><b>Mock exams:</b> two full adaptive mocks a week. Review every miss, then drill the domains the score report marks below the line.</li>
+          <li><b>Final review:</b> missed questions and key points only. No new material in the last two days; sleep well.</li>
+        </ul>
+        <p class="small muted">The plan reorders itself as your accuracy changes: weaker, heavier domains move to the front.</p>` : `<p class="note small">Set a future exam date to see a week-by-week plan.</p>`}
+      </section>
+
+      <section class="stack">
+        <h3>Activity, last 30 days</h3>
+        <div class="card">${chartHistory()}</div>
+        <p class="small muted num">Overall readiness ${rd.seen ? pct(rd.score) : "–"} · ${Object.values(S.progress.days).reduce((a, v) => a + v[0], 0)} answers in total · ${S.sessions.filter((s) => s.kind === "mock").length} mock exams</p>
+      </section>
+
+      <section class="stack">
+        <h3>Scores from other practice tests</h3>
+        <p class="small muted">Log results from the Official Practice Tests, CertMike, or any other source, so all your evidence is in one place.</p>
+        ${p.scores.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Source</th><th class="n">Score</th><th></th></tr></thead><tbody>
+          ${p.scores.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "")).map((s) => `<tr><td class="num">${esc(s.date || "")}</td><td>${esc(s.source || "")}${s.note ? `<br><span class="small muted">${esc(s.note)}</span>` : ""}</td><td class="n">${s.score != null ? esc(s.score) + "%" : ""}</td><td><button type="button" class="btn-quiet btn btn-sm" data-act="del-score" data-id="${esc(s.id)}">Remove</button></td></tr>`).join("")}
+        </tbody></table></div>` : ""}
+        <div class="card stack-sm">
+          <div class="row">
+            <input type="date" data-field="scoreDate" value="${esc(t.scoreDate || todayKey())}" style="flex:1 1 140px" aria-label="Date">
+            <input type="text" data-field="scoreSource" value="${esc(t.scoreSource || "")}" placeholder="Source, e.g. OPT D3 test" style="flex:2 1 180px" aria-label="Source">
+            <input type="number" data-field="scoreValue" value="${esc(t.scoreValue ?? "")}" min="0" max="100" placeholder="%" style="flex:0 1 90px" aria-label="Score percent">
+          </div>
+          <input type="text" data-field="scoreNote" value="${esc(t.scoreNote || "")}" placeholder="Note (optional)" aria-label="Note">
+          <div><button type="button" class="btn btn-sm" data-act="add-score">Add score</button></div>
+        </div>
+      </section>
+
+      <section class="stack">
+        <h3>Import your existing tracker</h3>
+        <p class="small muted">Paste notes or a table from your earlier CISSP tracker (a spreadsheet, a chat, a document). Claude reads it and fills in your exam date, domain confidence, notes and practice scores. You review before anything is saved.</p>
+        ${S.sample ? `<textarea data-field="importText" placeholder="Paste your tracker here">${esc(t.importText || "")}</textarea>
+          <div class="row"><button type="button" class="btn" data-act="import-read" ${t.importing ? "disabled" : ""}>${t.importing ? "Reading…" : "Read with Claude"}</button></div>
+          ${t.importMsg ? `<p class="small ${t.importErr ? "note bad" : "muted"}">${esc(t.importMsg)}</p>` : ""}
+          ${t.importPreview ? importPreview(t.importPreview) : ""}`
+          : `<p class="note small">Available when you open this page in Claude and allow it to use Claude. You can also paste your tracker into a Claude chat and ask it to update this app's records.</p>`}
+        ${p.trackerSummary ? `<div class="note small"><b>From your imported tracker:</b> ${esc(p.trackerSummary)}</div>` : ""}
+      </section>
+
+      ${flagged.length ? `<section class="stack"><h3>Flagged questions</h3><div class="menu">${flagged.map((f) => {
+        const q = byId(f.id);
+        return `<button type="button" data-act="study" data-id="${esc(f.id)}"><span class="title">${esc(q.q.split("\n")[0].slice(0, 110))}${q.q.length > 110 ? "…" : ""}</span><span class="detail">${esc(f.note || "No note")}</span><span class="side">${esc(f.id)}</span></button>`;
+      }).join("")}</div></section>` : ""}
+
+      <section class="stack">
+        <h3>Settings and data</h3>
+        <div class="card stack">
+          <label class="switch-row" for="confirm-toggle"><span><b>Confirm before checking</b><br><span class="small muted">Tap an option, then Check answer. Off: the first tap answers.</span></span>
+            <input type="checkbox" class="switch" id="confirm-toggle" data-field="confirm" ${p.confirm ? "checked" : ""}></label>
+          <div class="row">
+            <button type="button" class="btn btn-sm" data-act="copy-data">Copy my data as JSON</button>
+            <button type="button" class="btn btn-sm btn-danger ${t.armReset ? "armed" : ""}" data-act="reset">${t.armReset ? "Tap again to erase all progress" : "Reset progress"}</button>
+          </div>
+          <p class="small muted">Storage: ${Store.mode === "db" ? "your private record in this artifact, shared across your devices" : "this browser only"}.</p>
+        </div>
+      </section>
+    </div>`;
+  }
+
+  function importPreview(pv) {
+    return `<div class="card stack-sm">
+      <p class="eyebrow">Claude found</p>
+      ${pv.examDate ? `<p>Exam date: <b>${esc(pv.examDate)}</b>${pv.examBooked ? " (booked)" : ""}</p>` : ""}
+      ${pv.domains && pv.domains.length ? `<ul class="list-plain small">${pv.domains.map((d) => `<li><b>D${d.n}</b>${d.rating ? ` · confidence ${d.rating}/5` : ""}${d.note ? ` · ${esc(d.note)}` : ""}</li>`).join("")}</ul>` : ""}
+      ${pv.scores && pv.scores.length ? `<p class="small">${pv.scores.length} practice score${pv.scores.length === 1 ? "" : "s"}: ${pv.scores.map((s) => `${esc(s.source || "test")} ${s.score != null ? esc(s.score) + "%" : ""}`).join(", ")}</p>` : ""}
+      ${pv.summary ? `<p class="small muted">${esc(pv.summary)}</p>` : ""}
+      <div class="row"><button type="button" class="btn btn-primary btn-sm" data-act="import-apply">Apply to my tracker</button><button type="button" class="btn btn-sm" data-act="import-cancel">Discard</button></div>
+    </div>`;
+  }
+
+  async function importRead() {
+    const t = S.tool;
+    const text = (t.importText || "").trim();
+    if (!S.sample || !text) { toast("Paste your tracker first."); return; }
+    t.importing = true;
+    t.importMsg = "Claude is reading your tracker.";
+    t.importErr = false;
+    render();
+    const prompt = `Extract a CISSP study tracker into structured data. Today is ${todayKey()}.
+The 8 CISSP domains: ${DOMAINS.map((d) => `D${d.n} ${d.name}`).join("; ")}.
+
+Reply with only one JSON object shaped like:
+{"examDate": "YYYY-MM-DD or null", "examBooked": true or false, "domains": [{"n": 1, "rating": 1-5 or null, "note": "short note"}], "scores": [{"date": "YYYY-MM-DD or null", "source": "name of test", "score": percent number or null, "note": "short"}], "summary": "two sentences on the learner's status, materials used and weak areas"}
+
+Rules: rating is the learner's confidence or status in that domain mapped to 1 (weak or not started) through 5 (strong); include only domains the tracker says something about; convert fractions to percents; keep notes under 140 characters; do not invent anything that is not in the text.
+
+Tracker:
+${text.slice(0, 60000)}`;
+    try {
+      const out = await S.sample.json(prompt, { cache: false });
+      const pv = {
+        examDate: typeof out.examDate === "string" && parseDate(out.examDate) ? out.examDate : null,
+        examBooked: !!out.examBooked,
+        domains: (Array.isArray(out.domains) ? out.domains : [])
+          .map((d) => ({ n: Number(d.n), rating: [1, 2, 3, 4, 5].includes(Number(d.rating)) ? Number(d.rating) : null, note: String(d.note || "").slice(0, 300) }))
+          .filter((d) => d.n >= 1 && d.n <= 8),
+        scores: (Array.isArray(out.scores) ? out.scores : []).map((s) => ({
+          id: uid(),
+          date: typeof s.date === "string" ? s.date : "",
+          source: String(s.source || "").slice(0, 80),
+          score: s.score == null || isNaN(Number(s.score)) ? null : Math.round(Number(s.score)),
+          note: String(s.note || "").slice(0, 200),
+        })),
+        summary: String(out.summary || "").slice(0, 600),
+      };
+      t.importPreview = pv;
+      t.importMsg = "";
+    } catch (e) {
+      t.importMsg = sampleError(e) || "Stopped.";
+      t.importErr = true;
+    }
+    t.importing = false;
+    render();
+  }
+
+  function importApply() {
+    const pv = S.tool.importPreview;
+    if (!pv) return;
+    const p = S.profile;
+    if (pv.examDate) { p.examDate = pv.examDate; p.examBooked = pv.examBooked; }
+    for (const d of pv.domains) {
+      if (d.rating) p.selfRatings[d.n] = d.rating;
+      if (d.note) p.notes[d.n] = p.notes[d.n] ? p.notes[d.n] + "\n" + d.note : d.note;
+    }
+    p.scores = p.scores.concat(pv.scores);
+    if (pv.summary) p.trackerSummary = pv.summary;
+    saveProfile();
+    S.tool.importPreview = null;
+    S.tool.importText = "";
+    toast("Tracker imported");
+    render();
+  }
+
+  // ---------------------------------------------------------------- Library
+  const MINDSET = [
+    ["People first, always.", "When life safety is in play, it outranks data, systems and cost. Evacuate before you save the servers."],
+    ["You advise; management decides.", "Senior management owns risk and is ultimately accountable. The best answer often informs, recommends or escalates rather than acting alone."],
+    ["Understand before you act.", "FIRST usually means: know the asset, its value and the requirement. Classify before you protect, run the BIA before choosing recovery strategies, investigate before you remediate."],
+    ["Fix the cause, not the symptom.", "Prefer answers that correct the process: policy, then standards, then procedures. A one-off technical tweak is rarely the BEST answer to a governance question."],
+    ["Read the qualifier.", "BEST, FIRST, MOST, PRIMARY, LEAST, NOT. Several options can be true; only one answers the question asked. Re-read the last sentence of the stem before choosing."],
+    ["Security serves the business.", "Controls must be justified by risk and cost and must support the mission. The most secure option is not the best one if it stops the business."],
+    ["Due care and due diligence.", "Do what a reasonable person would (due care), and verify that it keeps working (due diligence). Follow the law, contracts and policy."],
+    ["Stay inside the scenario.", "Don't add facts or assume missing controls. Answer for the organization described, with the authority the role in the question has."],
+    ["Owners decide, custodians do.", "The data owner classifies and sets protection requirements; the custodian implements them day to day; users follow the rules."],
+    ["Ethics canons in order.", "Protect society first, then act honorably, then serve principals diligently, then advance the profession. Conflicts are resolved in that order."],
+  ];
+
+  const RESOURCES = [
+    ["Official", [
+      ["CISSP exam outline (effective April 15, 2024)", "https://www.isc2.org/certifications/cissp/cissp-certification-exam-outline", "The authority on what is tested. Every question here is tagged to its objectives."],
+      ["Schedule with Pearson VUE", "https://www.pearsonvue.com/us/en/isc2.html", "Book the seat that makes your end-of-year target real."],
+      ["ISC2 CISSP certification page", "https://www.isc2.org/certifications/cissp", "Experience requirement, endorsement and maintenance."],
+    ]],
+    ["Books by authors you already follow", [
+      ["ISC2 CISSP Official Study Guide (Sybex, 10th edition)", "https://www.wiley.com/en-us/search?pq=CISSP%20Official%20Study%20Guide", "Chapple, Stewart and Gibson. The reference the explanations in this app follow."],
+      ["ISC2 CISSP Official Practice Tests (Sybex)", "https://www.wiley.com/en-us/search?pq=CISSP%20Official%20Practice%20Tests", "Chapple and Seidl. Over 1,000 questions; log your scores in Tracker."],
+      ["CertMike CISSP resources", "https://www.certmike.com/cissp/", "Mike Chapple's weekly practice question already arrives in your inbox."],
+    ]],
+    ["Free video review", [
+      ["Destination Certification MindMaps", "https://www.youtube.com/results?search_query=destination+certification+cissp+mindmap", "Short videos that connect every topic in a domain. Good for the final weeks."],
+      ["CISSP Exam Cram (Pete Zerger)", "https://www.youtube.com/results?search_query=cissp+exam+cram+pete+zerger", "Full-domain reviews aligned to the 2024 outline."],
+      ["Why you will pass the CISSP (Kelly Handerhan)", "https://www.youtube.com/results?search_query=kelly+handerhan+why+you+will+pass+the+cissp", "Twenty minutes on the manager's mindset."],
+    ]],
+    ["More practice and depth", [
+      ["NIST post-quantum cryptography project", "https://csrc.nist.gov/projects/post-quantum-cryptography", "FIPS 203, 204 and 205 (ML-KEM, ML-DSA, SLH-DSA): background for the outline's quantum items."],
+      ["Simplilearn free CISSP practice test", "https://www.simplilearn.com/cissp-exam-prep-free-practice-test", "A free full test. Third-party: quality varies, so judge items against the outline."],
+      ["LearnersInk 150-question practice test", "https://www.learnersink.com/resources/practice-test/cissp", "Free, timed, scored on the 1000-point scale. Third-party."],
+    ]],
+  ];
+
+  function viewLibrary() {
+    const sub = S.sub || {};
+    if (sub.qid) {
+      const q = byId(sub.qid);
+      if (q) return viewStudy(q, { act: "lib-back", label: sub.from === "tracker" ? "Back" : "Back to library" });
+    }
+    if (sub.name === "mindset") return libMindset();
+    if (sub.name === "facts") return libFacts();
+    if (sub.name === "keypoints") return libKeypoints(sub.d || 1);
+    if (sub.name === "browse") return libBrowse(sub.d || 1);
+    if (sub.name === "resources") return libResources();
+    return `<div class="stack-lg">
+      <section class="stack-sm"><h2>Library</h2><p class="muted">Reference for the exam itself, the way to think about its questions, and every key point in the bank.</p></section>
+      <div class="menu">
+        <button type="button" data-act="lib" data-sub="mindset"><span class="title">How to think like a CISSP</span><span class="detail">Ten rules that settle most "BEST" and "FIRST" questions</span><span class="side">10</span></button>
+        <button type="button" data-act="lib" data-sub="facts"><span class="title">Exam facts</span><span class="detail">Format, adaptive rules, domain weights, after you pass</span><span class="side">2024</span></button>
+        <button type="button" data-act="lib" data-sub="keypoints"><span class="title">Key points by domain</span><span class="detail">The takeaway from every question, grouped by objective</span><span class="side">${CURATED.length}</span></button>
+        <button type="button" data-act="lib" data-sub="browse"><span class="title">Browse questions</span><span class="detail">Read any question with its answer and explanations</span><span class="side">${CURATED.length}</span></button>
+        <button type="button" data-act="lib" data-sub="resources"><span class="title">Resources</span><span class="detail">Official outline, books, free video review, more practice</span><span class="side">12</span></button>
+      </div>
+    </div>`;
+  }
+
+  const backToLib = `<button type="button" class="btn btn-quiet" style="align-self:flex-start" data-act="lib" data-sub="">‹ Library</button>`;
+
+  function libMindset() {
+    return `<div class="stack">${backToLib}
+      <h2>How to think like a CISSP</h2>
+      <p class="muted measure">The exam rarely asks what a technician would do. It asks what a security professional advising the business should do, and in what order.</p>
+      <ol class="list-plain measure">${MINDSET.map(([h, b]) => `<li><b>${esc(h)}</b> ${esc(b)}</li>`).join("")}</ol>
+      <div class="note small measure"><b>ISC2 Code of Ethics canons.</b> 1. Protect society, the common good, necessary public trust and confidence, and the infrastructure. 2. Act honorably, honestly, justly, responsibly, and legally. 3. Provide diligent and competent service to principals. 4. Advance and protect the profession.</div>
+    </div>`;
+  }
+
+  function libFacts() {
+    return `<div class="stack">${backToLib}
+      <h2>Exam facts</h2>
+      <div class="card stack-sm measure small">
+        <p><b>Format (English).</b> Computerized adaptive testing: 100 to 150 items in 3 hours. The pass mark is 700 on a 1000-point scale. This has been the format since the outline refresh of April 15, 2024.</p>
+        <p><b>Adaptive rules.</b> Each answer sets the difficulty of the next item. You cannot skip or go back. The exam ends when it is 95% confident you are above or below the passing standard, when you reach 150 items, or when time runs out. Running out of time before the minimum number of items is a fail.</p>
+        <p><b>Unscored items.</b> 25 of the items are pretest questions that do not count, and you cannot tell which. Treat every item as scored.</p>
+        <p><b>Item types.</b> Mostly four-option multiple choice, plus some drag-and-drop and hotspot items.</p>
+        <p><b>Score report.</b> A pass is reported as a pass. A fail shows each domain's proficiency relative to the passing standard, which the mock in this app imitates.</p>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Domain</th><th class="n">Weight</th><th class="n">In this bank</th></tr></thead><tbody>
+        ${DOMAINS.map((d) => `<tr><td><span class="mono">D${d.n}</span> ${esc(d.name)}</td><td class="n">${d.weight}%</td><td class="n">${CURATED.filter((q) => q.d === d.n).length}</td></tr>`).join("")}
+      </tbody></table></div>
+      <div class="card stack-sm measure small">
+        <p><b>After you pass.</b> Submit the endorsement within nine months. You need five years of cumulative, paid work experience in two or more of the eight domains; a four-year degree or an approved credential can waive one year. Without the experience you become an Associate of ISC2 while you earn it.</p>
+        <p><b>Keeping it.</b> 120 CPE credits over each three-year cycle and an annual maintenance fee.</p>
+        <p><b>Retakes.</b> Wait 30 days after a first attempt, 60 days after a second and 90 days after a third, with at most four attempts in twelve months.</p>
+      </div>
+    </div>`;
+  }
+
+  function domainTabs(act, current) {
+    return `<div class="checks">${DOMAINS.map((d) => `<button type="button" class="check" data-act="${act}" data-d="${d.n}" aria-pressed="${d.n === current}"><span class="mono">D${d.n}</span></button>`).join("")}</div>`;
+  }
+
+  function libKeypoints(dn) {
+    const d = domainOf(dn);
+    const qs = CURATED.filter((q) => q.d === dn).sort((a, b) => a.obj.localeCompare(b.obj, undefined, { numeric: true }));
+    const groups = {};
+    for (const q of qs) (groups[q.obj] || (groups[q.obj] = [])).push(q);
+    return `<div class="stack">${backToLib}
+      <h2>Key points</h2>
+      ${domainTabs("lib-kp", dn)}
+      <p class="eyebrow">D${d.n} · ${esc(d.name)} · ${d.weight}% of the exam</p>
+      ${Object.entries(groups).map(([obj, list]) => `<section class="card stack-sm"><h3><span class="mono">${obj}</span> ${esc(d.objectives[obj])}</h3>
+        <div>${list.map((q) => `<div class="kp"><p>${esc(q.k)}</p><button type="button" class="btn-quiet btn btn-sm" style="justify-self:start" data-act="study" data-id="${q.id}">See question ${esc(q.id)}</button></div>`).join("")}</div></section>`).join("")}
+    </div>`;
+  }
+
+  function libBrowse(dn) {
+    const d = domainOf(dn);
+    const qs = CURATED.filter((q) => q.d === dn).sort((a, b) => a.obj.localeCompare(b.obj, undefined, { numeric: true }) || a.id.localeCompare(b.id));
+    return `<div class="stack">${backToLib}
+      <h2>Browse questions</h2>
+      ${domainTabs("lib-browse", dn)}
+      <p class="eyebrow">D${d.n} · ${esc(d.name)} · ${qs.length} questions</p>
+      <div class="menu">${qs.map((q) => {
+        const r = S.progress.p[q.id];
+        const state = !r ? "" : r[3] ? `<span class="chip good">✓</span>` : `<span class="chip bad">✗</span>`;
+        return `<button type="button" data-act="study" data-id="${q.id}"><span class="title small" style="font-weight:500">${esc(q.q.split("\n")[0].slice(0, 120))}${q.q.length > 120 ? "…" : ""}</span><span class="detail mono">${q.obj} · ${q.id}</span><span class="side">${state}</span></button>`;
+      }).join("")}</div>
+    </div>`;
+  }
+
+  function libResources() {
+    return `<div class="stack">${backToLib}
+      <h2>Resources</h2>
+      <p class="muted measure">The questions in this app are original and follow the Official Study Guide's reasoning. Use these alongside them; links open in a new tab.</p>
+      ${RESOURCES.map(([group, items]) => `<section class="stack-sm"><p class="section-title">${esc(group)}</p>
+        <div class="menu">${items.map(([t, url, detail]) => `<a href="${esc(url)}" target="_blank" rel="noopener"><span class="title">${esc(t)}</span><span class="detail">${esc(detail)}</span><span class="side">↗</span></a>`).join("")}</div></section>`).join("")}
+    </div>`;
+  }
+
+  // ---------------------------------------------------------------- flags
+  function toggleFlag(id) {
+    if (S.flags[id]) {
+      delete S.flags[id];
+      Store.remove("flags", id);
+      toast("Flag removed");
+    } else {
+      const f = { id, note: "", ts: Date.now() };
+      S.flags[id] = f;
+      Store.put("flags", id, f);
+      toast("Flagged. It will appear under Practice › Flagged.");
+    }
+    render();
+  }
+
+  // ---------------------------------------------------------------- events
+  const actions = {
+    tab: (el) => go(el.dataset.tab),
+    "start-smart": (el) => startSmart(Number(el.dataset.count) || 20),
+    "start-review": () => startSmart(40, { reviewOnly: true }),
+    "start-missed": () => {
+      const items = Object.entries(S.progress.p).filter(([id, r]) => r[3] === 0 && byId(id)).map(([id]) => byId(id));
+      startRun(Engine.shuffle(items).slice(0, 60), "Missed questions");
+    },
+    "start-flagged": () => startRun(Engine.shuffle(Object.keys(S.flags).map(byId).filter(Boolean)), "Flagged questions"),
+    "start-generated": () => {
+      const items = S.generated.slice().sort((a, b) => {
+        const ra = S.progress.p[a.id], rb = S.progress.p[b.id];
+        return (ra ? 1 : 0) - (rb ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0);
+      });
+      startRun(items.slice(0, 20), "Fresh questions");
+    },
+    "toggle-domain": (el) => {
+      const n = Number(el.dataset.d);
+      const t = S.tool;
+      t.domains = t.domains.includes(n) ? t.domains.filter((x) => x !== n) : t.domains.concat(n).sort();
+      render();
+    },
+    "set-count": (el) => { S.tool.count = Number(el.dataset.n); render(); },
+    "start-domains": () => startSmart(S.tool.count || 20, { domains: S.tool.domains }),
+    "domain-practice": (el) => startSmart(20, { domains: [Number(el.dataset.d)] }),
+    "start-objective": (el) => {
+      const obj = el.dataset.obj;
+      const rank = (q) => {
+        const r = S.progress.p[q.id];
+        return !r ? 1 : r[3] === 0 ? 0 : 2;
+      };
+      const items = allQuestions().filter((q) => q.obj === obj).sort((a, b) => rank(a) - rank(b) || Math.random() - 0.5).slice(0, 15);
+      startRun(Engine.shuffle(items), `Objective ${obj}`);
+    },
+    select: (el) => {
+      if (!S.run || S.run.submitted) return;
+      S.run.selected = Number(el.dataset.pos);
+      if (!S.profile.confirm) { submitAnswer(); return; }
+      render();
+    },
+    submit: () => submitAnswer(),
+    next: () => nextQuestion(),
+    "end-run": () => finishRun(),
+    "close-run": () => { S.run = null; saveRun(); go("today"); },
+    "retry-missed": () => {
+      const ids = S.run.answers.filter((a) => !a.correct).map((a) => a.id);
+      startRun(Engine.shuffle(ids.map(byId).filter(Boolean)), "Retry missed");
+    },
+    flag: (el) => toggleFlag(el.dataset.id),
+    study: (el) => {
+      const from = S.tab;
+      S.tab = "library";
+      S.sub = { qid: el.dataset.id, from, prev: S.sub };
+      render();
+      window.scrollTo(0, 0);
+    },
+    "lib-back": () => {
+      const from = S.sub && S.sub.from;
+      const prev = S.sub && S.sub.prev;
+      if (from && from !== "library") { S.tab = from; S.sub = null; }
+      else S.sub = prev || null;
+      render();
+    },
+    lib: (el, ev) => {
+      if (ev) ev.preventDefault();
+      S.tab = "library";
+      S.sub = el.dataset.sub ? { name: el.dataset.sub } : null;
+      render();
+      window.scrollTo(0, 0);
+    },
+    "lib-kp": (el) => { S.sub = { name: "keypoints", d: Number(el.dataset.d) }; render(); },
+    "lib-browse": (el) => { S.sub = { name: "browse", d: Number(el.dataset.d) }; render(); },
+    ask: (el) => askClaude(el.dataset.prompt),
+    "ask-stop": () => { if (S.ask && S.ask.ctl) S.ask.ctl.abort(); },
+    generate: () => generate(),
+    "start-mock": (el) => startMock(el.dataset.form),
+    "mock-select": (el) => { if (S.mock) { S.mock.selected = Number(el.dataset.pos); render(); } },
+    "mock-next": () => mockAnswer(),
+    "mock-pause": () => {
+      const m = S.mock;
+      if (!m) return;
+      m.elapsed = mockElapsed(m);
+      m.paused = true;
+      m.savedAt = Date.now();
+      saveMock();
+      render();
+    },
+    "mock-resume": () => {
+      const m = S.mock;
+      if (!m) return;
+      m.paused = false;
+      m.resumedAt = Date.now();
+      m.current.shownAt = Date.now();
+      S.tool.armDiscard = false;
+      saveMock();
+      render();
+    },
+    "mock-finish-now": () => finishMock("early"),
+    "mock-discard": () => {
+      if (!S.tool.armDiscard) { S.tool.armDiscard = true; render(); return; }
+      S.tool.armDiscard = false;
+      S.mock = null;
+      saveMock();
+      render();
+    },
+    "mock-review-toggle": () => { S.sub = { review: !(S.sub && S.sub.review) }; render(); },
+    "open-mock": (el) => { S.mockResult = S.sessions.find((s) => s.id === el.dataset.id) || null; S.sub = null; render(); window.scrollTo(0, 0); },
+    "close-mock-result": () => { S.mockResult = null; S.sub = null; render(); },
+    "practise-mock-misses": () => {
+      const ids = S.mockResult.items.filter((x) => !x[1]).map((x) => x[0]);
+      S.mockResult = null;
+      startRun(Engine.shuffle(ids.map(byId).filter(Boolean)), "Mock exam misses");
+    },
+    rate: (el) => {
+      const n = el.dataset.d, v = Number(el.dataset.v);
+      S.profile.selfRatings[n] = Number(S.profile.selfRatings[n]) === v ? 0 : v;
+      saveProfile();
+      render();
+    },
+    "set-booked": (el) => { S.profile.examBooked = el.dataset.v === "1"; saveProfile(); render(); },
+    "add-score": () => {
+      const t = S.tool;
+      const score = t.scoreValue === "" || t.scoreValue == null ? null : Math.max(0, Math.min(100, Math.round(Number(t.scoreValue))));
+      if (!t.scoreSource && score == null) { toast("Add a source or a score."); return; }
+      S.profile.scores.push({ id: uid(), date: t.scoreDate || todayKey(), source: (t.scoreSource || "").slice(0, 80), score, note: (t.scoreNote || "").slice(0, 200) });
+      t.scoreSource = ""; t.scoreValue = ""; t.scoreNote = "";
+      saveProfile();
+      render();
+    },
+    "del-score": (el) => { S.profile.scores = S.profile.scores.filter((s) => s.id !== el.dataset.id); saveProfile(); render(); },
+    "import-read": () => importRead(),
+    "import-apply": () => importApply(),
+    "import-cancel": () => { S.tool.importPreview = null; render(); },
+    "copy-data": async () => {
+      const data = JSON.stringify({ profile: S.profile, progress: S.progress, sessions: S.sessions, flags: S.flags, generated: S.generated }, null, 1);
+      try {
+        await navigator.clipboard.writeText(data);
+        toast("Copied your data to the clipboard");
+      } catch {
+        toast("Copying isn't allowed here.");
+      }
+    },
+    reset: () => {
+      if (!S.tool.armReset) { S.tool.armReset = true; render(); return; }
+      S.tool.armReset = false;
+      S.progress = { p: {}, days: {}, updatedAt: Date.now() };
+      saveProgress();
+      for (const s of S.sessions) Store.remove("sessions", s.id);
+      S.sessions = [];
+      S.run = null;
+      saveRun();
+      toast("Progress erased");
+      render();
+    },
+  };
+
+  document.addEventListener("click", (ev) => {
+    const el = ev.target.closest("[data-act]");
+    if (!el || el.disabled) return;
+    const fn = actions[el.dataset.act];
+    if (!fn) return;
+    if (el.tagName === "A") ev.preventDefault();
+    if (el.dataset.act !== "reset" && S.tool.armReset) S.tool.armReset = false;
+    fn(el, ev);
+  });
+
+  let noteTimer = 0;
+  document.addEventListener("input", (ev) => {
+    const el = ev.target;
+    const f = el.dataset && el.dataset.field;
+    if (!f) return;
+    if (f === "note") {
+      S.profile.notes[el.dataset.d] = el.value;
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(saveProfile, 700);
+      return;
+    }
+    if (f === "confirm") { S.profile.confirm = el.checked; saveProfile(); return; }
+    if (f === "flagNote") {
+      const flag = S.flags[el.dataset.id];
+      if (!flag) return;
+      flag.note = el.value.slice(0, 300);
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(() => Store.put("flags", flag.id, flag), 700);
+      return;
+    }
+    if (["examDate", "dailyGoal"].includes(f)) return; // saved on change
+    S.tool[f] = el.value;
+  });
+  document.addEventListener("change", (ev) => {
+    const el = ev.target;
+    const f = el.dataset && el.dataset.field;
+    if (!f) return;
+    if (f === "examDate") { if (parseDate(el.value)) { S.profile.examDate = el.value; saveProfile(); render(); } return; }
+    if (f === "dailyGoal") { const v = Math.max(5, Math.min(150, Math.round(Number(el.value) || 30))); S.profile.dailyGoal = v; saveProfile(); render(); return; }
+    if (f === "genDomain") { S.tool.genDomain = Number(el.value); S.tool.genObj = ""; render(); return; }
+    if (f === "genObj") { S.tool.genObj = el.value; return; }
+  });
+  document.addEventListener("keydown", (ev) => {
+    if (ev.target.closest && ev.target.closest("input, textarea, select")) {
+      if (ev.key === "Enter" && ev.target.id === "ask-input") { ev.preventDefault(); askClaude(); }
+      return;
+    }
+    const k = ev.key.toLowerCase();
+    const pos = ["a", "b", "c", "d"].indexOf(k) >= 0 ? ["a", "b", "c", "d"].indexOf(k) : ["1", "2", "3", "4"].indexOf(k);
+    if (S.tab === "practice" && S.run && !S.run.done) {
+      if (pos >= 0 && !S.run.submitted) { S.run.selected = pos; if (!S.profile.confirm) submitAnswer(); else render(); }
+      else if (k === "enter") { S.run.submitted ? nextQuestion() : submitAnswer(); }
+    } else if (S.tab === "mock" && S.mock && !S.mock.paused && !S.mockResult) {
+      if (pos >= 0) { S.mock.selected = pos; render(); }
+      else if (k === "enter") mockAnswer();
+    }
+  });
+
+  // ---------------------------------------------------------------- start
+  function boot(hotData) {
+    // Instant first paint from this browser's copy.
+    applyLoaded({
+      profile: lsGet(LS + "me/profile", null),
+      progress: lsGet(LS + "me/progress", null),
+      mock: lsGet(LS + "me/mock", null),
+      sessions: Object.values(lsGet(LS + "sessions", {})),
+      flags: Object.values(lsGet(LS + "flags", {})),
+      generated: Object.values(lsGet(LS + "gen", {})),
+    });
+    const run = lsGet(LS + "run", null);
+    if (run && !run.done && Array.isArray(run.items) && run.items.every((id) => byId(id))) S.run = run;
+    if (hotData && hotData.tab) S.tab = hotData.tab;
+    else S.tab = lsGet(LS + "tab", "today");
+    if (S.mock && !S.mock.paused) {
+      // A reload mid-exam pauses the clock rather than running it down.
+      S.mock.elapsed = mockElapsed(S.mock);
+      S.mock.paused = true;
+    }
+    render();
+
+    Store.connect().then(async (ok) => {
+      if (!ok) return;
+      const data = await loadAll();
+      const hadLocal = Object.keys(S.progress.p).length > 0;
+      const dbEmpty = !data.progress && !data.profile;
+      const before = S.mock;
+      applyLoaded(data, { fromDb: dbEmpty && hadLocal });
+      if (S.mock && S.mock !== before && !S.mock.paused) { S.mock.elapsed = mockElapsed(S.mock); S.mock.paused = true; }
+      render();
+    });
+
+    if (window.claude && typeof window.claude.use === "function") {
+      window.claude.use("sample").then((sample) => {
+        if (sample) { S.sample = sample; render(); }
+      }).catch(() => {});
+    }
+  }
+
+  if (window.claude && window.claude.hot && typeof window.claude.hot.snapshot === "function") {
+    try { window.claude.hot.snapshot(() => ({ tab: S.tab })); } catch { /* optional */ }
+  }
+  if (window.claude && window.claude.hot && typeof window.claude.hot.ready === "function") window.claude.hot.ready(boot);
+  else boot(window.claude && window.claude.hot ? window.claude.hot.data : null);
+})();
+</script>

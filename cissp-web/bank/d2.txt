@@ -1,0 +1,553 @@
+# Domain 2: Asset Security (10% of the exam)
+
+## D2-001 | 2.1 | 1
+Q: Who is responsible for determining the classification of a set of business data?
+A)* The data owner
+= Correct. The owner, usually a senior manager accountable for the data, decides its classification and the protection it needs.
+B) The data custodian
+= Custodians implement the protection the owner specifies, such as backups and access settings.
+C) The security administrator
+= Administrators grant access according to the owner's rules; they do not set the classification.
+D) The chief information officer
+= The CIO runs IT. Classification is a business decision made by the owner of the data.
+>> Owners classify and set requirements; custodians implement; users comply.
+
+## D2-002 | 2.1 | 2
+Q: In the U.S. government classification scheme, unauthorized disclosure of which level could reasonably be expected to cause serious damage to national security?
+A) Confidential
+= Confidential is the level where disclosure could cause damage, without the qualifier "serious".
+B) Top Secret
+= Top Secret is reserved for exceptionally grave damage.
+C)* Secret
+= Correct. Secret is defined by serious damage to national security.
+D) Controlled Unclassified Information
+= CUI is unclassified information that still needs safeguarding; it is not defined by damage to national security.
+>> Government levels: Top Secret (exceptionally grave damage), Secret (serious damage), Confidential (damage), Unclassified.
+
+## D2-003 | 2.1 | 1
+Q: What is the PRIMARY reason to classify information?
+A) To satisfy the evidence requirements of external auditors
+= Audits check classification, but the reason to do it is protection, not passing the audit.
+B)* To match protection to the data's value and sensitivity
+= Correct. Classification lets the organization spend on protection where it matters and avoid over-protecting low-value data.
+C) To decide which employees may be monitored
+= Monitoring decisions are not the purpose of data classification.
+D) To determine the order in which data is backed up
+= Backup priority comes from business impact analysis, not classification alone.
+>> Classification exists so that controls match the value and sensitivity of the data, cost-effectively.
+
+## D2-004 | 2.1 | 2
+Q: A company's quarterly earnings report is classified Confidential while it is being prepared. What should happen to its classification after the results are publicly announced?
+A) It should stay Confidential for seven years under the retention policy
+= Retention determines how long you keep data, not how sensitive it remains.
+B) It should be raised, because the report now has regulatory significance
+= Regulatory relevance does not make public information more sensitive.
+C) It should be destroyed, since the public version replaces it
+= The company may still need its records; declassification does not mean destruction.
+D)* It should be reclassified as Public, since disclosure no longer causes harm
+= Correct. Sensitivity changes over time. Once the information is public, keeping it under Confidential controls wastes resources.
+>> Classification should be reviewed as information ages or loses sensitivity; declassification is part of the program.
+
+## D2-005 | 2.1 | 2
+Q: A database server stores both public product information and confidential customer records. How should the server itself be classified?
+A) As Public, because most of the data on it is public
+= Classifying by the majority of data leaves the confidential records under-protected.
+B)* As Confidential, matching the most sensitive data it holds
+= Correct. A system is protected at the level of the most sensitive information it stores or processes.
+C) It does not need a classification; only data is classified
+= Assets such as servers are classified too, so that their handling and controls match what they hold.
+D) As Internal, a level between the two types of data
+= Averaging the levels under-protects the confidential records.
+>> Systems and media take the classification of the most sensitive data they hold.
+
+## D2-006 | 2.1 | 3
+Q: Analysts combine several datasets that are each classified Internal. The combination reveals the locations and shift patterns of security guards at every site. How should the combined dataset be classified?
+A) Internal, because each source is Internal
+= This ignores aggregation: the combination is more sensitive than any of its parts.
+B) It should not be classified until the data owner of each source agrees
+= Owners should be involved, but the new dataset needs protection immediately.
+C)* At a higher level that reflects the sensitivity of the aggregate
+= Correct. Aggregation can create information more sensitive than its inputs, and classification should reflect what the combination reveals.
+D) Public, because none of the sources is classified Confidential
+= Treating the aggregate as less sensitive than its inputs is backward.
+>> Aggregation: combining lower-sensitivity data can produce information that deserves a higher classification.
+
+## D2-007 | 2.1 | 2
+Q: An organization is starting a data classification program. What must it do before it can classify anything?
+A) Buy a data loss prevention tool to scan file shares
+= DLP enforces classification later; it is not a prerequisite for classifying.
+B) Encrypt all data at rest on servers and laptops
+= Encryption is a control chosen based on classification, not a prerequisite.
+C) Train every employee on handling procedures
+= Training follows once the scheme and handling rules exist.
+D)* Inventory its information assets and owners
+= Correct. You cannot classify what you have not found. Inventory and ownership come first.
+>> Asset inventory and assigned ownership are the foundation of classification.
+
+## D2-008 | 2.2 | 1
+Q: What PRIMARILY determines how a backup tape must be labeled, transported and stored?
+A)* The classification of the data on the tape
+= Correct. Handling requirements are set by classification, so the most sensitive data on the tape determines its treatment.
+B) The age of the tape
+= Age affects reliability, not handling requirements.
+C) The courier's standard terms of service
+= The organization sets handling rules; vendors must meet them.
+D) The backup software's default settings
+= Software defaults do not define organizational handling requirements.
+>> Handling requirements (marking, storage, transport, destruction) follow from classification.
+
+## D2-009 | 2.2 | 2
+Q: A technician finds an unlabeled hard drive in a storage room. How should it be handled until its contents are known?
+A) As Public, since it has no label
+= Missing labels do not make data harmless.
+B) As Internal, the organization's default level
+= A default below the highest level could under-protect sensitive data.
+C)* At the highest classification used by the organization
+= Correct. Unlabeled media should be treated as the most sensitive until someone authorized determines otherwise.
+D) It should be wiped immediately and reused
+= Wiping may destroy data the organization is required to keep.
+>> Unlabeled media is handled at the highest classification until proven otherwise.
+
+## D2-010 | 2.2 | 2
+Q: Backup tapes containing customer records are collected weekly by a third-party courier for offsite storage. Which control BEST protects the data if a tape is lost in transit?
+A) A signed courier log at every handoff point
+= Logs support chain of custody but do nothing to protect data on a lost tape.
+B)* Encrypting the tapes before pickup
+= Correct. Encryption keeps the data confidential even when the media is lost or stolen.
+C) Using a bonded and insured courier service
+= Bonding compensates for losses; it does not protect the data.
+D) Locked transport cases
+= Locks deter casual access but are easily defeated once the case is in someone else's hands.
+>> Encrypt media that leaves your physical control; it is the control that still works when the media is lost.
+
+## D2-011 | 2.2 | 1
+Q: Printed reports containing sensitive data are often left uncollected at shared printers. Which control BEST addresses this?
+A) Moving the printers into a locked room near the team
+= Locking the room still leaves documents exposed to everyone with access to it.
+B) A policy reminding staff to collect printouts promptly
+= Reminders help, but documents are still printed before the owner arrives.
+C) Watermarking every printed page
+= Watermarks identify sensitivity but do not stop someone else picking the page up.
+D)* Print release that requires a badge at the printer
+= Correct. Secure print release (pull printing) holds the job until its owner authenticates, so it only prints when they are standing at the printer.
+>> Handling controls should protect data at every stage, including printed output.
+
+## D2-012 | 2.2 | 2
+Q: An employee holding a Secret clearance asks for a Secret document about a project they are not assigned to. What should happen?
+A) Release it, because the employee's clearance matches the document's level
+= Clearance establishes eligibility only; it does not grant access by itself.
+B)* Deny it unless the employee has a need to know for the document
+= Correct. Access to classified information requires clearance, need to know and, where applicable, formal approval.
+C) Release a redacted version without asking further questions
+= Even a redacted classified document needs a justified need to know.
+D) Escalate to the security officer to upgrade the employee's clearance
+= A higher clearance is irrelevant; the missing element is need to know.
+>> Clearance and need to know are both required; one without the other is not enough.
+
+## D2-013 | 2.2 | 2
+Q: Staff must send a confidential spreadsheet to an external auditor. What is the BEST way to meet the organization's data handling standard?
+A) Rename the file so its contents are not obvious
+= Obscuring the filename is not protection.
+B) Send it in two halves in separate emails
+= Splitting the file does not stop either half from being read.
+C)* Use the approved encrypted transfer method to the auditor's verified address
+= Correct. Handling standards specify approved protection for each level, such as encrypted transfer, and confirming the recipient is authorized.
+D) Paste the contents into the email body instead of attaching the file
+= This changes nothing about confidentiality; the data still travels in the clear.
+>> Follow the handling standard for the classification: approved encryption, an authorized and verified recipient.
+
+## D2-014 | 2.3 | 1
+Q: What is the foundation of an effective asset security program?
+A) Encrypting every storage device
+= Encryption is one control, and you cannot apply it to devices you do not know about.
+B) Strong perimeter firewalls
+= Perimeter controls do not tell you what you are protecting.
+C)* An accurate inventory of assets
+= Correct. You cannot protect, patch, monitor or classify assets you do not know you have.
+D) A cyber insurance policy
+= Insurance transfers financial risk but does not tell you what your assets are.
+>> Asset management starts with an inventory; everything else depends on knowing what you own.
+
+## D2-015 | 2.3 | 1
+Q: Which of the following is an intangible asset?
+A) A rack of database servers in the data center
+= Servers are physical, tangible assets.
+B) A backup tape library
+= Tape libraries are tangible equipment.
+C) Laptops issued to staff
+= Laptops are tangible.
+D)* The company's reputation and its patents
+= Correct. Intangible assets have value but no physical form, such as reputation, intellectual property and goodwill.
+>> Asset inventories include intangible assets such as intellectual property, brand and reputation, not only hardware.
+
+## D2-016 | 2.3 | 1
+Q: Why should each asset in the inventory have a named owner?
+A)* So someone is accountable for its classification and protection
+= Correct. Ownership creates accountability for decisions about the asset.
+B) So the asset can be depreciated in the accounting system
+= Depreciation is an accounting concern, not the security reason for ownership.
+C) So the help desk knows whom to call when it fails
+= That is a support contact, not ownership in the security sense.
+D) So that insurance claims can be filed quickly
+= Insurance is not the purpose of assigning ownership.
+>> Asset ownership establishes accountability for classification, protection and acceptable use.
+
+## D2-017 | 2.3 | 2
+Q: A company issues new laptops to remote employees. Which provisioning step is MOST important for asset security?
+A) Shipping each laptop in tamper-evident packaging by courier
+= Packaging helps detect tampering in transit, but the laptop's ongoing security depends on how it is built and tracked.
+B) Letting employees install their preferred software before shipping
+= This undermines a standard secure configuration.
+C) Asking employees to set a strong password when the laptop arrives
+= Necessary, but less important than the device being secure and tracked before it leaves.
+D)* Inventory each laptop and apply the secure baseline before handover
+= Correct. Secure provisioning means the asset is recorded, assigned and hardened, including disk encryption, before anyone uses it.
+>> Provision securely: inventory and assign the asset, apply the baseline and encryption, then hand it over.
+
+## D2-018 | 2.3 | 2
+Q: Several departments subscribe to cloud services on company credit cards without involving IT. What is the BEST way to bring these services under asset management?
+A) Ban company credit cards
+= This blocks a symptom and disrupts legitimate purchasing.
+B)* Discover cloud use and require approval for new services
+= Correct. Discovery, for example with a CASB, finds the existing shadow IT, and a procurement approval process keeps future services in the inventory.
+C) Ask department heads to list their services once a year
+= A yearly self-report will be incomplete and quickly out of date.
+D) Block all cloud storage and SaaS domains at the firewall
+= Blanket blocking stops legitimate business and pushes users to workarounds.
+>> Shadow IT is an inventory problem: discover it, then route new services through governance.
+
+## D2-019 | 2.3 | 1
+Q: Which tool records IT assets, their configurations and the relationships between them?
+A) A security information and event management system
+= A SIEM collects and correlates logs; it is not the system of record for assets.
+B)* A configuration management database
+= Correct. A CMDB stores configuration items and their relationships, supporting asset and change management.
+C) A data loss prevention system
+= DLP detects and blocks data exfiltration.
+D) An intrusion detection system
+= An IDS detects attacks; it does not maintain an asset record.
+>> A CMDB is the system of record for configuration items and their relationships.
+
+## D2-020 | 2.4 | 1
+Q: Which role performs daily backups and maintains the controls that the data owner specifies?
+A) Data subject
+= The data subject is the person the data is about.
+B) Data owner
+= The owner sets the requirements; someone else carries them out day to day.
+C)* Data custodian
+= Correct. Custodians implement and maintain the protection the owner requires, such as backups, access settings and integrity checks.
+D) Data processor
+= In privacy law, a processor handles personal data on behalf of a controller. The day-to-day IT role here is the custodian.
+>> Custodians do the day-to-day protection work that owners define.
+
+## D2-021 | 2.4 | 2
+Q: According to the CISSP Official Study Guide, which role grants users access to data according to the guidelines set by the data owner?
+A)* Administrator
+= Correct. Administrators grant appropriate access to personnel, following the owner's rules; they do not decide those rules.
+B) Data subject
+= Subjects are the people the data describes.
+C) Business owner
+= Business or mission owners own processes; they do not grant individual access.
+D) Auditor
+= Auditors review whether access is appropriate. They do not grant it.
+>> Owner decides who should have access; the administrator grants it; the auditor checks it.
+
+## D2-022 | 2.4 | 2
+Q: A payroll application processes salary data owned by HR. Who is responsible for making sure the application itself is operated in line with its security plan?
+A) The HR director, as data owner
+= The data owner is accountable for the data, not for running the system that processes it.
+B) Each payroll clerk who uses it
+= Users must follow policy but are not responsible for the system's security posture.
+C)* The system owner
+= Correct. The system owner is responsible for the system that processes the data, including its security plan and controls.
+D) The external auditor
+= Auditors assess; they are not responsible for operation.
+>> Data owners own the information; system owners own the systems that store or process it.
+
+## D2-023 | 2.4 | 1
+Q: The marketing team wants to collect customers' dates of birth "in case it becomes useful later". What principle should guide the decision?
+A) Data portability
+= Portability is the right to receive your data in a usable format.
+B) Purpose specification only, which allows collection if the purpose is written down
+= A vague future purpose does not justify collection.
+C) Data accuracy
+= Accuracy concerns keeping data correct, not whether to collect it.
+D)* Data minimization: collect only what is needed for a defined purpose
+= Correct. Collecting less data reduces the impact of a breach and is required by laws such as GDPR.
+>> Data you never collect cannot be breached. Collect only what a defined purpose requires.
+
+## D2-024 | 2.4 | 2
+Q: A regulator requires that its citizens' personal data be stored only within the country. The organization uses a global cloud provider. What is the BEST approach?
+A)* Use in-country regions, with contract terms covering backups too
+= Correct. Data location must be controlled technically and contractually, including copies that are easy to overlook, such as backups and disaster recovery replicas.
+B) Encrypt the data so that where it is stored no longer matters
+= Encryption protects confidentiality but does not satisfy a residency requirement.
+C) Rely on the provider's published global privacy policy and terms
+= A general policy does not commit the provider to keep your data in one country.
+D) Move all data on-premises
+= That works but is not necessary if the cloud can meet the requirement.
+>> Data location (residency, sovereignty) must cover primary storage, backups and replicas.
+
+## D2-025 | 2.4 | 2
+Q: Developers routinely copy production customer data into test environments. Which practice BEST reduces the risk?
+A) Restrict test environments to the developers' own team
+= Fewer people with access helps, but full production data still sits in less-protected systems.
+B) Delete test data at the end of each project
+= Shortening exposure helps, but the data is still exposed during the project.
+C)* Use masked or synthetic data in test environments
+= Correct. If sensitive values never reach the test environment, a breach there exposes nothing real.
+D) Apply the same firewall rules to test as to production
+= Network rules alone do not bring test environments up to production protection.
+>> Minimize copies of sensitive data; use masking or synthetic data outside production.
+
+## D2-026 | 2.4 | 2
+Q: Why is keeping data beyond its required retention period a security and legal risk?
+A) Old data is more likely to be corrupted
+= Corruption is an integrity problem, not the main reason for disposal.
+B)* It remains exposed to breaches and must be produced in legal discovery
+= Correct. Data you no longer need still carries breach risk and can be subpoenaed, while providing no value.
+C) Retention periods are always set by law, so exceeding them is illegal
+= Some periods are set by business need, and keeping data longer is not always illegal. The risk is exposure and discovery.
+D) Storage is expensive
+= Cost matters, but it is not the main security and legal concern.
+>> Retain data as long as required, then destroy it; excess data is liability without value.
+
+## D2-027 | 2.4 | 2
+Q: Records are scheduled for routine destruction next week under the retention policy. Legal counsel says the company expects to be sued over a contract involving those records. What should happen?
+A) Destroy them on schedule, since the retention policy allows it
+= Destroying records relevant to anticipated litigation can be spoliation of evidence.
+B) Move them to cheaper storage and destroy them after the case
+= Moving them is fine, but they must be preserved, not merely scheduled for later destruction.
+C) Ask the opposing party whether the records are needed
+= Preservation duties do not depend on the other side asking.
+D)* Place them under a legal hold, suspending destruction
+= Correct. Once litigation is reasonably anticipated, a legal hold overrides normal retention and destruction schedules.
+>> A legal hold suspends destruction of relevant records when litigation is anticipated.
+
+## D2-028 | 2.4 | 2
+Q: A company is retiring a batch of solid-state drives (SSDs) that held confidential data. Which sanitization method is NOT effective for them?
+A) Physical shredding
+= Shredding into small particles destroys SSDs effectively.
+B) Cryptographic erase on self-encrypting drives
+= Destroying the media encryption key renders the data unrecoverable.
+C)* Degaussing
+= Correct. SSDs store data in flash memory, not magnetically, so degaussing has no effect on the data.
+D) The manufacturer's verified sanitize command
+= Vendor sanitize commands, where verified, can purge flash media.
+>> Degaussing only works on magnetic media; use cryptographic erase, sanitize commands or destruction for SSDs.
+
+## D2-029 | 2.4 | 3
+Q: Hard drives that held sensitive data will be sold to an outside buyer. Under NIST SP 800-88, what is the minimum level of sanitization appropriate?
+A) Clear
+= Clearing protects against simple, non-invasive recovery and suits reuse within the organization, not media leaving its control.
+B)* Purge
+= Correct. Purging protects against laboratory-grade recovery and is appropriate when media leaves organizational control.
+C) Delete
+= Deleting only removes file references; the data remains on the disk.
+D) Format
+= A standard format may leave data recoverable.
+>> NIST 800-88: Clear (reuse inside the organization), Purge (media leaving your control), Destroy (media will never be reused).
+
+## D2-030 | 2.4 | 2
+Q: How can a self-encrypting drive be sanitized almost instantly?
+A) Overwriting the drive with zeros three times
+= Overwriting takes hours and may miss over-provisioned areas on flash media.
+B) Deleting the partition table
+= The data itself remains intact.
+C) Reformatting it with a new file system
+= A format does not reliably remove data.
+D)* Destroying the drive's media encryption key
+= Correct. This is cryptographic erase: without the key, the encrypted data on the drive is unreadable.
+>> Cryptographic erase (crypto-shredding) sanitizes encrypted media by destroying the key.
+
+## D2-031 | 2.4 | 1
+Q: Which method provides the MOST secure destruction of highly sensitive paper records?
+A) Strip-cut shredding
+= Strips can be reassembled.
+B) Recycling through the normal paper bin
+= Recycled paper is readable until it is pulped, and it passes through many hands.
+C)* Incineration or pulping under supervision
+= Correct. Burning or pulping leaves nothing to reconstruct, and supervision preserves the chain of custody.
+D) Marking pages "destroy" and storing them in a locked cabinet
+= That defers destruction rather than performing it.
+>> Destruction strength should match sensitivity: cross-cut shredding at a minimum, incineration or pulping for the most sensitive.
+
+## D2-032 | 2.4 | 3
+Q: An organization is ending its use of a cloud storage service. It cannot physically destroy the provider's disks. What gives the BEST assurance that its data is unrecoverable?
+A) Deleting every object and emptying the trash
+= Deleted objects may persist in replicas, snapshots or backups for some time.
+B) Asking the provider for a certificate of destruction for the physical disks
+= Providers do not usually destroy shared disks for one customer.
+C) Overwriting each object with random data before deleting it
+= Overwriting at the object level does not reach replicas, snapshots or how the provider maps data to physical media.
+D)* Having encrypted the data with customer-managed keys, then destroying the keys
+= Correct. Crypto-shredding makes every copy unreadable, wherever it lives, once the keys are gone.
+>> In the cloud, plan sanitization up front: encrypt with keys you control so you can crypto-shred.
+
+## D2-033 | 2.4 | 2
+Q: At which phase of the data lifecycle should classification FIRST be assigned?
+A) Store
+= Data may already have been shared or copied before it is stored.
+B)* Create
+= Correct. Assigning classification at creation means the data is protected correctly from the start.
+C) Share
+= Waiting until sharing means it may already have been mishandled.
+D) Archive
+= By archiving, the data has been used for its whole active life without known handling rules.
+>> Classify data when it is created or collected, and revisit the classification as it ages.
+
+## D2-034 | 2.5 | 2
+Q: A vendor has stopped selling a firewall model but continues to release security patches for it for two more years. What is the product's status?
+A) End of support
+= End of support means no more patches or updates. Patches are still coming.
+B) Obsolete
+= "Obsolete" is not the precise term here; the product still has vendor support.
+C)* End of life
+= Correct. End of life means the product is no longer sold or developed, though support may continue for a period.
+D) Deprecated
+= Deprecation applies to features or APIs that are discouraged and may be removed.
+>> EOL: no longer sold, may still be supported. EOS: no more patches; plan to replace before then.
+
+## D2-035 | 2.5 | 2
+Q: A critical industrial control workstation runs an operating system that is past end of support, and it cannot be replaced for two years. What is the BEST approach?
+A) Keep using it unchanged, since it has worked so far
+= Unpatched systems accumulate unfixed vulnerabilities; doing nothing is not a plan.
+B) Disconnect it immediately, accepting the production stoppage
+= That may cause more harm than the risk it removes.
+C)* Isolate it, add compensating controls and plan its replacement
+= Correct. Segment the system, restrict and monitor access, have management accept the residual risk formally, and plan its replacement.
+D) Install a third-party patching tool and treat it as supported
+= Unofficial tools cannot supply vendor fixes that do not exist.
+>> End-of-support systems need isolation, compensating controls, formal risk acceptance and a replacement plan.
+
+## D2-036 | 2.5 | 3
+Q: Records must be retained for ten years. They are stored in a proprietary format that only a system being retired next month can read. What should be done?
+A) Keep the backup tapes; the data is retained, so the requirement is met
+= Retained data you cannot read does not meet the purpose of retention.
+B) Retire the system and rebuild a reader if the records are ever requested
+= Rebuilding later may be impossible or very expensive.
+C) Delete the records early, since they will be unreadable anyway
+= That breaks the retention requirement.
+D)* Migrate them to a readable format, or keep a reader
+= Correct. Migrate the records, or keep a working means of reading them: asset retention includes keeping the hardware, software or formats needed to access retained data.
+>> Retaining data means retaining the ability to read it: plan format migration or keep the means to access it.
+
+## D2-037 | 2.5 | 1
+Q: What is the MAIN security risk of running software after its end of support?
+A) It runs more slowly over time
+= Performance is not the main security concern.
+B)* New vulnerabilities will not be patched
+= Correct. Without vendor patches, every newly discovered vulnerability stays open.
+C) Its license automatically expires
+= Licensing is separate from support status.
+D) It can no longer be backed up
+= Backups are not affected by support status.
+>> End-of-support software no longer receives security fixes, so its risk grows over time.
+
+## D2-038 | 2.6 | 2
+Q: Which technology is designed to protect data while it is being processed?
+A) Full-disk encryption
+= Full-disk encryption protects data at rest.
+B) TLS 1.3
+= TLS protects data in transit.
+C) Tokenization of sensitive fields at the database layer
+= Tokenization replaces stored values; it does not protect data while it is being computed on.
+D)* A secure enclave (trusted execution environment)
+= Correct. Confidential computing isolates data in use in protected memory, so other software on the host cannot read it.
+>> Data states: at rest (storage encryption), in transit (TLS, IPsec), in use (enclaves, TEEs, memory protection).
+
+## D2-039 | 2.6 | 2
+Q: A system has no wireless capability, so the team removes all wireless controls from the baseline it adopted. What is this called?
+A)* Scoping
+= Correct. Scoping removes baseline controls that do not apply to the system.
+B) Tailoring
+= Tailoring adjusts the remaining controls to fit the organization, for example by changing parameter values.
+C) Compensating
+= Compensating controls replace a control that cannot be met.
+D) Risk avoidance
+= Avoidance stops a risky activity; this is choosing applicable controls.
+>> Scoping removes controls that don't apply; tailoring adjusts the ones that do.
+
+## D2-040 | 2.6 | 2
+Q: A baseline recommends locking accounts after five failed logons. The organization changes the value to ten to fit its risk appetite and help desk capacity. What is this called?
+A) Scoping
+= Scoping decides whether a control applies at all. Here the control applies and its value is adjusted.
+B)* Tailoring
+= Correct. Tailoring modifies baseline controls, such as parameter values, to match the organization's mission and risk.
+C) Standards selection
+= Standards selection is choosing which baseline or framework to adopt.
+D) Exception handling
+= An exception is a documented deviation for a specific case, not a deliberate organization-wide adjustment.
+>> Tailoring sets control parameters to suit the organization; document why.
+
+## D2-041 | 2.6 | 1
+Q: Which control can detect and block employees emailing files that contain Social Security numbers to external addresses?
+A) An intrusion prevention system
+= An IPS looks for attacks, not for sensitive content leaving the organization.
+B) A web application firewall
+= A WAF protects web applications from inbound attacks.
+C)* Data loss prevention
+= Correct. DLP inspects content in motion, such as email, for sensitive patterns and can block or quarantine it.
+D) A next-generation antivirus agent
+= Antivirus looks for malware, not sensitive data patterns.
+>> DLP finds sensitive data in motion, at rest and in use, and enforces policy on it.
+
+## D2-042 | 2.6 | 1
+Q: Which solution sits between users and cloud services to provide visibility of cloud use and enforce security policy on it?
+A) A virtual private network concentrator
+= A VPN encrypts traffic; it does not understand or control SaaS use.
+B)* A cloud access security broker
+= Correct. A CASB discovers shadow IT, enforces policies such as DLP and access rules, and monitors activity in cloud services.
+C) A hardware security module
+= An HSM protects cryptographic keys.
+D) A security orchestration, automation and response platform
+= SOAR automates incident response workflows.
+>> CASBs provide visibility, compliance, data security and threat protection for cloud services.
+
+## D2-043 | 2.6 | 2
+Q: A company must send design documents to partners so that they cannot be printed or forwarded, and so that access can be revoked later. Which control fits BEST?
+A) Encrypted email
+= Encryption protects the documents in transit, but once decrypted the recipient can do anything with them.
+B) A data loss prevention policy on the mail gateway
+= DLP controls what leaves; it has no control after the partner receives the file.
+C) A non-disclosure agreement
+= An NDA creates legal obligations but no technical enforcement.
+D)* Digital rights management
+= Correct. DRM (or information rights management) attaches usage rules that travel with the document and can be revoked.
+>> DRM enforces persistent usage rights (view, print, forward, expire, revoke) on content wherever it goes.
+
+## D2-044 | 2.6 | 2
+Q: An application replaces credit card numbers with random values and keeps the mapping to real numbers in a separate, secured vault. Which protection method is this?
+A) Hashing
+= Hashing is one-way; there is no vault to map back to the original value.
+B) Data masking
+= Masking hides part of a value for display, such as showing the last four digits.
+C)* Tokenization
+= Correct. Tokens have no mathematical relationship to the original values, which can only be recovered through the token vault.
+D) Format-preserving encryption
+= That uses a key and an algorithm rather than a lookup vault.
+>> Tokenization removes sensitive values from systems, shrinking compliance scope such as PCI DSS.
+
+## D2-045 | 2.6 | 3
+Q: A research team replaces names in a dataset with random codes and stores the code key in a separate, access-controlled system. How does GDPR treat the coded dataset?
+A) As anonymous data, outside the scope of GDPR
+= Data is anonymous only if individuals can no longer be identified by any reasonably likely means. The key still exists.
+B)* As pseudonymized data, which is still personal data
+= Correct. Pseudonymization reduces risk, but because re-identification is possible with the key, GDPR still applies.
+C) As special category data, requiring explicit consent
+= Coding names does not make data special category; that depends on its content, such as health data.
+D) As encrypted data, exempt from breach notification
+= Pseudonymization is not encryption, and no blanket exemption applies.
+>> Pseudonymized data is still personal data; only truly anonymized data falls outside GDPR.
+
+## D2-046 | 2.6 | 1
+Q: Help desk staff need to confirm a caller's identity but should see only the last four digits of the caller's Social Security number. Which technique should the application use?
+A)* Data masking
+= Correct. Masking hides part of the value on screen, showing only what the role needs.
+B) Salting
+= Salting adds random data to passwords before hashing.
+C) Steganography
+= Steganography hides data inside other data, such as images.
+D) Data compression
+= Compression reduces size; it does not hide values.
+>> Masking limits displayed data to what a role needs, applying least privilege to the screen.
