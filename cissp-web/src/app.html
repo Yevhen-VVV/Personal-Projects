@@ -311,8 +311,55 @@
   .tabbar button[aria-current="page"] svg { stroke-width: 2.3; }
 
   .toast { position: fixed; left: 50%; bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 14px); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14px; z-index: 40; max-width: calc(100% - 32px); }
+  .toast.celebrate { background: var(--ochre-soft); color: var(--ochre); border: 1.5px solid var(--ochre); font-weight: 700; }
 
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  /* Arcade */
+  .level { display: flex; gap: 14px; align-items: center; }
+  .lvl-badge { flex: none; width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; font: 800 22px/1 var(--font-ui); background: var(--accent); color: var(--accent-ink); }
+  .squares { display: inline-flex; gap: 4px; vertical-align: middle; }
+  .squares i { width: 14px; height: 14px; border-radius: 3px; background: var(--surface-2); }
+  .squares i.good { background: var(--good); }
+  .squares i.bad { background: var(--bad); }
+  .hearts { font: 700 17px/1 var(--font-ui); color: var(--bad); letter-spacing: 3px; }
+  .opt.is-struck { opacity: 0.6; background: var(--surface); border-color: var(--bad); }
+  .opt.is-struck > span:nth-child(2) { text-decoration: line-through; }
+  .opt.is-struck .letter { background: var(--bad-soft); color: var(--bad); }
+  .bets { display: flex; gap: 8px; flex: 1 1 auto; justify-content: flex-end; }
+  .bets .btn { flex: 1 1 0; flex-direction: column; gap: 3px; min-height: 52px; padding: 4px 8px; max-width: 130px; }
+  .bets .btn small { font: 500 11px/1 var(--font-mono); opacity: 0.85; }
+  .cover { border: 1.5px dashed var(--line); border-radius: 12px; padding: 22px 16px; text-align: center; color: var(--muted); }
+  .seq { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .seq-item { width: 100%; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; text-align: left; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); font: 500 15px/1.35 var(--font-ui); cursor: pointer; }
+  .seq-item .letter { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font: 700 13px/1 var(--font-mono); background: var(--surface-2); color: var(--muted); }
+  .seq-item.empty { border-style: dashed; color: var(--muted); cursor: default; }
+  .seq-item.right { border-color: var(--good); background: var(--good-soft); }
+  .seq-item.right .letter { background: var(--good); color: var(--surface); }
+  .seq-item.wrong { border-color: var(--bad); background: var(--bad-soft); }
+  .seq-item.wrong .letter { background: var(--bad); color: var(--surface); }
+  .seq-item:disabled { cursor: default; color: inherit; }
+  .pool { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pool button, .terms button { padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface-2); font: 600 14px/1.25 var(--font-ui); cursor: pointer; text-align: left; }
+  .pool button:hover, .terms button:hover:not(:disabled), .defs button:hover:not(:disabled) { border-color: var(--accent); }
+  .terms { display: flex; flex-wrap: wrap; gap: 8px; }
+  .terms button { background: var(--surface); }
+  .terms button[aria-pressed="true"], .defs button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .terms button.done { opacity: 0.4; text-decoration: line-through; cursor: default; }
+  .defs { display: flex; flex-direction: column; gap: 8px; }
+  .defs button { text-align: left; padding: 11px 13px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); cursor: pointer; font: 400 15px/1.4 var(--font-ui); }
+  .defs button.done { border-color: var(--good); background: var(--good-soft); cursor: default; color: inherit; }
+  .defs button.miss { border-color: var(--bad); background: var(--bad-soft); animation: shake 320ms ease; }
+  .pairtag { display: block; font: 700 11px/1.2 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--good); margin-bottom: 3px; }
+  @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  .badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+  .badge { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: start; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); }
+  .badge .medal { grid-row: span 2; color: var(--line); }
+  .badge.got .medal { color: var(--ochre); }
+  .badge b { font-size: 14px; }
+  .badge:not(.got) b { color: var(--muted); }
+  .badge span.small { font-size: 12.5px; }
+  .big-figure { font: 800 2.6rem/1 var(--font-ui); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
 <div class="app">
@@ -404,12 +451,13 @@
   }
 
   let toastTimer = 0;
-  function toast(msg) {
+  function toast(msg, kind = "") {
     const t = $("#toast");
     t.textContent = msg;
+    t.className = "toast" + (kind ? " " + kind : "");
     t.hidden = false;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { t.hidden = true; }, 2600);
+    toastTimer = setTimeout(() => { t.hidden = true; }, kind ? 4200 : 2600);
   }
 
   // ---------------------------------------------------------------- storage
@@ -522,6 +570,8 @@
     mock: null,          // a mock exam in progress
     mockStamp: 0,        // when the mock record was last written
     run: null,           // a practice session in progress
+    arc: null,           // an Arcade game in progress, or its result screen
+    game: null,          // XP, badges and Arcade records (set below)
     result: null,        // the last finished practice session, for its results screen
     mockResult: null,    // the last finished mock, for its score report
     sub: null,           // sub-view within a tab
@@ -529,6 +579,10 @@
     ask: null,           // the Ask Claude panel's state
     tool: {},            // transient form state
   };
+
+  const DRILLS = BANK.drills;
+  const defaultGame = () => ({ v: 1, xp: 0, badges: {}, best: {}, daily: {}, calib: {}, recall: [0, 0], elim: [0, 0], seq: {}, match: {}, resetAt: 0, updatedAt: 0 });
+  S.game = defaultGame();
 
   const allQuestions = () => CURATED.concat(S.generated);
   const byId = (id) => QINDEX.get(id) || S.generated.find((q) => q.id === id);
@@ -549,6 +603,13 @@
   function saveRun() {
     lsSet(LS + "run", S.run);
   }
+  function saveGame() {
+    S.game.updatedAt = Date.now();
+    Store.setDoc("me/game", S.game);
+  }
+  function saveArc() {
+    lsSet(LS + "arc", S.arc);
+  }
 
   // Merge two progress records, keeping the more recent answer for each question.
   function mergeProgress(a, b) {
@@ -564,15 +625,16 @@
   }
 
   async function loadAll() {
-    const [profile, progress, mock, sessions, flags, generated] = await Promise.all([
+    const [profile, progress, mock, game, sessions, flags, generated] = await Promise.all([
       Store.getDoc("me/profile"),
       Store.getDoc("me/progress"),
       Store.getDoc("me/mock"),
+      Store.getDoc("me/game"),
       Store.list("sessions"),
       Store.list("flags"),
       Store.list("gen"),
     ]);
-    return { profile, progress, mock, sessions, flags, generated };
+    return { profile, progress, mock, game, sessions, flags, generated };
   }
 
   function applyLoaded(data, { fromDb = false } = {}) {
@@ -580,6 +642,13 @@
       S.profile = { ...defaultProfile(), ...data.profile };
     }
     if (data.progress) S.progress = mergeProgress(S.progress, data.progress);
+    if (data.game) {
+      // Figures only grow, so two copies merge by taking the larger of each,
+      // unless one copy was reset after the other was last written.
+      const cur = S.game, g = data.game;
+      if ((g.resetAt || 0) > (cur.updatedAt || 0)) S.game = { ...defaultGame(), ...g };
+      else if (!((cur.resetAt || 0) > (g.updatedAt || 0))) S.game = { ...defaultGame(), ...Engine.mergeGame(cur, g) };
+    }
     // The newest mock record wins, including "no mock in progress" from another device.
     if (data.mock && (data.mock.updatedAt || 0) > (S.mockStamp || 0)) {
       S.mockStamp = data.mock.updatedAt || 0;
@@ -597,6 +666,7 @@
       // First connection on a device that practised before: carry its local record up.
       saveProgress();
       saveProfile();
+      saveGame();
     }
   }
 
@@ -647,11 +717,9 @@
   }
 
   // ---------------------------------------------------------------- render shell
-  const TAB_TITLES = { today: "Today", practice: "Practice", mock: "Mock exam", tracker: "Tracker", library: "Library" };
-
   function render() {
     const view = $("#view");
-    const focus = (S.tab === "practice" && S.run && !S.run.done) || (S.tab === "mock" && S.mock && !S.mock.finished && !S.mock.paused);
+    const focus = (S.tab === "practice" && ((S.arc && !S.arc.done) || (!S.arc && S.run && !S.run.done))) || (S.tab === "mock" && S.mock && !S.mock.finished && !S.mock.paused);
     document.body.classList.toggle("focus-mode", !!focus);
     $("#tabbar").hidden = !!focus;
     document.querySelectorAll(".tabbar button").forEach((b) => {
@@ -667,7 +735,7 @@
 
     let html = "";
     if (S.tab === "today") html = viewToday();
-    else if (S.tab === "practice") html = S.run ? (S.run.done ? viewResults() : viewQuestion()) : viewPracticeMenu();
+    else if (S.tab === "practice") html = S.arc ? viewArc() : S.run ? (S.run.done ? viewResults() : viewQuestion()) : practiceMode() === "arcade" ? viewArcadeMenu() : viewPracticeMenu();
     else if (S.tab === "mock") html = S.mockResult ? viewMockResult() : S.mock ? (S.mock.paused ? viewMockPaused() : viewMockItem()) : viewMockMenu();
     else if (S.tab === "tracker") html = viewTracker();
     else if (S.tab === "library") html = viewLibrary();
@@ -680,6 +748,10 @@
     if (S.tab === "mock" && S.mock && !S.mock.paused && !S.mockResult) {
       S.clockTimer = setInterval(tickClock, 1000);
       tickClock();
+    }
+    if (S.tab === "practice" && S.arc && S.arc.mode === "pace" && !S.arc.done) {
+      S.clockTimer = setInterval(tickArcClock, 1000);
+      tickArcClock();
     }
   }
 
@@ -706,10 +778,11 @@
 
   function heatStrip(stats, act = "domain-practice") {
     return `<div class="heat">${stats.map((s) => {
-      const lv = level(s.firstRate, s.seen);
+      // One or two answers say little, so a tile shows a count until it has three.
+      const lv = s.seen >= 3 ? level(s.firstRate, s.seen) : "none";
       return `<button type="button" class="lvl-${lv}" data-act="${act}" data-d="${s.n}" title="${esc(domainOf(s.n).name)}">
         <span class="d">D${s.n}</span>
-        <span class="v">${s.seen ? pct(s.firstRate) : "–"}</span>
+        <span class="v">${s.seen >= 3 ? pct(s.firstRate) : s.seen ? `${Math.round(s.firstRate * s.seen)}/${s.seen}` : "–"}</span>
         <span class="bar"><span style="width:${Math.round(s.coverage * 100)}%"></span></span>
       </button>`;
     }).join("")}</div>`;
@@ -767,6 +840,7 @@
         ${heatStrip(stats)}
         <p class="small muted">Each tile is a domain's first-try accuracy; the thin bar under it is how much of that domain you have covered. Tap one to drill it.</p>
       </section>
+      ${todayArcade()}
       ${(() => { const w = weakObjectives(3); return w.length ? `<section class="stack"><h3>Weakest objectives</h3>${weakList(w)}</section>` : ""; })()}
 
       <section class="stack">
@@ -792,10 +866,7 @@
     const due = Object.values(S.progress.p).filter((r) => r[6] <= Date.now()).length;
     const stats = curatedStats();
     return `<div class="stack-lg">
-      <section class="stack-sm">
-        <h2>Practice</h2>
-        <p class="muted">Instant feedback. After each answer you see why every option is right or wrong.</p>
-      </section>
+      ${practiceHeader()}
 
       <div class="menu">
         <button type="button" data-act="start-smart" data-count="${S.profile.dailyGoal || 30}">
@@ -889,19 +960,21 @@
     return `<span class="dots" title="${["", "Easier", "Medium", "Harder"][n]}">${[1, 2, 3].map((i) => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`;
   }
 
-  function optionList(q, order, { selected, submitted, chosenOrig, interactive = true, act = "select" }) {
+  function optionList(q, order, { selected, submitted, chosenOrig, interactive = true, act = "select", struck = [], lockStruck = false }) {
     return `<ol class="options">${order.map((orig, pos) => {
       const text = q.o[orig][0];
       // The tag already says which answer is correct, so the explanation's own "Correct." is dropped.
       const why = orig === q.a ? q.o[orig][1].replace(/^Correct\.\s*/, "") : q.o[orig][1];
       const letter = "ABCD"[pos];
       let cls = "", tag = "";
+      const isStruck = struck.includes(orig);
       if (submitted) {
-        if (orig === q.a) { cls = "is-right"; tag = orig === chosenOrig ? "Your answer · correct" : "Correct answer"; }
+        if (orig === q.a) { cls = "is-right"; tag = orig === chosenOrig ? "Your answer · correct" : isStruck ? "Correct answer · you struck it" : "Correct answer"; }
         else if (orig === chosenOrig) { cls = "is-wrong"; tag = "Your answer"; }
-        else { cls = "is-other"; tag = "Not the best"; }
-      }
-      return `<li><button type="button" class="opt ${cls}" ${submitted || !interactive ? "disabled" : `data-act="${act}" data-pos="${pos}"`} aria-pressed="${!submitted && selected === pos}">
+        else { cls = "is-other"; tag = isStruck ? "Struck · rightly" : "Not the best"; }
+      } else if (isStruck) cls = "is-struck";
+      const live = !submitted && interactive && !(lockStruck && isStruck);
+      return `<li><button type="button" class="opt ${cls}" ${live ? `data-act="${act}" data-pos="${pos}"` : "disabled"} aria-pressed="${!submitted && (selected === pos || (!lockStruck && isStruck))}">
         <span class="letter">${letter}</span>
         <span>${esc(text)}</span>
         ${submitted ? `<span class="why"><span class="tagline">${tag}</span>${esc(why)}</span>` : ""}
@@ -918,7 +991,6 @@
     const total = r.items.length;
     const correctSoFar = r.answers.filter((a) => a.correct).length;
     const d = domainOf(q.d);
-    const flagged = !!S.flags[q.id];
     return `<div class="stack">
       <div class="qhead">
         <div class="row"><span class="chip accent">D${q.d} · ${esc(q.obj)}</span>${q.gen ? `<span class="chip ochre">AI-written</span>` : ""}${diffDots(q.diff)}</div>
@@ -976,6 +1048,7 @@
     countAnswer(correct);
     saveProgress();
     saveRun();
+    reward(Engine.xpFor(correct, q.diff));
     render();
   }
 
@@ -1064,7 +1137,7 @@
       <div class="row"><span class="chip accent">D${q.d} · ${esc(q.obj)}</span><span class="mono small muted">${esc(q.id)}</span>${diffDots(q.diff)}</div>
       <p class="eyebrow">${esc(objName(q.obj))}</p>
       <p class="stem">${esc(q.q)}</p>
-      ${optionList(q, [0, 1, 2, 3], { submitted: true, chosenOrig: null, interactive: false })}
+      ${optionList(q, Engine.shuffle([0, 1, 2, 3], Engine.seeded(q.id)), { submitted: true, chosenOrig: null, interactive: false })}
       <div class="keypoint"><p class="eyebrow">Key point</p><p>${esc(q.k)}</p></div>
       ${flagNote(q.id)}
     </div>`;
@@ -1336,6 +1409,8 @@ where "answer" is the 0-based index of the correct option and "difficulty" is 1 
     S.progress.p[q.id] = Engine.record(S.progress.p[q.id], correct, Date.now());
     countAnswer(correct);
     saveProgress();
+    // Level-ups and badges wait for the score report rather than interrupting the exam.
+    reward(Engine.xpFor(correct, q.diff), { quiet: true });
     const decision = Engine.catDecision(m.responses, Engine.FORMS[m.form]);
     if (decision.done) { finishMock(decision.reason); return; }
     nextMockItem();
@@ -1386,6 +1461,7 @@ where "answer" is the 0-based index of the correct option and "difficulty" is 1 
     saveMock();
     S.mockResult = session;
     clearInterval(S.clockTimer);
+    reward(0, { pending: true });
     if (S.tab === "mock") { render(); window.scrollTo(0, 0); }
   }
 
@@ -1788,6 +1864,672 @@ ${text.slice(0, 60000)}`;
     </div>`;
   }
 
+  // ---------------------------------------------------------------- Arcade
+  // Experimental, game-like ways to practise. The question games draw on the
+  // same bank and count toward the same progress record as Classic practice;
+  // Sequence it and Match up use the drills in bank/drills.json. Every answer
+  // anywhere in the app earns experience, and badges mark milestones.
+  const practiceMode = () => (S.tool.mode === "arcade" ? "arcade" : "classic");
+
+  function practiceHeader() {
+    const arcade = practiceMode() === "arcade";
+    return `<section class="stack-sm">
+      <div class="spread">
+        <h2>Practice</h2>
+        <div class="seg" role="group" aria-label="Practice style">
+          <button type="button" data-act="practice-mode" data-v="classic" aria-pressed="${!arcade}">Classic</button>
+          <button type="button" data-act="practice-mode" data-v="arcade" aria-pressed="${arcade}">Arcade</button>
+        </div>
+      </div>
+      <p class="muted">${arcade
+        ? "Experimental, game-like ways to practise. Every answer still counts toward your record and your review schedule."
+        : "Instant feedback. After each answer you see why every option is right or wrong."}</p>
+    </section>`;
+  }
+
+  const MEDAL = `<svg class="medal" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.3l-5.8 3.1 1.1-6.5L2.6 9.3l6.5-.9z"/></svg>`;
+  const answeredTotal = () => Object.values(S.progress.days).reduce((n, v) => n + v[0], 0);
+  const G = () => S.game;
+
+  const BADGES = [
+    { id: "first", name: "First answer", desc: "Answer your first question.", test: () => answeredTotal() >= 1 },
+    { id: "century", name: "Century", desc: "Answer 100 questions.", test: () => answeredTotal() >= 100 },
+    { id: "grinder", name: "Grinder", desc: "Answer 1,000 questions.", test: () => answeredTotal() >= 1000 },
+    { id: "streak7", name: "Week streak", desc: "Practise seven days in a row.", test: () => streak() >= 7 },
+    { id: "streak30", name: "Habit", desc: "Practise 30 days in a row.", test: () => streak() >= 30 },
+    { id: "perfect5", name: "Perfect five", desc: "Get a whole Daily 5 right.", test: () => Object.values(G().daily).some((d) => d[0] === d[1]) },
+    { id: "survivor", name: "Survivor", desc: "Score 15 in Survival.", test: () => (G().best.survival || 0) >= 15 },
+    { id: "onpace", name: "On pace", desc: "Get 8 of 10 right in a Pace run before time runs out.", test: () => (G().best.paceRight || 0) >= 8 },
+    { id: "calibrated", name: "Well calibrated", desc: "Bet Sure 25 times and be right on 85% of them.", test: () => { const c = G().calib[3]; return !!c && c[0] >= 25 && c[1] / c[0] >= 0.85; } },
+    { id: "eliminator", name: "Eliminator", desc: "Strike two wrong options cleanly 25 times.", test: () => G().elim[1] >= 25 },
+    { id: "recall", name: "Total recall", desc: "Know 15 answers before seeing the options.", test: () => G().recall[1] >= 15 },
+    { id: "sequencer", name: "In order", desc: "Solve every sequence without a mistake.", test: () => DRILLS.sequences.every((x) => (G().seq[x.id] || [0, 0])[1] > 0) },
+    { id: "matchmaker", name: "Matchmaker", desc: "Clear every match set without a mistake.", test: () => DRILLS.matches.every((x) => (G().match[x.id] || [0, 0])[1] > 0) },
+    { id: "rounded", name: "Well rounded", desc: "Reach 75% first-try accuracy in all eight domains, 15 answers each.", test: () => curatedStats().every((x) => x.seen >= 15 && x.firstRate >= READY_TARGET) },
+    { id: "mockpass", name: "Pass estimate", desc: "Pass a full-length mock exam.", test: () => S.sessions.some((x) => x.kind === "mock" && x.form === "full" && x.pass) },
+  ];
+
+  // Adds experience, awards any newly earned badges and saves the record.
+  // During a mock the news waits for the score report.
+  let pendingNews = [];
+  function reward(xp, { quiet = false } = {}) {
+    const g = S.game;
+    const news = [];
+    const before = Engine.levelFor(g.xp);
+    g.xp += Math.max(0, Math.round(xp));
+    const after = Engine.levelFor(g.xp);
+    if (after.level > before.level) news.push(after.title !== before.title ? `Level ${after.level}: promoted to ${after.title}` : `Level ${after.level} reached`);
+    for (const b of BADGES) {
+      if (g.badges[b.id]) continue;
+      let earned = false;
+      try { earned = b.test(); } catch { /* incomplete data: not yet */ }
+      if (earned) { g.badges[b.id] = Date.now(); news.push(`Badge: ${b.name}`); }
+    }
+    saveGame();
+    pendingNews.push(...news);
+    if (!quiet && pendingNews.length) {
+      toast(pendingNews.join(" · "), "celebrate");
+      pendingNews = [];
+    }
+  }
+
+  function levelCard() {
+    const g = S.game;
+    const lv = Engine.levelFor(g.xp);
+    const earned = BADGES.filter((b) => g.badges[b.id]).length;
+    return `<div class="level">
+      <div class="lvl-badge num" aria-label="Level ${lv.level}">${lv.level}</div>
+      <div class="grow stack-sm">
+        <div class="spread"><b>${esc(lv.title)}</b><span class="small muted num">${g.xp.toLocaleString()} XP</span></div>
+        <div class="meter" aria-hidden="true"><span style="width:${Math.round((100 * lv.into) / lv.span)}%"></span></div>
+        <p class="small muted num">${(lv.next - g.xp).toLocaleString()} XP to level ${lv.level + 1} · ${earned} of ${BADGES.length} badges</p>
+      </div>
+    </div>`;
+  }
+
+  const squares = (pattern) => `<span class="squares" aria-label="${[...pattern].filter((c) => c === "1").length} of ${pattern.length} right">${[...pattern].map((c) => `<i class="${c === "1" ? "good" : "bad"}"></i>`).join("")}</span>`;
+
+  function todayArcade() {
+    const done = S.game.daily[todayKey()];
+    return `<section class="card stack">
+      ${levelCard()}
+      <div class="spread">
+        <p class="small">${done ? `<b>Daily 5</b> ${squares(done[2])} <span class="muted num">${done[0]} of ${done[1]} · new set tomorrow</span>` : "<b>Daily 5</b> <span class=\"muted\">· five questions, one go, new every day</span>"}</p>
+        ${done
+          ? `<button type="button" class="btn btn-sm" data-act="open-arcade">Arcade</button>`
+          : `<button type="button" class="btn btn-sm btn-primary" data-act="arc-start" data-mode="daily">Play</button>`}
+      </div>
+    </section>`;
+  }
+
+  const ARC = {
+    daily: { name: "Daily 5", detail: "Five questions from five domains, the same on every device. One go per day." },
+    survival: { name: "Survival", detail: "Three lives. The questions get harder the longer you last." },
+    pace: { name: "Pace run", detail: "Ten questions on the exam's clock, 72 seconds each. Explanations come at the end." },
+    bets: { name: "Confidence bets", detail: "Bet on every answer. Sure pays 3 but costs 6, so only an honest bet pays." },
+    elim: { name: "Eliminate two", detail: "Strike two wrong options before you answer, as you should on the exam." },
+    blind: { name: "Blind recall", detail: "Answer in your head first, then see the options. Recall beats recognition." },
+    seq: { name: "Sequence it", detail: "Put processes in order: incident steps, the RMF, DR tests, the kill chain." },
+    match: { name: "Match up", detail: "Pair terms with definitions: security models, fire classes, recovery metrics." },
+  };
+
+  function viewArcadeMenu() {
+    const g = S.game;
+    const done = g.daily[todayKey()];
+    const solved = DRILLS.sequences.filter((x) => (g.seq[x.id] || [0, 0])[1] > 0).length;
+    const cleared = DRILLS.matches.filter((x) => (g.match[x.id] || [0, 0])[1] > 0).length;
+    const bets = [1, 2, 3].reduce((n, b) => n + ((g.calib[b] || [0])[0] || 0), 0);
+    const side = {
+      survival: g.best.survival ? `Best ${g.best.survival}` : "New",
+      pace: g.best.pace ? `Best ${g.best.pace}` : "New",
+      bets: bets ? `${bets} bets` : "New",
+      elim: g.elim[0] ? `${g.elim[1]} clean` : "New",
+      blind: g.recall[0] ? `${g.recall[1]} recalled` : "New",
+      seq: `${solved}/${DRILLS.sequences.length}`,
+      match: `${cleared}/${DRILLS.matches.length}`,
+    };
+    const item = (mode) => `<button type="button" data-act="arc-start" data-mode="${mode}">
+      <span class="title">${esc(ARC[mode].name)}</span><span class="detail">${esc(ARC[mode].detail)}</span><span class="side">${esc(side[mode])}</span>
+    </button>`;
+    const cal = Engine.calibration(g.calib);
+    const labels = { 1: "Guess", 2: "Likely", 3: "Sure" };
+    const earned = BADGES.filter((b) => g.badges[b.id]).length;
+    return `<div class="stack-lg">
+      ${practiceHeader()}
+      <section class="card raised stack">
+        ${levelCard()}
+        <div class="spread">
+          <div class="stack-sm">
+            <h3>Daily 5</h3>
+            <p class="small muted">${done ? `${squares(done[2])} <span class="num">${done[0]} of ${done[1]} today.</span> A new set arrives tomorrow.` : esc(ARC.daily.detail)}</p>
+          </div>
+          ${done ? "" : `<button type="button" class="btn btn-primary" data-act="arc-start" data-mode="daily">Play today's five</button>`}
+        </div>
+      </section>
+      <section class="stack">
+        <h3>Question games</h3>
+        <div class="menu">${["survival", "pace", "bets", "elim", "blind"].map(item).join("")}</div>
+      </section>
+      <section class="stack">
+        <h3>Drills</h3>
+        <div class="menu">${["seq", "match"].map(item).join("")}</div>
+      </section>
+      ${bets ? `<section class="stack">
+        <h3>Calibration</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Your bet</th><th class="n">Bets</th><th class="n">Right</th></tr></thead>
+          <tbody>${cal.levels.map((l) => `<tr><td>${labels[l.bet]}</td><td class="n">${l.n}</td><td class="n">${l.n ? pct(l.rate) : "–"}</td></tr>`).join("")}</tbody>
+        </table></div>
+        <p class="small">${esc(cal.verdict)}</p>
+      </section>` : ""}
+      <section class="stack">
+        <div class="spread"><h3>Badges</h3><span class="small muted num">${earned} of ${BADGES.length}</span></div>
+        <div class="badges">${BADGES.map((b) => `<div class="badge ${g.badges[b.id] ? "got" : ""}">${MEDAL}<b>${esc(b.name)}</b><span class="small muted">${esc(b.desc)}</span></div>`).join("")}</div>
+      </section>
+    </div>`;
+  }
+
+  // ---- starting, answering and finishing a game
+  function pickDrills(list, rec, n) {
+    // Least-played first; ties in random order.
+    return Engine.shuffle(list).sort((x, y) => (rec[x.id] || [0])[0] - (rec[y.id] || [0])[0]).slice(0, n).map((x) => x.id);
+  }
+  const seqById = (id) => DRILLS.sequences.find((x) => x.id === id);
+  const matchById = (id) => DRILLS.matches.find((x) => x.id === id);
+  const seqState = (id) => ({ pool: Engine.shuffle(seqById(id).steps.map((_, i) => i)), placed: [], checked: false });
+  const matchState = (id) => {
+    const n = matchById(id).pairs.length;
+    return { terms: Engine.shuffle([...Array(n).keys()]), defs: Engine.shuffle([...Array(n).keys()]), selTerm: null, selDef: null, matched: [], mistakes: 0, miss: null };
+  };
+
+  function startArc(mode) {
+    if (!ARC[mode]) return;
+    const base = { id: uid(), mode, items: [], orders: {}, idx: 0, answers: [], selected: null, submitted: false, phase: "", struck: [], score: 0, xp: 0, startedAt: Date.now(), shownAt: Date.now(), done: false };
+    let a;
+    if (mode === "daily") {
+      const date = todayKey();
+      if (S.game.daily[date]) { toast("Today's five are done. A new set arrives tomorrow."); return; }
+      a = { ...base, date, items: Engine.dailyPick(CURATED, date, DOMAINS).map((q) => q.id) };
+    } else if (mode === "survival") {
+      a = { ...base, lives: 3 };
+      a.items.push(Engine.survivalPick(CURATED, S.progress.p, [], 0).id);
+    } else if (mode === "seq" || mode === "match") {
+      const ids = mode === "seq" ? pickDrills(DRILLS.sequences, S.game.seq, 3) : pickDrills(DRILLS.matches, S.game.match, 3);
+      a = { ...base, drills: ids, di: 0, results: [], ...(mode === "seq" ? seqState(ids[0]) : matchState(ids[0])) };
+    } else {
+      const items = Engine.smartSet(CURATED, S.progress.p, DOMAINS, 10, { selfRatings: S.profile.selfRatings });
+      a = { ...base, items: items.map((q) => q.id), phase: mode === "elim" ? "strike" : mode === "blind" ? "recall" : "" };
+      if (mode === "pace") a.limitMs = a.items.length * 72000;
+    }
+    for (const id of a.items) a.orders[id] = Engine.shuffle([0, 1, 2, 3]);
+    S.arc = a;
+    saveArc();
+    S.tab = "practice";
+    S.sub = null;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  const arcQ = () => (S.arc && S.arc.items.length ? byId(S.arc.items[S.arc.idx]) : null);
+
+  function arcSubmit(extra = {}) {
+    const a = S.arc;
+    if (!a || a.submitted || a.done) return;
+    const q = arcQ();
+    const chosen = "chosen" in extra ? extra.chosen : a.selected == null ? null : a.orders[q.id][a.selected];
+    if (chosen == null && !("chosen" in extra)) return;
+    const correct = chosen === q.a;
+    const ans = { id: q.id, chosen, correct, ms: Date.now() - a.shownAt, struck: a.struck.slice() };
+    const g = S.game;
+    let xp = Engine.xpFor(correct, q.diff);
+    if (a.mode === "bets") {
+      ans.bet = extra.bet;
+      ans.pts = Engine.betPoints(extra.bet, correct);
+      a.score += ans.pts;
+      const c = g.calib[extra.bet] || [0, 0];
+      g.calib[extra.bet] = [c[0] + 1, c[1] + (correct ? 1 : 0)];
+      if (correct) xp += 5 * (extra.bet - 1);
+    } else if (a.mode === "survival") {
+      if (correct) a.score++;
+      else a.lives--;
+    } else if (correct) a.score++;
+    if (a.mode === "elim") {
+      // Clean means both struck options were wrong ones.
+      ans.clean = "clean" in extra ? !!extra.clean : a.phase === "pick";
+      g.elim = [g.elim[0] + 1, g.elim[1] + (ans.clean ? 1 : 0)];
+      if (ans.clean) xp += 5;
+    }
+    a.answers.push(ans);
+    a.submitted = true;
+    a.xp += xp;
+    S.progress.p[q.id] = Engine.record(S.progress.p[q.id], correct, Date.now());
+    countAnswer(correct);
+    saveProgress();
+    reward(xp);
+    if (a.mode === "pace") { arcNext(); return; }
+    saveArc();
+    render();
+  }
+
+  function arcNext() {
+    const a = S.arc;
+    if (!a) return;
+    if (a.mode === "survival") {
+      if (a.lives <= 0) { arcFinish(); return; }
+      const q = Engine.survivalPick(CURATED, S.progress.p, a.items, a.score);
+      if (!q) { arcFinish(); return; }
+      a.items.push(q.id);
+      a.orders[q.id] = Engine.shuffle([0, 1, 2, 3]);
+    } else if (a.idx + 1 >= a.items.length) { arcFinish(); return; }
+    a.idx += 1;
+    a.selected = null;
+    a.submitted = false;
+    a.struck = [];
+    a.recall = undefined;
+    a.phase = a.mode === "elim" ? "strike" : a.mode === "blind" ? "recall" : "";
+    a.shownAt = Date.now();
+    saveArc();
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function arcFinish(reason = "") {
+    const a = S.arc;
+    if (!a || a.done) return;
+    a.done = true;
+    a.reason = reason;
+    a.endedAt = Date.now();
+    const g = S.game;
+    const right = a.answers.filter((x) => x.correct).length;
+    let bonus = 0;
+    if (a.mode === "daily" && a.answers.length) {
+      // One go per day: ending early counts the unanswered ones as missed.
+      g.daily[a.date] = [right, a.items.length, a.items.map((_, i) => (a.answers[i] && a.answers[i].correct ? "1" : "0")).join("")];
+      if (a.answers.length === a.items.length) bonus = 25 + (right === a.items.length ? 25 : 0);
+    } else if (a.mode === "survival") {
+      g.best.survival = Math.max(g.best.survival || 0, a.score);
+      bonus = 3 * a.score;
+    } else if (a.mode === "pace") {
+      a.usedMs = Math.min(a.endedAt - a.startedAt, a.limitMs);
+      const beatClock = a.answers.length === a.items.length && reason !== "time";
+      a.paceScore = right * 100 + (beatClock ? Math.round((a.limitMs - a.usedMs) / 1000) : 0);
+      g.best.pace = Math.max(g.best.pace || 0, a.paceScore);
+      if (beatClock) g.best.paceRight = Math.max(g.best.paceRight || 0, right);
+      bonus = 2 * right;
+    } else if (a.mode === "bets" && a.answers.length) {
+      g.best.bets = Math.max(g.best.bets || 0, a.score);
+    }
+    a.xp += bonus;
+    saveArc();
+    reward(bonus);
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function tickArcClock() {
+    const a = S.arc;
+    const el = $("#arc-clock");
+    if (!a || a.done || a.mode !== "pace") return;
+    const left = a.limitMs - (Date.now() - a.startedAt);
+    if (el) {
+      el.textContent = fmtClock(left);
+      el.classList.toggle("low", left < 60000);
+    }
+    if (left <= 0) arcFinish("time");
+  }
+
+  // ---- the question games
+  function arcStatus(a) {
+    const n = a.mode === "survival" ? a.answers.length + (a.submitted ? 0 : 1) : a.idx + 1;
+    if (a.mode === "survival") return `<span class="hearts" aria-label="${a.lives} lives left">${"♥".repeat(Math.max(0, a.lives))}${"♡".repeat(Math.max(0, 3 - a.lives))}</span><span class="mono small num">Score ${a.score}</span>`;
+    if (a.mode === "pace") return `<span class="mono small num">${n} / ${a.items.length}</span><span class="clock" id="arc-clock">--:--</span>`;
+    if (a.mode === "bets") return `<span class="mono small num">${n} / ${a.items.length} · ${a.score >= 0 ? "+" : ""}${a.score} pts</span>`;
+    return `<span class="mono small num">${n} / ${a.items.length} · ${a.score} right</span>`;
+  }
+
+  function viewArcQuestion() {
+    const a = S.arc;
+    const q = arcQ();
+    if (!q) { S.arc = null; saveArc(); return viewArcadeMenu(); }
+    const order = a.orders[q.id];
+    const ans = a.submitted ? a.answers[a.answers.length - 1] : null;
+    const d = domainOf(q.d);
+    let body = "", bar = "";
+    const end = `<button type="button" class="btn btn-quiet" data-act="arc-end">End</button><span class="grow"></span>`;
+
+    if (!a.submitted && a.phase === "recall") {
+      body = `<div class="cover stack-sm"><p><b>Answer it in your head first.</b></p><p class="small">Say your answer, or the principle that decides it, before you look. Then pick the option that matches.</p></div>`;
+      bar = `${end}<button type="button" class="btn btn-primary" data-act="arc-reveal" style="min-width:150px">Show the options</button>`;
+    } else if (!a.submitted && a.phase === "strike") {
+      body = `<p class="small muted">Tap two options you are sure are wrong.</p>
+        ${optionList(q, order, { selected: null, submitted: false, act: "arc-strike", struck: a.struck })}`;
+      bar = `${end}<button type="button" class="btn btn-primary" data-act="arc-strike-go" style="min-width:150px" ${a.struck.length === 2 ? "" : "disabled"}>Strike ${a.struck.length === 2 ? "these two" : `${2 - a.struck.length} more`}</button>`;
+    } else if (!a.submitted) {
+      body = optionList(q, order, { selected: a.selected, submitted: false, act: "arc-select", struck: a.struck, lockStruck: true });
+      if (a.mode === "bets") {
+        const off = a.selected == null ? "disabled" : "";
+        bar = `<button type="button" class="btn btn-quiet" data-act="arc-end">End</button>
+          <div class="bets">
+            <button type="button" class="btn" data-act="arc-bet" data-bet="1" ${off}>Guess<small>+1 / 0</small></button>
+            <button type="button" class="btn" data-act="arc-bet" data-bet="2" ${off}>Likely<small>+2 / −1</small></button>
+            <button type="button" class="btn btn-primary" data-act="arc-bet" data-bet="3" ${off}>Sure<small>+3 / −6</small></button>
+          </div>`;
+      } else {
+        bar = `${end}<button type="button" class="btn btn-primary" data-act="arc-submit" style="min-width:150px" ${a.selected == null ? "disabled" : ""}>${a.mode === "pace" ? "Lock in" : "Check answer"}</button>`;
+      }
+    } else {
+      const extra = a.mode === "bets"
+        ? ` <span class="chip ${ans.pts > 0 ? "good" : ans.pts < 0 ? "bad" : ""}">${ans.pts > 0 ? "+" : ""}${ans.pts} pts</span>`
+        : a.mode === "survival" && !ans.correct ? ` <span class="chip bad">${a.lives ? `${a.lives} ${a.lives === 1 ? "life" : "lives"} left` : "Out of lives"}</span>` : "";
+      const verdict = a.mode === "elim" && !ans.clean && ans.chosen == null
+        ? "You struck the correct answer."
+        : ans.correct ? "Correct" : `Not quite. The answer is ${"ABCD"[order.indexOf(q.a)]}.`;
+      body = `<div class="verdict ${ans.correct ? "good" : "bad"}">${verdict}</div>${extra ? `<div class="row">${extra}</div>` : ""}
+        ${optionList(q, order, { submitted: true, chosenOrig: ans.chosen, struck: ans.struck })}
+        ${a.mode === "blind" && a.recall === undefined ? `<div class="card stack-sm"><p class="small"><b>Did you have it before you saw the options?</b></p>
+          <div class="row"><button type="button" class="btn btn-sm" data-act="arc-recall" data-v="1">Yes, I had it</button><button type="button" class="btn btn-sm" data-act="arc-recall" data-v="0">No</button></div></div>` : ""}
+        <div class="keypoint"><p class="eyebrow">Key point</p><p>${esc(q.k)}</p></div>
+        ${flagNote(q.id)}`;
+      const last = a.mode === "survival" ? a.lives <= 0 : a.idx + 1 >= a.items.length;
+      bar = `${end}<button type="button" class="btn btn-primary" data-act="arc-next" style="min-width:150px">${last ? "See results" : "Next question"}</button>`;
+    }
+    return `<div class="stack">
+      <div class="qhead">
+        <div class="row"><span class="chip ochre">${esc(ARC[a.mode].name)}</span><span class="chip accent">D${q.d} · ${esc(q.obj)}</span>${diffDots(q.diff)}</div>
+        <div class="row">${arcStatus(a)}</div>
+      </div>
+      <p class="eyebrow">${esc(d.name)} · ${esc(objName(q.obj))}</p>
+      <p class="stem">${esc(q.q)}</p>
+      ${body}
+    </div>
+    <div class="actionbar"><div class="actionbar-inner">${bar}</div></div>`;
+  }
+
+  // ---- Sequence it
+  function viewSeq() {
+    const a = S.arc;
+    const sq = seqById(a.drills[a.di]);
+    const n = sq.steps.length;
+    const slots = [];
+    for (let i = 0; i < n; i++) {
+      const step = a.placed[i];
+      if (step == null) { slots.push(`<li><div class="seq-item empty"><span class="letter">${i + 1}</span><span class="small">${i === a.placed.length ? "Tap a step below" : ""}</span></div></li>`); continue; }
+      const cls = a.checked ? (step === i ? "right" : "wrong") : "";
+      slots.push(`<li><button type="button" class="seq-item ${cls}" ${a.checked ? "disabled" : `data-act="seq-unplace" data-i="${i}" aria-label="Remove ${esc(sq.steps[step])} from position ${i + 1}"`}><span class="letter">${i + 1}</span><span>${esc(sq.steps[step])}</span></button></li>`);
+    }
+    const left = a.pool.filter((i) => !a.placed.includes(i));
+    const right = a.checked ? Engine.orderScore(a.placed, sq.steps.map((_, i) => i)) : 0;
+    return `<div class="stack">
+      <div class="qhead">
+        <div class="row"><span class="chip ochre">Sequence it</span><span class="chip accent">D${sq.obj.split(".")[0]} · ${esc(sq.obj)}</span></div>
+        <span class="mono small muted num">${a.di + 1} / ${a.drills.length}</span>
+      </div>
+      <h3>${esc(sq.title)}</h3>
+      <p class="stem">${esc(sq.prompt)}</p>
+      <ol class="seq">${slots.join("")}</ol>
+      ${a.checked ? `
+        <div class="verdict ${right === n ? "good" : "bad"}">${right === n ? "Perfect order" : `${right} of ${n} in the right place`}</div>
+        ${right === n ? "" : `<div class="card stack-sm"><p class="eyebrow">Correct order</p><ol class="list-plain">${sq.steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol></div>`}
+        <div class="keypoint"><p class="eyebrow">Key point</p><p>${esc(sq.note)}</p></div>`
+        : left.length ? `<div class="pool">${left.map((i) => `<button type="button" data-act="seq-place" data-i="${i}">${esc(sq.steps[i])}</button>`).join("")}</div>
+          <p class="small muted">Tap the steps in order. Tap a placed step to take it back.</p>` : ""}
+    </div>
+    <div class="actionbar"><div class="actionbar-inner">
+      <button type="button" class="btn btn-quiet" data-act="arc-end">End</button><span class="grow"></span>
+      ${a.checked
+        ? `<button type="button" class="btn btn-primary" data-act="drill-next" style="min-width:150px">${a.di + 1 < a.drills.length ? "Next sequence" : "See results"}</button>`
+        : `<button type="button" class="btn btn-primary" data-act="seq-check" style="min-width:150px" ${a.placed.length === n ? "" : "disabled"}>Check order</button>`}
+    </div></div>`;
+  }
+
+  function seqCheck() {
+    const a = S.arc;
+    const sq = seqById(a.drills[a.di]);
+    if (a.checked || a.placed.length !== sq.steps.length) return;
+    a.checked = true;
+    const right = Engine.orderScore(a.placed, sq.steps.map((_, i) => i));
+    const perfect = right === sq.steps.length;
+    a.results.push({ id: sq.id, right, n: sq.steps.length, perfect });
+    const rec = S.game.seq[sq.id] || [0, 0];
+    S.game.seq[sq.id] = [rec[0] + 1, rec[1] + (perfect ? 1 : 0)];
+    const xp = perfect ? 30 : 10;
+    a.xp += xp;
+    if (perfect) a.score++;
+    saveArc();
+    reward(xp);
+    render();
+  }
+
+  // ---- Match up
+  function viewMatch() {
+    const a = S.arc;
+    const set = matchById(a.drills[a.di]);
+    const n = set.pairs.length;
+    const complete = a.matched.length === n;
+    return `<div class="stack">
+      <div class="qhead">
+        <div class="row"><span class="chip ochre">Match up</span><span class="chip accent">D${set.obj.split(".")[0]} · ${esc(set.obj)}</span></div>
+        <span class="mono small muted num">${a.di + 1} / ${a.drills.length} · ${a.mistakes} ${a.mistakes === 1 ? "miss" : "misses"}</span>
+      </div>
+      <h3>${esc(set.title)}</h3>
+      <p class="small muted">${complete ? "All matched." : "Tap a term, then the definition that fits it."}</p>
+      <div class="terms">${a.terms.map((i) => {
+        const done = a.matched.includes(i);
+        return `<button type="button" class="${done ? "done" : ""}" ${done ? "disabled" : `data-act="match-term" data-i="${i}"`} aria-pressed="${a.selTerm === i}">${esc(set.pairs[i][0])}</button>`;
+      }).join("")}</div>
+      <div class="defs">${a.defs.map((i) => {
+        const done = a.matched.includes(i);
+        return `<button type="button" class="${done ? "done" : a.miss === i ? "miss" : ""}" ${done ? "disabled" : `data-act="match-def" data-i="${i}"`} aria-pressed="${a.selDef === i}">${done ? `<span class="pairtag">${esc(set.pairs[i][0])}</span>` : ""}${esc(set.pairs[i][1])}</button>`;
+      }).join("")}</div>
+      ${complete ? `<div class="verdict ${a.mistakes ? "bad" : "good"}">${a.mistakes ? `Cleared with ${a.mistakes} ${a.mistakes === 1 ? "miss" : "misses"}` : "Clean sweep"}</div>` : ""}
+    </div>
+    <div class="actionbar"><div class="actionbar-inner">
+      <button type="button" class="btn btn-quiet" data-act="arc-end">End</button><span class="grow"></span>
+      <button type="button" class="btn btn-primary" data-act="drill-next" style="min-width:150px" ${complete ? "" : "disabled"}>${a.di + 1 < a.drills.length ? "Next set" : "See results"}</button>
+    </div></div>`;
+  }
+
+  function matchTry() {
+    const a = S.arc;
+    if (a.selTerm == null || a.selDef == null) { render(); return; }
+    const set = matchById(a.drills[a.di]);
+    if (a.selTerm === a.selDef) {
+      a.matched.push(a.selTerm);
+      a.miss = null;
+    } else {
+      a.mistakes++;
+      a.miss = a.selDef;
+    }
+    a.selTerm = null;
+    a.selDef = null;
+    if (a.matched.length === set.pairs.length) {
+      const clean = a.mistakes === 0;
+      a.results.push({ id: set.id, mistakes: a.mistakes, n: set.pairs.length });
+      const rec = S.game.match[set.id] || [0, 0];
+      S.game.match[set.id] = [rec[0] + 1, rec[1] + (clean ? 1 : 0)];
+      const xp = Math.max(5, 5 * set.pairs.length - 3 * a.mistakes);
+      a.xp += xp;
+      if (clean) a.score++;
+      saveArc();
+      reward(xp);
+    } else saveArc();
+    render();
+  }
+
+  function drillNext() {
+    const a = S.arc;
+    if (a.di + 1 >= a.drills.length) { arcFinish(); return; }
+    a.di += 1;
+    Object.assign(a, a.mode === "seq" ? seqState(a.drills[a.di]) : matchState(a.drills[a.di]));
+    saveArc();
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  // ---- results
+  function viewArcResult() {
+    const a = S.arc;
+    const g = S.game;
+    const n = a.answers.length;
+    const right = a.answers.filter((x) => x.correct).length;
+    let head = "", sub = "";
+    if (a.mode === "daily") {
+      const rec = g.daily[a.date];
+      head = `${right} of ${n}`;
+      sub = rec ? `${squares(rec[2])} <span class="num">${n < a.items.length ? "Ended early. " : ""}A new set arrives tomorrow.</span>` : "";
+    } else if (a.mode === "survival") {
+      head = `Score ${a.score}`;
+      sub = `${n} questions · best ${g.best.survival || 0}${a.score && a.score >= (g.best.survival || 0) ? " · a new best" : ""}`;
+    } else if (a.mode === "pace") {
+      const per = n ? Math.round(a.usedMs / 1000 / n) : 0;
+      head = `${a.paceScore}`;
+      sub = `${right} of ${a.items.length} right · ${fmtClock(a.usedMs)} used${n ? ` · ${per} s per question against the exam's 72 s` : ""}${a.reason === "time" ? " · time ran out" : ""}. Score: 100 per right answer, plus the seconds left if you finish.`;
+    } else if (a.mode === "bets") {
+      const byBet = [1, 2, 3].map((b) => { const xs = a.answers.filter((x) => x.bet === b); return [b, xs.length, xs.filter((x) => x.correct).length]; });
+      head = `${a.score >= 0 ? "+" : ""}${a.score} points`;
+      sub = `${right} of ${n} right · ${byBet.filter((x) => x[1]).map(([b, k, r]) => `${{ 1: "Guess", 2: "Likely", 3: "Sure" }[b]} ${r}/${k}`).join(" · ")}`;
+    } else if (a.mode === "elim") {
+      head = `${right} of ${n}`;
+      sub = `${a.answers.filter((x) => x.clean).length} clean eliminations`;
+    } else if (a.mode === "blind") {
+      head = `${right} of ${n}`;
+      sub = `${a.answers.filter((x) => x.recall && x.correct).length} known before the options appeared`;
+    } else if (a.mode === "seq") {
+      head = `${a.results.filter((x) => x.perfect).length} of ${a.results.length} perfect`;
+      sub = `${DRILLS.sequences.filter((x) => (g.seq[x.id] || [0, 0])[1] > 0).length} of ${DRILLS.sequences.length} sequences solved so far`;
+    } else if (a.mode === "match") {
+      head = `${a.results.filter((x) => !x.mistakes).length} of ${a.results.length} clean`;
+      sub = `${DRILLS.matches.filter((x) => (g.match[x.id] || [0, 0])[1] > 0).length} of ${DRILLS.matches.length} sets cleared so far`;
+    }
+    const review = n ? `<section class="stack">
+        <h3>${a.mode === "pace" ? "Review your answers" : "Questions"}</h3>
+        <div class="card">${a.answers.map((x) => {
+          const q = byId(x.id);
+          return q ? `<div class="kp"><div class="row"><span class="chip ${x.correct ? "good" : "bad"}">${x.correct ? "Right" : "Missed"}</span><span class="chip accent">D${q.d} · ${esc(q.obj)}</span>${x.bet ? `<span class="chip">${{ 1: "Guess", 2: "Likely", 3: "Sure" }[x.bet]}</span>` : ""}</div><p>${esc(q.k)}</p><button type="button" class="btn-quiet btn" style="justify-self:start" data-act="study" data-id="${q.id}">Review question</button></div>` : "";
+        }).join("")}</div>
+      </section>` : "";
+    const drillRows = a.results && a.results.length ? `<div class="card">${a.results.map((x) => {
+        const d = a.mode === "seq" ? seqById(x.id) : matchById(x.id);
+        const ok = a.mode === "seq" ? x.perfect : !x.mistakes;
+        return `<div class="kp"><div class="spread"><b>${esc(d.title)}</b><span class="chip ${ok ? "good" : "bad"}">${a.mode === "seq" ? `${x.right}/${x.n} placed` : `${x.mistakes} ${x.mistakes === 1 ? "miss" : "misses"}`}</span></div></div>`;
+      }).join("")}</div>` : "";
+    return `<div class="stack-lg">
+      <section class="stack-sm">
+        <p class="eyebrow">${esc(ARC[a.mode].name)} · finished</p>
+        <p class="big-figure">${head}</p>
+        <p class="muted">${sub}</p>
+        <p class="small"><span class="chip ochre">+${a.xp} XP</span></p>
+      </section>
+      <div class="card">${levelCard()}</div>
+      ${drillRows}
+      ${review}
+      <div class="row">
+        <button type="button" class="btn btn-primary" data-act="arc-close">Back to Arcade</button>
+        ${a.mode === "daily" ? "" : `<button type="button" class="btn" data-act="arc-start" data-mode="${a.mode}">Play again</button>`}
+        ${n && a.answers.some((x) => !x.correct) ? `<button type="button" class="btn" data-act="arc-retry">Retry the misses</button>` : ""}
+      </div>
+    </div>`;
+  }
+
+  function viewArc() {
+    const a = S.arc;
+    if (a.done) return viewArcResult();
+    if (a.mode === "seq") return viewSeq();
+    if (a.mode === "match") return viewMatch();
+    return viewArcQuestion();
+  }
+
+  const arcActions = {
+    "practice-mode": (el) => { S.tool.mode = el.dataset.v; lsSet(LS + "mode", S.tool.mode); render(); },
+    "open-arcade": () => { S.tool.mode = "arcade"; lsSet(LS + "mode", "arcade"); go("practice"); },
+    "arc-start": (el) => startArc(el.dataset.mode),
+    "arc-select": (el) => {
+      const a = S.arc;
+      if (!a || a.submitted) return;
+      a.selected = Number(el.dataset.pos);
+      // Pace runs and quick-answer users skip the confirmation step; bets always need the bet.
+      if (a.mode !== "bets" && !S.profile.confirm) { arcSubmit(); return; }
+      render();
+    },
+    "arc-submit": () => arcSubmit(),
+    "arc-bet": (el) => arcSubmit({ bet: Number(el.dataset.bet) }),
+    "arc-strike": (el) => {
+      const a = S.arc;
+      if (!a || a.phase !== "strike") return;
+      const orig = a.orders[arcQ().id][Number(el.dataset.pos)];
+      if (a.struck.includes(orig)) a.struck = a.struck.filter((x) => x !== orig);
+      else if (a.struck.length < 2) a.struck.push(orig);
+      render();
+    },
+    "arc-strike-go": () => {
+      const a = S.arc;
+      if (!a || a.struck.length !== 2) return;
+      const q = arcQ();
+      if (a.struck.includes(q.a)) { arcSubmit({ chosen: null, clean: false }); return; }
+      a.phase = "pick";
+      render();
+    },
+    "arc-reveal": () => { if (S.arc) { S.arc.phase = ""; S.arc.shownAt = Date.now(); render(); } },
+    "arc-recall": (el) => {
+      const a = S.arc;
+      if (!a || a.recall !== undefined) return;
+      const yes = el.dataset.v === "1";
+      a.recall = yes;
+      const ans = a.answers[a.answers.length - 1];
+      ans.recall = yes;
+      S.game.recall = [S.game.recall[0] + 1, S.game.recall[1] + (yes && ans.correct ? 1 : 0)];
+      const bonus = yes && ans.correct ? 5 : 0;
+      a.xp += bonus;
+      saveArc();
+      reward(bonus);
+      render();
+    },
+    "arc-next": () => arcNext(),
+    "arc-end": () => {
+      const a = S.arc;
+      if (!a) return;
+      if (!a.answers.length && !(a.results && a.results.length)) { S.arc = null; saveArc(); render(); return; }
+      arcFinish("ended");
+    },
+    "arc-close": () => { S.arc = null; saveArc(); S.tool.mode = "arcade"; render(); window.scrollTo(0, 0); },
+    "arc-retry": () => {
+      const ids = S.arc.answers.filter((x) => !x.correct).map((x) => x.id);
+      S.arc = null;
+      saveArc();
+      startRun(Engine.shuffle(ids.map(byId).filter(Boolean)), "Arcade misses");
+    },
+    "seq-place": (el) => {
+      const a = S.arc;
+      const i = Number(el.dataset.i);
+      if (!a || a.checked || a.placed.includes(i)) return;
+      a.placed.push(i);
+      saveArc();
+      render();
+    },
+    "seq-unplace": (el) => {
+      const a = S.arc;
+      if (!a || a.checked) return;
+      a.placed.splice(Number(el.dataset.i), 1);
+      render();
+    },
+    "seq-check": () => seqCheck(),
+    "drill-next": () => drillNext(),
+    "match-term": (el) => {
+      const a = S.arc;
+      const i = Number(el.dataset.i);
+      a.selTerm = a.selTerm === i ? null : i;
+      a.miss = null;
+      matchTry();
+    },
+    "match-def": (el) => {
+      const a = S.arc;
+      const i = Number(el.dataset.i);
+      a.selDef = a.selDef === i ? null : i;
+      a.miss = null;
+      matchTry();
+    },
+  };
+
   // ---------------------------------------------------------------- flags
   function toggleFlag(id) {
     if (S.flags[id]) {
@@ -1805,6 +2547,7 @@ ${text.slice(0, 60000)}`;
 
   // ---------------------------------------------------------------- events
   const actions = {
+    ...arcActions,
     tab: (el) => go(el.dataset.tab),
     "start-smart": (el) => startSmart(Number(el.dataset.count) || 20),
     "start-review": () => startSmart(40, { reviewOnly: true }),
@@ -1938,7 +2681,7 @@ ${text.slice(0, 60000)}`;
     "import-apply": () => importApply(),
     "import-cancel": () => { S.tool.importPreview = null; render(); },
     "copy-data": async () => {
-      const data = JSON.stringify({ profile: S.profile, progress: S.progress, sessions: S.sessions, flags: S.flags, generated: S.generated }, null, 1);
+      const data = JSON.stringify({ profile: S.profile, progress: S.progress, game: S.game, sessions: S.sessions, flags: S.flags, generated: S.generated }, null, 1);
       try {
         await navigator.clipboard.writeText(data);
         toast("Copied your data to the clipboard");
@@ -1955,6 +2698,10 @@ ${text.slice(0, 60000)}`;
       S.sessions = [];
       S.run = null;
       saveRun();
+      S.game = { ...defaultGame(), resetAt: Date.now() };
+      saveGame();
+      S.arc = null;
+      saveArc();
       toast("Progress erased");
       render();
     },
@@ -2009,9 +2756,20 @@ ${text.slice(0, 60000)}`;
     }
     const k = ev.key.toLowerCase();
     const pos = ["a", "b", "c", "d"].indexOf(k) >= 0 ? ["a", "b", "c", "d"].indexOf(k) : ["1", "2", "3", "4"].indexOf(k);
-    if (S.tab === "practice" && S.run && !S.run.done) {
+    const a = S.arc;
+    if (S.tab === "practice" && a && !a.done && a.items.length) {
+      const q = arcQ();
+      if (a.phase === "recall") { if (k === "enter") actions["arc-reveal"](); }
+      else if (a.phase === "strike") {
+        if (pos >= 0) actions["arc-strike"]({ dataset: { pos } });
+        else if (k === "enter") actions["arc-strike-go"]();
+      } else if (!a.submitted) {
+        if (pos >= 0 && !(a.phase === "pick" && a.struck.includes(a.orders[q.id][pos]))) actions["arc-select"]({ dataset: { pos } });
+        else if (k === "enter" && a.mode !== "bets") arcSubmit();
+      } else if (k === "enter") arcNext();
+    } else if (S.tab === "practice" && !a && S.run && !S.run.done) {
       if (pos >= 0 && !S.run.submitted) { S.run.selected = pos; if (!S.profile.confirm) submitAnswer(); else render(); }
-      else if (k === "enter") { S.run.submitted ? nextQuestion() : submitAnswer(); }
+      else if (k === "enter") { if (S.run.submitted) nextQuestion(); else submitAnswer(); }
     } else if (S.tab === "mock" && S.mock && !S.mock.paused && !S.mockResult) {
       if (pos >= 0) { S.mock.selected = pos; render(); }
       else if (k === "enter") mockAnswer();
@@ -2025,12 +2783,16 @@ ${text.slice(0, 60000)}`;
       profile: lsGet(LS + "me/profile", null),
       progress: lsGet(LS + "me/progress", null),
       mock: lsGet(LS + "me/mock", null),
+      game: lsGet(LS + "me/game", null),
       sessions: Object.values(lsGet(LS + "sessions", {})),
       flags: Object.values(lsGet(LS + "flags", {})),
       generated: Object.values(lsGet(LS + "gen", {})),
     });
     const run = lsGet(LS + "run", null);
     if (run && !run.done && Array.isArray(run.items) && run.items.every((id) => byId(id))) S.run = run;
+    const arc = lsGet(LS + "arc", null);
+    if (arc && arc.mode && !arc.done && (arc.items || []).every((id) => byId(id))) S.arc = arc;
+    S.tool.mode = lsGet(LS + "mode", "classic");
     if (hotData && hotData.tab) S.tab = hotData.tab;
     else S.tab = lsGet(LS + "tab", "today");
     if (S.mock && !S.mock.paused) {

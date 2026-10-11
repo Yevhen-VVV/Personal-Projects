@@ -73,7 +73,7 @@ D) Reset it to factory settings so it can be examined safely
 >> Mobile device artifacts: isolate from networks (Faraday bag), keep power, document state, use proper forensic tools.
 
 ## D7-007 | 7.1 | 3
-Q: A company receives a court request to produce all emails related to a contract dispute. Which framework describes the process of identifying, preserving, collecting and producing this electronic information?
+Q: A company receives a court request to produce all emails related to a contract dispute. Which framework describes the process of identifying, preserving, collecting and producing this information?
 A) The NIST Cybersecurity Framework
 = The CSF organizes cybersecurity functions; it is not an eDiscovery process.
 B) The incident response lifecycle in NIST SP 800-61
@@ -133,7 +133,7 @@ D) Penetration testing by an outside firm
 >> Threat hunting assumes compromise and looks for it, guided by threat intelligence and hypotheses.
 
 ## D7-012 | 7.2 | 2
-Q: A tool learns each user's normal behavior and alerts when an account suddenly downloads far more data than usual at an odd hour. What is this technology?
+Q: A tool learns each user's normal activity and alerts when an account suddenly downloads far more data than usual at an odd hour. What is this technology?
 A) Signature-based network intrusion detection
 = Signatures match known attack patterns, not deviations from normal behavior.
 B) A web application firewall
@@ -193,7 +193,7 @@ D)* Tune rules and prioritize by risk
 >> Monitoring needs continuous tuning; alert fatigue is a detection failure in its own right.
 
 ## D7-017 | 7.3 | 2
-Q: Servers are built from a hardened, approved image, and a tool alerts when a server's configuration drifts from it. What practice is this?
+Q: Servers are built from a hardened, approved image, and a tool alerts when a server's settings drift from it. What practice is this?
 A)* Configuration management with baselining
 = Correct. A secure baseline is applied consistently, and deviations are detected and corrected.
 B) Change management through the advisory board
@@ -246,10 +246,10 @@ A) Because they rely on encryption
 = SoD does not depend on encryption.
 B)* Two or more people can collude
 = Correct. SoD requires collusion to commit fraud, which makes it harder but not impossible; job rotation and audits help detect it.
-C) Because they only work on weekends
-= SoD applies at all times.
-D) Because they prevent all errors
-= SoD reduces fraud and errors but cannot prevent them all.
+C) Because they slow down business processes
+= Slower processes are a cost of SoD, not the reason fraud remains possible.
+D) Because they replace the need for audits
+= SoD complements audits; it does not replace them, and that is not why fraud remains possible.
 >> Separation of duties forces collusion; job rotation and mandatory vacations help uncover it.
 
 ## D7-022 | 7.4 | 2
@@ -289,7 +289,7 @@ D) Never reviewing privileged access, to avoid disruption
 >> Privileged account management: separate admin accounts, vaulting, JIT elevation, session recording and review.
 
 ## D7-025 | 7.4 | 1
-Q: Which document defines the level of service a provider commits to deliver, such as 99.9% uptime, and the remedies if it falls short?
+Q: Which document defines what a provider commits to deliver, such as 99.9% uptime, and the remedies if it falls short?
 A) A memorandum of understanding
 = An MOU records intentions, usually without enforceable penalties.
 B)* A service level agreement
@@ -349,7 +349,7 @@ D) Publish a statement to customers
 >> Contain first to limit damage; then eradicate, recover and learn.
 
 ## D7-030 | 7.6 | 2
-Q: Which phase of the NIST SP 800-61 incident response lifecycle includes building the team, tools and playbooks before any incident occurs?
+Q: Which phase of the NIST SP 800-61 Rev. 2 incident response lifecycle includes building the team, tools and playbooks before any incident occurs?
 A)* Preparation
 = Correct. Preparation creates the capability to respond: people, processes, tools and communications.
 B) Detection and analysis
@@ -358,7 +358,7 @@ C) Containment, eradication and recovery
 = That phase acts on an incident in progress.
 D) Post-incident activity
 = That phase captures lessons after an incident.
->> NIST 800-61: preparation → detection and analysis → containment, eradication and recovery → post-incident activity.
+>> NIST 800-61 Rev. 2: preparation → detection and analysis → containment, eradication and recovery → post-incident activity. Rev. 3 (2025) maps response to the CSF 2.0 functions, but these phases remain common exam vocabulary.
 
 ## D7-031 | 7.6 | 2
 Q: During remediation after an incident, what is the MOST important activity?
@@ -398,10 +398,10 @@ D) To estimate the cost of the incident for insurance
 
 ## D7-034 | 7.6 | 3
 Q: While containing an incident, a responder wants to power off a compromised server immediately. Why might the incident handler object?
-A) Powering off is always against policy
-= Sometimes shutdown is the right call; it depends on the situation.
-B) The server's warranty would be voided
-= Warranty is irrelevant.
+A) Policy forbids powering off production servers
+= Policy rarely forbids it, and sometimes shutdown is the right call.
+B) Powering off would trigger an unplanned failover
+= Failover is an availability issue the handler can plan around; losing the memory contents cannot be undone.
 C)* Volatile evidence in memory would be lost
 = Correct. Isolating the network while keeping power on can preserve memory evidence; the decision weighs evidence against further harm.
 D) The attacker would be alerted to the investigation
@@ -410,13 +410,13 @@ D) The attacker would be alerted to the investigation
 
 ## D7-035 | 7.7 | 2
 Q: What is the key difference between an IDS and an IPS?
-A) An IDS can only examine encrypted traffic
-= Neither is limited that way; both need decryption to inspect encrypted content.
+A) An IDS inspects traffic; an IPS inspects logs
+= Both inspect traffic or host activity; the difference is whether they can block.
 B)* An IPS sits inline and can block traffic; an IDS only alerts
 = Correct. An IPS can stop attacks in real time, at the risk of blocking legitimate traffic on a false positive.
 C) An IDS uses signatures and an IPS uses anomalies
 = Both can use signatures, anomaly detection or both.
-D) An IPS works only on hosts and an IDS only on networks
+D) An IPS is host-based; an IDS is network-based
 = Both have network-based and host-based forms.
 >> IDS: detect and alert (passive). IPS: detect and block (inline).
 
@@ -433,7 +433,7 @@ D)* Anomaly-based (behavioral) detection
 >> Signature: precise but blind to new attacks. Anomaly: catches the new, with more false positives.
 
 ## D7-037 | 7.7 | 2
-Q: A company wants to block SQL injection and cross-site scripting attempts against its public web application. Which control fits BEST?
+Q: A company wants to block SQL injection and cross-site scripting attempts against its public website. Which control fits BEST?
 A)* A web application firewall
 = Correct. A WAF inspects HTTP requests and responses at Layer 7 for application attacks.
 B) A packet-filtering router
@@ -470,11 +470,11 @@ D) A DMZ for mail servers
 
 ## D7-040 | 7.7 | 3
 Q: A company sets up a honeypot that advertises "free movie downloads" on its network and then prosecutes the visitors. What legal concern arises?
-A) Honeypots are always illegal
+A) Honeypots are illegal in most jurisdictions
 = Honeypots are legal and widely used for detection and research.
-B) The company may breach its software licenses
-= Licensing is not the issue here.
-C) Logging visitors breaches every privacy law
+B) The downloads could expose the company to copyright claims
+= A side issue at most; luring people into an offence and then prosecuting them is the core legal problem.
+C) Logging the visitors breaches privacy law
 = Monitoring one's own systems can be lawful with proper policy.
 D)* It may amount to entrapment
 = Correct. Passive enticement is generally acceptable; actively luring people into an offense they would not otherwise commit may be entrapment.
@@ -482,10 +482,10 @@ D)* It may amount to entrapment
 
 ## D7-041 | 7.7 | 2
 Q: The SOC adopts a machine-learning tool to detect malicious behavior. What is the MAIN operational concern?
-A) Machine learning cannot analyze network traffic
+A) Machine learning works poorly on network traffic
 = ML is widely used on network data.
-B) Machine learning tools never produce false negatives
-= All detection tools produce false negatives.
+B) Its models need no tuning after deployment
+= Models need tuning and retraining as the environment changes; ignoring that is how ML tools fail.
 C)* False positives, model drift and opaque reasoning
 = Correct. Models need tuning, retraining and human review, and their decisions can be hard to explain.
 D) Machine learning removes the need for analysts
@@ -524,7 +524,7 @@ B) Turn off all affected systems permanently
 = That may cause more harm than the risk itself.
 C) Ignore it because no CVE score is available yet
 = Active exploitation is reason enough to act.
-D)* Mitigate and monitor until a patch exists
+D)* Apply mitigations and monitor until a fix ships
 = Correct. Vendor workarounds, configuration changes, virtual patching and focused monitoring reduce risk until a fix ships.
 >> No patch? Mitigate (workarounds, WAF or IPS rules, isolation), monitor closely, then patch and verify.
 
@@ -590,12 +590,12 @@ D) A reciprocal agreement with a partner company
 
 ## D7-050 | 7.10 | 2
 Q: What is the main weakness of a mutual assistance (reciprocal) agreement as a recovery strategy?
-A) It is always more expensive than a hot site
+A) It costs more than a hot site
 = Reciprocal agreements are usually cheap.
 B) It requires a third-party vendor
 = It is between two organizations, not a vendor.
-C) It cannot be documented in writing
-= It can and should be written.
+C) It requires dedicated hardware at both sites
+= It relies on spare capacity at the partner, not dedicated hardware.
 D)* Enforcement and partner capacity
 = Correct. It is hard to enforce, and a partner may be hit by the same disaster or be unable to absorb your workload, and confidentiality is a concern.
 >> Mutual assistance agreements are cheap but weak: enforcement, capacity, confidentiality and shared disasters.
@@ -628,7 +628,7 @@ D) RAID 10 with two disks
 Q: What distinguishes fault tolerance from high availability?
 A) High availability requires no redundant components
 = HA depends on redundancy and failover.
-B) Fault tolerance is only about software
+B) Fault tolerance applies to software, not hardware
 = Fault tolerance covers hardware too, such as redundant power supplies and RAID.
 C) They mean exactly the same thing
 = They differ in how failures affect service.
@@ -698,7 +698,7 @@ D) Full interruption test
 
 ## D7-059 | 7.12 | 3
 Q: Management proposes a full interruption test of the DR plan next month. What should the security professional advise?
-A) It is the best test, so it should be run every month
+A) It is the best test, so it should be run monthly
 = Its risk makes frequent use unwise.
 B) It is useless compared with a checklist review
 = It is the most realistic test; the issue is its risk.
@@ -722,14 +722,14 @@ D)* Everyone with a role in the plan
 
 ## D7-061 | 7.13 | 2
 Q: The company reorganized, moved offices and replaced its ERP system last year, but the BCP has not changed in three years. What is the MOST likely problem?
-A) The plan is too detailed
-= Detail is not the issue.
+A) The plan lacks current executive sign-off
+= Sign-off may also be stale, but the core problem is that the plan describes offices and systems that no longer exist.
 B)* It is out of date
 = Correct. The plan no longer reflects how the business works. BCPs must be maintained and retested when the business, technology or people change.
-C) The plan needs more pages
-= Length is irrelevant.
-D) The plan should be moved to the cloud
-= Storage location does not fix outdated content.
+C) Its recovery time objectives are too aggressive
+= The targets may need review, but the scenario points to content that no longer matches the organization.
+D) It relies on a single recovery site
+= Nothing in the scenario concerns the recovery site; the changes in structure, location and systems are what the plan missed.
 >> Maintain the BCP: review it regularly and after significant change, and retest it.
 
 ## D7-062 | 7.14 | 1
@@ -793,15 +793,15 @@ D) An access control vestibule
 >> Duress systems protect people: comply visibly, alert covertly.
 
 ## D7-067 | 7.15 | 2
-Q: Which topic belongs in personnel security awareness training on social media?
-A)* Oversharing details that enable social engineering
-= Correct. Posts about travel, roles or projects help attackers craft pretexts and target people.
-B) How to configure the corporate firewall
-= That is technical training for administrators.
-C) The company's disaster recovery site location
-= That is sensitive and not general awareness material.
-D) Encryption algorithms used by the VPN
-= Not relevant to personal social media risk.
+Q: An employee often posts office photos, travel plans and the names of the systems they administer. Which awareness topic addresses this MOST directly?
+A)* Oversharing details that attackers use for social engineering
+= Correct. Roles, systems, schedules and locations give phishers and pretexters the details that make their approaches convincing.
+B) Choosing strong, unique passwords for personal social media accounts
+= Good advice, but strong passwords do not stop the employee publishing what attackers use.
+C) Recognizing malicious links in direct messages
+= Useful, but the risk described is what the employee posts, not what they click.
+D) Reporting lost or stolen company devices
+= A different risk; these posts are published deliberately.
 >> Personnel safety training covers social media exposure, insider threats, MFA fatigue and travel risk.
 
 ## D7-068 | 7.15 | 2
@@ -815,3 +815,27 @@ C) Post about it on the team's internal chat channel
 D)* Report it through the insider threat channel
 = Correct. Awareness programs should teach staff to recognize insider threat indicators and report them confidentially.
 >> Insider threat programs rely on trained employees who report concerning behavior through confidential channels.
+
+## D7-069 | 7.10 | 3
+Q: A company's DR plan restores its order database from nightly backups at a warm site. The business now says losing more than 15 minutes of orders is unacceptable. What must change?
+A) Move to a hot site so systems come back faster
+= A faster site shortens downtime (RTO) but restores the same nightly data, so up to a day of orders could still be lost.
+B)* Replicate or ship logs every few minutes
+= Correct. The new requirement is a 15-minute RPO, which concerns how current the copy is; nightly backups cannot meet it at any site.
+C) Run the backup twice each night
+= Two backups a night still leave a gap of many hours.
+D) Test the restore procedure every quarter
+= Testing is good practice, but it does not change how much data the backups capture.
+>> RPO is met by backup or replication frequency; RTO by the recovery site and process. Do not confuse them.
+
+## D7-070 | 7.6 | 3
+Q: During a ransomware incident, the incident commander learns the attackers also copied HR records containing personal data. Containment is under way. Which action is MOST urgent to add?
+A) Pay the ransom so the HR data is not published
+= Payment does not guarantee deletion, may breach sanctions law, and is a management decision, not a response step.
+B)* Involve legal counsel on notification deadlines
+= Correct. A personal data breach can start legal notification clocks, such as 72 hours under GDPR; counsel must assess them while the technical response continues.
+C) Restore the HR system from backups first
+= Recovery matters, but the exfiltration creates legal duties with deadlines that run in parallel.
+D) Delete the remaining HR records to limit exposure
+= Destroying records may breach retention duties and destroys evidence.
+>> When personal data is exfiltrated, legal notification clocks start; bring in counsel early, alongside containment.

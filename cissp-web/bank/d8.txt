@@ -73,7 +73,7 @@ D)* Release control
 >> Software change management: request control → change control → release control.
 
 ## D8-007 | 8.1 | 2
-Q: A program assembles a team of developers, security, operations, testers and business representatives who share responsibility for a product from the start. What is this?
+Q: A program assembles a team of developers, security, operations, testers and business representatives who share responsibility for a system from the start. What is this?
 A) A change advisory board
 = A CAB approves changes; it does not build the product.
 B)* An integrated product team
@@ -86,13 +86,13 @@ D) A computer security incident response team
 
 ## D8-008 | 8.1 | 1
 Q: When should security requirements be defined for a new application?
-A)* With the functional requirements, at the start
+A)* Alongside functional needs, at project start
 = Correct. Security requirements belong in the requirements phase alongside functionality.
 B) After the first release, based on user feedback
 = Post-release security is reactive and costly.
 C) During penetration testing before go-live
 = Testing finds problems; it does not define requirements.
-D) Only if the customer requests them
+D) When a customer asks for them
 = Security is the organization's responsibility, whether asked or not.
 >> Security requirements start at the beginning of the SDLC.
 
@@ -121,7 +121,7 @@ D) The daily stand-up
 >> In Agile, security work belongs in the backlog with definitions of done, not in a separate afterthought.
 
 ## D8-011 | 8.1 | 3
-Q: A large enterprise coordinates dozens of Agile teams with shared planning increments and portfolio governance. Which framework is this?
+Q: A large enterprise coordinates dozens of Agile teams with shared planning increments and portfolio governance. Which approach is this?
 A) Waterfall with phase gates
 = Waterfall is not an Agile framework.
 B) Extreme Programming (XP)
@@ -145,7 +145,7 @@ D) Interactive application security testing
 >> SCA covers third-party components; SAST covers your code; DAST covers the running app; IAST instruments it.
 
 ## D8-013 | 8.2 | 2
-Q: Which testing approach instruments an application while it runs during functional tests, combining insight from inside the code with real execution?
+Q: Which approach instruments software while it runs during functional tests, combining insight from inside the code with real execution?
 A)* Interactive application security testing
 = Correct. IAST agents observe code paths and data flows during testing, which reduces false positives.
 B) Static analysis of the source code
@@ -206,11 +206,11 @@ D)* Strong authentication, branch protection and required reviews
 
 ## D8-018 | 8.2 | 2
 Q: In a development ecosystem, what is the role of software configuration management (SCM)?
-A)* Version control of code and configuration
+A)* Versioning and tracking changes to code and settings
 = Correct. SCM gives an auditable history of what changed, when and by whom, and lets teams rebuild any version.
 B) Scanning committed code for vulnerabilities
 = That is application security testing.
-C) Approving production changes at the CAB
+C) Approving production changes at the change advisory board
 = The CAB is part of change management.
 D) Monitoring production servers for performance
 = That is operations monitoring.
@@ -230,14 +230,14 @@ D)* Runtime application self-protection (RASP)
 
 ## D8-020 | 8.2 | 3
 Q: A developer installs an IDE plugin from an unknown publisher that requests access to the whole file system and network. What is the main risk?
-A) The plugin may slow down compilation
-= Performance is not the security concern.
+A) The plugin may break the build for other developers
+= A faulty plugin can disrupt work, but broad file system and network access points to data theft as the main risk.
 B)* Theft of source code or secrets
 = Correct. Development tools are part of the attack surface; malicious extensions can steal code and credentials.
 C) The plugin may conflict with other installed extensions
 = Compatibility problems are a nuisance, not the main security risk.
-D) The plugin may use too much disk space
-= Not a security concern.
+D) The plugin may introduce bugs into compiled code
+= Possible, but less likely and less damaging than a plugin quietly reading code and secrets and sending them out.
 >> Tool sets and IDEs are part of the supply chain: approve, vet and limit extensions.
 
 ## D8-021 | 8.2 | 2
@@ -292,11 +292,11 @@ D) Hide the API's documentation
 Q: Users need assurance that an installer really comes from the vendor and has not been altered. What should the vendor do?
 A) Publish the installer on a popular download site
 = Distribution channels can be compromised.
-B) Compress the installer
-= Compression provides no authenticity.
-C) Rename the file to include the version number
-= Names prove nothing.
-D)* Sign the code with the vendor's certificate
+B) Publish an MD5 checksum on the same download page
+= A checksum next to the file can be replaced along with it, and MD5 is broken; it shows integrity at best, never origin.
+C) Distribute it only over HTTPS
+= HTTPS protects the download from that site, but the file carries no proof of origin once copied elsewhere.
+D)* Sign it with a code-signing certificate
 = Correct. Code signing provides integrity and proves the publisher's identity.
 >> Code signing proves authorship and integrity, but not that the code is safe.
 
@@ -422,26 +422,26 @@ D)* Server-side request forgery
 
 ## D8-036 | 8.5 | 2
 Q: Where must input validation be enforced to be effective?
-A) Only in client-side JavaScript
+A) In client-side JavaScript, for speed
 = Attackers bypass client-side checks easily.
 B)* On the server, using allow lists
 = Correct. Server-side validation against expected formats cannot be bypassed by the client; client checks are for usability only.
-C) Only in the database
+C) In the database, through constraints
 = Validation should happen before data reaches the database.
 D) Nowhere, if a WAF is in place
 = WAFs are a supplement, not a replacement for validation.
 >> Validate input on the server with allow lists; treat all client input as untrusted.
 
 ## D8-037 | 8.5 | 2
-Q: A program copies user input into a fixed-size buffer without checking its length, letting an attacker overwrite adjacent memory. What should developers do?
+Q: A program copies user input into a fixed-size buffer without checking its length, letting an attacker overwrite adjacent memory. What should developers do to fix the flaw?
 A) Increase the buffer size
 = A bigger buffer only raises the threshold for overflow.
 B) Run the program as administrator
 = Elevated privileges make exploitation worse.
 C)* Check input length and use safe functions
 = Correct. Bounds checking and safe library functions prevent the overflow; compiler and OS protections add layers.
-D) Disable logging to save memory
-= Logging is unrelated.
+D) Mark the stack as non-executable
+= A non-executable stack makes exploitation harder but leaves the overflow in place; attackers can still corrupt data or reuse existing code.
 >> Buffer overflows: bounds checking, safe functions, memory-safe languages, plus ASLR and DEP as extra layers.
 
 ## D8-038 | 8.5 | 3
@@ -508,8 +508,8 @@ D) Low cohesion and low coupling
 Q: An application deserializes objects received from users without validation, allowing an attacker to run code on the server. What is the BEST mitigation?
 A) Compress serialized data before sending it
 = Compression does not prevent malicious objects.
-B) Use longer session timeouts
-= Session length is unrelated.
+B) Validate the objects' fields after deserializing them
+= Too late: the attack runs during deserialization itself, before any field check can happen.
 C) Move the server behind a corporate VPN
 = Internal attackers or compromised clients can still send payloads.
 D)* Don't deserialize untrusted data
@@ -551,3 +551,27 @@ C) A misconfigured TLS certificate on the server
 D) A missing HTTP security header on responses
 = Headers appear in every response, so dynamic scanning of the running site finds them easily.
 >> Static analysis sees every path in the code; dynamic testing sees only what it exercises.
+
+## D8-047 | 8.4 | 3
+Q: A team wants to add a popular open-source package maintained by one volunteer and last updated three years ago. It has no known CVEs. What is the BEST assessment?
+A) Approve it, because no known vulnerabilities means low risk
+= No CVEs may only mean no one is looking; an unmaintained package will not get fixes when flaws appear.
+B)* Treat it as abandoned: plan to fork, replace or watch it
+= Correct. Maintenance health is a supply chain risk: a dormant single-maintainer project may never patch future flaws and could be taken over.
+C) Prefer a commercial package with a support contract
+= Support can help, but a vendor product is not automatically safer; the issue to assess is this package's maintenance health.
+D) Approve it after scanning the package with antivirus
+= Antivirus looks for known malware, not for maintenance or vulnerability risk.
+>> Assess open-source dependencies on maintenance health, not just known CVEs.
+
+## D8-048 | 8.5 | 3
+Q: A web application stores user-supplied display names with parameterized queries. An admin page later shows the names, and a crafted name runs script in administrators' browsers. Where should the fix go?
+A) Stricter parameterized queries when storing the names
+= Parameterized queries prevent SQL injection; they do nothing about how data is rendered in HTML.
+B)* Context-aware output encoding on the admin page
+= Correct. This is stored cross-site scripting: data must be encoded for the context where it is output, whatever was done at input.
+C) A web application firewall rule blocking the word "script"
+= Simple filters are easy to bypass and leave the page rendering untrusted data.
+D) Encrypting the names in the database
+= The page decrypts and renders them, so the script still runs.
+>> Stored XSS is fixed by output encoding where the data is rendered; input-side SQL protection does not cover it.

@@ -140,8 +140,8 @@ B)* Deny it unless the employee has a need to know for the document
 = Correct. Access to classified information requires clearance, need to know and, where applicable, formal approval.
 C) Release a redacted version without asking further questions
 = Even a redacted classified document needs a justified need to know.
-D) Escalate to the security officer to upgrade the employee's clearance
-= A higher clearance is irrelevant; the missing element is need to know.
+D) Release it after logging the request for the security officer to review
+= Logging records the access but does not prevent it; without a need to know, the document should not be released.
 >> Clearance and need to know are both required; one without the other is not enough.
 
 ## D2-013 | 2.2 | 2
@@ -272,7 +272,7 @@ B) Purpose specification only, which allows collection if the purpose is written
 = A vague future purpose does not justify collection.
 C) Data accuracy
 = Accuracy concerns keeping data correct, not whether to collect it.
-D)* Data minimization: collect only what is needed for a defined purpose
+D)* Data minimization: gather only what a defined purpose needs
 = Correct. Collecting less data reduces the impact of a breach and is required by laws such as GDPR.
 >> Data you never collect cannot be breached. Collect only what a defined purpose requires.
 
@@ -306,8 +306,8 @@ A) Old data is more likely to be corrupted
 = Corruption is an integrity problem, not the main reason for disposal.
 B)* It remains exposed to breaches and must be produced in legal discovery
 = Correct. Data you no longer need still carries breach risk and can be subpoenaed, while providing no value.
-C) Retention periods are always set by law, so exceeding them is illegal
-= Some periods are set by business need, and keeping data longer is not always illegal. The risk is exposure and discovery.
+C) Exceeding a retention period is a criminal offense in most jurisdictions
+= Some periods are set by business need, and keeping data longer is rarely a crime in itself. The risk is exposure and discovery.
 D) Storage is expensive
 = Cost matters, but it is not the main security and legal concern.
 >> Retain data as long as required, then destroy it; excess data is liability without value.
@@ -320,7 +320,7 @@ B) Move them to cheaper storage and destroy them after the case
 = Moving them is fine, but they must be preserved, not merely scheduled for later destruction.
 C) Ask the opposing party whether the records are needed
 = Preservation duties do not depend on the other side asking.
-D)* Place them under a legal hold, suspending destruction
+D)* Place them under a legal hold until the matter ends
 = Correct. Once litigation is reasonably anticipated, a legal hold overrides normal retention and destruction schedules.
 >> A legal hold suspends destruction of relevant records when litigation is anticipated.
 
@@ -551,3 +551,27 @@ C) Steganography
 D) Data compression
 = Compression reduces size; it does not hide values.
 >> Masking limits displayed data to what a role needs, applying least privilege to the screen.
+
+## D2-047 | 2.4 | 3
+Q: A hospital uses a cloud analytics service to process patient data. The provider now wants to use the same data, with names removed, to train its own commercial models. Under GDPR-style roles, what is the provider's position?
+A) It stays a processor, because the hospital collected the data
+= A processor acts only on the controller's instructions. Using the data for its own purposes makes it a controller for that use.
+B)* It becomes a controller for that use, needing a lawful basis
+= Correct. A processor that decides the purpose of processing becomes a controller for it, and removing names alone does not make health data anonymous.
+C) It may proceed, because data without names is anonymous
+= Removing names is pseudonymization at best; health records can often be re-identified, so the data is still personal data.
+D) It becomes the data owner, since it holds the copy in use
+= Holding a copy does not make it the owner; accountability for patient data stays with the hospital.
+>> A processor that uses personal data for its own purposes becomes a controller for that use; stripping names is not anonymization.
+
+## D2-048 | 2.6 | 3
+Q: Analysts must query a customer dataset without ever seeing real account numbers, while the payments system must still be able to use the real numbers. Which technique fits BEST?
+A) Encrypt the account numbers at rest with full-disk encryption on the servers
+= Full-disk encryption protects against stolen media; authorized users and applications still see the real values.
+B) Hash the account numbers with SHA-256 in the shared database
+= Hashing is one-way, so the payments system could not recover the numbers, and unsalted hashes of short numbers can be brute-forced.
+C)* Tokenize them, keeping the mapping only in a payments vault
+= Correct. Analysts work with tokens that still support joins and counts, and only the payments system can redeem a token for the real number.
+D) Mask all but the last four digits on analysts' screens
+= Display masking leaves the real numbers in the data the analysts query and export.
+>> Tokenization swaps sensitive values for tokens; only the vault maps them back, so most systems never hold the real data.

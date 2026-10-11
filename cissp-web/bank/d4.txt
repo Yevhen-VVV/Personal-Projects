@@ -31,7 +31,7 @@ A)* SYN cookies
 B) A longer TCP keep-alive interval
 = Keep-alives apply to established connections, not half-open ones.
 C) Disabling ICMP on the server
-= ICMP is unrelated to a SYN flood.
+= Blocking ICMP stops ping-based floods, not a flood of half-open TCP connections.
 D) Increasing the TCP window size
 = The window size controls data flow on established connections.
 >> SYN flood: exhausts the half-open connection backlog. Counter with SYN cookies, rate limiting and upstream filtering.
@@ -74,13 +74,13 @@ D) Network address translation
 
 ## D4-007 | 4.1 | 2
 Q: A security team finds that workstations are using an IPv6-over-IPv4 tunneling feature that the perimeter firewall does not inspect. What is the main risk?
-A) The tunnel will slow down IPv4 traffic
-= Performance is not the security concern.
+A) It exposes internal IPv4 addresses to the internet
+= The tunnel wraps IPv6 inside IPv4; the danger is not address exposure but traffic the firewall never inspects.
 B)* It can bypass IPv4-only security controls
 = Correct. Traffic can bypass controls that only inspect IPv4: tunneled IPv6 carries it around filtering and monitoring that do not understand it.
-C) IPv6 addresses cannot be logged
-= IPv6 addresses can be logged by tools that support them.
-D) IPv6 cannot be encrypted
+C) IPv6 addresses are too long for most log formats
+= Current logging tools record IPv6 addresses without difficulty.
+D) IPv6 traffic is incompatible with TLS
 = IPv6 supports IPsec and TLS like IPv4.
 >> Disable or inspect unneeded IPv6 tunneling; unmanaged IPv6 can bypass IPv4-only controls.
 
@@ -110,11 +110,11 @@ D) Main mode, which hides identities during negotiation
 
 ## D4-010 | 4.1 | 3
 Q: A network team wants IPsec integrity protection that covers the IP header, but the traffic crosses a NAT device. Why does Authentication Header (AH) fail here?
-A) AH requires TCP, while NAT devices only translate UDP
+A) AH runs over TCP, which NAT devices handle poorly
 = AH is its own IP protocol and does not depend on TCP or UDP.
-B) NAT devices cannot route encrypted traffic
+B) NAT devices drop encrypted traffic by default
 = AH does not encrypt anything.
-C) AH only works with IPv6
+C) AH was designed for IPv6 and fails on IPv4
 = AH works with both IPv4 and IPv6.
 D)* NAT's address changes break AH's integrity check
 = Correct. AH authenticates parts of the IP header, so NAT's address changes make the check fail. ESP with NAT traversal is used instead.
@@ -146,10 +146,10 @@ D) Using SHA-1 for signatures
 
 ## D4-013 | 4.1 | 3
 Q: An industrial protocol carries control commands inside ordinary TCP/IP traffic, and an attacker uses that wrapping to slip commands past a firewall that only checks ports. What does this illustrate?
-A) A physical weakness of the fiber-optic cabling used
-= The physical medium is not the issue.
-B) The need to disable IPv6 on all industrial devices
-= IPv6 is unrelated.
+A) A man-in-the-middle attack on the industrial protocol
+= Nothing is intercepted or altered in transit; the attacker hides commands inside allowed traffic.
+B) A failure of the firewall's stateful connection tracking
+= State tracking worked as designed; the firewall only looked at ports, so it never saw what the wrapped payload carried.
 C)* Encapsulation hiding traffic from shallow inspection
 = Correct. This is a risk of multilayer protocols: their encapsulation can carry covert or unexpected content, so protocol-aware inspection and segmentation are needed.
 D) A design flaw in the TCP three-way handshake itself
@@ -196,9 +196,9 @@ D) User plane
 Q: A switch begins forwarding a frame as soon as it reads the destination MAC address, before the whole frame arrives. What is the trade-off of this cut-through approach?
 A) It is slower but checks every frame for errors
 = That describes store-and-forward switching.
-B) It cannot forward broadcast frames
+B) It drops broadcast frames to save time
 = Switching method does not affect broadcast handling.
-C) It requires routers on every segment
+C) It needs a router to check each frame
 = Cut-through is purely a switching technique.
 D)* Lower latency, but corrupted frames may be forwarded
 = Correct. Cut-through does not wait to verify the frame check sequence, so damaged frames can propagate.
@@ -241,7 +241,7 @@ D) A virtual routing and forwarding instance
 >> Physical segmentation options: in-band, out-of-band and air-gapped networks.
 
 ## D4-021 | 4.1 | 2
-Q: A service provider needs separate routing tables for several customers on the same physical router, so their overlapping address ranges do not conflict. Which technology provides this?
+Q: A service provider must keep several customers' networks isolated on the same physical router, even though their address ranges overlap. Which technology provides this?
 A) VLANs with separate trunk links
 = VLANs separate Layer 2 broadcast domains, not routing tables.
 B) A VPN concentrator per customer
@@ -362,11 +362,11 @@ D) Near-field communication
 
 ## D4-031 | 4.1 | 3
 Q: Compared with 4G, how does 5G better protect subscribers against IMSI catchers (fake base stations)?
-A) 5G phones refuse to connect to any base station they have not seen before
+A) 5G phones keep a list of trusted base stations and refuse others
 = Phones cannot know every legitimate base station in advance.
 B)* 5G encrypts the subscriber's permanent identifier before sending it over the air
 = Correct. 5G conceals the permanent identifier (SUPI) as the SUCI, using the home network's public key, so it is not exposed over the air.
-C) 5G uses only millimeter-wave frequencies, which cannot be intercepted
+C) 5G's millimeter-wave signals are too short-range to intercept
 = 5G uses several bands, and radio signals can always be intercepted.
 D) 5G no longer uses SIM cards
 = 5G still uses SIMs or eSIMs.
@@ -409,7 +409,7 @@ D) A storage bucket
 >> VPCs provide network isolation in the cloud; their security groups and network ACLs act as firewalls.
 
 ## D4-035 | 4.1 | 2
-Q: The network team wants records of which hosts talked to which, when, and how much data moved, without capturing full packets. What should they collect?
+Q: The network team wants to know which hosts talked to which, when, and how much data moved, without capturing full packets. What should they collect?
 A) Full packet captures on every link
 = Full capture gives detail but is expensive at scale and is more than they asked for.
 B)* Flow records such as NetFlow or IPFIX
@@ -458,7 +458,7 @@ D) A web application firewall in front of servers
 
 ## D4-039 | 4.1 | 2
 Q: What does DNSSEC provide?
-A) Encryption of DNS queries so observers cannot see them
+A) Encryption of DNS queries from observers
 = DNSSEC does not encrypt; DNS over HTTPS or DNS over TLS do.
 B) Faster resolution through caching
 = Caching is ordinary DNS behavior.
@@ -482,13 +482,13 @@ D) LAND
 
 ## D4-041 | 4.1 | 3
 Q: A company connects branch offices with SD-WAN that sends some traffic directly to the internet from each branch. What is the MAIN security consideration?
-A) SD-WAN cannot carry real-time voice or video traffic reliably
+A) SD-WAN degrades the quality of real-time voice and video
 = SD-WAN carries voice and often improves it.
 B) SD-WAN requires a separate router for each application
 = Policies are centralized; there are not separate routers per application.
 C) Branches will lose access to cloud services
 = Direct internet breakout usually improves access to cloud services.
-D)* Securing each branch's direct internet traffic
+D)* Each site now needs its own inspection and filtering
 = Correct. Local breakout bypasses headquarters' security stack, so inspection must move to the branch or the cloud, for example through SASE services.
 >> SD-WAN local breakout moves the perimeter; pair it with cloud-delivered security such as SASE.
 
@@ -498,7 +498,7 @@ A) NFV encrypts traffic between sites, while SDN does not
 = Neither is defined by encryption.
 B)* NFV virtualizes network appliances; SDN centralizes control
 = Correct. NFV runs functions such as firewalls as software; SDN separates the control plane from forwarding. The two are complementary and are often used together.
-C) SDN works only in the cloud; NFV works only on premises
+C) SDN is for cloud networks; NFV is for on-premises networks
 = Both can be used in either environment.
 D) They are two vendor names for the same underlying technology
 = They solve different problems.
@@ -565,7 +565,7 @@ D)* Infrastructure operation: redundancy and support
 >> Availability of network components depends on redundant power, spares, warranty and support contracts.
 
 ## D4-048 | 4.2 | 2
-Q: Which endpoint control records detailed process, file and network activity on hosts and lets responders investigate and isolate a compromised machine?
+Q: Which control records detailed process, file and network activity on hosts and lets responders investigate and isolate a compromised machine?
 A) A host-based firewall on each laptop
 = A host firewall filters traffic but does not record detailed activity for investigation.
 B)* Endpoint detection and response (EDR)
@@ -578,10 +578,10 @@ D) An automated patch management agent
 
 ## D4-049 | 4.2 | 2
 Q: What is the main security risk of a network hub compared with a switch?
-A) Hubs cannot route traffic between different networks
+A) Hubs route traffic less efficiently between networks
 = Neither hubs nor switches route; that is the router's job.
-B) Hubs use more power
-= Power is not the security concern.
+B) Hubs pass broadcast storms to every segment
+= Switches also flood broadcasts within a VLAN. The difference that matters is that a hub repeats every frame to every port.
 C)* Every host can see all other hosts' traffic
 = Correct. Hubs repeat all traffic to all ports, which makes sniffing trivial.
 D) Hubs do not support IPv6
@@ -620,8 +620,8 @@ B)* Internet traffic bypasses corporate security controls
 = Correct. A device browsing the internet directly while on the VPN can become a bridge into the corporate network.
 C) Split tunneling disables encryption on the VPN tunnel
 = Corporate-bound traffic is still encrypted.
-D) Users cannot reach cloud applications
-= Split tunneling usually improves access to cloud apps.
+D) Cloud applications become slower for remote users
+= Split tunneling usually makes cloud applications faster, not slower.
 >> Split tunneling sends internet traffic around corporate controls; full tunneling or cloud security services address it.
 
 ## D4-053 | 4.3 | 2
@@ -662,8 +662,8 @@ D) S/MIME
 
 ## D4-056 | 4.3 | 2
 Q: A remote site connects to headquarters over a geostationary satellite link. Which characteristic should the design account for?
-A) Satellite links cannot carry encrypted traffic
-= Satellite links can carry encrypted traffic.
+A) Encryption overhead makes satellite links unusable
+= Encryption works over satellite; latency is the design constraint, not encryption.
 B) Satellite links are immune to interception from the ground
 = Satellite signals cover wide areas and can be intercepted.
 C)* High latency and a signal exposed over a wide area
@@ -688,10 +688,34 @@ D) Increase backhaul bandwidth
 Q: Employees use instant messaging and file sharing in a collaboration platform. Which control BEST prevents sensitive files from being shared with external guests?
 A) Asking users to check guests' identities manually
 = Manual checks are inconsistent.
-B) Disabling the platform's encryption
-= That weakens security and has nothing to do with sharing rules.
+B) Encrypting files at rest in the platform's storage
+= Encryption at rest protects stored media, but a user can still share a file with a guest, who then sees it decrypted.
 C) Requiring longer passwords for the platform
 = Password length does not control what is shared.
 D)* Platform-enforced sharing policies, labels and DLP
 = Correct. External-sharing policy enforced by the platform, informed by sensitivity labels and DLP, prevents sensitive content leaving through collaboration channels.
 >> Collaboration tools need governance: guest controls, sensitivity labels, DLP and retention policies.
+
+## D4-059 | 4.3 | 3
+Q: Remote staff use a full-tunnel VPN. The CFO wants split tunneling so video calls go straight to the internet and stop dropping. What is the MAIN security trade-off to raise?
+A) Split tunneling stops the VPN from encrypting corporate traffic
+= Corporate traffic stays inside the encrypted tunnel; only the excluded traffic goes direct.
+B)* Direct traffic skips corporate inspection and logging
+= Correct. Whatever goes direct no longer passes the company's filtering and monitoring, so the endpoint's own controls must carry that load.
+C) Video calls become unencrypted once they leave the tunnel
+= Video services encrypt their own traffic; the loss is visibility, not encryption.
+D) Split tunneling requires users to have administrator rights
+= It is a client policy setting and needs no user privileges.
+>> Split tunneling trades visibility for performance: direct traffic skips central inspection, so endpoint controls must compensate.
+
+## D4-060 | 4.2 | 3
+Q: A hospital's infusion pumps cannot run endpoint agents and must stay connected to a drug library server. Which control reduces their exposure MOST?
+A) Install antivirus on the drug library server
+= Protecting the server helps, but the pumps stay reachable from the rest of the network.
+B)* Put the pumps in their own segment that allows only required flows
+= Correct. Segmentation with allow-listed flows limits who can reach devices that cannot protect themselves.
+C) Disconnect the pumps and load drug libraries manually by USB
+= The pumps must stay connected, and manual USB updates add their own clinical and malware risks.
+D) Require the pumps to authenticate with 802.1X before joining
+= Many embedded devices cannot do 802.1X, and admission alone does not limit what can reach an admitted device.
+>> Devices that cannot run agents get compensating network controls: segmentation and allow-listed flows.

@@ -1,5 +1,5 @@
 // Tests for src/engine.js: the review scheduler, the smart session, the
-// adaptive mock exam and the study plan.
+// adaptive mock exam, the study plan and the Arcade.
 //
 //   node cissp-web/engine.test.mjs
 import { readFileSync } from "node:fs";
@@ -196,6 +196,83 @@ test("a weak self-rating moves a domain earlier in the plan", () => {
   const base = Engine.domainPriority(stats, {}).sort((a, b) => b.p - a.p).map((p) => p.n);
   const rated = Engine.domainPriority(stats, { 8: 1 }).sort((a, b) => b.p - a.p).map((p) => p.n);
   assert.ok(rated.indexOf(8) < base.indexOf(8));
+});
+
+// ---------------------------------------------------------------- Arcade
+const fullBank = questions.map((q) => ({ id: q.id, d: q.d, obj: q.obj, diff: q.diff }));
+
+test("the seeded generator repeats for a seed and differs between seeds", () => {
+  const a = Engine.seeded("x"), b = Engine.seeded("x"), c = Engine.seeded("y");
+  const sa = [a(), a(), a()], sb = [b(), b(), b()], sc = [c(), c(), c()];
+  assert.deepEqual(sa, sb);
+  assert.notDeepEqual(sa, sc);
+  assert.ok(sa.every((x) => x >= 0 && x < 1));
+});
+
+test("the daily five is the same all day, spans five domains and skips easy questions", () => {
+  const one = Engine.dailyPick(fullBank, "2026-11-02", DOMAINS).map((q) => q.id);
+  const again = Engine.dailyPick(fullBank, "2026-11-02", DOMAINS).map((q) => q.id);
+  const next = Engine.dailyPick(fullBank, "2026-11-03", DOMAINS).map((q) => q.id);
+  assert.deepEqual(Array.from(one), Array.from(again));
+  assert.notDeepEqual(Array.from(one), Array.from(next));
+  const picked = Engine.dailyPick(fullBank, "2026-11-02", DOMAINS);
+  assert.equal(picked.length, 5);
+  assert.equal(new Set(picked.map((q) => q.d)).size, 5);
+  assert.ok(picked.every((q) => q.diff >= 2));
+});
+
+test("survival ramps difficulty and never repeats a question", () => {
+  const rnd = rng(7);
+  const used = [];
+  for (let score = 0; score < 40; score++) {
+    const q = Engine.survivalPick(fullBank, {}, used, score, rnd);
+    assert.ok(!used.includes(q.id));
+    assert.ok(Array.from(Engine.survivalTiers(score)).includes(q.diff), `score ${score} drew difficulty ${q.diff}`);
+    used.push(q.id);
+  }
+  assert.equal(Engine.survivalPick(fullBank.slice(0, 2), {}, fullBank.slice(0, 2).map((q) => q.id), 0), null);
+});
+
+test("an honest bet is the best bet", () => {
+  const ev = (bet, p) => p * Engine.betPoints(bet, true) + (1 - p) * Engine.betPoints(bet, false);
+  const best = (p) => [1, 2, 3].sort((x, y) => ev(y, p) - ev(x, p))[0];
+  assert.equal(best(0.3), 1);
+  assert.equal(best(0.7), 2);
+  assert.equal(best(0.95), 3);
+});
+
+test("calibration flags overconfidence and underconfidence", () => {
+  assert.match(Engine.calibration({ 3: [20, 12] }).verdict, /Overconfident/);
+  assert.match(Engine.calibration({ 1: [10, 8], 3: [20, 19] }).verdict, /Underconfident/);
+  assert.match(Engine.calibration({ 1: [10, 3], 3: [20, 18] }).verdict, /Well calibrated/);
+  assert.match(Engine.calibration({}).verdict, /at least ten/);
+});
+
+test("levels need 100 more points each, with titles along the way", () => {
+  assert.equal(Engine.levelFor(0).level, 1);
+  assert.equal(Engine.levelFor(99).level, 1);
+  assert.equal(Engine.levelFor(100).level, 2);
+  assert.equal(Engine.levelFor(300).level, 3);
+  assert.equal(Engine.levelFor(300).title, "Analyst");
+  const l = Engine.levelFor(650);
+  assert.equal(l.level, 4);
+  assert.equal(l.into, 50);
+  assert.equal(l.span, 400);
+  assert.equal(Engine.xpFor(true, 3), 20);
+  assert.equal(Engine.xpFor(false, 3), 2);
+});
+
+test("merging game records keeps the larger figures", () => {
+  const a = { xp: 500, best: { survival: 7 }, calib: { 3: [10, 9] }, daily: { "2026-11-02": [3, 5, "10101"] }, badges: { first: 1 } };
+  const b = { xp: 420, best: { survival: 9, pace: 800 }, calib: { 3: [12, 10] }, daily: { "2026-11-02": [4, 5, "11101"] }, badges: { streak7: 2 } };
+  const m = Engine.mergeGame(a, b);
+  assert.equal(m.xp, 500);
+  assert.equal(m.best.survival, 9);
+  assert.equal(m.best.pace, 800);
+  assert.deepEqual(Array.from(m.calib[3]), [12, 10]);
+  assert.equal(m.daily["2026-11-02"][2], "11101");
+  assert.deepEqual(Object.keys(m.badges).sort(), ["first", "streak7"]);
+  assert.equal(Engine.orderScore(["a", "c", "b"], ["a", "b", "c"]), 1);
 });
 
 let failed = 0;

@@ -61,7 +61,7 @@ D) Neither, because the hypervisor isolates the guest
 >> Shared responsibility: the further up the stack you consume (IaaS → PaaS → SaaS), the less you manage yourself.
 
 ## D3-006 | 3.1 | 2
-Q: An organization wants to combine SD-WAN networking with cloud-delivered security services such as a secure web gateway, CASB, zero trust network access and firewall as a service. What is this architecture called?
+Q: An organization wants to combine SD-WAN networking with cloud-delivered protections such as web filtering, CASB, zero trust network access and firewall as a service. What is this architecture called?
 A) Software-defined perimeter
 = SDP is an approach to zero trust access, one component that SASE can include.
 B) Network functions virtualization
@@ -128,7 +128,7 @@ B)* Writing down could leak Secret information to a lower level
 = Correct. The star property, "no write down", prevents information flowing from a higher classification to a lower one.
 C) The share has not been accredited
 = Accreditation is not part of the model's rules.
-D) Users may never write files at any level other than their own
+D) The model restricts writes to the subject's own level
 = That is the strong star property, which is stricter than what standard Bell-LaPadula requires.
 >> The star property stops leaks: a subject cannot write to a lower classification.
 
@@ -266,8 +266,8 @@ D) The CPU cache
 
 ## D3-023 | 3.4 | 2
 Q: What prevents one process from reading or altering another process's memory?
-A) Hyperthreading
-= Hyperthreading improves CPU utilization and has nothing to do with isolation.
+A) Address space layout randomization (ASLR)
+= ASLR makes memory addresses hard to predict, which hinders exploits, but the operating system's memory protection is what keeps processes apart.
 B) Disk encryption
 = Disk encryption protects data at rest, not memory at run time.
 C)* Memory protection that isolates each process
@@ -350,11 +350,11 @@ D) Slower disk performance from shared storage
 
 ## D3-030 | 3.5 | 2
 Q: What is the key security difference between containers and virtual machines?
-A) Containers cannot use encryption
-= Containers can use encryption like any other workload.
-B) Virtual machines cannot run in the cloud
-= VMs are the basis of most cloud IaaS.
-C) Containers are always more secure because they are smaller
+A) Containers are harder to patch than virtual machines
+= Container images are usually rebuilt rather than patched in place, which is often easier. Isolation is the key difference.
+B) Each virtual machine needs its own physical host
+= Many VMs share one physical host; that is what the hypervisor is for.
+C) Containers are more secure because their images are smaller
 = Smaller images help, but the shared kernel weakens isolation.
 D)* Containers share the host operating system kernel
 = Correct. A kernel flaw or misconfiguration can let one container affect the host or others, so isolation is weaker than between VMs.
@@ -520,8 +520,8 @@ D) To shorten stored hashes
 Q: Why does TLS use asymmetric cryptography to establish a session key and then symmetric encryption for the data?
 A)* Symmetric is faster; asymmetric solves key exchange
 = Correct. This hybrid approach combines asymmetric key establishment with fast symmetric bulk encryption.
-B) Asymmetric algorithms are unable to encrypt bulk data at all
-= It can, but it is slow and limited in message size.
+B) Asymmetric ciphers do not provide confidentiality
+= They do, but they are slow and limited in message size, so they protect keys rather than bulk data.
 C) Symmetric encryption provides nonrepudiation
 = Symmetric encryption does not provide nonrepudiation.
 D) Regulations require two different algorithm types in TLS
@@ -530,13 +530,13 @@ D) Regulations require two different algorithm types in TLS
 
 ## D3-045 | 3.6 | 3
 Q: A web server attaches a recent, CA-signed certificate status response to its TLS handshake. What does this OCSP stapling achieve?
-A) It lets the server skip renewing its certificate each year
-= Stapling has nothing to do with renewal.
-B) It removes the need for any certificate revocation
-= Revocation still exists; stapling is a better way to deliver its status.
-C) It encrypts the certificate so attackers cannot read it
-= Certificates are public and are not encrypted by stapling.
-D)* Clients learn revocation status without querying the CA
+A) It lets clients skip validating the certificate chain
+= Clients still validate the chain to a trusted root; stapling only supplies fresh revocation status.
+B) It replaces revocation lists with shorter-lived certificates
+= Stapling delivers revocation status; it does not change how long certificates last.
+C) It hides the certificate from passive observers
+= Certificates are public; stapling does not conceal them.
+D)* Clients get fresh revocation data without contacting the CA
 = Correct. The server fetches and caches the signed OCSP response, so clients skip their own lookup: faster, and the CA does not learn which sites they visit.
 >> Revocation checking: CRLs (periodic lists), OCSP (online queries), OCSP stapling (the server supplies the signed response).
 
@@ -558,7 +558,7 @@ A) Keys automatically stop working after about a year
 = Keys do not expire on their own.
 B) Longer keys are slower, so shorter use periods save time
 = Cryptoperiod is about time in use, not key length.
-C) Regulations ban reusing any key for more than one message
+C) Regulations require a new key for each message
 = Regulations may set limits, but the reason is risk.
 D)* To limit exposure if the key is compromised
 = Correct. Rotating keys bounds how much data a compromised key exposes and how much ciphertext is available for cryptanalysis.
@@ -596,13 +596,13 @@ B) Shorter certificate lifetimes for all public web servers
 = Short-lived certificates do not protect recorded traffic.
 C)* Post-quantum or hybrid key establishment, such as ML-KEM
 = Correct. "Harvest now, decrypt later" targets key exchange, so moving it to ML-KEM (FIPS 203) or a hybrid scheme comes first; so long-lived secrets need quantum-resistant key establishment first.
-D) Disabling TLS session resumption to force fresh handshakes
-= Session resumption is unrelated to quantum risk.
+D) Rotating symmetric session keys more often
+= Frequent rekeying limits how much traffic one key protects, but if the key exchange is broken later, every recorded session key can be recovered.
 >> Harvest now, decrypt later: migrate key establishment for long-lived data first. NIST FIPS 203 (ML-KEM), 204 (ML-DSA), 205 (SLH-DSA).
 
 ## D3-051 | 3.6 | 3
 Q: What does quantum key distribution (QKD) provide?
-A) Encryption that cannot be broken by any computer
+A) Unbreakable encryption of the data itself
 = QKD distributes keys; the encryption algorithm used with those keys is separate.
 B) Post-quantum digital signatures for software updates
 = QKD provides no signatures and still needs separate authentication.
@@ -649,7 +649,7 @@ D) Brute force
 >> Cryptanalysis attacks differ by what the attacker has: ciphertext only, known plaintext, chosen plaintext, chosen ciphertext.
 
 ## D3-055 | 3.7 | 2
-Q: An attacker can submit chosen encrypted messages to a server and observe the decrypted results or error messages. What type of attack does this enable?
+Q: An attacker can submit encrypted messages of their own making to a server and observe the decrypted results or error messages. What type of attack does this enable?
 A) Known plaintext
 = In known plaintext, the attacker has pairs but cannot submit their own.
 B) Frequency analysis
@@ -690,8 +690,8 @@ A) Reset the passwords of all user accounts
 = User password resets do not invalidate TGTs signed with the KRBTGT key.
 B) Reboot all domain controllers
 = A reboot does not change the key used to sign tickets.
-C) Disable NTLM across the domain
-= This is a Kerberos attack; NTLM is unrelated.
+C) Revoke and reissue the domain controllers' certificates
+= Golden tickets are encrypted and signed with the KRBTGT key, not with certificates, so reissuing certificates leaves them valid.
 D)* Reset the KRBTGT account password twice
 = Correct. A golden ticket is signed with the KRBTGT key. Resetting it twice, allowing replication between resets, removes both the current and previous keys.
 >> Golden ticket: forged TGTs using the KRBTGT hash. Remediate by resetting KRBTGT twice and finding how the attacker got domain admin.
@@ -700,8 +700,8 @@ D)* Reset the KRBTGT account password twice
 Q: Why does a birthday attack against a hash function succeed much faster than trying to match one specific hash?
 A) Hash functions are reversible with enough computing power
 = Hash functions are one-way; the birthday attack does not reverse them.
-B) It only works on salted hashes
-= Salting is irrelevant to the birthday bound.
+B) It uses precomputed rainbow tables of likely inputs
+= Rainbow tables speed up reversing unsalted password hashes; a birthday attack instead looks for any two inputs that collide.
 C) It exploits weak random number generators
 = The birthday paradox is about probability, not weak randomness.
 D)* Any collision will do, needing roughly square-root effort
@@ -818,10 +818,10 @@ D) A power distribution unit
 
 ## D3-069 | 3.9 | 2
 Q: For convenience, the evidence storage room is open to every analyst in the security operations center. What is the main concern?
-A) The room may run out of space
-= Capacity is not the security concern.
-B) Analysts may not enjoy the extra responsibility
-= Not a security concern.
+A) Analysts may need extra training in evidence handling
+= Training helps, but even trained staff with open access leave no reliable record of who handled each item.
+B) Evidence will be harder to find without a catalog
+= A catalog helps retrieval; the security problem is that open access weakens proof of the evidence's integrity.
 C)* Broad access undermines the evidence's chain of custody
 = Correct. Evidence storage must be restricted and access-logged so the integrity of every item can be demonstrated in court.
 D) The room's fire suppression may damage evidence
@@ -846,7 +846,7 @@ A) A manual override that prevents discharge entirely
 = Disabling suppression protects nobody from the fire.
 B) Fast discharge within one second of detection
 = Instant discharge leaves no time to evacuate.
-C)* A pre-discharge alarm and delay so people can leave
+C)* A pre-discharge alarm and delay to allow evacuation
 = Correct. Pre-discharge alarms and delays let people evacuate before the agent fills the room.
 D) A sign warning that the room is protected by gas
 = Signage helps, but an alarm and delay are what give people time to get out.
@@ -866,7 +866,7 @@ D)* Validation
 
 ## D3-073 | 3.10 | 1
 Q: When should security requirements FIRST be identified for a new information system?
-A)* When stakeholder needs and requirements are defined
+A)* At the concept stage, when stakeholder needs are defined
 = Correct. Security requirements belong with the other requirements, before architecture and design begin.
 B) During integration testing
 = By then the design is fixed, and changes are expensive.
@@ -887,3 +887,27 @@ C) Deleting all user accounts first
 D)* Archiving required data and sanitizing the media
 = Correct. Retirement must preserve what must be kept and destroy what must not leave.
 >> Disposal: retain what is required, sanitize or destroy media, remove access, and update the inventory.
+
+## D3-075 | 3.1 | 3
+Q: An architect requires the payments service to accept calls only from the order service, verify each call's signed token, and validate every input even though the order service already validates it. A developer calls the extra checks redundant. Which principle justifies them?
+A) Keep it simple, since fewer checks are easier to maintain
+= Simplicity is a sound goal, but here it argues against the extra checks rather than for them.
+B)* Defense in depth with zero trust between services
+= Correct. Each service verifies what it receives instead of relying on another component's checks, so one compromised or buggy service does not compromise the next.
+C) Separation of duties between the development teams
+= Separation of duties splits tasks among people; the question is how services treat each other's requests.
+D) Fail securely, so errors in the order service stop payments
+= Failing securely governs behavior when something breaks, not why each layer repeats validation.
+>> Do not trust checks performed elsewhere: each component verifies its own inputs (defense in depth, zero trust).
+
+## D3-076 | 3.6 | 3
+Q: A company encrypts files in the cloud and must show regulators that the cloud provider can never decrypt them, even if a court orders the provider to. Which key arrangement meets this?
+A) Provider-managed keys with automatic annual rotation
+= Rotation limits how much data each key protects, but the provider holds every key and can be compelled to use them.
+B) Customer-managed keys stored in the provider's KMS
+= The customer controls the policy, but the key material lives in the provider's service, which can be compelled.
+C)* Keys kept in the customer's own HSM, outside the cloud
+= Correct. If the key material never reaches the provider (hold your own key), the provider cannot decrypt, whatever it is ordered to do.
+D) Server-side encryption with keys stored apart from the data
+= Separating keys from data helps against storage theft, but the provider still controls both.
+>> Only keys that never leave the customer's control (hold your own key, external HSM) stop a provider from decrypting.

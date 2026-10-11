@@ -2,7 +2,7 @@
 
 ## D6-001 | 6.1 | 2
 Q: A company's customers want assurance about its security controls from someone other than the company's own staff. Which option gives them the MOST independent view?
-A)* An external audit by an independent firm
+A)* An audit by an outside audit firm
 = Correct. External auditors are outside the organization's control and have no stake in the result, so customers and regulators can rely on their findings.
 B) An internal audit by the company's own audit team
 = Internal auditors can be independent of the areas they audit, but they are still the company's employees.
@@ -62,9 +62,9 @@ D) Ask the provider to send its internal vulnerability scan results each week
 
 ## D6-006 | 6.1 | 2
 Q: Which statement BEST distinguishes an audit from an assessment?
-A) An audit is always performed by the organization's internal security team
+A) An audit is performed by the organization's own security team
 = Audits can be internal or external.
-B) An assessment always results in a certification
+B) An assessment ends with a formal certification
 = Assessments are usually advisory and lead to recommendations.
 C)* Audits test against criteria; assessments evaluate and advise
 = Correct. An audit checks compliance against defined criteria and is formally reported; an assessment evaluates risk and recommends improvements.
@@ -88,10 +88,10 @@ D)* Updating the scope as systems and threats change
 Q: What is the main difference between a vulnerability assessment and a penetration test?
 A)* Pen tests exploit weaknesses; assessments find them
 = Correct. Exploitation shows real impact and attack paths; vulnerability assessments find and rank potential weaknesses.
-B) Vulnerability assessments are always performed manually
+B) Vulnerability assessments are performed by hand
 = Most vulnerability assessments rely heavily on automated scanners.
-C) Penetration tests never require authorization
-= Penetration tests absolutely require authorization.
+C) Penetration tests need less authorization than scans
+= Penetration tests need at least as much authorization, usually more, because they exploit systems.
 D) A vulnerability assessment is more intrusive
 = Penetration testing is the more intrusive of the two.
 >> Vulnerability assessment: find and prioritize. Penetration test: exploit to demonstrate impact.
@@ -104,7 +104,7 @@ B)* The scanner can check software and settings directly
 = Correct. Logging in lets the scanner read configuration and versions instead of guessing from the outside, reducing false positives and negatives.
 C) They do not require written authorization from owners
 = All scans require authorization.
-D) They only look for zero-day vulnerabilities
+D) They focus on zero-day vulnerabilities
 = Scanners look mostly for known vulnerabilities.
 >> Credentialed scans see inside the host; uncredentialed scans show the attacker's external view. Both are useful.
 
@@ -217,7 +217,7 @@ D) Loop coverage
 >> Coverage analysis: statement, branch, condition, function and loop coverage measure how thoroughly tests exercise code.
 
 ## D6-019 | 6.2 | 2
-Q: Testers send malformed and unexpected requests directly to an application's REST API, bypassing the web interface. What type of testing is this?
+Q: Testers send malformed and unexpected requests directly to an application's REST API, bypassing the web front end. What type of testing is this?
 A)* Interface testing
 = Correct. Interface testing checks how components behave at their boundaries: user interfaces, network interfaces and APIs.
 B) User acceptance testing
@@ -229,7 +229,7 @@ D) Code review
 >> Test every interface, especially APIs, which often lack the validation the user interface performs.
 
 ## D6-020 | 6.2 | 2
-Q: A company runs a platform that continuously simulates known attack techniques against its environment to check whether its controls detect and block them. What is this?
+Q: A company runs a platform that continuously runs safe versions of known adversary techniques against its environment to check whether its controls detect and block them. What is this?
 A) A tabletop exercise for responders
 = Tabletops are discussions, not technical simulations.
 B) A configuration compliance check
@@ -241,7 +241,7 @@ D) Fuzz testing
 >> Breach and attack simulation continuously validates whether controls detect and stop real techniques.
 
 ## D6-021 | 6.2 | 2
-Q: Which code review method is the most formal, with defined roles, preparation, an inspection meeting, rework and follow-up?
+Q: Which code review method is the most formal, with defined roles, preparation, a moderated review meeting, rework and follow-up?
 A) Pair programming
 = Pairing reviews code informally as it is written.
 B) Over-the-shoulder review
@@ -260,7 +260,7 @@ B) They replace the need for vulnerability scanning
 = Logs and scans answer different questions.
 C) They prevent attacks from occurring
 = Log review is detective, not preventive.
-D) They are required only for compliance and have no security value
+D) They mainly satisfy compliance requirements
 = Logs are a primary source of security evidence.
 >> Log reviews are a detective test of controls; they need synchronized time and protected logs to be trustworthy.
 
@@ -320,8 +320,8 @@ B)* Evidence from regular test restores
 = Correct. Only restore tests prove that backups are complete and usable.
 C) Storage capacity reports
 = Capacity data does not show whether backups can be restored.
-D) The backup software's license status
-= Licensing is unrelated to recoverability.
+D) Checksums of each backup file at write time
+= Checksums show a file was stored as written, not that systems can be rebuilt from it. Only a test restore shows that.
 >> Backup verification data comes from test restores, not just job success messages.
 
 ## D6-028 | 6.3 | 2
@@ -364,8 +364,8 @@ D) The length of the training videos
 Q: After a disaster recovery test, which data is MOST important to collect and report?
 A) The number of people who attended the test
 = Attendance does not show whether recovery works.
-B) The cost of catering for the test day
-= Not relevant to recoverability.
+B) Whether every participant followed the script exactly
+= Adherence matters less than outcome: management needs to know whether recovery met its time and data-loss targets.
 C)* Measured recovery against RTO and RPO
 = Correct. Comparing actual recovery times and data loss to the objectives shows whether the plan can meet business requirements.
 D) The names of the vendors involved
@@ -412,12 +412,12 @@ D)* A time-limited, approved risk exception
 Q: A researcher finds a vulnerability in a vendor's product. Which approach follows coordinated (responsible) disclosure?
 A) Publish full details immediately so users can protect themselves
 = Immediate full disclosure exposes users before a fix exists.
-B)* Report it privately and agree a disclosure date
+B)* Report it privately and agree a publication date
 = Correct. Reporting privately to the vendor with an agreed timeline gives it time to fix the flaw while committing to eventual publication.
 C) Sell the details to the highest bidder
 = Selling vulnerabilities to unknown buyers is unethical and may be illegal.
-D) Never tell anyone, to avoid legal risk
-= Silence leaves users exposed indefinitely.
+D) Keep it confidential to avoid legal risk
+= Permanent silence leaves users exposed indefinitely.
 >> Ethical disclosure: private report, reasonable deadline, coordinated publication.
 
 ## D6-036 | 6.4 | 2
@@ -520,8 +520,8 @@ D) It only audits areas management asks it to
 Q: A company outsources payroll to a provider. Which contract clause BEST supports the company's ability to verify the provider's security?
 A) A clause requiring the provider to follow industry best practices
 = Too vague to verify or enforce.
-B) A clause promising the provider will never be breached
-= No provider can guarantee that.
+B) A warranty that the provider's systems are breach-proof
+= No provider can guarantee that, and a warranty gives you no way to verify controls.
 C) A clause requiring monthly invoices
 = Billing terms do not provide assurance.
 D)* A right-to-audit or attestation clause
@@ -554,12 +554,48 @@ D) The vendor who supplied the system
 
 ## D6-047 | 6.5 | 2
 Q: Internal and external audits are both planned this year. Where do they differ MOST?
-A) Only internal audits can examine security controls
-= Both can examine security controls.
-B) External audits never involve any testing of controls
+A) Internal audits examine controls; external ones examine finances
+= Both internal and external audits can examine security controls.
+B) External audits review documents but do not test controls
 = External audits test controls extensively.
-C) Internal audits always result in certification
+C) Internal audits result in certification
 = Certification comes from external assessments against a standard.
 D)* Who performs them, and their independence
 = Correct. Internal auditors are employees; external auditors are hired from outside and provide greater independence.
 >> Audit types differ by who performs them and by their independence: internal, external, third-party.
+
+## D6-048 | 6.5 | 3
+Q: An external auditor finds that change management was bypassed for 12 of 40 sampled production changes. The IT manager says each was an urgent fix that worked. How should the finding be handled?
+A) Close it, because the changes succeeded without incidents
+= Success does not show the control worked; unreviewed, unapproved changes are the risk the control exists to prevent.
+B) Draw a new sample until compliant changes outweigh the bypassed ones
+= Re-sampling to change the result undermines the audit's integrity.
+C)* Report it, and have management define an emergency change path
+= Correct. A 30% bypass rate is a control failure to report; the remedy is a governed emergency process with review after the fact, not quiet acceptance.
+D) Discipline the engineers who made the changes
+= Blame does not fix the process that allowed or encouraged the bypass.
+>> Report control failures even when outcomes were good; the fix is a governed process such as emergency change, not blame.
+
+## D6-049 | 6.2 | 3
+Q: A penetration test of a web application finds no high-risk issues. A week later, a researcher reports an authorization flaw that lets one customer see another customer's invoices. What MOST likely explains the miss?
+A) Scanners, not human testers, should have been used for such flaws
+= Scanners are weak at authorization logic; finding it needs tests designed around who should see what.
+B)* The testers had only one customer login
+= Correct. Cross-customer flaws only show up when testers hold accounts for two customers and request one's data with the other's session.
+C) The researcher's probing introduced the flaw
+= Testing finds flaws in the code; it does not create them.
+D) A black-box test would have found the flaw
+= A black-box test with no accounts would see even less; authorization flaws need authenticated tests across roles and tenants.
+>> Authorization flaws need testers holding multiple roles and tenants; scope and credentials decide what a test can find.
+
+## D6-050 | 6.3 | 3
+Q: The board wants one measure showing whether the vulnerability management program is improving over time. Which metric serves this BEST?
+A) The total number of vulnerabilities the scanners find each month
+= Raw counts rise when scanning coverage improves, so they can mislead in either direction.
+B)* The on-time fix rate for critical findings
+= Correct. Remediation against an agreed deadline measures how well the program performs, whatever the number of findings.
+C) The number of scans run each month
+= Activity is not outcome; more scans do not mean less risk.
+D) The number of security tools deployed
+= Tool count says nothing about results.
+>> Good security metrics measure outcomes against targets, such as fixes within the deadline, not raw activity or counts.

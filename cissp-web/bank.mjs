@@ -244,3 +244,44 @@ export function loadBank() {
   errors.push(...validate(all));
   return { questions: all, errors };
 }
+
+// The Arcade's ordering and matching drills, in bank/drills.json. Each
+// sequence lists its steps in the correct order; each match set lists
+// [term, definition] pairs. The page shuffles both.
+export function loadDrills() {
+  const drills = JSON.parse(readFileSync(here("./bank/drills.json"), "utf8"));
+  return { drills, errors: validateDrills(drills) };
+}
+
+export function validateDrills(drills) {
+  const errors = [];
+  const ids = new Set();
+  const objectiveOk = (obj) => {
+    const d = DOMAINS[Number(String(obj).split(".")[0]) - 1];
+    return !!(d && d.objectives[obj]);
+  };
+  const common = (x, kind) => {
+    const tag = `drills ${kind} ${x.id || "(no id)"}`;
+    if (!x.id || ids.has(x.id)) errors.push(`${tag} missing or duplicate id`);
+    ids.add(x.id);
+    if (!x.title) errors.push(`${tag} has no title`);
+    if (!objectiveOk(x.obj)) errors.push(`${tag} objective ${x.obj} is not in the outline`);
+    return tag;
+  };
+  for (const s of drills.sequences || []) {
+    const tag = common(s, "sequence");
+    if (!s.prompt || !s.note) errors.push(`${tag} needs a prompt and a note`);
+    if (!Array.isArray(s.steps) || s.steps.length < 3 || s.steps.length > 8) errors.push(`${tag} needs 3 to 8 steps`);
+    else if (new Set(s.steps.map((x) => x.toLowerCase())).size !== s.steps.length) errors.push(`${tag} repeats a step`);
+  }
+  for (const m of drills.matches || []) {
+    const tag = common(m, "match");
+    if (!Array.isArray(m.pairs) || m.pairs.length < 4 || m.pairs.length > 6) { errors.push(`${tag} needs 4 to 6 pairs`); continue; }
+    if (m.pairs.some((p) => !Array.isArray(p) || p.length !== 2 || !p[0] || !p[1])) errors.push(`${tag} has a malformed pair`);
+    for (const side of [0, 1]) {
+      if (new Set(m.pairs.map((p) => String(p[side]).toLowerCase())).size !== m.pairs.length) errors.push(`${tag} repeats a ${side ? "definition" : "term"}`);
+    }
+  }
+  if (!(drills.sequences || []).length || !(drills.matches || []).length) errors.push("drills.json needs sequences and matches");
+  return errors;
+}

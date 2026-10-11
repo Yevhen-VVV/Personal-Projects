@@ -1,0 +1,293 @@
+{
+  "sequences": [
+    {
+      "id": "seq-incident", "obj": "7.6", "title": "Incident management steps",
+      "prompt": "Put the incident management steps in the order the ISC2 study guide teaches.",
+      "steps": ["Detection", "Response", "Mitigation", "Reporting", "Recovery", "Remediation", "Lessons learned"],
+      "note": "Mitigation contains the incident. Reporting starts early and continues; remediation fixes the root cause after systems are recovered, and lessons learned closes the loop."
+    },
+    {
+      "id": "seq-bcp", "obj": "1.7", "title": "Business continuity planning",
+      "prompt": "Order the phases of the business continuity planning process.",
+      "steps": ["Project scope and planning", "Business impact analysis", "Continuity planning", "Approval and implementation"],
+      "note": "Scope and sponsorship first; the BIA sets priorities; strategies follow; senior management approves before roll-out."
+    },
+    {
+      "id": "seq-bia", "obj": "1.7", "title": "Business impact analysis",
+      "prompt": "Order the steps of a business impact analysis.",
+      "steps": ["Identify priorities", "Risk identification", "Likelihood assessment", "Impact analysis", "Resource prioritization"],
+      "note": "What matters most comes first, then what threatens it, how likely and how damaging, and finally where to spend."
+    },
+    {
+      "id": "seq-rmf", "obj": "1.9", "title": "NIST Risk Management Framework",
+      "prompt": "Order the steps of the NIST RMF (SP 800-37 Rev. 2).",
+      "steps": ["Prepare", "Categorize", "Select", "Implement", "Assess", "Authorize", "Monitor"],
+      "note": "Prepare was added in Rev. 2. A system is authorized only after its controls are assessed, then monitored continuously."
+    },
+    {
+      "id": "seq-sdlc", "obj": "8.1", "title": "System development life cycle",
+      "prompt": "Order the phases of the system development life cycle.",
+      "steps": ["Initiation", "Development or acquisition", "Implementation and assessment", "Operations and maintenance", "Disposal"],
+      "note": "Security requirements are set at initiation and carried through every phase, including secure disposal."
+    },
+    {
+      "id": "seq-forensics", "obj": "7.1", "title": "Forensic process",
+      "prompt": "Order the phases of the forensic process in NIST SP 800-86.",
+      "steps": ["Collection", "Examination", "Analysis", "Reporting"],
+      "note": "Collect while preserving integrity, examine to extract relevant data, analyze it to draw conclusions, then report."
+    },
+    {
+      "id": "seq-volatility", "obj": "7.1", "title": "Order of volatility",
+      "prompt": "Order evidence sources from most volatile (collect first) to least volatile (RFC 3227).",
+      "steps": ["CPU registers and cache", "Memory: routing and ARP tables, process list", "Temporary file systems", "Disk", "Remote logging and monitoring data", "Archival media"],
+      "note": "Collect what disappears soonest first. Powering a system off loses everything above the disk."
+    },
+    {
+      "id": "seq-drtests", "obj": "7.12", "title": "Disaster recovery tests",
+      "prompt": "Order disaster recovery test types from least to most disruptive.",
+      "steps": ["Read-through (checklist)", "Structured walk-through (tabletop)", "Simulation", "Parallel test", "Full interruption"],
+      "note": "A parallel test runs the recovery site alongside production; only a full interruption actually shuts production down."
+    },
+    {
+      "id": "seq-change", "obj": "7.9", "title": "Change management",
+      "prompt": "Order the steps of the change management process.",
+      "steps": ["Request the change", "Review the change", "Approve or reject the change", "Test the change", "Schedule and implement the change", "Document the change"],
+      "note": "Even emergency changes go through review and documentation, just after the fact."
+    },
+    {
+      "id": "seq-kerberos", "obj": "5.6", "title": "Kerberos logon",
+      "prompt": "Order what happens when a Kerberos user reaches an application server.",
+      "steps": ["The client authenticates to the authentication service", "The authentication service issues a ticket-granting ticket", "The client presents the TGT to the ticket-granting service", "The ticket-granting service issues a service ticket", "The client presents the service ticket to the application server"],
+      "note": "The password never crosses the network. The TGT gets service tickets; the service ticket gets access."
+    },
+    {
+      "id": "seq-osi", "obj": "4.1", "title": "OSI model",
+      "prompt": "Order the OSI layers from layer 1 to layer 7.",
+      "steps": ["Physical", "Data link", "Network", "Transport", "Session", "Presentation", "Application"],
+      "note": "Please Do Not Throw Sausage Pizza Away."
+    },
+    {
+      "id": "seq-pentest", "obj": "6.2", "title": "Penetration test",
+      "prompt": "Order the phases of a penetration test.",
+      "steps": ["Planning", "Information gathering and discovery", "Vulnerability scanning", "Exploitation", "Reporting"],
+      "note": "Planning includes written authorization and rules of engagement; nothing starts without them."
+    },
+    {
+      "id": "seq-datalife", "obj": "2.4", "title": "Data lifecycle",
+      "prompt": "Order the phases of the data lifecycle (Cloud Security Alliance model).",
+      "steps": ["Create", "Store", "Use", "Share", "Archive", "Destroy"],
+      "note": "Classification happens at creation; destruction must fit the media and the data's sensitivity."
+    },
+    {
+      "id": "seq-cmm", "obj": "8.1", "title": "Capability Maturity Model",
+      "prompt": "Order the Software Capability Maturity Model levels from 1 to 5.",
+      "steps": ["Initial", "Repeatable", "Defined", "Managed", "Optimizing"],
+      "note": "Repeatable brings basic project management; Managed adds quantitative measures; Optimizing improves continuously."
+    },
+    {
+      "id": "seq-ideal", "obj": "8.1", "title": "IDEAL model",
+      "prompt": "Order the phases of the IDEAL software process improvement model.",
+      "steps": ["Initiating", "Diagnosing", "Establishing", "Acting", "Learning"],
+      "note": "The initials spell IDEAL."
+    },
+    {
+      "id": "seq-killchain", "obj": "7.2", "title": "Cyber kill chain",
+      "prompt": "Order the stages of the Lockheed Martin cyber kill chain.",
+      "steps": ["Reconnaissance", "Weaponization", "Delivery", "Exploitation", "Installation", "Command and control", "Actions on objectives"],
+      "note": "Defenders aim to break the chain as early as possible; the earlier the stage, the cheaper the stop."
+    },
+    {
+      "id": "seq-pasta", "obj": "1.10", "title": "PASTA threat modeling",
+      "prompt": "Order the seven stages of PASTA.",
+      "steps": ["Definition of objectives", "Definition of technical scope", "Application decomposition and analysis", "Threat analysis", "Weakness and vulnerability analysis", "Attack modeling and simulation", "Risk analysis and management"],
+      "note": "PASTA is risk-centric: it starts from business objectives and ends with risk decisions."
+    },
+    {
+      "id": "seq-govclass", "obj": "2.1", "title": "Government classification",
+      "prompt": "Order U.S. government classification levels from lowest to highest.",
+      "steps": ["Unclassified", "Confidential", "Secret", "Top Secret"],
+      "note": "Unauthorized disclosure causes damage (Confidential), serious damage (Secret) or exceptionally grave damage (Top Secret) to national security."
+    }
+  ],
+  "matches": [
+    {
+      "id": "match-models", "obj": "3.2", "title": "Security models",
+      "pairs": [
+        ["Bell-LaPadula", "Confidentiality: no read up, no write down"],
+        ["Biba", "Integrity: no read down, no write up"],
+        ["Clark-Wilson", "Integrity through well-formed transactions and separation of duties"],
+        ["Brewer-Nash", "Conflict-of-interest walls that shift with what you access"],
+        ["Graham-Denning", "Rules for securely creating and deleting subjects and objects"]
+      ]
+    },
+    {
+      "id": "match-backups", "obj": "7.10", "title": "Backup types",
+      "pairs": [
+        ["Full", "Copies everything and clears the archive bits"],
+        ["Incremental", "Copies changes since the last backup of any kind and clears the archive bits"],
+        ["Differential", "Copies changes since the last full backup and leaves the archive bits set"],
+        ["Synthetic full", "Builds a new full backup from an earlier full plus later incrementals"]
+      ]
+    },
+    {
+      "id": "match-sites", "obj": "7.10", "title": "Recovery sites",
+      "pairs": [
+        ["Hot site", "Equipped and loaded with near-current data; ready within hours"],
+        ["Warm site", "Equipment in place, but data must be restored first"],
+        ["Cold site", "Space, power and cooling only; weeks to bring up"],
+        ["Mobile site", "Self-contained trailer or container moved where needed"],
+        ["Reciprocal agreement", "Two organizations promise to host each other in a disaster"]
+      ]
+    },
+    {
+      "id": "match-fire", "obj": "3.9", "title": "Fire classes (U.S.)",
+      "pairs": [
+        ["Class A", "Ordinary combustibles such as paper and wood"],
+        ["Class B", "Flammable liquids"],
+        ["Class C", "Energized electrical equipment"],
+        ["Class D", "Combustible metals"],
+        ["Class K", "Cooking oils and fats"]
+      ]
+    },
+    {
+      "id": "match-evidence", "obj": "7.1", "title": "Evidence",
+      "pairs": [
+        ["Real evidence", "A physical object, such as a seized hard drive"],
+        ["Documentary evidence", "Written items, including logs and records"],
+        ["Testimonial evidence", "Statements made by witnesses"],
+        ["Best evidence rule", "Originals are preferred over copies of documents"],
+        ["Parol evidence rule", "A written agreement is assumed to contain all its terms"]
+      ]
+    },
+    {
+      "id": "match-cloud", "obj": "3.5", "title": "Cloud service models",
+      "pairs": [
+        ["IaaS", "You manage the operating system and everything above it"],
+        ["PaaS", "You deploy code; the provider runs the runtime and operating system"],
+        ["SaaS", "You configure and use the application; the provider runs the rest"],
+        ["FaaS (serverless)", "You supply functions that run on events, with no servers to manage"]
+      ]
+    },
+    {
+      "id": "match-crypto", "obj": "3.6", "title": "Cryptographic building blocks",
+      "pairs": [
+        ["AES", "Symmetric block cipher with 128-bit blocks"],
+        ["RSA", "Asymmetric algorithm based on factoring large numbers"],
+        ["ECC", "Asymmetric algorithm with small keys, based on elliptic curves"],
+        ["SHA-256", "Hash function with a 256-bit digest"],
+        ["HMAC", "Keyed hash proving integrity and origin"],
+        ["Diffie-Hellman", "Key agreement over an untrusted channel"]
+      ]
+    },
+    {
+      "id": "match-tests", "obj": "6.2", "title": "Software testing",
+      "pairs": [
+        ["Fuzzing", "Feeds random or malformed input to find crashes"],
+        ["SAST", "Analyzes source code without running it"],
+        ["DAST", "Probes a running application from outside"],
+        ["Regression testing", "Checks that a change did not break what worked"],
+        ["Misuse case testing", "Tests written from an attacker's point of view"]
+      ]
+    },
+    {
+      "id": "match-adattacks", "obj": "3.7", "title": "Credential attacks",
+      "pairs": [
+        ["Pass the hash", "Reusing a captured password hash to authenticate"],
+        ["Kerberoasting", "Cracking service account passwords from requested service tickets"],
+        ["Golden ticket", "A forged TGT signed with the KRBTGT key"],
+        ["Silver ticket", "A forged service ticket for one service"],
+        ["Credential stuffing", "Trying breached username and password pairs on other sites"]
+      ]
+    },
+    {
+      "id": "match-authz", "obj": "5.4", "title": "Access control models",
+      "pairs": [
+        ["DAC", "The owner decides who gets access"],
+        ["MAC", "The system enforces labels and clearances"],
+        ["RBAC", "Permissions follow job roles"],
+        ["ABAC", "Policies evaluate attributes of the user, resource and context"],
+        ["Rule-based", "Global rules apply to every subject, as in a firewall"]
+      ]
+    },
+    {
+      "id": "match-dataroles", "obj": "2.4", "title": "Data roles",
+      "pairs": [
+        ["Data owner", "Accountable for the data and its classification"],
+        ["Data custodian", "Protects the data day to day, for example with backups"],
+        ["Data controller", "Decides why and how personal data is processed"],
+        ["Data processor", "Processes personal data on the controller's behalf"],
+        ["Data subject", "The person the personal data is about"]
+      ]
+    },
+    {
+      "id": "match-bcmetrics", "obj": "1.7", "title": "Continuity metrics",
+      "pairs": [
+        ["MTD", "The longest outage before the damage becomes unacceptable"],
+        ["RTO", "The target time to restore a function"],
+        ["RPO", "The maximum tolerable data loss, measured in time"],
+        ["WRT", "Time to verify systems and data after restoration"],
+        ["MTBF", "Expected time between failures of a repairable device"],
+        ["MTTR", "Average time to repair a failed device"]
+      ]
+    },
+    {
+      "id": "match-devices", "obj": "4.2", "title": "Network devices",
+      "pairs": [
+        ["Hub", "Layer 1: repeats signals to every port"],
+        ["Switch", "Layer 2: forwards frames by MAC address"],
+        ["Router", "Layer 3: forwards packets by IP address"],
+        ["Circuit-level gateway", "Layer 5: relays sessions without inspecting content"],
+        ["Application proxy", "Layer 7: inspects application content"]
+      ]
+    },
+    {
+      "id": "match-cc", "obj": "3.3", "title": "Common Criteria",
+      "pairs": [
+        ["Protection Profile", "Security requirements customers want for a class of product"],
+        ["Security Target", "The vendor's security claims for its product"],
+        ["EAL1", "Functionally tested"],
+        ["EAL4", "Methodically designed, tested and reviewed"],
+        ["EAL7", "Formally verified design and tested"]
+      ]
+    },
+    {
+      "id": "match-laws", "obj": "1.4", "title": "Laws and standards",
+      "pairs": [
+        ["GDPR", "EU personal data regulation with 72-hour breach notification"],
+        ["HIPAA", "U.S. health information privacy and security"],
+        ["GLBA", "U.S. financial institutions' customer information"],
+        ["SOX", "U.S. public companies' financial reporting controls"],
+        ["PCI DSS", "Payment card industry standard enforced by contract"],
+        ["COPPA", "U.S. online data of children under 13"]
+      ]
+    },
+    {
+      "id": "match-sdlcmodels", "obj": "8.1", "title": "Development models",
+      "pairs": [
+        ["Waterfall", "Sequential phases, each finished before the next"],
+        ["Spiral", "Repeated loops, each with its own risk analysis"],
+        ["Agile", "Short iterations that deliver working software"],
+        ["DevOps", "Development and operations share the pipeline and the responsibility"]
+      ]
+    },
+    {
+      "id": "match-factors", "obj": "5.2", "title": "Authentication factors",
+      "pairs": [
+        ["Something you know", "A password or PIN"],
+        ["Something you have", "A smart card or hardware token"],
+        ["Something you are", "A fingerprint or iris pattern"],
+        ["Somewhere you are", "Geolocation or network location"],
+        ["Something you do", "Typing rhythm or signature dynamics"]
+      ]
+    },
+    {
+      "id": "match-biometrics", "obj": "5.2", "title": "Biometric accuracy",
+      "pairs": [
+        ["FRR (Type I error)", "A valid user is rejected"],
+        ["FAR (Type II error)", "An impostor is accepted"],
+        ["CER", "The point where false rejections equal false acceptances"],
+        ["Throughput rate", "How long one user takes to be processed"]
+      ]
+    }
+  ]
+}

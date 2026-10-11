@@ -297,9 +297,121 @@ const Engine = (() => {
     return { days, weeks };
   }
 
+  // ---------------------------------------------------------------------
+  // The Arcade: seeded draws, the daily five, survival's difficulty ramp,
+  // confidence bets, experience levels and the game record.
+
+  // A seeded generator (a string hash feeding mulberry32), so every device
+  // draws the same daily set and a question's study order never changes.
+  function seeded(seed) {
+    let h = 2166136261;
+    for (const ch of String(seed)) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+    let a = h >>> 0;
+    return () => {
+      a = (a + 0x6d2b79f5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // Five questions for the day, the same on every device: five different
+  // domains drawn by exam weight, one medium or hard question from each.
+  function dailyPick(bank, dateKey, domains, n = 5) {
+    const rnd = seeded("daily:" + dateKey);
+    let left = domains.map((d) => ({ n: d.n, p: d.weight }));
+    const out = [];
+    while (out.length < n && left.length) {
+      const d = pickWeighted(left, rnd);
+      left = left.filter((x) => x.n !== d.n);
+      const pool = bank.filter((q) => q.d === d.n && q.diff >= 2);
+      if (pool.length) out.push(pool[Math.floor(rnd() * pool.length)]);
+    }
+    return out;
+  }
+
+  // Survival gets harder the longer you last: easy and medium questions
+  // first, then medium and hard, then hard only. Questions you have not yet
+  // answered correctly come first.
+  function survivalTiers(score) {
+    return score < 4 ? [1, 2] : score < 10 ? [2, 3] : [3];
+  }
+  function survivalPick(bank, progress, used, score, rnd = Math.random) {
+    const usedSet = new Set(used);
+    const open = bank.filter((q) => !usedSet.has(q.id));
+    if (!open.length) return null;
+    const tiers = survivalTiers(score);
+    const tiered = open.filter((q) => tiers.includes(q.diff));
+    const pool = tiered.length ? tiered : open;
+    const unsettled = pool.filter((q) => !progress[q.id] || progress[q.id][3] === 0);
+    const from = unsettled.length ? unsettled : pool;
+    return from[Math.floor(rnd() * from.length)];
+  }
+
+  // Confidence bets: [points if right, points if wrong]. The payoffs make an
+  // honest bet the best bet: "Guess" pays most below 50% certainty, "Likely"
+  // between 50% and 83%, and "Sure" only above 83%.
+  const BETS = { 1: [1, 0], 2: [2, -1], 3: [3, -6] };
+  const betPoints = (bet, correct) => (BETS[bet] || BETS[1])[correct ? 0 : 1];
+
+  // calib holds [answered, right] for each bet level.
+  function calibration(calib = {}) {
+    const levels = [1, 2, 3].map((bet) => {
+      const [n, right] = calib[bet] || [0, 0];
+      return { bet, n, right, rate: n ? right / n : null };
+    });
+    const [guess, , sure] = levels;
+    let verdict = "Bet on at least ten answers as Sure to see how well your confidence matches your accuracy.";
+    if (sure.n >= 10) {
+      if (sure.rate < 0.8) verdict = "Overconfident: too many of your Sure answers are wrong. On the exam, reread the questions that feel obvious.";
+      else if (guess.n >= 8 && guess.rate > 0.6) verdict = "Underconfident: most of your guesses are right. Your first line of reasoning is better than you think.";
+      else verdict = "Well calibrated: your confidence matches your accuracy.";
+    }
+    return { levels, verdict };
+  }
+
+  // Experience: 10 points for a right answer plus 5 per difficulty step, 2
+  // for a miss. Level L starts at 50·L·(L−1) points, so each level needs 100
+  // more than the last; a steady 30 questions a day reaches about level 20
+  // in two months.
+  const xpFor = (correct, diff = 2) => (correct ? 10 + 5 * (diff - 1) : 2);
+  const levelFloor = (level) => 50 * level * (level - 1);
+  const LEVEL_TITLES = [[1, "Intern"], [3, "Analyst"], [6, "Engineer"], [9, "Architect"], [12, "Manager"], [15, "Director"], [18, "CISO"], [22, "Board advisor"]];
+  function levelFor(xp) {
+    let level = 1;
+    while (levelFloor(level + 1) <= xp) level++;
+    const title = LEVEL_TITLES.filter(([l]) => l <= level).pop()[1];
+    const floor = levelFloor(level), next = levelFloor(level + 1);
+    return { level, title, floor, next, into: xp - floor, span: next - floor };
+  }
+
+  // How many steps of an ordering are in the right place.
+  function orderScore(answer, correct) {
+    return answer.reduce((n, x, i) => n + (x === correct[i] ? 1 : 0), 0);
+  }
+
+  // Two copies of the game record (two devices) merge by keeping the larger
+  // of each figure: counts only ever grow. Pairs such as [answered, right]
+  // keep the copy with more answered; a day's Daily 5 keeps the better score.
+  function mergeGame(a, b) {
+    if (a == null) return b;
+    if (b == null) return a;
+    if (typeof a === "number" && typeof b === "number") return Math.max(a, b);
+    if (Array.isArray(a) && Array.isArray(b)) return (b[0] || 0) > (a[0] || 0) ? b : a;
+    if (typeof a === "object" && typeof b === "object") {
+      const out = { ...a };
+      for (const k of Object.keys(b)) out[k] = mergeGame(a[k], b[k]);
+      return out;
+    }
+    return b;
+  }
+
   return {
-    DAY, BOX_DAYS, DIFFICULTY, PASS_THETA, FORMS,
+    DAY, BOX_DAYS, DIFFICULTY, PASS_THETA, FORMS, BETS,
     record, domainStats, readiness, shuffle, domainPriority, smartSet,
     prob, estimate, catDecision, nextCatItem, scaledScore, domainProficiency, studyPlan,
+    seeded, dailyPick, survivalTiers, survivalPick, betPoints, calibration,
+    xpFor, levelFor, orderScore, mergeGame,
   };
 })();

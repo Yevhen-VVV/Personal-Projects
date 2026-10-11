@@ -1,15 +1,17 @@
 // Builds the single-file app, cissp-web/cissp-prep.html, from the page
-// template, the engine and the question bank.
+// template, the engine, the question bank and the Arcade drills.
 //
 //   node cissp-web/build.mjs           write cissp-prep.html and print bank statistics
 //   node cissp-web/build.mjs --check   fail if cissp-prep.html is out of date
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { DOMAINS, loadBank, report } from "./bank.mjs";
+import { DOMAINS, loadBank, loadDrills, report } from "./bank.mjs";
 
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 
-const { questions, errors } = loadBank();
+const { questions, errors: bankErrors } = loadBank();
+const { drills, errors: drillErrors } = loadDrills();
+const errors = bankErrors.concat(drillErrors);
 if (errors.length) {
   console.error(errors.join("\n"));
   console.error(`\n${errors.length} problem(s) in the question bank.`);
@@ -27,6 +29,7 @@ const bank = {
     o: q.options.map((o) => [o.t, o.why]),
     a: q.a, k: q.takeaway,
   })),
+  drills,
 };
 
 // Inside a <script> element, "</" could end the element early, so it is escaped in the JSON.
@@ -63,4 +66,5 @@ if (process.argv.includes("--check")) {
   console.log(`  keyed answer position A/B/C/D: ${r.positions.join(" / ")}`);
   console.log(`  keyed answer is the single longest option: ${(r.longestShare * 100).toFixed(0)}%`);
   console.log(`  difficulty easy/medium/hard: ${r.byDiff.join(" / ")}`);
+  console.log(`  drills: ${drills.sequences.length} sequences, ${drills.matches.length} match sets`);
 }

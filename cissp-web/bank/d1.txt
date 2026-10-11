@@ -88,8 +88,8 @@ D) Recording every administrator command in an audit log
 Q: Two banks authenticate transfer messages with a message authentication code (MAC) computed with a shared secret key. A dispute arises over whether one bank actually sent a transfer. Why can't the MAC settle the dispute?
 A) MACs do not detect changes to the message
 = A MAC does detect modification. That is its purpose.
-B) MACs only work over encrypted channels
-= A MAC can be used with or without encryption. The channel is not the issue.
+B) The MAC does not cover the transfer's timestamp
+= Which fields a MAC covers is a design detail; even a MAC over every field cannot show which key holder created it.
 C)* Either bank holds the same key, so either could have produced the MAC
 = Correct. Nonrepudiation requires that only one party could have created the proof. With a shared symmetric key, both parties could compute the same MAC.
 D) The MAC algorithm reveals the key to anyone who sees the message
@@ -122,8 +122,8 @@ D) Require the acquired staff to sign your acceptable use policy
 
 ## D1-011 | 1.3 | 2
 Q: A company is divesting a business unit, which will become a separate company. Which concern should the security team prioritize?
-A) Rebranding the unit's email addresses before the announcement
-= A cosmetic change, not a security priority.
+A) Extending the parent's security policies to the new company for a year
+= The new company will set its own policies; the urgent risk is access and data crossing the new boundary.
 B) Negotiating which of the two companies keeps the security operations staff
 = A staffing question. It does not protect information.
 C) Transferring the unit's software licenses on time
@@ -152,8 +152,8 @@ B) Due care
 = Due care is acting reasonably to protect assets, such as applying controls. Here the organization is researching, not yet acting.
 C) Risk transference
 = Transference shifts the financial impact of a risk, for example through insurance or contracts. Reviewing a report does not shift anything.
-D) Separation of duties
-= Separation of duties splits critical tasks among people. It is unrelated to vendor review.
+D) Risk acceptance
+= Risk acceptance is a decision to live with a risk. Investigating a provider before signing is due diligence.
 >> Due diligence is researching and verifying (knowing); due care is doing what a reasonable person would do (acting).
 
 ## D1-014 | 1.3 | 2
@@ -265,7 +265,7 @@ D) Utility model
 >> Copyright is automatic on creation; patents and registered trademarks must be applied for.
 
 ## D1-023 | 1.4 | 2
-Q: A U.S. manufacturer plans to ship firewalls with strong encryption to customers in several countries. Which regulations must it review before shipping?
+Q: A U.S. manufacturer plans to ship firewalls with strong encryption to customers in several countries. Which rules must it review before shipping?
 A) The Health Insurance Portability and Accountability Act (HIPAA)
 = HIPAA governs protected health information, not product exports.
 B)* The Export Administration Regulations (EAR)
@@ -349,7 +349,7 @@ D)* Pause, preserve the evidence and escalate to legal counsel and management
 >> An administrative investigation can turn criminal; when it does, preserve evidence and involve legal counsel before going further.
 
 ## D1-030 | 1.5 | 1
-Q: A government agency investigates whether a bank violated rules issued under its regulatory authority. What type of investigation is this?
+Q: A government agency investigates whether a bank broke rules that the agency itself issues and enforces. What type of investigation is this?
 A) Civil
 = Civil investigations support lawsuits between private parties.
 B) Administrative
@@ -522,7 +522,7 @@ A) Brief the contractor in person during the onboarding session
 = A briefing is useful but not enforceable.
 B) Rely on the contractor's ISO/IEC 27001 certificate
 = Certification shows the contractor runs an ISMS, not that it meets your specific requirements.
-C)* Put the requirements and a right to audit in the contract
+C)* Write the obligations and a right to audit into the contract
 = Correct. Contracts and SLAs make security requirements enforceable and give you a way to verify compliance.
 D) Email the contractor a copy of your security policies
 = Sending policies informs but does not bind the contractor.
@@ -589,7 +589,7 @@ D) Launch quietly and fix it when the patch arrives
 >> Security advises; the accountable manager or risk owner formally accepts residual risk.
 
 ## D1-050 | 1.9 | 2
-Q: A risk team collects anonymous opinions from experts in several rounds, sharing summarized results between rounds until the group converges. Which technique is this?
+Q: A risk team collects anonymous opinions from experts in several rounds, sharing summarized results between rounds until the group converges. What is this approach called?
 A) Monte Carlo simulation
 = Monte Carlo is a quantitative technique using repeated random sampling.
 B)* The Delphi technique
@@ -733,7 +733,7 @@ D)* Physically unclonable function
 >> PUFs and silicon roots of trust are supply chain mitigations named in the 2024 outline.
 
 ## D1-062 | 1.11 | 2
-Q: A server vendor builds an immutable component into the board's silicon that verifies the firmware's signature before anything else runs, so tampered firmware will not boot. What is this component?
+Q: A server vendor builds an immutable hardware component into the server board that verifies the firmware's signature before anything else runs, so tampered firmware will not boot. What is this component?
 A) A software bill of materials
 = An SBOM is a list of components, not a boot-time verifier.
 B)* A silicon root of trust
@@ -863,3 +863,27 @@ C)* Publish a monitoring policy and notify users
 D) Limit monitoring to employees who are already suspected of misconduct
 = Selective, undisclosed monitoring raises fairness and legal concerns, and the policy question remains.
 >> Monitoring starts with policy and notice: an AUP and banners that remove the expectation of privacy.
+
+## D1-073 | 1.9 | 3
+Q: A risk assessment rates a legacy system's risk as high. Replacing it would cost more than the expected loss over its remaining two years of life, and no cheaper control would reduce the risk meaningfully. The system owner wants to keep it. What should happen?
+A) Replace the system anyway, since a high rating requires treatment
+= Treatment is not mandatory when it costs more than it saves; forcing it ignores the cost-benefit logic of risk management.
+B) Move the system to a cloud host to transfer the risk
+= Hosting it elsewhere does not transfer accountability, and the weakness is in the legacy software, which moves with it.
+C)* Senior management formally accepts the risk with a review date
+= Correct. Acceptance is valid when treatment costs more than the loss it prevents, but it must be a documented decision by someone with authority, revisited as conditions change.
+D) The system owner accepts the risk informally and monitors it
+= The decision must be documented and taken at the right level; an informal owner decision leaves leadership unaware of a high risk.
+>> Risk acceptance is legitimate when treatment costs more than it saves, but it must be formal, documented and made by management with authority.
+
+## D1-074 | 1.1 | 3
+Q: A CISSP consultant notices, outside the scope of the engagement, that a client's patient portal appears to expose medical records to anyone on the internet. The client asks the consultant to ignore it because it is out of scope. What should the consultant do FIRST?
+A) Stay silent, since the engagement contract limits the work to its scope
+= A contract does not override the duty to protect society; a serious public risk cannot be ignored because it is out of scope.
+B)* Urge the client in writing to fix it, and escalate if it will not
+= Correct. The canons put protecting society first while acting honorably and legally. The owner gets the first chance to fix the exposure; escalation follows if it refuses.
+C) Post a warning on social media so patients can protect themselves
+= Going public first harms the client, may breach confidentiality and law, and skips giving the owner a chance to fix it.
+D) Report the client to ISC2 for an ethics violation
+= The ISC2 code binds its members, not the client, and a complaint would not fix the exposure.
+>> Canon order: society, then honorable and legal conduct, then principals, then the profession. Raise serious risks with the owner first, then escalate.

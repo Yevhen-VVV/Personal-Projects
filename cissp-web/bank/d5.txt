@@ -50,7 +50,7 @@ D) Replacing all badges with new ones every year
 
 ## D5-005 | 5.2 | 1
 Q: A login requires a password and a security question answer. Why is this NOT multifactor authentication?
-A) Security questions are never stored securely
+A) Security question answers are stored in clear text
 = Storage is a separate issue; the factor type is the problem.
 B) Two factors are needed, and this has three
 = There are only two items here, and both are the same type.
@@ -92,7 +92,7 @@ B)* An impostor is accepted
 = Correct. False acceptance is the more dangerous error for security.
 C) The sensor fails to capture a sample
 = That is a failure to capture, not a Type II error.
-D) A user cannot be enrolled
+D) The system fails to enroll a user
 = That is a failure to enroll.
 >> Type I = false rejection (annoying); Type II = false acceptance (dangerous).
 
@@ -152,7 +152,7 @@ B) Users must remember more passwords
 = SSO reduces the number of passwords.
 C) Applications can no longer log user activity
 = Applications still log activity under the SSO identity.
-D) SSO cannot be used with cloud applications
+D) SSO works poorly with cloud applications
 = SSO is widely used with cloud applications.
 >> SSO improves usability and centralizes control, but makes the primary credential a high-value target.
 
@@ -409,7 +409,7 @@ D) Mandatory access control
 >> Constrained interfaces hide or disable functions a user is not authorized for.
 
 ## D5-035 | 5.4 | 3
-Q: A cloud application must enforce the same authorization policy across dozens of microservices written by different teams. Which design is BEST?
+Q: A cloud application must enforce the same authorization rules across dozens of microservices written by different teams. Which design is BEST?
 A) Let each team write its own authorization logic
 = Duplicated logic drifts and becomes inconsistent.
 B) Grant every authenticated user full access and audit later
@@ -446,8 +446,8 @@ D) Separation of duties
 
 ## D5-038 | 5.5 | 2
 Q: What is the PRIMARY purpose of periodic user access reviews (recertifications)?
-A) To reset every user's password
-= Password resets are unrelated to reviewing entitlements.
+A) To find accounts with weak or reused passwords
+= Password audits are a separate control; a recertification asks whether each person still needs each entitlement.
 B) To measure system performance
 = Performance is not part of access review.
 C)* To confirm access is still appropriate
@@ -464,8 +464,8 @@ B)* Deprovisioning
 = Correct. Accounts should be disabled or removed promptly when people leave, triggered by HR events.
 C) Authentication
 = The accounts authenticate correctly; the problem is that they still exist.
-D) Federation
-= Federation trust is not the issue here.
+D) Account lockout
+= Lockout limits password guessing; it does nothing about valid accounts that were never disabled.
 >> Orphaned accounts come from weak deprovisioning; tie account removal to HR offboarding.
 
 ## D5-040 | 5.5 | 2
@@ -546,8 +546,8 @@ A) Authentication of users to applications
 = OAuth alone does not define how to authenticate a user; that is OpenID Connect's role.
 B)* Delegated authorization for apps
 = Correct. An app gets limited access to resources on a user's behalf: OAuth issues access tokens with scopes, without sharing the user's password.
-C) Encryption of data at rest
-= OAuth has nothing to do with storage encryption.
+C) Transport encryption that replaces TLS
+= OAuth relies on TLS to protect its tokens in transit; it does not replace it.
 D) Network-level access control
 = OAuth works at the application layer.
 >> OAuth 2.0 = authorization (access tokens). OpenID Connect = authentication layered on OAuth (ID tokens).
@@ -582,8 +582,8 @@ A) Its password, encrypted with the server's key
 = Kerberos never sends passwords over the network.
 B)* Its ticket-granting ticket (TGT) and an authenticator
 = Correct. The TGT, issued by the authentication service, lets the client request service tickets without re-entering credentials.
-C) A SAML assertion
-= SAML is unrelated to Kerberos.
+C) A service ticket issued by the application server
+= Application servers do not issue tickets; the ticket-granting service issues the service ticket in exchange for the TGT.
 D) A one-time password from a token
 = OTPs are not part of the standard Kerberos exchange.
 >> Kerberos: authenticate to the AS to get a TGT; present the TGT to the TGS for service tickets; present those to services.
@@ -614,11 +614,11 @@ D) Kerberos
 
 ## D5-052 | 5.6 | 2
 Q: An organization uses RADIUS to authenticate VPN and Wi-Fi users. Which weakness should it compensate for?
-A) RADIUS cannot carry MFA challenges
+A) RADIUS is incompatible with MFA tokens
 = RADIUS can carry MFA exchanges.
 B) RADIUS requires TCP, which is slow
 = RADIUS uses UDP.
-C) RADIUS cannot log accounting data
+C) RADIUS has no accounting function
 = Accounting is one of RADIUS's three functions.
 D)* Only the password is encrypted
 = Correct. Everything except the password attribute travels in the clear, so protect RADIUS traffic, for example with EAP-TLS inside, IPsec, or RADIUS over TLS (RadSec).
@@ -650,10 +650,10 @@ D) An OAuth refresh token
 
 ## D5-055 | 5.6 | 3
 Q: A SAML service provider accepts assertions without checking that they were issued for it and within their validity window. What attack does this enable?
-A) SQL injection
-= SQL injection targets database queries.
-B) VLAN hopping
-= VLAN hopping is a network attack.
+A) XML signature wrapping
+= Signature wrapping abuses flawed signature validation. The missing checks here are audience and time, which let a captured, validly signed assertion be reused.
+B) Session fixation
+= Session fixation plants a known session ID on a victim; here a genuine assertion is captured and presented again or to another service.
 C) A birthday attack on the signature
 = The weakness is in validation, not the hash function.
 D)* Replay of assertions
@@ -671,3 +671,27 @@ C) 1812
 D) 49
 = 49 is TACACS+.
 >> Ports to know: Kerberos 88, LDAP 389, LDAPS 636, RADIUS 1812/1813, TACACS+ 49.
+
+## D5-057 | 5.2 | 3
+Q: Attackers phished users' passwords and one-time codes through a fake login page that relayed them to the real site in real time. Which change defeats this attack?
+A) Shorten the one-time code lifetime to 30 seconds
+= A real-time relay uses the code within seconds, well inside any practical lifetime.
+B) Send one-time codes by SMS instead of an app
+= SMS codes can be relayed just as easily, and they add SIM-swap risk.
+C)* Adopt FIDO2 passkeys bound to the site's origin
+= Correct. The authenticator signs a challenge tied to the real site's origin, so a look-alike domain cannot obtain a usable response.
+D) Add a security question after the one-time code
+= A fake page relays the answer as easily as the code.
+>> Phishing-resistant MFA (FIDO2/WebAuthn) binds authentication to the origin, which defeats real-time relay attacks.
+
+## D5-058 | 5.5 | 3
+Q: An employee who moved from finance to marketing six months ago still has full access to the payment system. Access reviews run yearly. Which process change would have prevented this MOST directly?
+A) Stronger password rules for finance accounts
+= Password rules do not remove entitlements a person no longer needs.
+B)* Removing old access in every role-change workflow
+= Correct. A transfer should trigger removal of the old role's entitlements, which prevents privilege creep instead of waiting for the next review.
+C) Running the access review every six months instead of yearly
+= More frequent reviews shorten the window but still let the excess access exist until the next one.
+D) Logging activity on the payment system for review
+= Logging may reveal misuse later, but it does not remove the excess access.
+>> Privilege creep is prevented at transfer time: the role-change workflow removes the old role's access.
