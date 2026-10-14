@@ -53,7 +53,7 @@ for (const placeholder of ["__BANK__", "/*__ENGINE__*/"]) {
   if (template.split(placeholder).length !== 2) throw new Error(`Template must contain ${placeholder} exactly once`);
 }
 
-const header = "<!-- Built by cissp-web/build.mjs from cissp-web/src and cissp-web/bank. Edit those files, not this one. -->\n";
+const header = "<!-- Generated file: edit the sources, not this one. -->\n";
 // Placed after the <title> so the title stays within the first lines of the file.
 const [titleLine, ...rest] = template.split("\n");
 const output = [titleLine, header + rest.join("\n")].join("\n")

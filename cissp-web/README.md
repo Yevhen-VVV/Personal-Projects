@@ -63,9 +63,11 @@ game-like practice modes, and the Oracle: a tarot deck of the exam, read daily.
 ## Where progress is kept
 
 Opened in Claude by its owner, the page stores progress in the artifact's own database, with rules
-that let only the owner read or write it, so a phone and a laptop share one record. Anywhere else
-(signed out, or someone you share the link with) it falls back to that browser's local storage. A
-copy is always kept locally for a fast start.
+that let only the owner read or write it, so every device shares one record. Anyone else (signed out,
+or a friend the link is shared with) keeps progress in their own browser's local storage. The owner's
+browser copy, kept for a fast start, sits under keys of its own (`cissp-prep:o:<owner id>:`), so a
+friend using the same browser never sees it and never mixes answers into it. Tracker › Clear this
+browser deletes what the app saved in the current browser.
 
 Documents: `me/profile` (exam date, ratings, notes, external scores), `me/progress` (one compact
 record per question plus daily counts), `me/mock` (an exam in progress), `me/game` (experience,

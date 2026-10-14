@@ -396,6 +396,7 @@
   .slot-label { font: 700 11px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: #dcb86c; }
   .slot-name { font: 600 13.5px/1.25 var(--font-read); color: #f5ead0; }
   .slot-note { font-size: 11.5px; line-height: 1.3; color: #b9ad8f; }
+  .slot-note .chip { white-space: normal; text-align: center; line-height: 1.25; justify-content: center; }
   .card-btn { border: 0; padding: 0; background: none; cursor: pointer; width: 100%; max-width: 160px; border-radius: 10px; }
   .card-btn:focus-visible, .deck-card:focus-visible, .oracle-link:focus-visible { outline-color: #dcb86c; }
   .glow .tarot { filter: drop-shadow(0 0 10px rgb(220 184 108 / 0.55)); }
@@ -553,27 +554,28 @@
   }
 
   // ---------------------------------------------------------------- storage
-  // Progress lives in this artifact's private database when you open it
-  // signed in as its owner, so the phone and the laptop share one record.
-  // Anywhere else (signed out, someone you shared the link with) it falls
-  // back to this browser. A copy is always kept in the browser for a fast start.
-  const LS = "cissp-prep:";
+  // Progress lives in this artifact's private database when its owner opens
+  // it signed in, so every device shares one record. Anyone else (signed out,
+  // or a friend the link was shared with) keeps progress in their own browser.
+  // The owner's browser copy sits under its own keys, so someone else using
+  // the same browser never sees it and never mixes their answers into it.
+  const LS_GUEST = "cissp-prep:";
+  let LS = LS_GUEST;
   const Store = {
     mode: "local",
     db: null,
     queues: {},
+    // Resolves to the owner's database and id, or null for anyone else.
     async connect() {
-      if (!window.claude || typeof window.claude.use !== "function") return false;
+      if (!window.claude || typeof window.claude.use !== "function") return null;
       try {
         const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
-        if (!db) return false;
-        const owner = user ? await user.isOwner() : false;
-        if (!owner) return false;
-        this.db = db;
-        this.mode = "db";
-        return true;
+        if (!db || !user || !(await user.isOwner())) return null;
+        let id = "owner";
+        try { id = (await user.id()) || id; } catch { /* id needs the user capability; one owner per artifact anyway */ }
+        return { db, id };
       } catch {
-        return false;
+        return null;
       }
     },
     async getDoc(path) {
@@ -907,7 +909,7 @@
         <button type="button" class="btn btn-ghost-gold" data-act="tab" data-tab="oracle">Draw today's cards</button>
         <button type="button" class="btn btn-ghost-gold" data-act="open-arcade">Try the Arcade</button>
       </div>
-      <p class="small welcome-note">Free to use, nothing to sign up for. ${Store.mode === "db" ? "Your progress is saved to your account." : "Your progress stays in this browser."}</p>
+      <p class="small welcome-note">Free to use, nothing to sign up for. ${Store.mode === "db" ? "Your progress is saved to your account." : "Your progress stays in this browser."} The Claude features (Ask Claude, fresh questions, the Oracle's reading) run on your own Claude account and ask first.</p>
     </section>`;
   }
 
@@ -1431,7 +1433,7 @@ where "answer" is the 0-based index of the correct option and "difficulty" is 1 
       </section>
       <div class="menu">
         ${Object.entries(Engine.FORMS).map(([key, f]) => `<button type="button" data-act="start-mock" data-form="${key}">
-          <span class="title">${esc(f.label)}</span><span class="detail">${f.min}–${f.max} items · ${f.minutes >= 60 ? f.minutes / 60 + " hours" : f.minutes + " minutes"}${key === "half" ? " · a lunch-break version" : " · the real exam's length"}</span><span class="side">${f.min}–${f.max}</span>
+          <span class="title">${esc(f.label)}</span><span class="detail">${f.min}–${f.max} items · ${f.minutes >= 60 ? f.minutes / 60 + " hours" : f.minutes + " minutes"}${key === "half" ? " · half the real exam" : " · the real exam's length"}</span><span class="side">${f.min}–${f.max}</span>
         </button>`).join("")}
       </div>
       <section class="note small stack-sm">
@@ -1683,7 +1685,7 @@ where "answer" is the 0-based index of the correct option and "difficulty" is 1 
           </div>
           <div class="field" style="flex:0 1 120px"><label for="daily-goal">Daily goal</label><input type="number" id="daily-goal" min="5" max="150" step="5" data-field="dailyGoal" value="${p.dailyGoal}"></div>
         </div>
-        ${!p.examBooked ? `<p class="small note warn">Seats for December dates fill early. Booking through Pearson VUE turns the target into a deadline. <a href="https://www.pearsonvue.com/us/en/isc2.html" target="_blank" rel="noopener">Pearson VUE for ISC2</a></p>` : ""}
+        ${!p.examBooked ? `<p class="small note warn">Popular test dates fill early. Booking through Pearson VUE turns the target into a deadline. <a href="https://www.pearsonvue.com/us/en/isc2.html" target="_blank" rel="noopener">Pearson VUE for ISC2</a></p>` : ""}
       </section>
 
       <section class="stack">
@@ -1736,7 +1738,7 @@ where "answer" is the 0-based index of the correct option and "difficulty" is 1 
 
       <section class="stack">
         <h3>Scores from other practice tests</h3>
-        <p class="small muted">Log results from the Official Practice Tests, CertMike, or any other source, so all your evidence is in one place.</p>
+        <p class="small muted">Log results from official practice tests or any other source, so all your evidence is in one place.</p>
         ${p.scores.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Source</th><th class="n">Score</th><th></th></tr></thead><tbody>
           ${p.scores.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "")).map((s) => `<tr><td class="num">${esc(s.date || "")}</td><td>${esc(s.source || "")}${s.note ? `<br><span class="small muted">${esc(s.note)}</span>` : ""}</td><td class="n">${s.score != null ? esc(s.score) + "%" : ""}</td><td><button type="button" class="btn-quiet btn btn-sm" data-act="del-score" data-id="${esc(s.id)}">Remove</button></td></tr>`).join("")}
         </tbody></table></div>` : ""}
@@ -1752,13 +1754,13 @@ where "answer" is the 0-based index of the correct option and "difficulty" is 1 
       </section>
 
       <section class="stack">
-        <h3>Import your existing tracker</h3>
-        <p class="small muted">Paste notes or a table from your earlier CISSP tracker (a spreadsheet, a chat, a document). Claude reads it and fills in your exam date, domain confidence, notes and practice scores. You review before anything is saved.</p>
+        <h3>Import a study tracker</h3>
+        <p class="small muted">If you already track your CISSP study somewhere (a spreadsheet, a chat, a document), paste it here. Claude reads it and fills in your exam date, domain confidence, notes and practice scores. You review before anything is saved.</p>
         ${S.sample ? `<textarea data-field="importText" placeholder="Paste your tracker here">${esc(t.importText || "")}</textarea>
           <div class="row"><button type="button" class="btn" data-act="import-read" ${t.importing ? "disabled" : ""}>${t.importing ? "Reading…" : "Read with Claude"}</button></div>
           ${t.importMsg ? `<p class="small ${t.importErr ? "note bad" : "muted"}">${esc(t.importMsg)}</p>` : ""}
           ${t.importPreview ? importPreview(t.importPreview) : ""}`
-          : `<p class="note small">Available when you open this page in Claude and allow it to use Claude. You can also paste your tracker into a Claude chat and ask it to update this app's records.</p>`}
+          : `<p class="note small">Available when you open this page in Claude and allow it to use Claude.${Store.mode === "db" ? " You can also paste your tracker into a Claude chat and ask it to update this app's records." : ""}</p>`}
         ${p.trackerSummary ? `<div class="note small"><b>From your imported tracker:</b> ${esc(p.trackerSummary)}</div>` : ""}
       </section>
 
@@ -1775,8 +1777,11 @@ where "answer" is the 0-based index of the correct option and "difficulty" is 1 
           <div class="row">
             <button type="button" class="btn btn-sm" data-act="copy-data">Copy my data as JSON</button>
             <button type="button" class="btn btn-sm btn-danger ${t.armReset ? "armed" : ""}" data-act="reset">${t.armReset ? "Tap again to erase all progress" : "Reset progress"}</button>
+            <button type="button" class="btn btn-sm btn-danger ${t.armClear ? "armed" : ""}" data-act="clear-browser">${t.armClear ? "Tap again to clear this browser" : "Clear this browser"}</button>
           </div>
-          <p class="small muted">Storage: ${Store.mode === "db" ? "your private record in this artifact, shared across your devices" : "this browser only"}.</p>
+          <p class="small muted">${Store.mode === "db"
+            ? "Storage: your private record in this artifact, shared across your devices. Clear this browser removes only the copy kept on this device; your record stays."
+            : "Storage: this browser only. Clear this browser deletes everything this app saved here, notes and flags included: use it before handing a shared computer to someone else."}</p>
         </div>
       </section>
     </div>`;
@@ -1833,6 +1838,7 @@ ${text.slice(0, 60000)}`;
     } catch (e) {
       t.importMsg = sampleError(e) || "Stopped.";
       t.importErr = true;
+      if (e && ["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e.code)) S.sample = null;
     }
     t.importing = false;
     render();
@@ -1876,10 +1882,10 @@ ${text.slice(0, 60000)}`;
       ["Schedule with Pearson VUE", "https://www.pearsonvue.com/us/en/isc2.html", "Book a seat: a fixed date turns the plan into a deadline."],
       ["ISC2 CISSP certification page", "https://www.isc2.org/certifications/cissp", "Experience requirement, endorsement and maintenance."],
     ]],
-    ["Books by authors you already follow", [
+    ["Books", [
       ["ISC2 CISSP Official Study Guide (Sybex, 10th edition)", "https://www.wiley.com/en-us/search?pq=CISSP%20Official%20Study%20Guide", "Chapple, Stewart and Gibson. The reference the explanations in this app follow."],
       ["ISC2 CISSP Official Practice Tests (Sybex)", "https://www.wiley.com/en-us/search?pq=CISSP%20Official%20Practice%20Tests", "Chapple and Seidl. Over 1,000 questions; log your scores in Tracker."],
-      ["CertMike CISSP resources", "https://www.certmike.com/cissp/", "Mike Chapple's weekly practice question already arrives in your inbox."],
+      ["CertMike CISSP resources", "https://www.certmike.com/cissp/", "Mike Chapple's free CISSP resources, including a weekly practice question by email."],
     ]],
     ["Free video review", [
       ["Destination Certification MindMaps", "https://www.youtube.com/results?search_query=destination+certification+cissp+mindmap", "Short videos that connect every topic in a domain. Good for the final weeks."],
@@ -3279,6 +3285,22 @@ Return JSON only, in this shape:
         toast("Copying isn't allowed here.");
       }
     },
+    "clear-browser": async () => {
+      if (!S.tool.armClear) { S.tool.armClear = true; render(); return; }
+      S.tool.armClear = false;
+      try {
+        for (const k of Object.keys(localStorage)) {
+          if (!k.startsWith(LS)) continue;
+          // A guest's clear leaves other people's keys and the two startup hints alone.
+          if (LS === LS_GUEST && (k.startsWith(LS_GUEST + "o:") || k === LS_GUEST + "owner" || k === LS_GUEST + "split")) continue;
+          localStorage.removeItem(k);
+        }
+      } catch { /* storage unavailable */ }
+      resetState();
+      if (Store.mode === "db") applyLoaded(await loadAll());
+      toast(Store.mode === "db" ? "This browser's copy is cleared. Your record is unchanged." : "Everything this app saved in this browser is gone.");
+      render();
+    },
     reset: () => {
       if (!S.tool.armReset) { S.tool.armReset = true; render(); return; }
       S.tool.armReset = false;
@@ -3308,6 +3330,7 @@ Return JSON only, in this shape:
     if (!fn) return;
     if (el.tagName === "A") ev.preventDefault();
     if (el.dataset.act !== "reset" && S.tool.armReset) S.tool.armReset = false;
+    if (el.dataset.act !== "clear-browser" && S.tool.armClear) S.tool.armClear = false;
     fn(el, ev);
   });
 
@@ -3375,8 +3398,17 @@ Return JSON only, in this shape:
   });
 
   // ---------------------------------------------------------------- start
-  function boot(hotData) {
-    // Instant first paint from this browser's copy.
+  // Everything a person has, back to a blank slate (storage is untouched).
+  function resetState() {
+    Object.assign(S, {
+      profile: defaultProfile(), progress: { p: {}, days: {}, updatedAt: 0 }, sessions: [], flags: {}, generated: [],
+      game: defaultGame(), oracle: defaultOracle(), mock: null, mockStamp: 0, run: null, arc: null, result: null, mockResult: null,
+      orc: { view: "altar" }, sub: null, ask: null,
+    });
+  }
+
+  // Load this browser's copy under the current keys.
+  function restoreLocal(hotData) {
     applyLoaded({
       profile: lsGet(LS + "me/profile", null),
       progress: lsGet(LS + "me/progress", null),
@@ -3401,19 +3433,63 @@ Return JSON only, in this shape:
       S.mock.elapsed = mockElapsed(S.mock);
       S.mock.paused = true;
     }
+  }
+
+  // Before the owner's copy had its own keys it sat under the shared ones.
+  // The first time the owner opens this version in a browser, that copy moves
+  // over once. Until the link was shared only the owner used it, so it is theirs.
+  function adoptSharedCopy(prefix) {
+    if (lsGet(LS_GUEST + "split", null)) return;
+    try {
+      for (const k of Object.keys(localStorage)) {
+        if (!k.startsWith(LS_GUEST) || k.startsWith(LS_GUEST + "o:")) continue;
+        const rest = k.slice(LS_GUEST.length);
+        if (["owner", "split", "tab", "mode"].includes(rest)) continue;
+        if (localStorage.getItem(prefix + rest) == null) localStorage.setItem(prefix + rest, localStorage.getItem(k));
+        localStorage.removeItem(k);
+      }
+    } catch { /* storage unavailable */ }
+    lsSet(LS_GUEST + "split", 1);
+  }
+
+  // Switch to the owner's record: their own browser keys, then their database.
+  async function becomeOwner(conn, hotData) {
+    const prefix = `${LS_GUEST}o:${conn.id}:`;
+    adoptSharedCopy(prefix);
+    LS = prefix;
+    lsSet(LS_GUEST + "owner", 1);
+    resetState();
+    restoreLocal(hotData);
+    Store.db = conn.db;
+    Store.mode = "db";
     render();
+    const data = await loadAll();
+    const hadLocal = Object.keys(S.progress.p).length > 0;
+    const dbEmpty = !data.progress && !data.profile;
+    const before = S.mock;
+    applyLoaded(data, { fromDb: dbEmpty && hadLocal });
+    if (S.mock && S.mock !== before && !S.mock.paused) { S.mock.elapsed = mockElapsed(S.mock); S.mock.paused = true; }
+    render();
+  }
 
-    Store.connect().then(async (ok) => {
-      if (!ok) return;
-      const data = await loadAll();
-      const hadLocal = Object.keys(S.progress.p).length > 0;
-      const dbEmpty = !data.progress && !data.profile;
-      const before = S.mock;
-      applyLoaded(data, { fromDb: dbEmpty && hadLocal });
-      if (S.mock && S.mock !== before && !S.mock.paused) { S.mock.elapsed = mockElapsed(S.mock); S.mock.paused = true; }
-      render();
-    });
+  async function boot(hotData) {
+    const connecting = Store.connect();
+    let settled = false;
+    if (lsGet(LS_GUEST + "owner", null) && window.claude && typeof window.claude.use === "function") {
+      // The owner has used this browser: give sign-in a moment to settle rather
+      // than paint a guest view and swap it.
+      $("#view").innerHTML = `<p class="muted" style="padding:40px 0;text-align:center">Opening…</p>`;
+      const first = await Promise.race([connecting, new Promise((r) => setTimeout(() => r("wait"), 2500))]);
+      settled = first !== "wait";
+      if (first && first !== "wait") { await becomeOwner(first, hotData); attachClaude(); return; }
+    }
+    restoreLocal(hotData);
+    render();
+    if (!settled) connecting.then((conn) => { if (conn) becomeOwner(conn, { tab: S.tab }); });
+    attachClaude();
+  }
 
+  function attachClaude() {
     if (window.claude && typeof window.claude.use === "function") {
       window.claude.use("sample").then((sample) => {
         if (sample) { S.sample = sample; render(); }
