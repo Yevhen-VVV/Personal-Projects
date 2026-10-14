@@ -360,6 +360,23 @@
   .badge span.small { font-size: 12.5px; }
   .big-figure { font: 800 2.6rem/1 var(--font-ui); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 
+  /* Welcome: a newcomer's first screen */
+  .welcome { display: grid; gap: 16px; padding: 24px 18px 20px; text-align: center; overflow: hidden; }
+  .fan { display: flex; justify-content: center; align-items: flex-end; padding-top: 6px; }
+  .fan .tarot-wrap { width: 92px; margin: 0 -7px; transform-origin: 50% 100%; filter: drop-shadow(0 12px 18px rgb(0 0 0 / 0.5)); }
+  .fan .tarot-wrap:nth-child(1) { transform: rotate(-9deg) translateY(4px); }
+  .fan .tarot-wrap:nth-child(2) { transform: translateY(-10px); position: relative; z-index: 1; }
+  .fan .tarot-wrap:nth-child(3) { transform: rotate(9deg) translateY(4px); }
+  .welcome h2 { font: 800 clamp(1.45rem, 1.2rem + 1.2vw, 1.9rem)/1.2 var(--font-ui); letter-spacing: -0.015em; color: #f5ead0; }
+  .welcome .lede { font: 400 15.5px/1.6 var(--font-ui); color: #d8ceb3; max-width: 52ch; margin-inline: auto; }
+  .pills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .pills li { font: 600 11.5px/1 var(--font-mono); letter-spacing: 0.03em; color: #dcb86c; border: 1px solid rgb(220 184 108 / 0.4); border-radius: 999px; padding: 6px 10px; }
+  .welcome-actions { justify-content: center; }
+  .btn-ghost-gold { background: transparent; color: #f5ead0; border-color: rgb(220 184 108 / 0.5); }
+  .btn-ghost-gold:hover { border-color: #dcb86c; }
+  .welcome-note { color: #b9ad8f; }
+  @media (max-width: 480px) { .fan .tarot-wrap { width: 82px; } .welcome-actions .btn { flex: 1 1 100%; } }
+
   /* Oracle: the reading table is always a night sky, whatever the page theme */
   .altar { position: relative; border-radius: 18px; padding: 18px 14px; color: #efe6cf;
     background:
@@ -1028,7 +1045,6 @@ const Engine = (() => {
   const BANK = JSON.parse(document.getElementById("bank").textContent);
   const DOMAINS = BANK.domains;
   const CURATED = BANK.questions;
-  const DEFAULT_EXAM_DATE = "2026-12-31";
   const READY_TARGET = 0.75;
 
   // ---------------------------------------------------------------- helpers
@@ -1168,7 +1184,7 @@ const Engine = (() => {
   // ---------------------------------------------------------------- state
   const defaultProfile = () => ({
     v: 1,
-    examDate: DEFAULT_EXAM_DATE,
+    examDate: "",
     examBooked: false,
     dailyGoal: 30,
     selfRatings: {},
@@ -1417,6 +1433,27 @@ const Engine = (() => {
     }).join("")}</div>`;
   }
 
+  // The first screen a newcomer sees, and the picture a shared link previews.
+  function welcome() {
+    const fan = [1, 17, 21].map((n) => cardByN(n)).filter(Boolean);
+    return `<section class="altar welcome">
+      ${fan.length === 3 ? `<div class="fan" aria-hidden="true">${fan.map((c, i) => cardArt(c, { uid: "w" + i })).join("")}</div>` : ""}
+      <div class="stack-sm welcome-text">
+        <h2>Prepare for the CISSP. Strangely well.</h2>
+        <p class="lede">484 original questions with an explanation for every option, an adaptive mock exam built like the real one, an arcade of game modes, and a daily tarot reading that turns your weak spots into dreams you will not forget.</p>
+      </div>
+      <ul class="pills" aria-label="What is inside">
+        <li>8 domains · 2024 outline</li><li>Adaptive mock</li><li>Arcade</li><li>The Oracle</li>
+      </ul>
+      <div class="row welcome-actions">
+        <button type="button" class="btn btn-gold" data-act="start-smart" data-count="10">Answer 10 questions</button>
+        <button type="button" class="btn btn-ghost-gold" data-act="tab" data-tab="oracle">Draw today's cards</button>
+        <button type="button" class="btn btn-ghost-gold" data-act="open-arcade">Try the Arcade</button>
+      </div>
+      <p class="small welcome-note">Free to use, nothing to sign up for. ${Store.mode === "db" ? "Your progress is saved to your account." : "Your progress stays in this browser."}</p>
+    </section>`;
+  }
+
   function viewToday() {
     const stats = curatedStats();
     const rd = Engine.readiness(stats);
@@ -1432,13 +1469,14 @@ const Engine = (() => {
     const st = streak();
 
     return `<div class="stack-lg">
+      ${started ? "" : welcome()}
       <section class="stack-sm">
         <p class="eyebrow">${fmtDate(Date.now(), { weekday: "long", month: "long", day: "numeric" })}</p>
-        <h2>${left == null ? "Set your exam date to get a plan." : left > 0 ? `${left} days until ${S.profile.examBooked ? "your exam" : "your end-of-year target"}` : left === 0 ? "Exam day. Read the questions twice, answer once." : "Your exam date has passed. Set the next one in Tracker."}</h2>
+        <h2>${left == null ? `<a href="#" data-act="tab" data-tab="tracker">Set your exam date</a> to get a week-by-week plan.` : left > 0 ? `${left} days until ${S.profile.examBooked ? "your exam" : "your target date"}` : left === 0 ? "Exam day. Read the questions twice, answer once." : "Your exam date has passed. Set the next one in Tracker."}</h2>
         ${week ? `<p class="muted">This week: ${week.focus.map((n) => `<b>D${n}</b> ${esc(domainOf(n).short)}`).join(" and ")}. ${esc(week.note)}</p>` : ""}
       </section>
 
-      ${todayOracle()}
+      ${started ? todayOracle() : ""}
 
       <section class="card raised stack">
         <div class="goal">
@@ -1483,7 +1521,7 @@ const Engine = (() => {
           </div>`
           : `<div class="card stack-sm"><p>No mock yet. The adaptive mock behaves like the real exam: 100 to 150 items in 3 hours, no going back, and it stops once it is sure of the result.</p><div><button type="button" class="btn" data-act="tab" data-tab="mock">See mock options</button></div></div>`}
       </section>
-      ${!started ? `<section class="note">New here? Read <a href="#" data-act="lib" data-sub="mindset">How to think like a CISSP</a> first, then start a smart session. If you kept a study tracker elsewhere, paste it into <a href="#" data-act="tab" data-tab="tracker">Tracker › Import</a>.</section>` : ""}
+      ${!started ? `<section class="note">New to the CISSP? Read <a href="#" data-act="lib" data-sub="mindset">How to think like a CISSP</a> first: ten rules that settle most "BEST" and "FIRST" questions. Already keeping a study tracker elsewhere? Paste it into <a href="#" data-act="tab" data-tab="tracker">Tracker › Import</a>.</section>` : ""}
     </div>`;
   }
 
@@ -1788,7 +1826,7 @@ const Engine = (() => {
     const lines = order.map((orig, pos) => `${"ABCD"[pos]}) ${q.o[orig][0]}\n   Explanation: ${q.o[orig][1]}`).join("\n");
     const keyLetter = "ABCD"[order.indexOf(q.a)];
     const chosenLetter = "ABCD"[order.indexOf(ans.chosen)];
-    return `You are a CISSP tutor helping a working security professional prepare for the ISC2 CISSP exam (2024 outline). Use ISC2 and Official Study Guide terminology. Think like a risk advisor to senior management, as the exam expects.
+    return `You are a CISSP tutor helping a candidate prepare for the ISC2 CISSP exam (2024 outline). Use ISC2 and Official Study Guide terminology. Think like a risk advisor to senior management, as the exam expects.
 
 Practice question (${domainOf(q.d).name}, objective ${q.obj} ${objName(q.obj)}):
 ${q.q}
@@ -2378,7 +2416,7 @@ ${text.slice(0, 60000)}`;
   const RESOURCES = [
     ["Official", [
       ["CISSP exam outline (effective April 15, 2024)", "https://www.isc2.org/certifications/cissp/cissp-certification-exam-outline", "The authority on what is tested. Every question here is tagged to its objectives."],
-      ["Schedule with Pearson VUE", "https://www.pearsonvue.com/us/en/isc2.html", "Book the seat that makes your end-of-year target real."],
+      ["Schedule with Pearson VUE", "https://www.pearsonvue.com/us/en/isc2.html", "Book a seat: a fixed date turns the plan into a deadline."],
       ["ISC2 CISSP certification page", "https://www.isc2.org/certifications/cissp", "Experience requirement, endorsement and maintenance."],
     ]],
     ["Books by authors you already follow", [
