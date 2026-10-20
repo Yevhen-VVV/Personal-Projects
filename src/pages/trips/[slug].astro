@@ -1,0 +1,193 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Landscape from '../../components/Landscape.astro';
+import TripCard from '../../components/TripCard.astro';
+import { site } from '../../config';
+import { getTrips, type Trip, extraGuestFee, fromPrice, usd, seasonLabel, permitLabel } from '../../lib/trips';
+
+export async function getStaticPaths() {
+  const trips = await getTrips();
+  return trips.map((trip) => ({ params: { slug: trip.id }, props: { trip, all: trips } }));
+}
+interface Props { trip: Trip; all: Trip[] }
+const { trip, all } = Astro.props;
+const d = trip.data;
+const { Content } = await render(trip);
+const extra = extraGuestFee(trip);
+const related = all.filter((t) => t.id !== trip.id && t.data.bookable !== false).slice(0, 2);
+const relatedFallback = related.length ? related : all.filter((t) => t.id !== trip.id).slice(0, 2);
+const bookHref = `/book/?trip=${trip.id}`;
+const notifyHref = `mailto:${site.contact.email}?subject=${encodeURIComponent(`Tell me when "${d.title}" opens`)}&body=${encodeURIComponent('Please let me know when this trip opens for booking.\n\nMy dates (if known): \nGroup size: ')}`;
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: d.title,
+  description: d.description,
+  touristType: 'Private group',
+  provider: { '@type': 'LocalBusiness', name: site.name, url: site.url },
+  itinerary: {
+    '@type': 'ItemList',
+    itemListElement: d.stops.map((s, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'TouristAttraction', name: s.name } })),
+  },
+  ...(d.bookable
+    ? { offers: { '@type': 'Offer', price: fromPrice(trip), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: new URL(bookHref, site.url).href } }
+    : {}),
+};
+---
+<Base title={d.title} description={d.description} jsonLd={ld} bookBar={d.bookable ? { href: bookHref, label: `Request this trip · from ${usd(fromPrice(trip))}` } : null}>
+  <section class="top">
+    <div class="art"><Landscape variant={d.art} /></div>
+    <div class="wrap head">
+      <nav class="crumbs small" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/trips/">Trips</a></nav>
+      <p class="eyebrow">{d.category}</p>
+      <h1>{d.title}</h1>
+      <p class="lede">{d.tagline}</p>
+    </div>
+  </section>
+
+  <section class="main">
+    <div class="wrap layout">
+      <div class="content">
+        <dl class="facts">
+          <div><dt>Length</dt><dd>{d.hours}</dd></div>
+          <div><dt>From Flagstaff</dt><dd>{d.fromFlagstaff}</dd></div>
+          <div><dt>Effort</dt><dd>{d.effort}</dd></div>
+          <div><dt>Group</dt><dd>Up to {d.maxGuests}</dd></div>
+          <div><dt>Season</dt><dd>{seasonLabel(d.months)}</dd></div>
+        </dl>
+
+        <div class="prose body"><Content /></div>
+
+        <h2 class="sec">The day</h2>
+        <ol class="stops">
+          {d.stops.map((s) => (
+            <li><strong>{s.name}</strong><span class="muted">{s.note}</span></li>
+          ))}
+        </ol>
+
+        <div class="grid grid-2 lists">
+          <div>
+            <h2 class="sec">Included</h2>
+            <ul class="ticks">{d.includes.map((i) => <li>{i}</li>)}</ul>
+          </div>
+          <div>
+            <h2 class="sec">Paid at cost, not marked up</h2>
+            {d.passThrough.length
+              ? <ul class="ticks dots">{d.passThrough.map((i) => <li>{i}</li>)}</ul>
+              : <p class="muted">Nothing. The price covers the whole trip.</p>}
+          </div>
+        </div>
+
+        <div class="grid grid-2 lists">
+          <div>
+            <h2 class="sec">Bring</h2>
+            <ul class="ticks dots">{d.bring.map((i) => <li>{i}</li>)}</ul>
+          </div>
+          <div>
+            <h2 class="sec">Probably not for you if</h2>
+            <ul class="ticks crosses">{d.notFor.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        </div>
+
+        <h2 class="sec">Access and comfort</h2>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><th scope="row">Getting in</th><td>{d.accessibility.stepIn}</td></tr>
+              <tr><th scope="row">Walking</th><td>{d.accessibility.walking}</td></tr>
+              <tr><th scope="row">Restrooms</th><td>{d.accessibility.restrooms}</td></tr>
+              <tr><th scope="row">Altitude</th><td>{d.accessibility.altitude}</td></tr>
+              <tr><th scope="row">Wheelchairs</th><td>The car is not wheelchair accessible. A folding wheelchair fits in the back with 3 or fewer guests, once the third row is folded.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small muted season">{d.seasonNote}</p>
+
+        {d.faqs.length > 0 && (
+          <>
+            <h2 class="sec">Questions</h2>
+            {d.faqs.map((f) => (
+              <details class="faq"><summary>{f.q}</summary><p>{f.a}</p></details>
+            ))}
+          </>
+        )}
+      </div>
+
+      <aside class="side">
+        <div class="card price-card">
+          <p class="from">From</p>
+          <p class="big">{usd(fromPrice(trip))}</p>
+          <p class="small muted">per car for up to 4 guests, Arizona tax included</p>
+          {d.variants && (
+            <ul class="variants">
+              {d.variants.map((v) => <li><span>{v.label}</span><strong>{usd(v.price)}</strong></li>)}
+            </ul>
+          )}
+          {d.maxGuests > 4 && <p class="small">Guests 5 and {d.maxGuests}: +{usd(extra)} each.</p>}
+
+          {d.bookable ? (
+            <>
+              <a class="btn btn-book wide" href={bookHref} data-primary-cta>Request this trip</a>
+              <p class="small muted">No card needed. We confirm within {site.booking.confirmWithinHours} hours.</p>
+              <p class="small muted">Free cancellation up to {site.cancellation.freeUntilHours} hours before pickup.</p>
+            </>
+          ) : (
+            <>
+              <p class="pill pill-soon">{d.launch}</p>
+              <p class="small permit">{d.permit.note}</p>
+              <a class="btn btn-quiet wide" href={notifyHref} data-primary-cta>Tell me when it opens</a>
+            </>
+          )}
+        </div>
+        <p class="small muted permit-line">{permitLabel[d.permit.status]} · {d.permit.authority}</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2>Pairs well with</h2>
+      <div class="grid grid-2 rel">
+        {relatedFallback.map((t) => <TripCard trip={t} />)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top { position: relative; padding: 0; min-height: 360px; display: grid; overflow: hidden; }
+  .art { position: absolute; inset: 0; }
+  .art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(251,248,243,.94) 0%, rgba(251,248,243,.85) 50%, rgba(251,248,243,.25) 100%); }
+  .head { position: relative; padding-block: 40px 120px; }
+  .crumbs { margin-bottom: 18px; color: var(--ink-muted); }
+  .crumbs a { color: var(--ink-muted); }
+  .head h1 { margin-bottom: 12px; }
+  .head .lede { color: var(--ink); }
+  .main { padding-top: 40px; }
+  .layout { display: grid; gap: 32px; }
+  @media (min-width: 980px) { .layout { grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; align-items: start; } }
+  .body { margin-top: 32px; font-size: 1.05rem; }
+  .sec { font-size: 1.35rem; margin: 40px 0 16px; }
+  .stops { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 0; border-left: 2px solid var(--line); }
+  .stops li { counter-increment: s; position: relative; padding: 0 0 18px 26px; display: grid; gap: 2px; }
+  .stops li::before {
+    content: counter(s); position: absolute; left: -13px; top: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--pine-700); color: var(--sand-50); font-size: .75rem; font-weight: 600; display: grid; place-items: center;
+  }
+  .lists { margin-top: 8px; }
+  .season { margin-top: 12px; }
+  th[scope='row'] { width: 140px; font-weight: 600; color: var(--pine-900); background: var(--sand-50); }
+  .side { position: sticky; top: 96px; }
+  @media (max-width: 979px) { .side { position: static; order: -1; } }
+  .price-card { padding: 22px; }
+  .from { margin: 0; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-muted); }
+  .big { margin: 0; font-family: var(--font-display); font-size: 2.4rem; font-weight: 600; color: var(--pine-900); line-height: 1.1; }
+  .variants { list-style: none; padding: 0; margin: 14px 0; border-top: 1px solid var(--line); }
+  .variants li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+  .wide { width: 100%; margin: 14px 0 10px; }
+  .permit { color: var(--ink); margin-top: 12px; }
+  .permit-line { margin-top: 12px; padding-inline: 4px; }
+  .rel { margin-top: 24px; }
+</style>

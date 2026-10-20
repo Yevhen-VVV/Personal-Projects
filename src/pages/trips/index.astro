@@ -1,0 +1,108 @@
+---
+import Base from '../../layouts/Base.astro';
+import TripCard from '../../components/TripCard.astro';
+import { site } from '../../config';
+import { getTrips, fromPrice, usd, seasonLabel } from '../../lib/trips';
+
+const trips = await getTrips();
+const categories = [...new Set(trips.map((t) => t.data.category))];
+---
+<Base title="Trips" description="Every private trip from Flagstaff: Grand Canyon, Sedona, wine country and Jerome, Lowell Observatory, Page and more. Prices per car, tax included.">
+  <section class="intro">
+    <div class="wrap">
+      <nav class="crumbs small" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+      <h1>Every trip, one car, your group</h1>
+      <p class="lede">
+        Each trip runs privately in a {site.vehicle.model} for up to {site.vehicle.maxGuests} guests. Prices are per car
+        for up to 4, Arizona tax included. Trips that need a land permit open once it is issued.
+      </p>
+
+      <div class="filters" role="group" aria-label="Filter trips">
+        <button type="button" class="chip" aria-pressed="true" data-filter="all">All <span>{trips.length}</span></button>
+        <button type="button" class="chip" aria-pressed="false" data-filter="open">Taking requests <span>{trips.filter((t) => t.data.bookable).length}</span></button>
+        {categories.map((c) => (
+          <button type="button" class="chip" aria-pressed="false" data-filter={c}>{c}</button>
+        ))}
+      </div>
+      <p class="small muted" id="count" aria-live="polite">Showing all {trips.length} trips</p>
+    </div>
+  </section>
+
+  <section class="band list">
+    <div class="wrap">
+      <div class="grid grid-3" id="grid">
+        {trips.map((t) => (
+          <div class="cell" data-cat={t.data.category} data-open={String(t.data.bookable)}>
+            <TripCard trip={t} headingLevel="h2" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Side by side</h2>
+      <p class="muted">The things people actually decide on. Scroll sideways on a phone.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Trip</th><th scope="col">From</th><th scope="col">Length</th><th scope="col">Effort</th><th scope="col">Season</th><th scope="col">Status</th></tr>
+          </thead>
+          <tbody>
+            {trips.map((t) => (
+              <tr>
+                <th scope="row"><a href={`/trips/${t.id}/`}>{t.data.title}</a></th>
+                <td>{usd(fromPrice(t))}</td>
+                <td>{t.data.hours}</td>
+                <td>{t.data.effort}</td>
+                <td>{seasonLabel(t.data.months)}</td>
+                <td>{t.data.bookable ? <span class="pill pill-open">Taking requests</span> : <span class="pill pill-soon">{t.data.launch}</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip'));
+  const cells = Array.from(document.querySelectorAll<HTMLElement>('#grid .cell'));
+  const count = document.getElementById('count');
+  chips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      const f = chip.dataset.filter!;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      let shown = 0;
+      cells.forEach((cell) => {
+        const ok = f === 'all' || (f === 'open' ? cell.dataset.open === 'true' : cell.dataset.cat === f);
+        cell.hidden = !ok;
+        if (ok) shown++;
+      });
+      if (count) count.textContent = f === 'all' ? `Showing all ${shown} trips` : `Showing ${shown} of ${cells.length} trips`;
+    }),
+  );
+</script>
+
+<style>
+  .intro { padding-bottom: 32px; }
+  .crumbs { margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-muted); }
+  h1 { margin-bottom: 14px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 10px; }
+  .chip {
+    font: 500 .92rem var(--font-body); color: var(--ink); background: var(--white);
+    border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 14px; min-height: 40px; cursor: pointer;
+  }
+  .chip span { color: var(--ink-muted); margin-left: 4px; }
+  .chip[aria-pressed='true'] { background: var(--pine-700); border-color: var(--pine-700); color: var(--sand-50); }
+  .chip[aria-pressed='true'] span { color: #c9d6cf; }
+  .cell[hidden] { display: none; }
+  .cell { display: flex; }
+  .cell > :global(*) { flex: 1; }
+  table th[scope='row'] a { font-weight: 600; }
+  td { white-space: nowrap; }
+  .table-wrap { margin-top: 18px; }
+</style>

@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+---
+<Base title="Contact" description="Call, text or email Three Tickets to Adventure in Flagstaff. A person answers.">
+  <section>
+    <div class="wrap narrow">
+      <nav class="crumbs small" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+      <h1>Talk to a person</h1>
+      <p class="lede">The fastest way to plan a trip is the <a href="/book/">request form</a>. For anything else:</p>
+      <div class="grid grid-2 ways">
+        <a class="card way" href={`tel:${site.contact.phoneHref}`}>
+          <span class="k">Call or text</span>
+          <span class="v">{site.contact.phoneDisplay}</span>
+          <span class="small muted">{site.contact.hours}</span>
+        </a>
+        <a class="card way" href={`mailto:${site.contact.email}`}>
+          <span class="k">Email</span>
+          <span class="v">{site.contact.email}</span>
+          <span class="small muted">We reply within a day.</span>
+        </a>
+      </div>
+      <p class="small muted mt">Mailing address: {site.contact.mailingAddress}. We do not have a walk-in office; every trip starts at your door.</p>
+      <p class="small muted">Concern about a driver or a trip? See how to <a href="/legal/safety/#complaints-and-concerns">raise it</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumbs { margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-muted); }
+  h1 { margin-bottom: 12px; }
+  .ways { margin-top: 24px; }
+  .way { display: grid; gap: 4px; padding: 22px; text-decoration: none; color: var(--ink); }
+  .way:hover { border-color: var(--pine-700); }
+  .k { font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-muted); }
+  .v { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; color: var(--pine-900); overflow-wrap: anywhere; }
+  .mt { margin-top: 24px; }
+</style>

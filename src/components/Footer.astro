@@ -1,0 +1,79 @@
+---
+import Logo from './Logo.astro';
+import { site, legalPages, heldCredentials } from '../config';
+import { getTrips } from '../lib/trips';
+const trips = await getTrips();
+const held = heldCredentials();
+const year = new Date().getFullYear();
+---
+<footer class="site-footer band-pine">
+  <div class="wrap cols">
+    <div class="about">
+      <Logo inverse />
+      <p class="muted">
+        Private half-day and full-day trips from {site.base.city}: the Grand Canyon, Sedona's red rocks,
+        Verde Valley wine country and the night sky. One party per car.
+      </p>
+      <ul class="contact">
+        <li><a href={`tel:${site.contact.phoneHref}`}>{site.contact.phoneDisplay}</a></li>
+        <li><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
+        <li class="muted">{site.contact.hours}</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="h">Trips</h2>
+      <ul class="links">
+        {trips.map((t) => <li><a href={`/trips/${t.id}/`}>{t.data.title}</a></li>)}
+        <li><a href="/three-tickets/">The Three Tickets bundle</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="h">Good to know</h2>
+      <ul class="links">
+        <li><a href="/the-car/">The car</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="/concierge/">For hotel concierges</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="h">Policies</h2>
+      <ul class="links">
+        {legalPages.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      {held.length > 0 && (
+        <>
+          <h2 class="h creds-h">Licensed and insured</h2>
+          <ul class="links creds">
+            {held.map((c) => <li>{c.label}{c.detail ? `: ${c.detail}` : ''}</li>)}
+          </ul>
+        </>
+      )}
+    </div>
+  </div>
+
+  <div class="wrap base">
+    <p class="small muted">© {year} {site.legalName}. An Arizona limited liability company based in {site.base.city}.</p>
+    <p class="small muted">We operate within Arizona only.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-block: 56px 28px; margin-top: 0; }
+  .cols { display: grid; gap: 32px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .cols { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
+  .about p { margin-top: 16px; max-width: 38ch; }
+  .h { font-family: var(--font-body); font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: #9fb8ab; margin-bottom: 12px; }
+  .creds-h { margin-top: 24px; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  a { color: var(--sand-50); text-decoration: none; }
+  a:hover { color: #f0c4a8; text-decoration: underline; }
+  .contact { margin-top: 8px; }
+  .creds li { color: #c9d6cf; font-size: .92rem; }
+  .base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #2c4a40; }
+  .base p { margin: 0; }
+</style>

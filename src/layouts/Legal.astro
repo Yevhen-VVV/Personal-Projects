@@ -1,0 +1,40 @@
+---
+import Base from './Base.astro';
+import { site, legalPages } from '../config';
+const { frontmatter } = Astro.props;
+const { title, description, updated, draft = true } = frontmatter as { title: string; description: string; updated: string; draft?: boolean };
+const path = Astro.url.pathname;
+---
+<Base title={title} description={description}>
+  <section>
+    <div class="wrap layout">
+      <nav class="side small" aria-label="Policies">
+        <p class="eyebrow">Policies</p>
+        <ul>
+          {legalPages.map((l) => <li><a href={l.href} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a></li>)}
+        </ul>
+      </nav>
+      <article class="prose">
+        <h1>{title}</h1>
+        <p class="small muted">{site.legalName} · Last updated {updated}</p>
+        {draft && (
+          <p class="notice small" data-legal-draft>
+            <strong>Draft for attorney review.</strong> This text has not been reviewed by an Arizona lawyer and is not yet in force.
+          </p>
+        )}
+        <slot />
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .layout { display: grid; gap: 32px; }
+  @media (min-width: 900px) { .layout { grid-template-columns: 240px minmax(0, 1fr); gap: 56px; } }
+  .side ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .side a { display: block; padding: 8px 10px; border-radius: 8px; text-decoration: none; color: var(--ink); }
+  .side a[aria-current='page'] { background: var(--pine-100); color: var(--pine-900); font-weight: 600; }
+  @media (min-width: 900px) { .side { position: sticky; top: 96px; align-self: start; } }
+  h1 { font-size: clamp(1.9rem, 4.5vw, 2.6rem); margin-bottom: 10px; }
+  .notice { margin: 18px 0 28px; }
+</style>

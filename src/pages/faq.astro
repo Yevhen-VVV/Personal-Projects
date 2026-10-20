@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+const c = site.cancellation;
+
+const groups = [
+  {
+    h: 'Booking and paying',
+    qs: [
+      { q: 'How do I book?', a: `Send a request from any trip page. It takes two minutes and no card. We reply within ${site.booking.confirmWithinHours} hours with the plan and a secure payment link.` },
+      { q: 'Is the price per person?', a: `No, per car. The price covers up to ${site.vehicle.baseGuests} guests; guests 5 and 6 pay a small extra fee shown on each trip.` },
+      { q: 'Is tax included?', a: 'Yes. Arizona tax is in the price you see. Park entry, tastings and admission tickets are passed on at cost and listed on each trip.' },
+      { q: 'How far ahead should I book?', a: `At least ${site.booking.minNoticeHours} hours. Weekends in spring and fall fill first, so earlier is better. For anything sooner, call or text.` },
+      { q: 'Do you offer gift vouchers?', a: 'Not yet. They are coming once online payment is live.' },
+    ],
+  },
+  {
+    h: 'Cancellations and weather',
+    qs: [
+      { q: 'What if we need to cancel?', a: `Free up to ${c.freeUntilHours} hours before pickup. Inside ${c.freeUntilHours} hours we refund ${c.lateRefundPercent}%. No-shows are not refunded.` },
+      { q: 'What if the weather turns?', a: 'If snow, flash-flood warnings, or a road or park closure make the trip unsafe or impossible, we tell you as early as we can and you choose a full refund or a new date.' },
+      { q: 'What about government shutdowns?', a: 'If a national park closes, the same rule applies: full refund or a new date.' },
+    ],
+  },
+  {
+    h: 'On the day',
+    qs: [
+      { q: 'Where do you pick up?', a: 'At your hotel or rental in Flagstaff. Sedona pickups are included on trips that pass through Sedona; elsewhere, ask.' },
+      { q: 'Can we bring children?', a: 'Yes. Children who need a car seat or booster under Arizona law need one in the car; tell us when you book.' },
+      { q: 'Can we drink on the wine trip?', a: 'At the tasting rooms, yes, if you are 21 or over. Not in the car: bottles you buy ride sealed in the back.' },
+      { q: 'What time zone are we in?', a: 'Arizona stays on Mountain Standard Time all year. The Navajo Nation, including Antelope Canyon, observes daylight saving time, so summer tour times there run an hour ahead.' },
+      { q: 'Is the car accessible?', a: 'It is not wheelchair accessible. A folding wheelchair fits in the back with 3 or fewer guests. Each trip page lists walking distances, restrooms and altitude.' },
+    ],
+  },
+  {
+    h: 'Where we go',
+    qs: [
+      { q: 'Why can\'t I book the Grand Canyon yet?', a: 'Commercial tours in national parks need a permit from the National Park Service. We are applying for the 2027 season and will open bookings the day it is issued.' },
+      { q: 'Do you go to Las Vegas or Monument Valley?', a: 'No. We operate within Arizona only, and the Monument Valley visitor area is across the line in Utah.' },
+      { q: 'Do you lead hikes?', a: 'Not at the moment. Guided hikes on National Forest and park trails need their own permits.' },
+    ],
+  },
+];
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: groups.flatMap((g) => g.qs).map((x) => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a } })),
+};
+---
+<Base title="FAQ" description="Answers about booking, prices, cancellations, weather, pickups, children and accessibility for private trips from Flagstaff." jsonLd={ld}>
+  <section>
+    <div class="wrap narrow">
+      <nav class="crumbs small" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+      <h1>Questions, answered plainly</h1>
+      <p class="lede">Anything not here? <a href="/contact/">Ask us</a>; a person answers.</p>
+      {groups.map((g) => (
+        <div class="group">
+          <h2>{g.h}</h2>
+          {g.qs.map((x) => <details class="faq"><summary>{x.q}</summary><p>{x.a}</p></details>)}
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumbs { margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-muted); }
+  h1 { margin-bottom: 12px; }
+  .group { margin-top: 40px; }
+  .group h2 { font-size: 1.4rem; margin-bottom: 4px; }
+</style>

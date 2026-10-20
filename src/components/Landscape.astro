@@ -1,0 +1,165 @@
+---
+/**
+ * Illustrated landscape used until real photographs arrive. Deterministic:
+ * the same variant always draws the same picture. Decorative only.
+ */
+interface Props {
+  variant: 'canyon' | 'canyon-sunset' | 'redrock' | 'wine' | 'night' | 'transfer' | 'heritage' | 'horseshoe';
+  class?: string;
+}
+const { variant, class: cls = '' } = Astro.props;
+const W = 600, H = 360;
+const uid = `ls-${variant}`;
+
+function rng(seed: number) {
+  let s = seed >>> 0;
+  return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+}
+/** A ridge line from left to right, closed down to the bottom edge. */
+function ridge(seed: number, baseY: number, amp: number, steps = 14, flat = 0) {
+  const r = rng(seed);
+  const pts: string[] = [`M0 ${H}`, `L0 ${baseY}`];
+  for (let i = 1; i <= steps; i++) {
+    const x = (W / steps) * i;
+    const y = baseY - (r() - 0.5) * amp * 2;
+    if (flat && i % 2 === 0) pts.push(`L${x - W / steps / 2} ${y.toFixed(1)}`);
+    pts.push(`L${x.toFixed(1)} ${y.toFixed(1)}`);
+  }
+  pts.push(`L${W} ${H}`, 'Z');
+  return pts.join(' ');
+}
+function trees(seed: number, y: number, count: number, size: number, fill: string) {
+  const r = rng(seed);
+  return Array.from({ length: count }, (_, i) => {
+    const x = (W / count) * i + r() * (W / count);
+    const h = size * (0.7 + r() * 0.6);
+    const w = h * 0.42;
+    const yy = y + r() * 10;
+    return { d: `M${x.toFixed(1)} ${(yy - h).toFixed(1)} L${(x + w).toFixed(1)} ${yy.toFixed(1)} L${(x - w).toFixed(1)} ${yy.toFixed(1)} Z`, fill };
+  });
+}
+function stars(seed: number, count: number) {
+  const r = rng(seed);
+  return Array.from({ length: count }, () => ({ x: r() * W, y: r() * H * 0.62, r: r() < 0.12 ? 1.6 : 0.5 + r() * 0.7, o: 0.45 + r() * 0.55 }));
+}
+
+const skies: Record<string, [string, string]> = {
+  canyon: ['#f6d7b4', '#f9efe2'],
+  'canyon-sunset': ['#6b4a7a', '#f2a96b'],
+  redrock: ['#a9cde0', '#f3ece0'],
+  wine: ['#f1c98f', '#f8efe0'],
+  night: ['#0b1626', '#1d3346'],
+  transfer: ['#f3c58a', '#fbefdc'],
+  heritage: ['#c9dbe2', '#f4eee2'],
+  horseshoe: ['#b9d6e4', '#f6efe4'],
+};
+const [skyTop, skyBottom] = skies[variant];
+---
+<svg class={`landscape ${cls}`} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color={skyTop} />
+      <stop offset="1" stop-color={skyBottom} />
+    </linearGradient>
+  </defs>
+  <rect width={W} height={H} fill={`url(#${uid}-sky)`} />
+
+  {(variant === 'canyon' || variant === 'canyon-sunset') && (
+    <g>
+      <circle cx="455" cy="92" r="34" fill={variant === 'canyon' ? '#fbe6c6' : '#ffd29a'} opacity=".9" />
+      <path d={ridge(11, 150, 6, 10, 1)} fill={variant === 'canyon' ? '#d9a27b' : '#9a5a6a'} opacity=".55" />
+      <path d={ridge(12, 180, 8, 12, 1)} fill={variant === 'canyon' ? '#c9784f' : '#b4615b'} opacity=".75" />
+      <path d="M0 210 L170 200 L250 260 L300 300 L350 262 L430 205 L600 214 L600 360 L0 360 Z" fill={variant === 'canyon' ? '#b45a35' : '#9b4a3c'} />
+      <path d="M0 236 L150 228 L250 290 L300 330 L352 292 L450 232 L600 240 L600 360 L0 360 Z" fill={variant === 'canyon' ? '#963f22' : '#7a3530'} />
+      <path d="M262 300 Q300 318 338 300 L320 330 Q300 338 280 330 Z" fill="#6f8f86" opacity=".7" />
+      <path d={ridge(13, 318, 6, 16)} fill="#2a3b2f" />
+      {trees(14, 330, 16, 26, '#1f4d3d').map((t) => <path d={t.d} fill={t.fill} />)}
+    </g>
+  )}
+
+  {variant === 'redrock' && (
+    <g>
+      <path d={ridge(21, 190, 10, 9)} fill="#c58a6c" opacity=".5" />
+      <path d="M40 260 Q60 150 120 140 Q170 150 180 260 Z" fill="#c4542e" />
+      <path d="M210 260 L222 120 L238 112 L248 70 L262 74 L270 118 L292 128 L300 260 Z" fill="#b14a25" />
+      <path d="M330 260 Q352 175 410 168 Q470 175 490 260 Z" fill="#cd6a3c" />
+      <path d="M470 260 L488 150 L540 140 L560 160 L575 260 Z" fill="#a8461f" />
+      <path d={ridge(22, 268, 7, 16)} fill="#8f3b1d" />
+      <path d={ridge(23, 300, 6, 18)} fill="#3d5a43" />
+      {trees(24, 318, 22, 20, '#2a4d38').map((t) => <path d={t.d} fill={t.fill} />)}
+    </g>
+  )}
+
+  {variant === 'wine' && (
+    <g>
+      <circle cx="140" cy="96" r="30" fill="#fde9c4" />
+      <path d={ridge(31, 170, 10, 8)} fill="#b9a07a" opacity=".55" />
+      <path d="M0 230 Q150 180 300 215 Q450 250 600 205 L600 360 L0 360 Z" fill="#9aa86b" />
+      <path d="M0 270 Q160 225 330 262 Q470 290 600 252 L600 360 L0 360 Z" fill="#6f8a4f" />
+      {Array.from({ length: 12 }, (_, i) => (
+        <path d={`M${-40 + i * 60} 360 L${70 + i * 46} 262`} stroke="#4f6b3a" stroke-width="5" stroke-linecap="round" opacity=".75" />
+      ))}
+      <path d="M470 236 L470 206 L500 190 L530 206 L530 236 Z" fill="#f4ead8" />
+      <path d="M464 208 L500 186 L536 208" fill="none" stroke="#923b1c" stroke-width="6" />
+    </g>
+  )}
+
+  {variant === 'night' && (
+    <g>
+      <path d="M-20 210 Q180 60 640 30" stroke="#c9d6ff" stroke-width="70" opacity=".07" fill="none" />
+      {stars(41, 140).map((s) => <circle cx={s.x.toFixed(1)} cy={s.y.toFixed(1)} r={s.r.toFixed(2)} fill="#fffaf0" opacity={s.o.toFixed(2)} />)}
+      <path d={ridge(42, 268, 12, 10)} fill="#13241f" />
+      <path d="M380 236 L380 214 Q400 192 420 214 L420 236 Z" fill="#0d1a17" />
+      <rect x="397" y="196" width="6" height="16" fill="#0d1a17" transform="rotate(-25 400 204)" />
+      <path d={ridge(43, 300, 6, 16)} fill="#0b1714" />
+      {trees(44, 318, 18, 34, '#081210').map((t) => <path d={t.d} fill={t.fill} />)}
+    </g>
+  )}
+
+  {variant === 'transfer' && (
+    <g>
+      <circle cx="470" cy="104" r="28" fill="#fde2b6" />
+      <path d={ridge(51, 196, 22, 8)} fill="#b77b5c" opacity=".6" />
+      <path d={ridge(52, 236, 10, 12)} fill="#c99a6c" />
+      <path d="M0 360 L268 238 L300 238 L600 360 Z" fill="#5a524b" />
+      <path d="M283 244 L282 262 M281 278 L279 306 M276 326 L272 360" stroke="#f4e5c2" stroke-width="3" />
+      {[[80, 300, 1.1], [150, 262, 0.7], [470, 270, 0.85], [540, 312, 1.2]].map(([x, y, s]) => (
+        <path
+          d={`M${x} ${y} l0 ${-70 * s} m0 ${30 * s} l${-16 * s} 0 l0 ${-22 * s} m${16 * s} ${8 * s} l${14 * s} 0 l0 ${-18 * s}`}
+          stroke="#2f4a35" stroke-width={10 * s} stroke-linecap="round" stroke-linejoin="round" fill="none"
+        />
+      ))}
+    </g>
+  )}
+
+  {variant === 'heritage' && (
+    <g>
+      <path d={ridge(61, 210, 8, 10)} fill="#b9a487" opacity=".6" />
+      <path d="M330 250 Q372 150 420 140 Q470 150 520 250 Z" fill="#3b3433" />
+      <path d="M372 172 Q420 150 470 172" fill="none" stroke="#b1572b" stroke-width="8" opacity=".8" />
+      <path d="M0 258 Q300 236 600 252 L600 360 L0 360 Z" fill="#c9a77a" />
+      <path d="M90 262 L90 222 L130 222 L130 206 L176 206 L176 238 L210 238 L210 262 Z" fill="#a8502c" />
+      <rect x="104" y="232" width="9" height="12" fill="#5b2a17" />
+      <rect x="150" y="214" width="9" height="12" fill="#5b2a17" />
+      <path d={ridge(62, 298, 6, 18)} fill="#7d6a4c" />
+      {trees(63, 330, 12, 16, '#4f5d3a').map((t) => <path d={t.d} fill={t.fill} />)}
+    </g>
+  )}
+
+  {variant === 'horseshoe' && (
+    <g>
+      <path d={ridge(71, 118, 6, 8, 1)} fill="#d7a982" opacity=".55" />
+      <path d="M0 146 L600 146 L600 360 L0 360 Z" fill="#cf7d45" />
+      <path d="M0 146 L600 146" stroke="#e7b088" stroke-width="3" />
+      <path d="M170 372 C170 196 430 196 430 372" fill="none" stroke="#8f3f1e" stroke-width="86" />
+      <path d="M170 372 C170 196 430 196 430 372" fill="none" stroke="#b5592c" stroke-width="58" />
+      <path d="M170 372 C170 196 430 196 430 372" fill="none" stroke="#2f7a72" stroke-width="22" />
+      <path d="M232 372 C232 262 368 262 368 372 Z" fill="#d98a4b" />
+      <path d={ridge(72, 338, 4, 18)} fill="#7a3a1d" opacity=".55" />
+    </g>
+  )}
+</svg>
+
+<style>
+  .landscape { width: 100%; height: 100%; display: block; }
+</style>

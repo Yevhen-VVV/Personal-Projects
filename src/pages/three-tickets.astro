@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Landscape from '../components/Landscape.astro';
+import { site } from '../config';
+import { usd } from '../lib/trips';
+
+const BUNDLE_PRICE = 2250;
+const days = [
+  { n: 'Ticket 1', title: 'The Grand Canyon', href: '/trips/grand-canyon/', art: 'canyon' as const, p: 'A full private day on the South Rim, timed for the light.' },
+  { n: 'Ticket 2', title: 'The red rocks', href: '/trips/sedona-red-rocks/', art: 'redrock' as const, p: 'Oak Creek Canyon, the Chapel of the Holy Cross and Sedona at an easy pace.' },
+  { n: 'Ticket 3', title: 'Wine country and Jerome', href: '/trips/wine-and-jerome/', art: 'wine' as const, p: 'Verde Valley tasting rooms and the hillside town of Jerome, with a designated driver.' },
+];
+const notify = `mailto:${site.contact.email}?subject=${encodeURIComponent('Tell me when the Three Tickets bundle opens')}`;
+---
+<Base title="The Three Tickets" description="Three private days in Northern Arizona: the Grand Canyon, Sedona's red rocks and Verde Valley wine country, planned as one trip. Opening 2027.">
+  <section>
+    <div class="wrap narrow">
+      <nav class="crumbs small" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+      <p class="eyebrow">The Three Tickets · opening 2027</p>
+      <h1>Three days. Three signature trips. One plan.</h1>
+      <p class="lede">
+        For guests staying three nights or more in Flagstaff or Sedona: the Grand Canyon, the red rocks and wine
+        country on three separate days, planned together so each one builds on the last.
+      </p>
+      <p class="price"><strong>{usd(BUNDLE_PRICE)}</strong> per car for up to 4 guests, all three days, Arizona tax included.</p>
+      <div class="btn-row" data-primary-cta>
+        <a class="btn btn-quiet" href={notify}>Tell me when it opens</a>
+      </div>
+      <p class="small muted mt">
+        The bundle opens once the Grand Canyon trip does, after our National Park Service permit is issued. Until then,
+        the wine country day is already taking requests.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="grid grid-3">
+        {days.map((d) => (
+          <article class="card day">
+            <div class="art"><Landscape variant={d.art} /></div>
+            <div class="body">
+              <p class="eyebrow">{d.n}</p>
+              <h2 class="h"><a href={d.href}>{d.title}</a></h2>
+              <p class="muted">{d.p}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap narrow">
+      <h2>Why three days works</h2>
+      <ul class="ticks">
+        <li>The long Grand Canyon day goes in the middle, when you have settled in and before you are tired.</li>
+        <li>We plan around the weather across all three days, so a stormy afternoon moves a trip instead of ruining it.</li>
+        <li>One conversation about what you like, and every day is planned around it.</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumbs { margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-muted); }
+  h1 { margin-bottom: 14px; }
+  .price { font-size: 1.1rem; margin: 18px 0 22px; }
+  .price strong { font-family: var(--font-display); font-size: 2rem; color: var(--pine-900); margin-right: 6px; }
+  .mt { margin-top: 18px; }
+  .day .art { aspect-ratio: 16 / 9; }
+  .day .body { padding: 18px 20px 6px; }
+  .day .h { font-size: 1.3rem; margin-bottom: 8px; }
+  .day .h a { text-decoration: none; color: var(--pine-900); }
+  .ticks { margin-top: 18px; }
+</style>

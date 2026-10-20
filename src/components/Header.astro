@@ -1,0 +1,72 @@
+---
+import Logo from './Logo.astro';
+import { nav } from '../config';
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="/" class="home" aria-label="Three Tickets to Adventure, home"><Logo /></a>
+
+    <nav class="desktop" aria-label="Main">
+      {nav.map((n) => (
+        <a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
+      ))}
+    </nav>
+
+    <div class="actions">
+      <a class="btn btn-book cta" href="/book/">Request a trip</a>
+      <details class="mobile">
+        <summary aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        </summary>
+        <nav aria-label="Mobile">
+          {nav.map((n) => (
+            <a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
+          ))}
+          <a href="/contact/">Contact</a>
+          <a href="/book/" class="menu-book">Request a trip</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251, 248, 243, 0.94);
+    backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+  .home { text-decoration: none; }
+  .desktop { display: none; gap: 4px; }
+  .desktop a, .mobile nav a {
+    text-decoration: none; color: var(--ink); font-weight: 500; padding: 8px 12px; border-radius: 8px;
+  }
+  .desktop a:hover, .desktop a[aria-current='page'] { background: var(--pine-100); color: var(--pine-900); }
+  .actions { display: flex; align-items: center; gap: 8px; }
+  .cta { min-height: 42px; padding: 10px 16px; font-size: .95rem; }
+  .mobile { position: relative; }
+  .mobile summary {
+    list-style: none; cursor: pointer; width: 44px; height: 44px; display: grid; place-items: center;
+    border-radius: 10px; border: 1px solid var(--line); background: var(--white); color: var(--pine-900);
+  }
+  .mobile summary::-webkit-details-marker { display: none; }
+  .mobile nav {
+    position: absolute; right: 0; top: 52px; width: min(260px, calc(100vw - 32px));
+    display: grid; padding: 8px; background: var(--white); border: 1px solid var(--line);
+    border-radius: 12px; box-shadow: var(--shadow);
+  }
+  .mobile nav a { padding: 12px 14px; }
+  .mobile nav a[aria-current='page'] { background: var(--pine-100); }
+  .mobile nav .menu-book { margin-top: 6px; background: var(--rust-600); color: var(--white); text-align: center; font-weight: 600; }
+  .cta { white-space: nowrap; }
+  /* Phones: the sticky booking bar takes over, so the header stays uncluttered. */
+  @media (max-width: 559px) { .cta { display: none; } }
+  @media (min-width: 960px) {
+    .desktop { display: flex; }
+    .mobile { display: none; }
+  }
+</style>

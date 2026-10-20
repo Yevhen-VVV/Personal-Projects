@@ -1,0 +1,403 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+import { getTrips, extraGuestFee, usd } from '../lib/trips';
+
+const trips = await getTrips();
+const bookable = trips.filter((t) => t.data.bookable);
+const comingSoon = trips.filter((t) => !t.data.bookable);
+const provider = site.booking.provider;
+
+const tripData = bookable.map((t) => ({
+  id: t.id,
+  title: t.data.title,
+  base: t.data.priceBase,
+  extra: extraGuestFee(t),
+  max: t.data.maxGuests,
+  months: t.data.months,
+  variants: t.data.variants ?? [],
+  passThrough: t.data.passThrough,
+  bookingUrl: t.data.bookingUrl ?? '',
+}));
+const clientConfig = {
+  provider,
+  endpoint: site.booking.formEndpoint,
+  bookingsEmail: site.contact.bookingsEmail,
+  minNoticeHours: site.booking.minNoticeHours,
+  confirmHours: site.booking.confirmWithinHours,
+  timezone: site.timezone,
+  businessName: site.name,
+};
+---
+<Base title="Request a trip" description="Request a private trip from Flagstaff. Pick a trip, a date and your group; we confirm within 24 hours. No card needed." bookBar={null}>
+  <section class="intro">
+    <div class="wrap narrow">
+      <nav class="crumbs small" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+      <h1>Request a trip</h1>
+      <p class="lede">
+        Two minutes, no card. We check the day, reply within {site.booking.confirmWithinHours} hours with the plan,
+        and only then ask for payment.
+      </p>
+      <p class="notice notice-pine small" id="unavailable" hidden></p>
+    </div>
+  </section>
+
+  <section class="band form-band">
+    <div class="wrap layout">
+      <form id="booking" class="card form" method="post" action={`mailto:${site.contact.bookingsEmail}`} enctype="text/plain" novalidate>
+        <fieldset>
+          <legend><span class="n">1</span> Trip</legend>
+          <label for="trip">Which trip?</label>
+          <select id="trip" name="trip" required>
+            <option value="">Choose a trip</option>
+            {bookable.map((t) => <option value={t.id}>{t.data.title}</option>)}
+          </select>
+          <div id="variant-wrap" hidden>
+            <label for="variant" class="mt">Version</label>
+            <select id="variant" name="variant"></select>
+          </div>
+          {comingSoon.length > 0 && (
+            <p class="hint">
+              Not listed: {comingSoon.map((t) => t.data.title).join(', ')}. They open as permits are issued; see each trip page.
+            </p>
+          )}
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">2</span> Date</legend>
+          <div class="two">
+            <div>
+              <label for="date">Preferred date</label>
+              <input id="date" name="date" type="date" required />
+              <p class="hint">At least {site.booking.minNoticeHours} hours ahead. Sooner? Call or text us.</p>
+            </div>
+            <div>
+              <label for="timing">Start time</label>
+              <select id="timing" name="timing">
+                <option>Flexible, you suggest</option>
+                <option>Morning</option>
+                <option>Midday</option>
+                <option>Afternoon</option>
+              </select>
+            </div>
+          </div>
+          <label for="alt" class="mt">Backup date <span class="opt">(optional)</span></label>
+          <input id="alt" name="alt" type="date" />
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">3</span> Group</legend>
+          <label id="guests-label">Guests</label>
+          <div class="stepper" role="group" aria-labelledby="guests-label">
+            <button type="button" class="step" data-step="-1" aria-label="One fewer guest">−</button>
+            <output id="guests-out" aria-live="polite">2</output>
+            <button type="button" class="step" data-step="1" aria-label="One more guest">+</button>
+          </div>
+          <input type="hidden" id="guests" name="guests" value="2" />
+          <p class="hint" id="guest-hint">Up to {site.vehicle.maxGuests} guests. The price covers 4; guests 5 and 6 add a small fee.</p>
+          <label class="check mt"><input type="checkbox" name="carseat" id="carseat" value="yes" /> Someone in our group needs a car seat or booster</label>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">4</span> Your details</legend>
+          <div class="two">
+            <div>
+              <label for="name">Full name</label>
+              <input id="name" name="name" autocomplete="name" required />
+            </div>
+            <div>
+              <label for="phone">Mobile number</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+            </div>
+          </div>
+          <label for="email" class="mt">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+          <label for="pickup" class="mt">Pickup: hotel or address</label>
+          <input id="pickup" name="pickup" placeholder="e.g. hotel name, Flagstaff" required />
+          <label for="notes" class="mt">Anything we should know? <span class="opt">(optional)</span></label>
+          <textarea id="notes" name="notes" rows="3" placeholder="Mobility, interests, a celebration, wines you like..."></textarea>
+          <input type="hidden" id="ref" name="ref" />
+          <label class="check mt">
+            <input type="checkbox" id="agree" name="agree" value="yes" required />
+            <span>I have read the <a href="/legal/terms/">trip terms</a> and <a href="/legal/cancellation/">cancellation policy</a>.</span>
+          </label>
+        </fieldset>
+
+        <p class="mobile-total"><span>Total, Arizona tax included</span><strong id="s-total-m">–</strong></p>
+        <div class="errors notice" id="errors" role="alert" hidden></div>
+        <button type="submit" class="btn btn-book submit" id="submit">
+          {provider === 'request' ? 'Send request' : 'Continue to secure checkout'}
+        </button>
+        <p class="small muted center">
+          {provider === 'request'
+            ? 'No payment is taken now. We reply with the plan and a secure payment link.'
+            : 'Payment happens on our booking provider’s secure page. We never see your card.'}
+        </p>
+      </form>
+
+      <aside class="summary card" aria-labelledby="sum-h">
+        <h2 id="sum-h">Your trip</h2>
+        <dl>
+          <div><dt>Trip</dt><dd id="s-trip">Choose a trip</dd></div>
+          <div><dt>Date</dt><dd id="s-date">–</dd></div>
+          <div><dt>Guests</dt><dd id="s-guests">2</dd></div>
+        </dl>
+        <ul class="lines" id="s-lines"></ul>
+        <p class="total"><span>Total</span><strong id="s-total">–</strong></p>
+        <p class="small muted">Arizona tax included. Paid at cost on the day:</p>
+        <ul class="small muted pass" id="s-pass"><li>Choose a trip to see these.</li></ul>
+        <p class="small muted">Free cancellation up to {site.cancellation.freeUntilHours} hours before pickup.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="done" id="done" hidden tabindex="-1">
+    <div class="wrap narrow">
+      <div class="card done-card">
+        <p class="eyebrow">Request ready</p>
+        <h2 id="done-h">Thank you. One last step.</h2>
+        <p id="done-p">Your email app should have opened with the request filled in. Press send there and we will reply within {site.booking.confirmWithinHours} hours.</p>
+        <p class="small muted">If nothing opened, copy the request below and email it to <a href={`mailto:${site.contact.bookingsEmail}`}>{site.contact.bookingsEmail}</a>, or text it to {site.contact.phoneDisplay}.</p>
+        <pre id="done-text"></pre>
+        <div class="btn-row">
+          <button type="button" class="btn btn-quiet" id="copy">Copy request</button>
+          <a class="btn btn-quiet" href="/trips/">Back to trips</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/json" id="trip-data" set:html={JSON.stringify(tripData)} />
+  <script type="application/json" id="booking-config" set:html={JSON.stringify(clientConfig)} />
+</Base>
+
+<script>
+  type Variant = { id: string; label: string; price: number; note: string };
+  type T = { id: string; title: string; base: number; extra: number; max: number; months: number[]; variants: Variant[]; passThrough: string[]; bookingUrl: string };
+  type C = { provider: string; endpoint: string; bookingsEmail: string; minNoticeHours: number; confirmHours: number; timezone: string; businessName: string };
+
+  const trips: T[] = JSON.parse(document.getElementById('trip-data')!.textContent || '[]');
+  const cfg: C = JSON.parse(document.getElementById('booking-config')!.textContent || '{}');
+  const $ = <E extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as E;
+  const form = $<HTMLFormElement>('booking');
+  const tripSel = $<HTMLSelectElement>('trip');
+  const variantWrap = $('variant-wrap');
+  const variantSel = $<HTMLSelectElement>('variant');
+  const date = $<HTMLInputElement>('date');
+  const alt = $<HTMLInputElement>('alt');
+  const guestsIn = $<HTMLInputElement>('guests');
+  const guestsOut = $('guests-out');
+  const errors = $('errors');
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const usd = (n: number) => '$' + n.toLocaleString('en-US');
+
+  // Earliest date: now + notice period, in Arizona time.
+  const earliest = new Date(Date.now() + cfg.minNoticeHours * 3600e3);
+  const ymd = (d: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: cfg.timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+  const minDate = ymd(new Date(earliest.getTime() + 24 * 3600e3));
+  date.min = minDate; alt.min = minDate;
+
+  const params = new URLSearchParams(location.search);
+  const ref = params.get('ref');
+  if (ref) ($<HTMLInputElement>('ref')).value = ref.slice(0, 40);
+  const wanted = params.get('trip');
+  if (wanted) {
+    if (trips.some((t) => t.id === wanted)) tripSel.value = wanted;
+    else {
+      const note = $('unavailable');
+      note.textContent = 'That trip is not open for requests yet. It opens once its permit is issued; the trips below are available now.';
+      note.hidden = false;
+    }
+  }
+
+  let guests = 2;
+  const current = () => trips.find((t) => t.id === tripSel.value);
+
+  function fillVariants() {
+    const t = current();
+    variantSel.innerHTML = '';
+    if (t && t.variants.length) {
+      t.variants.forEach((v) => variantSel.add(new Option(`${v.label}, ${usd(v.price)}`, v.id)));
+      variantWrap.hidden = false;
+    } else variantWrap.hidden = true;
+  }
+
+  function price() {
+    const t = current();
+    if (!t) return null;
+    const v = t.variants.find((x) => x.id === variantSel.value);
+    const base = v ? v.price : t.base;
+    const extras = Math.max(0, guests - 4);
+    return { t, v, base, extras, extraCost: extras * t.extra, total: base + extras * t.extra };
+  }
+
+  function render() {
+    const t = current();
+    const max = t ? t.max : 6;
+    if (guests > max) guests = max;
+    guestsOut.textContent = String(guests);
+    guestsIn.value = String(guests);
+    (document.querySelector('[data-step="-1"]') as HTMLButtonElement).disabled = guests <= 1;
+    (document.querySelector('[data-step="1"]') as HTMLButtonElement).disabled = guests >= max;
+
+    $('s-trip').textContent = t ? t.title : 'Choose a trip';
+    $('s-guests').textContent = String(guests);
+    $('s-date').textContent = date.value ? new Date(date.value + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' }) : '–';
+    const p = price();
+    const lines = $('s-lines');
+    lines.innerHTML = '';
+    if (p) {
+      const add = (a: string, b: string) => { const li = document.createElement('li'); li.innerHTML = `<span></span><span></span>`; li.children[0].textContent = a; li.children[1].textContent = b; lines.appendChild(li); };
+      add(p.v ? `${p.v.label}, up to 4 guests` : 'Private trip, up to 4 guests', usd(p.base));
+      if (p.extras) add(`${p.extras} extra guest${p.extras > 1 ? 's' : ''} × ${usd(p.t.extra)}`, usd(p.extraCost));
+      $('s-total').textContent = usd(p.total);
+      $('s-total-m').textContent = usd(p.total);
+      const pass = $('s-pass');
+      pass.innerHTML = '';
+      (p.t.passThrough.length ? p.t.passThrough : ['Nothing extra on this trip.']).forEach((x) => { const li = document.createElement('li'); li.textContent = x; pass.appendChild(li); });
+    } else { $('s-total').textContent = '–'; $('s-total-m').textContent = '–'; }
+  }
+
+  function validate(): string[] {
+    const errs: string[] = [];
+    const t = current();
+    if (!t) errs.push('Choose a trip.');
+    if (!date.value) errs.push('Pick a date.');
+    else if (date.value < minDate) errs.push(`Requests need ${cfg.minNoticeHours} hours' notice. For sooner, please call or text.`);
+    else if (t && !t.months.includes(Number(date.value.slice(5, 7)))) errs.push(`${t.title} does not run in ${MONTHS[Number(date.value.slice(5, 7)) - 1]}.`);
+    for (const id of ['name', 'phone', 'email', 'pickup']) {
+      const el = $<HTMLInputElement>(id);
+      if (!el.value.trim()) errs.push(`Add your ${el.labels?.[0]?.textContent?.toLowerCase().replace(/\(.*\)/, '').trim()}.`);
+    }
+    const email = $<HTMLInputElement>('email');
+    if (email.value && !email.checkValidity()) errs.push('Check the email address.');
+    if (!$<HTMLInputElement>('agree').checked) errs.push('Please confirm you have read the trip terms and cancellation policy.');
+    return errs;
+  }
+
+  function summaryText() {
+    const p = price()!;
+    const f = new FormData(form);
+    return [
+      `Trip: ${p.t.title}${p.v ? ` (${p.v.label})` : ''}`,
+      `Date: ${f.get('date')}${f.get('alt') ? ` (backup ${f.get('alt')})` : ''}, start: ${f.get('timing')}`,
+      `Guests: ${guests}${f.get('carseat') ? ' (car seat or booster needed)' : ''}`,
+      `Quoted price: ${usd(p.total)} incl. Arizona tax`,
+      `Pickup: ${f.get('pickup')}`,
+      `Name: ${f.get('name')}`,
+      `Mobile: ${f.get('phone')}`,
+      `Email: ${f.get('email')}`,
+      f.get('notes') ? `Notes: ${f.get('notes')}` : '',
+      f.get('ref') ? `Referral: ${f.get('ref')}` : '',
+    ].filter(Boolean).join('\n');
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.step').forEach((b) =>
+    b.addEventListener('click', () => { guests += Number(b.dataset.step); if (guests < 1) guests = 1; render(); }),
+  );
+  tripSel.addEventListener('change', () => { fillVariants(); render(); });
+  variantSel.addEventListener('change', render);
+  date.addEventListener('change', render);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (errs.length) {
+      errors.innerHTML = '<strong>Almost there:</strong><ul></ul>';
+      errs.forEach((m) => { const li = document.createElement('li'); li.textContent = m; errors.querySelector('ul')!.appendChild(li); });
+      errors.hidden = false;
+      errors.focus?.();
+      errors.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    errors.hidden = true;
+    const p = price()!;
+
+    if (cfg.provider !== 'request' && p.t.bookingUrl) {
+      location.href = p.t.bookingUrl;
+      return;
+    }
+
+    const text = summaryText();
+    $('done-text').textContent = text;
+    const subject = `Trip request: ${p.t.title}, ${date.value}`;
+
+    if (cfg.endpoint) {
+      try {
+        const res = await fetch(cfg.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ subject, message: text, ...Object.fromEntries(new FormData(form)) }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        $('done-h').textContent = 'Request sent. Thank you.';
+        $('done-p').textContent = `We will reply within ${cfg.confirmHours} hours with the plan and a secure payment link.`;
+      } catch {
+        location.href = `mailto:${cfg.bookingsEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+      }
+    } else {
+      location.href = `mailto:${cfg.bookingsEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+    }
+    const done = $('done');
+    done.hidden = false;
+    done.focus();
+    done.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  $('copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText($('done-text').textContent || ''); $('copy').textContent = 'Copied'; } catch { /* clipboard blocked */ }
+  });
+
+  fillVariants();
+  render();
+</script>
+
+<style>
+  .intro { padding-bottom: 28px; }
+  .crumbs { margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-muted); }
+  h1 { margin-bottom: 12px; }
+  #unavailable { margin-top: 18px; }
+  .form-band { padding-top: 40px; }
+  .layout { display: grid; gap: 24px; }
+  @media (min-width: 980px) { .layout { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; gap: 40px; } }
+  .form { padding: 8px 22px 26px; }
+  @media (min-width: 640px) { .form { padding: 12px 32px 32px; } }
+  fieldset { border: 0; padding: 22px 0; margin: 0; border-bottom: 1px solid var(--line); }
+  legend { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--pine-900); padding: 0; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; float: left; width: 100%; }
+  legend + * { clear: both; }
+  .n { width: 28px; height: 28px; border-radius: 50%; background: var(--pine-700); color: var(--sand-50); font: 600 .85rem var(--font-body); display: grid; place-items: center; }
+  .two { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .two { grid-template-columns: 1fr 1fr; } }
+  .mt { margin-top: 16px; }
+  .opt { font-weight: 400; color: var(--ink-muted); }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; }
+  .check input { width: 20px; height: 20px; min-height: 0; margin-top: 3px; flex: none; accent-color: var(--pine-700); }
+  .stepper { display: inline-flex; align-items: center; border: 1.5px solid #cfc6b6; border-radius: 12px; overflow: hidden; background: var(--white); }
+  .step { width: 52px; height: 52px; border: 0; background: var(--sand-100); font-size: 1.5rem; color: var(--pine-900); cursor: pointer; }
+  .step:disabled { opacity: .35; cursor: not-allowed; }
+  #guests-out { min-width: 64px; text-align: center; font-size: 1.25rem; font-weight: 600; }
+  .mobile-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 22px 0 0; }
+  .mobile-total strong { font-family: var(--font-display); font-size: 1.6rem; color: var(--pine-900); }
+  @media (min-width: 980px) { .mobile-total { display: none; } }
+  .errors { margin-top: 20px; }
+  .errors ul { margin: 6px 0 0; padding-left: 1.2em; }
+  .submit { width: 100%; margin-top: 22px; font-size: 1.05rem; }
+  .center { text-align: center; margin-top: 10px; }
+  .summary { padding: 22px; position: sticky; top: 96px; }
+  @media (max-width: 979px) { .summary { position: static; } }
+  .summary h2 { font-size: 1.3rem; margin-bottom: 12px; }
+  .summary dl { margin: 0 0 12px; display: grid; gap: 8px; }
+  .summary dl div { display: flex; justify-content: space-between; gap: 12px; font-size: .95rem; }
+  .summary dt { color: var(--ink-muted); }
+  .summary dd { margin: 0; font-weight: 600; text-align: right; }
+  .lines { list-style: none; padding: 12px 0; margin: 0; border-top: 1px solid var(--line); display: grid; gap: 6px; font-size: .92rem; }
+  .lines :global(li) { display: flex; justify-content: space-between; gap: 12px; }
+  .total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--line); padding-top: 12px; margin-bottom: 8px; }
+  .total strong { font-family: var(--font-display); font-size: 1.8rem; color: var(--pine-900); }
+  .pass { padding-left: 1.1em; }
+  .done { padding-top: 0; }
+  .done-card { padding: 28px; }
+  .done-card h2 { margin-bottom: 10px; }
+  pre { white-space: pre-wrap; background: var(--sand-100); border: 1px solid var(--line); border-radius: 10px; padding: 14px; font-size: .88rem; }
+</style>

@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+import { getTrips, fromPrice, usd } from '../lib/trips';
+const trips = (await getTrips()).filter((t) => t.data.bookable);
+---
+<Base title="For hotel concierges" description="Refer guests to private trips from Flagstaff and Sedona. A tracked link, a one-page rate card and a person who answers.">
+  <section>
+    <div class="wrap narrow">
+      <nav class="crumbs small" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+      <p class="eyebrow">For hotel concierges and hosts</p>
+      <h1>A trip you can recommend without worrying</h1>
+      <p class="lede">
+        Your guests ask what to do tomorrow. We give you a private option you can stand behind: one party per car, a
+        local driver, clear prices and a person who answers the phone.
+      </p>
+
+      <h2 class="h">How referrals work</h2>
+      <ol class="steps">
+        <li>We give your property its own short code.</li>
+        <li>Guests book through a link with that code, or mention it when they call.</li>
+        <li>Every completed trip with your code is credited to your property each month.</li>
+      </ol>
+      <p class="small muted">Your link looks like <code>{site.url}/book/?ref=YOURCODE</code>. Referral terms are agreed with each property in writing.</p>
+
+      <h2 class="h">Rate card</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Trip</th><th scope="col">Length</th><th scope="col">From, per car</th></tr></thead>
+          <tbody>
+            {trips.map((t) => (
+              <tr><th scope="row"><a href={`/trips/${t.id}/`}>{t.data.title}</a></th><td>{t.data.hours}</td><td>{usd(fromPrice(t))}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">More trips open as permits are issued, starting with the Grand Canyon in 2027.</p>
+
+      <div class="btn-row cta">
+        <a class="btn btn-quiet" href={`mailto:${site.contact.email}?subject=${encodeURIComponent('Concierge referral code')}`}>Request a referral code</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumbs { margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-muted); }
+  h1 { margin-bottom: 14px; }
+  .h { font-size: 1.35rem; margin: 36px 0 12px; }
+  .steps { padding-left: 1.2em; }
+  .steps li { margin-bottom: 6px; }
+  code { background: var(--sand-100); padding: 2px 6px; border-radius: 6px; font-size: .9em; overflow-wrap: anywhere; }
+  .cta { margin-top: 28px; }
+</style>

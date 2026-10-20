@@ -1,0 +1,151 @@
+---
+import Base from '../layouts/Base.astro';
+import Landscape from '../components/Landscape.astro';
+import TripCard from '../components/TripCard.astro';
+import { site } from '../config';
+import { getTrips } from '../lib/trips';
+
+const trips = await getTrips();
+const open = trips.filter((t) => t.data.bookable);
+const soon = trips.filter((t) => !t.data.bookable);
+
+const reasons = [
+  { h: 'One party per car', p: 'Your family or friends only. Never a bus, never strangers in the back row.' },
+  { h: `${site.vehicle.bestSeats} in the best seats, ${site.vehicle.maxGuests} at most`, p: `Priced per car, not per seat. Up to ${site.vehicle.baseGuests} guests ride at the base price.` },
+  { h: 'The price is the price', p: 'Arizona tax is included. Park fees and tastings are charged at cost and listed on every trip.' },
+  { h: 'A local who times the light', p: 'We leave when the light will be good where we are going, not when a timetable says so.' },
+];
+
+const steps = [
+  { h: 'Request', p: 'Pick a trip, a date and your group. It takes two minutes and no card.' },
+  { h: 'Confirm', p: `We reply within ${site.booking.confirmWithinHours} hours with the plan and how to pay.` },
+  { h: 'Ride', p: 'Door-to-door pickup in Flagstaff or Sedona. Water and snacks on board.' },
+];
+---
+<Base
+  title={site.name}
+  description="Private Grand Canyon, Sedona, wine country and night-sky trips from Flagstaff in a Highlander Platinum. One party per car, with a local at the wheel."
+>
+  <section class="hero">
+    <div class="hero-art"><Landscape variant="canyon" /></div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow">Private trips from Flagstaff, Arizona</p>
+      <h1>Northern Arizona,<br />privately.</h1>
+      <p class="lede">
+        The Grand Canyon, Sedona's red rocks and Verde Valley wine country in a
+        {site.vehicle.model.replace('2021 ', '')}, with a Flagstaff local driving. One party per car, never a bus.
+      </p>
+      <div class="btn-row" data-primary-cta>
+        <a class="btn btn-book" href="/book/">Request a trip</a>
+        <a class="btn btn-quiet" href="/trips/">See all trips</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="grid grid-4 reasons">
+        {reasons.map((r) => (
+          <div>
+            <h2 class="r-h">{r.h}</h2>
+            <p class="muted small">{r.p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Taking requests now</p>
+      <h2>Start here</h2>
+      <p class="lede">Trips that need no land permit run first. Each one is private, unhurried and planned around you.</p>
+      <div class="grid grid-2 trips">
+        {open.map((t) => <TripCard trip={t} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="eyebrow">Coming soon</p>
+      <h2>Opening as our permits come through</h2>
+      <p class="lede">
+        We only sell trips we are allowed to run. These open as each permit is issued, starting with the
+        Grand Canyon in spring 2027.
+      </p>
+      <div class="grid grid-3 trips">
+        {soon.map((t) => <TripCard trip={t} />)}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div class="car-art card"><Landscape variant="redrock" /></div>
+      <div>
+        <p class="eyebrow">The car</p>
+        <h2>Riders already ask about the car</h2>
+        <p class="lede">
+          A {site.vehicle.model}: leather, quiet hybrid power on the long climbs, and a glass roof made for
+          red rock and starlight.
+        </p>
+        <a class="btn btn-quiet" href="/the-car/">See the car</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-pine">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2>Three steps, no card up front</h2>
+      <ol class="grid grid-3 steps">
+        {steps.map((s, i) => (
+          <li>
+            <span class="n">{i + 1}</span>
+            <h3>{s.h}</h3>
+            <p class="muted">{s.p}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">The Three Tickets</p>
+        <h2>Three days, three signature trips</h2>
+        <p class="lede">
+          Staying a few nights? The Grand Canyon, the red rocks and wine country on three days, planned as one
+          trip. Opening with the Grand Canyon in 2027.
+        </p>
+        <a class="btn btn-quiet" href="/three-tickets/">About the bundle</a>
+      </div>
+      <div class="car-art card"><Landscape variant="canyon-sunset" /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; padding: 0; overflow: hidden; min-height: 560px; display: grid; }
+  .hero-art { position: absolute; inset: 0; }
+  .hero-art::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(251,248,243,.92) 0%, rgba(251,248,243,.82) 42%, rgba(251,248,243,0) 78%);
+  }
+  .hero-inner { position: relative; padding-block: 72px 200px; }
+  .hero h1 { margin-bottom: 18px; }
+  .hero .lede { color: var(--ink); margin-bottom: 26px; }
+  @media (min-width: 900px) { .hero-inner { padding-block: 96px 240px; } }
+  .reasons .r-h { font-size: 1.1rem; margin-bottom: 8px; }
+  .reasons p { margin: 0; }
+  .trips { margin-top: 28px; }
+  .split { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 860px) { .split { grid-template-columns: 1fr 1fr; gap: 56px; } }
+  .car-art { aspect-ratio: 4 / 3; }
+  .steps { list-style: none; padding: 0; margin: 28px 0 0; }
+  .steps li { border-top: 1px solid #2c4a40; padding-top: 18px; }
+  .steps .n { font-family: var(--font-display); font-size: 2rem; color: #f0c4a8; }
+  .steps h3 { margin: 6px 0 8px; }
+</style>

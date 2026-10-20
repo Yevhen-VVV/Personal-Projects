@@ -1,0 +1,96 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../config';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  bookBar?: { href: string; label: string } | null;
+}
+const { title, description, jsonLd, bookBar = { href: '/book/', label: 'Request a trip' } } = Astro.props;
+const fullTitle = title === site.name ? `${site.name} · Private trips from Flagstaff` : `${title} · ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'TravelAgency'],
+  name: site.name,
+  legalName: site.legalName,
+  url: site.url,
+  telephone: site.contact.phoneHref,
+  email: site.contact.email,
+  areaServed: 'Northern Arizona',
+  address: { '@type': 'PostalAddress', addressLocality: site.base.city, addressRegion: site.base.state, addressCountry: 'US' },
+};
+const ld = [org, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {!site.launched && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#1f4d3d" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    {!site.launched && (
+      <div class="preview-banner" role="note">
+        Preview site. We are not taking bookings yet; prices and details may change.
+      </div>
+    )}
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    {bookBar && (
+      <a class="book-bar btn btn-book" href={bookBar.href} hidden>{bookBar.label}</a>
+    )}
+    <script>
+      // Phone-only sticky booking button. Appears once the page's main call
+      // to action scrolls away, so it never duplicates a visible button.
+      const bar = document.querySelector<HTMLAnchorElement>('.book-bar');
+      const anchor = document.querySelector('[data-primary-cta]');
+      if (bar && anchor && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(([e]) => {
+          bar.hidden = e.isIntersecting || e.boundingClientRect.top > 0;
+        });
+        io.observe(anchor);
+      } else if (bar) {
+        // Pages without a main call to action: show the bar once reading starts.
+        const onScroll = () => { bar.hidden = window.scrollY < 500; };
+        addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .preview-banner {
+    background: var(--pine-900); color: var(--sand-50); text-align: center;
+    font-size: .85rem; padding: 8px var(--gutter);
+  }
+  .book-bar {
+    position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 60;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,.45);
+  }
+  .book-bar[hidden] { display: none; }
+  @media (min-width: 760px) { .book-bar { display: none !important; } }
+</style>
